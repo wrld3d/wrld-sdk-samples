@@ -60,6 +60,7 @@
 #include "TerrainHeightProvider.h"
 
 #include "iOSInputBoxFactory.h"
+#include "iOSKeyboardInputFactory.h"
 #include "iOSAlertBoxFactory.h"
 #include "NativeUIFactories.h"
 
@@ -174,15 +175,16 @@ bool menuHidden = false;
 std::vector<Eegeo::Streaming::LoggingResourceStream*> streams;
 DebuggedResource::ResourceType currentDebuggedResource = DebuggedResource::None;
 UIButton* currentDebuggedResourceButton = NULL;
-NSTimer*    touchTimer;
+NSTimer* touchTimer;
 Eegeo::Location::GlobeCameraInterestPointProvider* m_pInterestPointProvider;
 iOSLocationService* piOSLocationService = NULL;
 Eegeo::Resources::Terrain::Heights::TerrainHeightRepository m_terrainHeightRepository;
 Eegeo::Resources::Terrain::Heights::TerrainHeightProvider m_terrainHeightProvider(&m_terrainHeightRepository);
 
 Eegeo::UI::NativeInput::iOS::iOSInputBoxFactory inputBoxFactory;
+Eegeo::UI::NativeInput::iOS::iOSKeyboardInputFactory keyboardInputFactory;
 Eegeo::UI::NativeAlerts::iOS::iOSAlertBoxFactory alertBoxFactory;
-Eegeo::UI::NativeUIFactories nativeUIFactories(alertBoxFactory, inputBoxFactory);
+Eegeo::UI::NativeUIFactories nativeUIFactories(alertBoxFactory, inputBoxFactory, keyboardInputFactory);
 
 // ---------------------------------------------------------------------------------------------------------------------------
 // ---------------------------------------------------------------------------------------------------------------------------
