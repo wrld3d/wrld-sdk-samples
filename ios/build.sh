@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env sh
 
 usage() { echo "Usage: $0 -p ios [-c]"; echo "  -p -> platform, ios or android (required)"; echo "  -c -> cpp11 support"; 1>&2; exit 1; }
 
@@ -28,13 +28,20 @@ if [ -z "${p}" ]; then
 fi
 
 if [ "$c" == "cpp11" ]; then
-   targetName="ExampleAppCpp11"
+   targetName="platform-sdk-cpp11"
 else
-   targetName="ExampleApp"
+   targetName="platform-sdk"
 fi
 
-(cd $projectPath && xcodebuild -target $targetName -arch "i386" -sdk "iphonesimulator")
+
+rm -rf build.ios
+mkdir build.ios
+pushd .
+cd build.ios
+/usr/bin/cmake -DCMAKE_TOOLCHAIN_FILE=../../cmake/toolchain/iOS.cmake -GXcode ..
+(cd $projectPath/build.ios && xcodebuild -target $targetName -arch "i386" -sdk "iphonesimulator")
 resultcode=$?
+popd
 
 echo
 if [ $resultcode = 0 ] ; then

@@ -1,4 +1,6 @@
 build
+ios/build.ios
+android/build.android
 Include
 **/project.xcworkspace/contents.xcworkspacedata
 .DS_Store
