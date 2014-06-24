@@ -1,5 +1,7 @@
+#cmake_minimum_required (VERSION 2.8.12.2)
+#target 3.0 as need fix for http://public.kitware.com/Bug/view.php?id=14498
+cmake_minimum_required (VERSION 3.0)
 
-cmake_minimum_required (VERSION 2.8.12.2)
 PROJECT(platform-sdk CXX C)
 SET(NAME platform-sdk)
 
@@ -39,7 +41,7 @@ SET(CMAKE_OSX_ARCHITECTURES "armv7;i386")
 SET(CMAKE_CXX_FLAGS "-x objective-c++")
 
 SET(CMAKE_EXE_LINKER_FLAGS
-    "-framework CoreLocation -framework MobileCoreServices -framework SystemConfiguration -framework CFNetwork -framework GLKit -framework OpenGLES -framework UIKit -framework Foundation -framework CoreGraphics -framework CoreData -LInclude/ -lapps-on-maps -LInclude/ -lapps-on-maps-sim -LInclude/ -lturbojpeg -Lusr/lib/ -lz"
+    "-framework CoreLocation -framework MobileCoreServices -framework SystemConfiguration -framework CFNetwork -framework GLKit -framework OpenGLES -framework UIKit -framework Foundation -framework CoreGraphics -framework CoreData -LInclude/ -lapps-on-maps -LInclude/ -lapps-on-maps-sim -LInclude/ -lturbojpeg -L/usr/lib/ -lz"
 )
 
 # Includes
@@ -59,22 +61,15 @@ include_directories (${HeaderDirectories})
 
 SET(APP_TYPE MACOSX_BUNDLE)
 
-
-
-#MACRO(RESOURCE_DIRECTORIES return_list)
-#    FILE(GLOB_RECURSE new_list "Resources/*.png" "Resources/*.POD" "Resources/*.pvr" "Resources/*.fnt")
-#    SET(dir_list "")
-#    FOREACH(file_path ${new_list})
-#        GET_FILENAME_COMPONENT(dir_path ${file_path} PATH)
-#        SET(dir_list ${dir_list} ${dir_path})
-#    ENDFOREACH()
-#    LIST(REMOVE_DUPLICATES dir_list)
-#    SET(${return_list} ${dir_list})
-#ENDMACRO()
-
-#RESOURCE_DIRECTORIES(Resources)
-
-FILE (GLOB_RECURSE Resources "Resources/*.png" "Resources/*.POD" "Resources/*.pvr" "Resources/*.fnt")
+set (Resources "")
+FILE (GLOB Resources ${Resources} "Resources/Icons/*.png")
+FILE (GLOB Resources ${Resources} "Resources/*.png" "Resources/*.pvr" "Resources/*.fnt" )
+set (Resources ${Resources} "Resources/load_model_example")
+set (Resources ${Resources} "Resources/pin_over_model_example")
+set (Resources ${Resources} "Resources/pins_example")
+set (Resources ${Resources} "Resources/pod_animation_example")
+set (Resources ${Resources} "Resources/route_simulation_example")
+set (Resources ${Resources} "Resources/route_simulation_animation_example")
 
 add_executable(
 	${NAME}

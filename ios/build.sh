@@ -38,7 +38,7 @@ rm -rf build.ios
 mkdir build.ios
 pushd .
 cd build.ios
-/usr/bin/cmake -DCMAKE_TOOLCHAIN_FILE=../../cmake/toolchain/iOS.cmake -GXcode ..
+cmake -DCMAKE_TOOLCHAIN_FILE=../../cmake/toolchain/iOS.cmake -GXcode ..
 (cd $projectPath/build.ios && xcodebuild -target $targetName -arch "i386" -sdk "iphonesimulator")
 resultcode=$?
 popd
