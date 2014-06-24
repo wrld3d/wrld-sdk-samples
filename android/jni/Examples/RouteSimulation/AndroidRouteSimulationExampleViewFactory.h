@@ -6,20 +6,15 @@
 #include "Types.h"
 #include "IRouteSimulationExampleViewFactory.h"
 #include "AndroidNativeState.h"
-#include "MessageQueue.h"
-#include "IAndroidExampleMessage.h"
 
 namespace Examples
 {
 class AndroidRouteSimulationExampleViewFactory : public IRouteSimulationExampleViewFactory, private Eegeo::NonCopyable
 {
 	AndroidNativeState& m_nativeState;
-	Eegeo::Messaging::MessageQueue<IAndroidExampleMessage*>& m_messageQueue;
 
 public:
-	AndroidRouteSimulationExampleViewFactory(
-	    AndroidNativeState& androidNativeState,
-	    Eegeo::Messaging::MessageQueue<IAndroidExampleMessage*>& messageQueue);
+	AndroidRouteSimulationExampleViewFactory(AndroidNativeState& androidNativeState);
 
 	virtual ~AndroidRouteSimulationExampleViewFactory();
 

@@ -18,7 +18,8 @@
                   android:label="EegeoDroid"
                   android:configChanges="orientation|keyboardHidden"
                   android:screenOrientation="landscape"
-              	  android:launchMode="singleInstance">
+              	  android:launchMode="singleInstance"
+              	  android:hardwareAccelerated="false">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

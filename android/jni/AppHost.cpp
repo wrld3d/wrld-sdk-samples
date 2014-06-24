@@ -23,8 +23,6 @@
 #include "AndroidFileIO.h"
 #include "AndroidLocationService.h"
 #include "EegeoWorld.h"
-#include "AppToJavaProxy.h"
-#include "AppToJavaHandler.h"
 #include "EnvironmentFlatteningService.h"
 #include "RouteMatchingExampleFactory.h"
 #include "RouteSimulationExampleFactory.h"
@@ -44,8 +42,7 @@ AppHost::AppHost(
     float displayHeight,
     EGLDisplay display,
     EGLSurface shareSurface,
-    EGLContext resourceBuildShareContext,
-    AppToJavaProxy& appToJavaProxy
+    EGLContext resourceBuildShareContext
 )
 	:m_pTaskQueue(NULL)
 	,m_pEnvironmentFlatteningService(NULL)
@@ -72,7 +69,6 @@ AppHost::AppHost(
 	,m_pApp(NULL)
 	,m_pExampleController(NULL)
 	,m_pInputProcessor(NULL)
-	,m_appToJavaProxy(appToJavaProxy)
 	,m_nativeState(nativeState)
 {
 	Eegeo_ASSERT(resourceBuildShareContext != EGL_NO_CONTEXT);
@@ -252,13 +248,6 @@ void AppHost::HandleTouchInputEvent(const Eegeo::Android::Input::TouchInputEvent
 
 void AppHost::Update(float dt)
 {
-	Examples::IAndroidExampleMessage* pMessage;
-	while(m_examplesMessageQueue.TryDequeue(pMessage))
-	{
-		pMessage->Handle();
-		delete pMessage;
-	}
-
 	m_pAndroidWebRequestService->Update();
 	m_pApp->Update(dt);
 }
@@ -270,9 +259,7 @@ void AppHost::Draw(float dt)
 
 void AppHost::ConfigureExamples()
 {
-	m_pAndroidExampleControllerProxy = new Examples::AndroidExampleControllerProxy(m_examplesMessageQueue);
-
-	m_pAndroidExampleControllerView = new Examples::AndroidExampleControllerView(m_nativeState, m_pAndroidExampleControllerProxy);
+	m_pAndroidExampleControllerView = new Examples::AndroidExampleControllerView(m_nativeState);
 
 	m_pExampleController = new Examples::ExampleController(*m_pWorld, *m_pAndroidExampleControllerView);
 	m_pApp = new ExampleApp(m_pWorld, *m_pInterestPointProvider, *m_pExampleController);
@@ -287,8 +274,7 @@ void AppHost::ConfigureExamples()
 void AppHost::RegisterAndroidSpecificExamples()
 {
 	m_pAndroidRouteMatchingExampleViewFactory = new Examples::AndroidRouteMatchingExampleViewFactory(
-	    m_nativeState,
-	    m_examplesMessageQueue);
+	    m_nativeState);
 
 	m_pExampleController->RegisterExample(new Examples::RouteMatchingExampleFactory(
 	        *m_pWorld,
@@ -296,15 +282,14 @@ void AppHost::RegisterAndroidSpecificExamples()
 	        m_pApp->GetCameraController()));
 
 	m_pAndroidRouteSimulationExampleViewFactory = new Examples::AndroidRouteSimulationExampleViewFactory(
-	    m_nativeState,
-	    m_examplesMessageQueue);
+	    m_nativeState);
 
 	m_pExampleController->RegisterExample(new Examples::RouteSimulationExampleFactory(
 	        *m_pWorld,
 	        m_pApp->GetCameraController(),
 	        *m_pAndroidRouteSimulationExampleViewFactory));
 
-	m_pExampleController->RegisterExample(new Examples::JavaHudCrossThreadCommunicationExampleFactory(*m_pWorld, m_nativeState, m_examplesMessageQueue, m_pApp->GetCameraController()));
+	m_pExampleController->RegisterExample(new Examples::JavaHudCrossThreadCommunicationExampleFactory(*m_pWorld, m_nativeState, m_pApp->GetCameraController()));
 	m_pExampleController->RegisterExample(new Examples::PinsWithAttachedJavaUIExampleFactory(*m_pWorld, m_nativeState, m_pApp->GetCameraController()));
 	m_pExampleController->RegisterExample(new Examples::PositionJavaPinButtonExampleFactory(*m_pWorld, m_nativeState, m_pApp->GetCameraController()));
 
@@ -318,9 +303,8 @@ void AppHost::DestroyExamples()
 	delete m_pAndroidRouteMatchingExampleViewFactory;
 	delete m_pAndroidRouteSimulationExampleViewFactory;
 
-	delete m_pAndroidExampleControllerView;
-	delete m_pAndroidExampleControllerProxy;
 	delete m_pExampleController;
+	delete m_pAndroidExampleControllerView;
 }
 
 

@@ -11,8 +11,6 @@
 
 namespace Examples
 {
-class AndroidRouteSimulationProxy;
-
 class AndroidRouteSimulationExampleView : public IRouteSimulationExampleView, private Eegeo::NonCopyable
 {
 	std::vector<IUIActionHandler*> m_followCameraToggledHandlers;
@@ -25,12 +23,10 @@ class AndroidRouteSimulationExampleView : public IRouteSimulationExampleView, pr
 	AndroidNativeState& m_nativeState;
 	jclass m_routeSimulationExampleHudClass;
 	jobject m_routeSimulationExampleHud;
-	AndroidRouteSimulationProxy* m_pProxy;
 
 public:
 	AndroidRouteSimulationExampleView(
 	    AndroidNativeState& androidNativeState,
-	    AndroidRouteSimulationProxy* pProxy,
 	    bool usingFollowCamera);
 
 	~AndroidRouteSimulationExampleView();
