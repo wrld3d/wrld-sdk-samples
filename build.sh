@@ -39,10 +39,11 @@ if [ $p == "ios" ]; then
     popd
 elif [ $p == "android" ]; then
     echo "Building Android examples..."
-    rm -rf "./android/libs"
     rm -rf "./android/obj"
     rm -rf "./android/bin"
-    ./update.platform.sh $allArguments
+    # todo -- fix headers so no longer depend on old native-activity-glue
+    #rm -rf "./android/libs"
+    #./update.platform.sh $allArguments
     pushd android
     ./build.sh
     resultcode=$?

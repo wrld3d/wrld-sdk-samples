@@ -1,11 +1,7 @@
-#!/bin/sh
+#!/usr/bin/env sh
 
-# running on msys (basically the git provided shell we use on windows)
-if [ "$OSTYPE" == "msys" ]; then
-    cmd "/C ndk-build.cmd"
-else
-    ndk-build
-fi
+# todo -- parameterise on NDK location
+sh do_make.sh ~/Desktop/droid/android-ndk-r8e/ debug
 
 resultcode=$?
 

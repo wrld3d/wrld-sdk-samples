@@ -1,6 +1,11 @@
 cmake_minimum_required (VERSION 2.8.12.2)
 
-PROJECT(my-project)
+PROJECT (my-project)
+
+
+SET( MY_C_FLAGS "-s -O2 -mthumb-interwork -mthumb -march=armv7-a -mfloat-abi=softfp -mfpu=vfp3")
+SET( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${MY_C_FLAGS}" )
+SET( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${MY_C_FLAGS}" )
 
 SET (LIBS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/libs/)
 #LINK_DIRECTORIES(${LIBS_DIR})
@@ -8,7 +13,7 @@ SET (LIBS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/libs/)
 SET(LIBRARY_DEPS -llog -landroid -lEGL -lGLESv2 -L${LIBS_DIR} -lnative-activity-lib -L${LIBS_DIR} -lpng -lz -lm -L${LIBS_DIR} -lcrypto -L${LIBS_DIR} -lssl -L${LIBS_DIR} -lcurl -L${LIBS_DIR} -lcares -L${LIBS_DIR} -lsimd -L${LIBS_DIR} -lmyjpeg)
 
 SET (ANDROID_EXAMPLE_SOURCE_DIR "jni/")
-SET (CROSS_PLATFORM_EXAMPLE_SOURCE_DIR "generic_platform_src/")
+SET (CROSS_PLATFORM_EXAMPLE_SOURCE_DIR "../src/")
 
 SET (CROSS_PLATFORM_EXAMPLE_SOURCES "${CROSS_PLATFORM_EXAMPLE_SOURCE_DIR}/*.cpp")
 FILE (GLOB_RECURSE SourceFiles 
@@ -16,7 +21,8 @@ FILE (GLOB_RECURSE SourceFiles
     "${CROSS_PLATFORM_EXAMPLE_SOURCES}"
 )
 
-SET (SRC ${SourceFiles})
+ SET (SRC ${SourceFiles})
+# SET (SRC test.cpp)
 
 SET (SDK_INCLUDE_DIR "./libs/")
 SET (PLATFORM_DIR "${SDK_INCLUDE_DIR}/platform/")
@@ -57,10 +63,18 @@ INCLUDE_DIRECTORIES(${HDR})
 # building .a works fine
 # add_library(platform-sdk STATIC ${SRC})
 
-message(status ${CMAKE_BINARY_DIR})
+#SET (LINKER_FLAGS "${LINKER_FLAGS} -Wl,--as-needed -Wl,--gc-sections -Wl,--no-undefined -Wl,--strip-all -Wl,-rpath-#link=${ANDROID_NDK_SYSROOT}/usr/lib/ -L${ANDROID_NDK_SYSROOT}/usr/lib/")
+
 add_library(platform-sdk SHARED ${SRC})
 
-#link the module like any other
 target_link_libraries(platform-sdk ${LIBRARY_DEPS})
+
+
+
+#include("../toolchain/Apk.cmake" REQUIRED) 
+#set_target_properties(platform-sdk PROPERTIES COMPILE_DEFINITIONS "ANDROID")
+#set(APP_SHARED_LIBRARIES ${LIBRARY_OUTPUT_PATH}/libplatform-sdk.so)
+#android_create_apk(platform-sdk "${CMAKE_BINARY_DIR}/apk" "${APP_SHARED_LIBRARIES}" "assets" "./")
+
 
 
