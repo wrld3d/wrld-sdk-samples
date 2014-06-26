@@ -1,3 +1,6 @@
+android/a.out
+android/jni/Application.mk
+android/jni/Android.mk
 build
 ios/build.ios
 android/build.android
