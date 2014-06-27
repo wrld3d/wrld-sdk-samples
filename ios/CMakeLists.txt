@@ -115,5 +115,26 @@ set_xcode_property (${OUTPUT_NAME} TARGETED_DEVICE_FAMILY "1,2")
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++98 -stdlib=libstdc++")
 
+FUNCTION(groupify_files input_files_to_groupify)
+    FOREACH(source_file_name ${input_files_to_groupify})
+        MESSAGE(STATUS "Processing file: ${source_file_name}")
+
+        GET_FILENAME_COMPONENT(directory_path ${source_file_name} DIRECTORY)
+        MESSAGE(STATUS "Directory path: ${directory_path}")
+
+        STRING(REGEX REPLACE "^/Users/kimbleoperations/Desktop/droid/mobile-sdk-harness/ios/" "" stripped_path ${directory_path})
+        STRING(REGEX REPLACE "^../" "" stripped_path ${stripped_path})
+        MESSAGE(STATUS "Stripped path: ${stripped_path}")
+
+        STRING(REGEX REPLACE "/" "\\\\" stripped_path ${stripped_path})
+        MESSAGE(STATUS "CMake source_groupified: ${stripped_path}")
+
+        source_group("${stripped_path}" FILES ${source_file_name})
+    ENDFOREACH(source_file_name)
+ENDFUNCTION(groupify_files)
+
+groupify_files("${SRC}")
+groupify_files("${HDR}")
+groupify_files("${Resources}")
 
 

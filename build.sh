@@ -30,9 +30,9 @@ fi
 
 if [ $p == "ios" ]; then
     echo "Building iOS examples..."
-    rm -rf "./ios/Include"
     rm -rf "./ios/build"
-    ./update.platform.sh $allArguments
+    #rm -rf "./ios/Include"
+    #./update.platform.sh $allArguments
     pushd ios
     ./build.sh $allArguments
     resultcode=$?
@@ -45,7 +45,7 @@ elif [ $p == "android" ]; then
     #rm -rf "./android/libs"
     #./update.platform.sh $allArguments
     pushd android
-    ./build.sh
+    ./build.sh $allArguments
     resultcode=$?
     popd
 fi
