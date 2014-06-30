@@ -36,9 +36,16 @@ mkdir build.android
 pushd .
 cd build.android
 # todo -- parameterise on NDK location
-export ANDROID_NDK=~/Desktop/droid/android-ndk-r8e/
+export ANDROID_NDK=~/Desktop/droid/android-ndk-r9d/
 export ANDROID_ABI=armeabi
-cmake -Wno-dev -DCMAKE_TOOLCHAIN_FILE=../cmake/toolchain/android/android.toolchain.cmake -DANDROID_NATIVE_API_LEVEL=9 -DCOMPILE_CPP_11=$compile_cpp_11 ..
+
+cmake -Wno-dev \
+      -DCMAKE_TOOLCHAIN_FILE=../cmake/toolchain/android/android.toolchain.cmake \
+      -DANDROID_NATIVE_API_LEVEL=9 \
+      -DANDROID_TOOLCHAIN_NAME=arm-linux-androideabi-4.8 \
+      -DCOMPILE_CPP_11=$compile_cpp_11 \
+      ..
+
 make -j8
 resultcode=$?
 
@@ -51,7 +58,6 @@ if [ $resultcode = 0 ] ; then
 	cp -R ../libs/armeabi-v7a ./libs/armeabi-v7a
 	mv ./libs/armeabi-v7a/libplatform-sdk.so ./libs/armeabi-v7a/libnative-activity.so
 	android update project --target android-17 --name my-project --path .
-	# todo -- parameterise on ant debug/release
 	ant debug 
 	resultcode=$?
 fi

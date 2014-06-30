@@ -68,6 +68,13 @@ INCLUDE_DIRECTORIES(${HDR})
 
 # -------------------- Create Library --------------------- #
 
+if(${COMPILE_CPP_11} STREQUAL "1")
+    ADD_DEFINITIONS(-std=c++11)
+    ADD_DEFINITIONS(-DCOMPILE_CPP_11=1)
+else(${COMPILE_CPP_11} STREQUAL "1")
+    ADD_DEFINITIONS(-std=c++98)
+endif(${COMPILE_CPP_11} STREQUAL "1")
+
 ADD_LIBRARY (${OUTPUT_NAME} SHARED ${SRC})
 TARGET_LINK_LIBRARIES (${OUTPUT_NAME} ${LIBRARY_DEPS})
 
@@ -87,8 +94,15 @@ string (REPLACE "${ANDROID_EXAMPLE_SOURCE_DIR}/" "" SRC "${SRC}")
 string (REPLACE "${CMAKE_CURRENT_SOURCE_DIR}/" "" SRC "${SRC}")
 string (REPLACE "../src" "../../src" SRC "${SRC}")
 
-# set c++11 stuff here 
-SET (LOCAL_CPPFLAGS "")
+
+if(${COMPILE_CPP_11} STREQUAL "1")
+    SET (CPP_11_SETTINGS "NDK_TOOLCHAIN_VERSION:=4.8")
+    SET (LOCAL_LDLIBS "${LOCAL_LDLIBS} -fuse-ld=bfd")
+    SET (LOCAL_CPPFLAGS "-DCOMPILE_CPP_11=1 -std=c++11")
+else(${COMPILE_CPP_11} STREQUAL "1")
+    SET (CPP_11_SETTINGS "")
+endif(${COMPILE_CPP_11} STREQUAL "1")
+
 
 CONFIGURE_FILE (
     "../cmake/toolchain/android/Android.mk.in" 
