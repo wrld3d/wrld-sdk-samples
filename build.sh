@@ -31,8 +31,8 @@ fi
 if [ $p == "ios" ]; then
     echo "Building iOS examples..."
     rm -rf "./ios/build"
-    #rm -rf "./ios/Include"
-    #./update.platform.sh $allArguments
+    rm -rf "./ios/Include"
+    ./update.platform.sh $allArguments
     pushd ios
     ./build.sh $allArguments
     resultcode=$?
