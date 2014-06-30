@@ -35,8 +35,9 @@ rm -rf build.android
 mkdir build.android
 pushd .
 cd build.android
-# todo -- parameterise on NDK location
-export ANDROID_NDK=~/Desktop/droid/android-ndk-r9d/
+
+: ${NDK_HOME:?"Please set NDK_HOME environment variable to your NDK installation path."}
+export ANDROID_NDK=${NDK_HOME}
 export ANDROID_ABI=armeabi
 
 cmake -Wno-dev \
