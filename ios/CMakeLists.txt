@@ -54,8 +54,14 @@ include_directories (${HeaderDirectories})
 
 # --------------- Add Library Dependencies ---------------- #
 
+if(${COMPILE_CPP_11} STREQUAL "1")
+    SET (EEGEO_LIB_DEPENDENCIES "-LInclude/ -lapps-on-maps-cpp11 -LInclude/ -lapps-on-maps-cpp11-sim")
+else(${COMPILE_CPP_11} STREQUAL "1")
+    SET (EEGEO_LIB_DEPENDENCIES "-LInclude/ -lapps-on-maps -LInclude/ -lapps-on-maps-sim")
+endif(${COMPILE_CPP_11} STREQUAL "1")
+
 SET(CMAKE_EXE_LINKER_FLAGS
-    "-framework CoreLocation -framework MobileCoreServices -framework SystemConfiguration -framework CFNetwork -framework GLKit -framework OpenGLES -framework UIKit -framework Foundation -framework CoreGraphics -framework CoreData -LInclude/ -lapps-on-maps -LInclude/ -lapps-on-maps-sim -LInclude/ -lturbojpeg -L/usr/lib/ -lz"
+    "-framework CoreLocation -framework MobileCoreServices -framework SystemConfiguration -framework CFNetwork -framework GLKit -framework OpenGLES -framework UIKit -framework Foundation -framework CoreGraphics -framework CoreData ${EEGEO_LIB_DEPENDENCIES} -LInclude/ -lturbojpeg -L/usr/lib/ -lz"
 )
 
 
@@ -114,6 +120,7 @@ set_xcode_property (${OUTPUT_NAME} IPHONEOS_DEPLOYMENT_TARGET "5.0")
 set_xcode_property (${OUTPUT_NAME} TARGETED_DEVICE_FAMILY "1,2")
 
 if(${COMPILE_CPP_11} STREQUAL "1")
+    add_definitions(-DCOMPILE_CPP_11)
     set_xcode_property(${OUTPUT_NAME} CLANG_CXX_LANGUAGE_STANDARD "c++11")
     set_xcode_property(${OUTPUT_NAME} CLANG_CXX_LIBRARY "libc++")
 else(${COMPILE_CPP_11} STREQUAL "1")
