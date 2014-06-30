@@ -3,7 +3,7 @@
 usage() { echo "Usage: $0 -p ios [-c]"; echo "  -p -> platform, ios or android (required)"; echo "  -c -> cpp11 support"; 1>&2; exit 1; }
 
 projectPath=$(pwd)/./
-targetName="INVALID"
+compile_cpp_11="0"
 
 while getopts "p:c" o; do
     case "${o}" in
@@ -28,9 +28,7 @@ if [ -z "${p}" ]; then
 fi
 
 if [ "$c" == "cpp11" ]; then
-   targetName="platform-sdk-cpp11"
-else
-   targetName="platform-sdk"
+   compile_cpp_11="1"
 fi
 
 
@@ -38,8 +36,8 @@ rm -rf build.ios
 mkdir build.ios
 pushd .
 cd build.ios
-cmake -DCMAKE_TOOLCHAIN_FILE=../../cmake/toolchain/ios/iOS.cmake -GXcode ..
-(cd $projectPath/build.ios && xcodebuild -target $targetName -arch "i386" -sdk "iphonesimulator")
+cmake -DCMAKE_TOOLCHAIN_FILE=../../cmake/toolchain/ios/iOS.cmake -DCOMPILE_CPP_11=$compile_cpp_11 -GXcode ..
+(cd $projectPath/build.ios && xcodebuild -target "platform-sdk" -arch "i386" -sdk "iphonesimulator")
 resultcode=$?
 popd
 
