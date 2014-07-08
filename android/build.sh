@@ -57,7 +57,6 @@ if [ $resultcode = 0 ] ; then
 	cp ../AndroidManifest.xml ./AndroidManifest.xml
 	mkdir ./libs/
 	cp -R ../libs/armeabi-v7a ./libs/armeabi-v7a
-	mv ./libs/armeabi-v7a/libplatform-sdk.so ./libs/armeabi-v7a/libnative-activity.so
 	android update project --target android-17 --name my-project --path .
 	ant debug 
 	resultcode=$?

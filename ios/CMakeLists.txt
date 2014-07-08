@@ -3,21 +3,16 @@ cmake_minimum_required (VERSION 3.0)
 PROJECT (platform-sdk)
 SET (OUTPUT_NAME platform-sdk)
 
+SET (IOS_EXAMPLE_SOURCE_DIR "ios_src")
+SET (CROSS_PLATFORM_EXAMPLE_SOURCE_DIR "../src")
 
 # --------------------- Add Sources ----------------------- #
 
-SET (IOS_EXAMPLE_SOURCE_DIR "ios_src/")
-SET (CROSS_PLATFORM_EXAMPLE_SOURCE_DIR "../src/")
+include("${PROJECT_SOURCE_DIR}/${IOS_EXAMPLE_SOURCE_DIR}/CMakeLists.txt")
+include("${PROJECT_SOURCE_DIR}/${CROSS_PLATFORM_EXAMPLE_SOURCE_DIR}/CMakeLists.txt")
 
-SET (CROSS_PLATFORM_EXAMPLE_SOURCES "${CROSS_PLATFORM_EXAMPLE_SOURCE_DIR}/*.cpp")
-FILE (GLOB_RECURSE SourceFiles 
-    "${IOS_EXAMPLE_SOURCE_DIR}/*.m" 
-    "${IOS_EXAMPLE_SOURCE_DIR}/*.mm" 
-    "${IOS_EXAMPLE_SOURCE_DIR}/*.cpp"
-    "${CROSS_PLATFORM_EXAMPLE_SOURCES}"
-)
-
-SET (SRC ${SourceFiles})
+SET (SRC ${sources})
+SET (SourceFiles ${sources})
 
 
 # ------------------- Add Includes ------------------------ #
@@ -25,20 +20,19 @@ SET (SRC ${SourceFiles})
 SET (SDK_INCLUDE_DIR "Include/")
 SET (PLATFORM_DIR "${SDK_INCLUDE_DIR}/platform/")
 SET (PLATFORM_INCLUDES "${PLATFORM_DIR}/*.h" "${PLATFORM_DIR}/*.hpp" "${PLATFORM_DIR}/*.impl")
-
-SET (ASI_INCLUDES "${SDK_INCLUDE_DIR}/ASIHttpRequest/*.h")
-SET (LIB_JPEG_INCLUDES "${SDK_INCLUDE_DIR}/ios-libjpeg-turbo/*.h") 
 SET (IOS_INCLUDES "${IOS_EXAMPLE_SOURCE_DIR}/*.h" )
 SET (CROSS_PLATFORM_EXAMPLE_INCLUDES "${CROSS_PLATFORM_EXAMPLE_SOURCE_DIR}/*.h")
+
 FILE (GLOB_RECURSE HeaderFiles 
-	"${PLATFORM_INCLUDES}" 	
-	"${IOS_INCLUDES}"
-	"${CROSS_PLATFORM_EXAMPLE_INCLUDES}"
+	"${PLATFORM_INCLUDES}" 	    
+    "${IOS_INCLUDES}"
+    "${CROSS_PLATFORM_EXAMPLE_INCLUDES}"
 )
+
 SET (HDR ${HeaderFiles})
 
 MACRO(HEADER_DIRECTORIES return_list)
-    FILE(GLOB_RECURSE new_list "${SDK_INCLUDE_DIR}/*.h" "ios_src/*.h" "../src/*.h")
+    FILE(GLOB_RECURSE new_list "${SDK_INCLUDE_DIR}/*.h")
     SET(dir_list "")
     FOREACH(file_path ${new_list})
         GET_FILENAME_COMPONENT(dir_path ${file_path} PATH)
@@ -49,6 +43,7 @@ MACRO(HEADER_DIRECTORIES return_list)
 ENDMACRO()
 
 HEADER_DIRECTORIES(HeaderDirectories)
+SET (HeaderDirectories ${HeaderDirectories} ${headers})
 include_directories (${HeaderDirectories})
 
 
@@ -100,7 +95,7 @@ add_executable(
 set_target_properties(
     ${OUTPUT_NAME} 
     PROPERTIES 
-    MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/ios_src/App-Info.plist.in"
+    MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/${IOS_EXAMPLE_SOURCE_DIR}/App-Info.plist.in"
     RESOURCE "${Resources}" 
 )
 

@@ -8,7 +8,7 @@ SET (OUTPUT_NAME native-activity)
 
 SET (LIBS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/libs/)
 
-SET (LOCAL_LDLIBS "-llog -landroid -lEGL -lGLESv2 -L${LIBS_DIR} -lnative-activity-lib -L${LIBS_DIR} -lpng -lz -lm -L${LIBS_DIR} -lcrypto -L${LIBS_DIR} -lssl -L${LIBS_DIR} -lcurl -L${LIBS_DIR} -lcares -L${LIBS_DIR} -lsimd -L${LIBS_DIR} -lmyjpeg")
+SET (LOCAL_LDLIBS "-llog -landroid -lEGL -lGLESv2 -L${LIBS_DIR} -lnative-activity-lib -L${LIBS_DIR} -lpng -lz -lm -L${LIBS_DIR} -lcrypto -L${LIBS_DIR} -lssl -L${LIBS_DIR} -lcurl -L${LIBS_DIR} -lcares -L${LIBS_DIR} -lsimd -L${LIBS_DIR} -lmyjpeg -L${LIBS_DIR} -lhttpxx-lib")
 
 SET(LIBRARY_DEPS ${LOCAL_LDLIBS})
 
@@ -19,16 +19,10 @@ SET( MY_C_FLAGS "-s -O2 -mthumb-interwork -mthumb -march=armv7-a -mfloat-abi=sof
 SET( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${MY_C_FLAGS}" )
 SET( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${MY_C_FLAGS}" )
 
-SET (ANDROID_EXAMPLE_SOURCE_DIR "jni")
-SET (CROSS_PLATFORM_EXAMPLE_SOURCE_DIR "../src")
-SET (CROSS_PLATFORM_EXAMPLE_SOURCES "${CROSS_PLATFORM_EXAMPLE_SOURCE_DIR}/*.cpp")
+include("${PROJECT_SOURCE_DIR}/jni/CMakeLists.txt")
+include("${PROJECT_SOURCE_DIR}/../src/CMakeLists.txt")
 
-FILE (GLOB_RECURSE SourceFiles 
-    "${ANDROID_EXAMPLE_SOURCE_DIR}/*.cpp"
-    "${CROSS_PLATFORM_EXAMPLE_SOURCES}"
-)
-
-SET (SRC ${SourceFiles})
+SET (SRC ${sources})
 
 
 # ------------------- Add Includes ------------------------ #
@@ -40,8 +34,6 @@ SET (PLATFORM_INCLUDES "${PLATFORM_DIR}/*.h" "${PLATFORM_DIR}/*.hpp" "${PLATFORM
 SET (CURL_INCLUDES "${SDK_INCLUDE_DIR}/curl/*.h")
 SET (LIB_JPEG_INCLUDES "${SDK_INCLUDE_DIR}/jpeg/*.h") 
 SET (LIB_PNG_INCLUDES "${SDK_INCLUDE_DIR}/png/*.h") 
-SET (ANDROID_INCLUDES "${ANDROID_EXAMPLE_SOURCE_DIR}/*.h" )
-SET (CROSS_PLATFORM_EXAMPLE_INCLUDES "${CROSS_PLATFORM_EXAMPLE_SOURCE_DIR}/*.h")
 
 MACRO(HEADER_DIRECTORIES return_list)
     FILE(GLOB_RECURSE new_list 
@@ -49,8 +41,6 @@ MACRO(HEADER_DIRECTORIES return_list)
         ${CURL_INCLUDES} 
         ${LIB_JPEG_INCLUDES} 
         ${LIB_PNG_INCLUDES} 
-        ${ANDROID_INCLUDES} 
-        ${CROSS_PLATFORM_EXAMPLE_INCLUDES}
     )
     SET(dir_list "")
     FOREACH(file_path ${new_list})
@@ -62,7 +52,7 @@ MACRO(HEADER_DIRECTORIES return_list)
 ENDMACRO()
 
 HEADER_DIRECTORIES(HeaderDirectories)
-SET (HDR ${HeaderDirectories})
+SET (HDR ${HeaderDirectories} ${headers})
 INCLUDE_DIRECTORIES(${HDR})
 
 
@@ -87,6 +77,8 @@ function(JOIN VALUES GLUE OUTPUT)
   string (REPLACE ";" "${GLUE}" _TMP_STR "${VALUES}")
   set (${OUTPUT} "${_TMP_STR}" PARENT_SCOPE)
 endfunction()
+
+SET (ANDROID_EXAMPLE_SOURCE_DIR "jni")
 
 JOIN("${HDR}" " " HDR)
 JOIN("${SRC}" " " SRC) 

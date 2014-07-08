@@ -41,9 +41,8 @@ elif [ $p == "android" ]; then
     echo "Building Android examples..."
     rm -rf "./android/obj"
     rm -rf "./android/bin"
-    # todo -- fix headers so no longer depend on old native-activity-glue
-    #rm -rf "./android/libs"
-    #./update.platform.sh $allArguments
+    rm -rf "./android/libs"
+    ./update.platform.sh $allArguments
     pushd android
     ./build.sh $allArguments
     resultcode=$?
