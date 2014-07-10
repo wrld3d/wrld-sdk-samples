@@ -8,7 +8,7 @@ SET (OUTPUT_NAME native-activity)
 
 SET (LIBS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/libs/)
 
-SET (LOCAL_LDLIBS "-llog -landroid -lEGL -lGLESv2 -L${LIBS_DIR} -lnative-activity-lib -L${LIBS_DIR} -lpng -lz -lm -L${LIBS_DIR} -lcrypto -L${LIBS_DIR} -lssl -L${LIBS_DIR} -lcurl -L${LIBS_DIR} -lcares -L${LIBS_DIR} -lsimd -L${LIBS_DIR} -lmyjpeg")
+SET (LOCAL_LDLIBS "-llog -landroid -lEGL -lGLESv2 -L${LIBS_DIR} -lnative-activity-lib -L${LIBS_DIR} -lpng -lz -lm -L${LIBS_DIR} -lcrypto -L${LIBS_DIR} -lssl -L${LIBS_DIR} -lcurl -L${LIBS_DIR} -lcares -L${LIBS_DIR} -lsimd -L${LIBS_DIR} -lmyjpeg -L${LIBS_DIR} -lhttpxx-lib")
 
 SET(LIBRARY_DEPS ${LOCAL_LDLIBS})
 
@@ -40,6 +40,7 @@ SET (PLATFORM_INCLUDES "${PLATFORM_DIR}/*.h" "${PLATFORM_DIR}/*.hpp" "${PLATFORM
 SET (CURL_INCLUDES "${SDK_INCLUDE_DIR}/curl/*.h")
 SET (LIB_JPEG_INCLUDES "${SDK_INCLUDE_DIR}/jpeg/*.h") 
 SET (LIB_PNG_INCLUDES "${SDK_INCLUDE_DIR}/png/*.h") 
+SET (LIB_HTTPX_INCLUDES "${SDK_INCLUDE_DIR}/httpxx/code/*.h ${SDK_INCLUDE_DIR}/httpxx/libs/*.h") 
 SET (ANDROID_INCLUDES "${ANDROID_EXAMPLE_SOURCE_DIR}/*.h" )
 SET (CROSS_PLATFORM_EXAMPLE_INCLUDES "${CROSS_PLATFORM_EXAMPLE_SOURCE_DIR}/*.h")
 
