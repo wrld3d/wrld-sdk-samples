@@ -5,7 +5,7 @@ set(sources ${sources}
 	ios_src/AppInputDelegate.mm
 	ios_src/AppLocationDelegate.mm
 	ios_src/AppRunner.mm
-	ios_src/GlDisplayService.cpp
+	ios_src/GlDisplayService.mm
 	ios_src/Main.m
 	ios_src/MyAppDelegate.mm
 	ios_src/ViewController.mm
