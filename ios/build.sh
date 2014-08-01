@@ -32,7 +32,7 @@ if [ "$c" == "cpp11" ]; then
 fi
 
 sh make_project.sh $compile_cpp_11
-(cd build && xcodebuild -target "platform-sdk" -arch "i386" -sdk "iphonesimulator")
+(cd build && xcodebuild -target "eegeo-sdk" -arch "i386" -sdk "iphonesimulator")
 resultcode=$?
 
 echo
