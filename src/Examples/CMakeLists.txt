@@ -6,6 +6,7 @@ set(sources ${sources}
 
 
 include(../src/Examples/CameraTransition/CMakeLists.txt)
+include(../src/Examples/CameraSpline/CMakeLists.txt)
 include(../src/Examples/ControlCityThemes/CMakeLists.txt)
 include(../src/Examples/DebugPrimitiveRendering/CMakeLists.txt)
 include(../src/Examples/DebugSphere/CMakeLists.txt)

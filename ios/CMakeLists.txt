@@ -1,7 +1,7 @@
 cmake_minimum_required (VERSION 3.0)
 
-PROJECT (platform-sdk)
-SET (OUTPUT_NAME platform-sdk)
+PROJECT (eegeo-sdk-project)
+SET (OUTPUT_NAME eegeo-sdk)
 
 SET (IOS_EXAMPLE_SOURCE_DIR "ios_src")
 SET (CROSS_PLATFORM_EXAMPLE_SOURCE_DIR "../src")
