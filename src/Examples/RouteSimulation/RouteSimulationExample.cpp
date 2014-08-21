@@ -139,13 +139,14 @@ void RouteSimulationExample::Initialise()
 	m_pViewBindingForCameraSession = m_routeSimulationViewService.CreateBinding(*m_pSessionCamera, pVehicle3, transform);
 
 	Eegeo::Camera::GlobeCamera::GlobeCameraTouchControllerConfiguration touchConfiguration = Eegeo::Camera::GlobeCamera::GlobeCameraTouchControllerConfiguration::CreateDefault();
-	touchConfiguration.tiltEnabled = true;
 
 	RouteSimulationGlobeCameraControllerConfig routeSimCameraConfig = RouteSimulationGlobeCameraControllerConfig::CreateDefault();
 
 	m_pRouteSessionFollowCameraController = m_routeSimulationGlobeCameraControllerFactory.Create(false, touchConfiguration, routeSimCameraConfig);
-	m_pRouteSessionFollowCameraController->SetView(37.7858, -122.401, 0, 1781.0f);
+    m_pRouteSessionFollowCameraController->SetTiltEnabled(true);
+    m_pRouteSessionFollowCameraController->SetView(37.7858, -122.401, 0, 1781.0f);
 	m_pRouteSessionFollowCameraController->StartFollowingSession(m_pSessionAlternatingSpeedChanger);
+
 
 	// Observe the progress along the route
 	m_pExampleObserver = Eegeo_NEW(RouteSimulationExampleObserver)(m_pViewBindingForCycleSession, m_pModel);

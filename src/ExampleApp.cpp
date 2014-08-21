@@ -54,9 +54,6 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
 
 	Eegeo::Camera::GlobeCamera::GlobeCameraTouchControllerConfiguration touchControllerConfig = Eegeo::Camera::GlobeCamera::GlobeCameraTouchControllerConfiguration::CreateDefault();
 
-	// override default configuration to enable two-finger pan gesture to control additional camera pitch
-	touchControllerConfig.tiltEnabled = true;
-
 	m_pCameraTouchController = new Eegeo::Camera::GlobeCamera::GlobeCameraTouchController(touchControllerConfig);
 
 	const bool useLowSpecSettings = false;
@@ -67,6 +64,11 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
 	        eegeoWorld.GetResourceCeilingProvider(),
 	        *m_pCameraTouchController,
 	        globeCameraControllerConfig);
+
+    // override default configuration to enable two-finger pan gesture to control additional camera pitch
+    Eegeo::Camera::GlobeCamera::GlobeCameraTouchSettings touchSettings = m_pGlobeCameraController->GetTouchSettings();
+    touchSettings.TiltEnabled = true;
+    m_pGlobeCameraController->SetTouchSettings(touchSettings);
 
 	Eegeo::Camera::RenderCamera* renderCamera = m_pGlobeCameraController->GetCamera();
 	const Eegeo::Rendering::RenderContext& renderContext = eegeoWorld.GetRenderContext();
