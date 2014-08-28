@@ -66,7 +66,7 @@ void ModifiedRenderingExample::Start()
 	m_buildingRepository.AddObserver(*this);
 
 	//register as a renderable filter so that we can submit our new renderables for rendering.
-	m_renderableFilters.AddRenderableFilter(this);
+	m_renderableFilters.AddRenderableFilter(*this);
 
 	// create alternative material to render with.
 	m_pAlternativeLighting = Eegeo_NEW(Eegeo::Lighting::GlobalLighting)();
@@ -93,7 +93,7 @@ void ModifiedRenderingExample::Suspend()
 	Eegeo_DELETE(m_pAlternativeLighting);
 
 	// unregister for rendering.
-	m_renderableFilters.RemoveRenderableFilter(this);
+	m_renderableFilters.RemoveRenderableFilter(*this);
 
 	// un-register from receiving scene element notifications.
 	m_buildingRepository.RemoveObserver(*this);

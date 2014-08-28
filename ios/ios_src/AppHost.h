@@ -5,26 +5,17 @@
 
 #include "Types.h"
 #include "Graphics.h"
-#include "iOSFileIO.h"
-#include "iOSHttpCache.h"
-#include "iOSTextureFileLoader.h"
 #include "IJpegLoader.h"
-#include "iOSWebLoadRequestFactory.h"
-#include "iOSLocationService.h"
-#include "iOSUrlEncoder.h"
 #include "GlobeCameraInterestPointProvider.h"
-#include "TerrainHeightProvider.h"
 #include "iOSInputBoxFactory.h"
 #include "iOSKeyboardInputFactory.h"
 #include "iOSAlertBoxFactory.h"
 #include "NativeUIFactories.h"
-#include "TerrainHeightRepository.h"
-#include "GlobalShadowing.h"
 #include "TouchEventWrapper.h"
 #include "Blitter.h"
 #include "AppInputDelegate.h"
 #include "AppLocationDelegate.h"
-#include "IGlTaskContextFactory.h"
+#include "Modules.h"
 #include <vector>
 
 //example app includes
@@ -61,33 +52,20 @@ public:
 
 private:
     ViewController& m_viewController;
-	Eegeo::Rendering::EnvironmentFlatteningService* m_pEnvironmentFlatteningService;
-	Eegeo::Web::iOSWebLoadRequestFactory* m_piOSWebLoadRequestFactory;
-	Eegeo::Web::iOSWebRequestService* m_piOSWebRequestService;
 	Eegeo::Blitter* m_pBlitter;
-	Eegeo::iOS::iOSTextureFileLoader* m_pTextureLoader;
     Eegeo::Helpers::Jpeg::IJpegLoader* m_pJpegLoader;
-	iOSHttpCache* m_pHttpCache;
-	Eegeo::iOS::iOSFileIO* m_pFileIO;
-	Eegeo::Lighting::GlobalLighting* m_pLighting;
-	Eegeo::Lighting::GlobalFogging* m_pFogging;
-	Eegeo::Lighting::GlobalShadowing* m_pShadowing;
 	Eegeo::Rendering::RenderContext* m_pRenderContext;
 	Eegeo::iOS::iOSLocationService* m_piOSLocationService;
-    Eegeo::Concurrency::Tasks::IGlTaskContextFactory* m_pGlTaskContextFactory;
-	iOSUrlEncoder* m_piOSUrlEncoder;
 	Eegeo::EegeoWorld* m_pWorld;
 	Eegeo::Camera::GlobeCamera::GlobeCameraInterestPointProvider* m_pInterestPointProvider;
 	AppInputDelegate* m_pAppInputDelegate;
     AppLocationDelegate* m_pAppLocationDelegate;
 
-	Eegeo::Resources::Terrain::Heights::TerrainHeightRepository m_terrainHeightRepository;
-	Eegeo::Resources::Terrain::Heights::TerrainHeightProvider m_terrainHeightProvider;
-
 	Eegeo::UI::NativeInput::iOS::iOSInputBoxFactory m_iOSInputBoxFactory;
 	Eegeo::UI::NativeInput::iOS::iOSKeyboardInputFactory m_iOSKeyboardInputFactory;
 	Eegeo::UI::NativeAlerts::iOS::iOSAlertBoxFactory m_iOSAlertBoxFactory;
 	Eegeo::UI::NativeUIFactories m_iOSNativeUIFactories;
+    Eegeo::iOS::iOSPlatformAbstractionModule* m_piOSPlatformAbstractionModule;
 
 	ExampleApp* m_pApp;
 	Examples::ExampleController* m_pExampleController;

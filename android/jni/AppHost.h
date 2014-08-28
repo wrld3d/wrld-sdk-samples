@@ -28,6 +28,7 @@
 #include "Blitter.h"
 #include "AndroidNativeState.h"
 #include "AppInputDelegate.h"
+#include "Modules.h"
 #include <vector>
 
 //example app includes
@@ -40,7 +41,7 @@
 #include "AndroidRouteSimulationExampleViewFactory.h"
 #include "ExampleCameraJumpController.h"
 
-class AppHost : public Eegeo::Concurrency::Tasks::IGlTaskContextFactory, protected Eegeo::NonCopyable
+class AppHost : protected Eegeo::NonCopyable
 {
 public:
 	AppHost(
@@ -69,31 +70,15 @@ public:
 	void SetSharedSurface(EGLSurface sharedSurface);
 	void SetViewportOffset(float x, float y);
 
-	Eegeo::Concurrency::Tasks::IGlTaskContext* Build();
-
 private:
-	Eegeo::Rendering::EnvironmentFlatteningService* m_pEnvironmentFlatteningService;
-	Eegeo::Android::AndroidWebLoadRequestFactory* m_pAndroidWebLoadRequestFactory;
-	Eegeo::Android::AndroidWebRequestService* m_pAndroidWebRequestService;
 	Eegeo::Blitter* m_pBlitter;
-	Eegeo::Android::AndroidTextureFileLoader* m_pTextureLoader;
     Eegeo::Helpers::Jpeg::IJpegLoader* m_pJpegLoader;
-	Eegeo::Android::Cache::AndroidHttpCache* m_pHttpCache;
-	Eegeo::Android::AndroidFileIO* m_pFileIO;
-	Eegeo::Android::AndroidCacheFileIO* m_pCacheFileIO;
-	Eegeo::Lighting::GlobalLighting* m_pLighting;
-	Eegeo::Lighting::GlobalFogging* m_pFogging;
-	Eegeo::Lighting::GlobalShadowing* m_pShadowing;
 	Eegeo::Rendering::RenderContext* m_pRenderContext;
 	Eegeo::Android::AndroidLocationService* m_pAndroidLocationService;
-	Eegeo::Android::AndroidUrlEncoder* m_pAndroidUrlEncoder;
 	Eegeo::EegeoWorld* m_pWorld;
 	AndroidNativeState& m_nativeState;
 	Eegeo::Camera::GlobeCamera::GlobeCameraInterestPointProvider* m_pInterestPointProvider;
 	AppInputDelegate* m_pAppInputDelegate;
-
-	Eegeo::Resources::Terrain::Heights::TerrainHeightRepository m_terrainHeightRepository;
-	Eegeo::Resources::Terrain::Heights::TerrainHeightProvider m_terrainHeightProvider;
 
 	Eegeo::Android::Input::AndroidInputHandler m_inputHandler;
 	Eegeo::UI::NativeInput::Android::AndroidInputBoxFactory m_androidInputBoxFactory;
@@ -110,7 +95,7 @@ private:
 
 	Eegeo::Android::Input::AndroidInputProcessor* m_pInputProcessor;
 
-	Eegeo::Android::AndroidSharedGlContext* m_pSharedGlContext;
+	Eegeo::Android::AndroidPlatformAbstractionModule* m_pAndroidPlatformAbstractionModule;
 
 	void ConfigureExamples();
 	void DestroyExamples();

@@ -80,14 +80,14 @@ namespace Examples
         
         m_pVignetteRenderer = Eegeo_NEW(PostProcessVignetteRenderer)(*m_pRenderable);
         
-        m_renderableFilters.AddRenderableFilter(m_pVignetteRenderer);
+        m_renderableFilters.AddRenderableFilter(*m_pVignetteRenderer);
         
         UpdateEffect();
     }
     
     void RenderToTextureExample::Suspend()
     {
-        m_renderableFilters.RemoveRenderableFilter(m_pVignetteRenderer);
+        m_renderableFilters.RemoveRenderableFilter(*m_pVignetteRenderer);
         
         Eegeo_DELETE m_pVignetteRenderer;
         m_pVignetteRenderer = NULL;
