@@ -2,12 +2,9 @@
 
 #include "AppHost.h"
 #include "AndroidWebRequestService.hpp"
-#include "AndroidSharedGlContext.h"
 #include "LatLongAltitude.h"
 #include "EegeoWorld.h"
 #include "RenderContext.h"
-#include "GlobalLighting.h"
-#include "GlobalFogging.h"
 #include "AppInterface.h"
 #include "JpegLoader.h"
 #include "Blitter.h"
@@ -20,10 +17,7 @@
 #include "LoadingScreen.h"
 #include "PlatformConfig.h"
 #include "AndroidPlatformConfigBuilder.h"
-#include "AndroidUrlEncoder.h"
-#include "AndroidFileIO.h"
 #include "AndroidLocationService.h"
-#include "EnvironmentFlatteningService.h"
 #include "RouteMatchingExampleFactory.h"
 #include "RouteSimulationExampleFactory.h"
 #include "JavaHudCrossThreadCommunicationExampleFactory.h"
@@ -59,6 +53,7 @@ AppHost::AppHost(
 	,m_pExampleController(NULL)
 	,m_pInputProcessor(NULL)
 	,m_nativeState(nativeState)
+	,m_pAndroidPlatformAbstractionModule(NULL)
 {
 	Eegeo_ASSERT(resourceBuildShareContext != EGL_NO_CONTEXT);
 
@@ -130,29 +125,29 @@ AppHost::~AppHost()
 	delete m_pApp;
 	m_pApp = NULL;
 
-	delete m_pInterestPointProvider;
-	m_pInterestPointProvider = NULL;
-
 	delete m_pWorld;
 	m_pWorld = NULL;
 
-	delete m_pAndroidLocationService;
-	m_pAndroidLocationService = NULL;
-
-	delete m_pRenderContext;
-	m_pRenderContext = NULL;
-
-	delete m_pJpegLoader;
-	m_pJpegLoader = NULL;
-
-	delete m_pAndroidPlatformAbstractionModule;
-	m_pAndroidPlatformAbstractionModule = NULL;
+	delete m_pInterestPointProvider;
+	m_pInterestPointProvider = NULL;
 
 	Eegeo::EffectHandler::Reset();
 	Eegeo::EffectHandler::Shutdown();
 	m_pBlitter->Shutdown();
 	delete m_pBlitter;
 	m_pBlitter = NULL;
+
+	delete m_pAndroidPlatformAbstractionModule;
+	m_pAndroidPlatformAbstractionModule = NULL;
+
+	delete m_pJpegLoader;
+	m_pJpegLoader = NULL;
+
+	delete m_pRenderContext;
+	m_pRenderContext = NULL;
+
+	delete m_pAndroidLocationService;
+	m_pAndroidLocationService = NULL;
 }
 
 void AppHost::OnResume()
