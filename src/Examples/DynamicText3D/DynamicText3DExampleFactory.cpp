@@ -2,6 +2,7 @@
 
 #include "DynamicText3DExampleFactory.h"
 #include "DynamicText3DExample.h"
+#include "RenderContext.h"
 
 using namespace Examples;
 

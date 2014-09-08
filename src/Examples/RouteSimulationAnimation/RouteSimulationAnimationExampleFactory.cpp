@@ -3,6 +3,7 @@
 #include "RouteSimulationAnimationExampleFactory.h"
 #include "RouteSimulationAnimationExample.h"
 #include "LocalAsyncTextureLoader.h"
+#include "RenderContext.h"
 
 using namespace Examples;
 

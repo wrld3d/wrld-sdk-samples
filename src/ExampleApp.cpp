@@ -8,7 +8,7 @@
 #include "GlobeCameraController.h"
 #include "CameraHelpers.h"
 #include "LatLongAltitude.h"
-
+#include "RenderContext.h"
 //example factories
 #include "CameraTransitionExampleFactory.h"
 #include "ControlCityThemeExampleFactory.h"
