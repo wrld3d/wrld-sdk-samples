@@ -127,7 +127,7 @@ void DynamicText3DExample::Draw()
 
 	if(pMaterial != NULL)
 	{
-		pMaterial->RestoreState(defaultState, m_glState);
+        m_glState.TrySet(defaultState);
 	}
 }
 }
