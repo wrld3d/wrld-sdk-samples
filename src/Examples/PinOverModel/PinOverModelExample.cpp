@@ -86,7 +86,7 @@ PinOverModelExample::~PinOverModelExample()
 	Eegeo_DELETE m_pPinIconsTexturePageLayout;
 	glDeleteTextures(1, &m_pinIconsTexture.textureId);
 
-	m_renderableFilters.RemoveRenderableFilter(m_pMyRenderableFilter);
+	m_renderableFilters.RemoveRenderableFilter(*m_pMyRenderableFilter);
 
 	Eegeo_DELETE m_pMyRenderableFilter;
 	Eegeo_DELETE m_pMyModelRenderable;
@@ -114,7 +114,7 @@ void PinOverModelExample::Start()
 
 	m_pMyModelRenderable = Eegeo_NEW (MyModelRenderable)(*m_pModel, m_renderContext, m_globalFogging, m_nullMat);
 	m_pMyRenderableFilter = Eegeo_NEW (MyRenderableFilter)(*m_pMyModelRenderable);
-	m_renderableFilters.AddRenderableFilter(m_pMyRenderableFilter);
+	m_renderableFilters.AddRenderableFilter(*m_pMyRenderableFilter);
 }
 
 void PinOverModelExample::Suspend()

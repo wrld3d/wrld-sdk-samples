@@ -8,7 +8,7 @@
 #include "GlobeCameraController.h"
 #include "CameraHelpers.h"
 #include "LatLongAltitude.h"
-
+#include "RenderContext.h"
 //example factories
 #include "CameraTransitionExampleFactory.h"
 #include "ControlCityThemeExampleFactory.h"
@@ -54,9 +54,6 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
 
 	Eegeo::Camera::GlobeCamera::GlobeCameraTouchControllerConfiguration touchControllerConfig = Eegeo::Camera::GlobeCamera::GlobeCameraTouchControllerConfiguration::CreateDefault();
 
-	// override default configuration to enable two-finger pan gesture to control additional camera pitch
-	touchControllerConfig.tiltEnabled = true;
-
 	m_pCameraTouchController = new Eegeo::Camera::GlobeCamera::GlobeCameraTouchController(touchControllerConfig);
 
 	const bool useLowSpecSettings = false;
@@ -67,6 +64,11 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
 	        eegeoWorld.GetResourceCeilingProvider(),
 	        *m_pCameraTouchController,
 	        globeCameraControllerConfig);
+
+    // override default configuration to enable two-finger pan gesture to control additional camera pitch
+    Eegeo::Camera::GlobeCamera::GlobeCameraTouchSettings touchSettings = m_pGlobeCameraController->GetTouchSettings();
+    touchSettings.TiltEnabled = true;
+    m_pGlobeCameraController->SetTouchSettings(touchSettings);
 
 	Eegeo::Camera::RenderCamera* renderCamera = m_pGlobeCameraController->GetCamera();
 	const Eegeo::Rendering::RenderContext& renderContext = eegeoWorld.GetRenderContext();
@@ -159,6 +161,11 @@ void ExampleApp::Draw (float dt)
 
 void ExampleApp::Event_TouchRotate(const AppInterface::RotateData& data)
 {
+	if(World().Initialising())
+	{
+		return;
+	}
+
 	if(!m_exampleController.Event_TouchRotate(data))
 	{
 		m_pCameraTouchController->Event_TouchRotate(data);
@@ -167,6 +174,11 @@ void ExampleApp::Event_TouchRotate(const AppInterface::RotateData& data)
 
 void ExampleApp::Event_TouchRotate_Start(const AppInterface::RotateData& data)
 {
+    if(World().Initialising())
+	{
+		return;
+	}
+    
 	if(!m_exampleController.Event_TouchRotate_Start(data))
 	{
 		m_pCameraTouchController->Event_TouchRotate_Start(data);
@@ -175,6 +187,11 @@ void ExampleApp::Event_TouchRotate_Start(const AppInterface::RotateData& data)
 
 void ExampleApp::Event_TouchRotate_End(const AppInterface::RotateData& data)
 {
+    if(World().Initialising())
+	{
+		return;
+	}
+    
 	if(!m_exampleController.Event_TouchRotate_End(data))
 	{
 		m_pCameraTouchController->Event_TouchRotate_End(data);
@@ -183,6 +200,11 @@ void ExampleApp::Event_TouchRotate_End(const AppInterface::RotateData& data)
 
 void ExampleApp::Event_TouchPinch(const AppInterface::PinchData& data)
 {
+    if(World().Initialising())
+	{
+		return;
+	}
+    
 	if(!m_exampleController.Event_TouchPinch(data))
 	{
 		m_pCameraTouchController->Event_TouchPinch(data);
@@ -191,6 +213,11 @@ void ExampleApp::Event_TouchPinch(const AppInterface::PinchData& data)
 
 void ExampleApp::Event_TouchPinch_Start(const AppInterface::PinchData& data)
 {
+    if(World().Initialising())
+	{
+		return;
+	}
+    
 	if(!m_exampleController.Event_TouchPinch_Start(data))
 	{
 		m_pCameraTouchController->Event_TouchPinch_Start(data);
@@ -199,6 +226,11 @@ void ExampleApp::Event_TouchPinch_Start(const AppInterface::PinchData& data)
 
 void ExampleApp::Event_TouchPinch_End(const AppInterface::PinchData& data)
 {
+    if(World().Initialising())
+	{
+		return;
+	}
+    
 	if(!m_exampleController.Event_TouchPinch_End(data))
 	{
 		m_pCameraTouchController->Event_TouchPinch_End(data);
@@ -207,6 +239,11 @@ void ExampleApp::Event_TouchPinch_End(const AppInterface::PinchData& data)
 
 void ExampleApp::Event_TouchPan(const AppInterface::PanData& data)
 {
+    if(World().Initialising())
+	{
+		return;
+	}
+    
 	if(!m_exampleController.Event_TouchPan(data))
 	{
 		m_pCameraTouchController->Event_TouchPan(data);
@@ -215,6 +252,11 @@ void ExampleApp::Event_TouchPan(const AppInterface::PanData& data)
 
 void ExampleApp::Event_TouchPan_Start(const AppInterface::PanData& data)
 {
+    if(World().Initialising())
+	{
+		return;
+	}
+    
 	if(!m_exampleController.Event_TouchPan_Start(data))
 	{
 		m_pCameraTouchController->Event_TouchPan_Start(data);
@@ -223,6 +265,11 @@ void ExampleApp::Event_TouchPan_Start(const AppInterface::PanData& data)
 
 void ExampleApp::Event_TouchPan_End(const AppInterface::PanData& data)
 {
+    if(World().Initialising())
+	{
+		return;
+	}
+    
 	if(!m_exampleController.Event_TouchPan_End(data))
 	{
 		m_pCameraTouchController->Event_TouchPan_End(data);
@@ -231,6 +278,11 @@ void ExampleApp::Event_TouchPan_End(const AppInterface::PanData& data)
 
 void ExampleApp::Event_TouchTap(const AppInterface::TapData& data)
 {
+    if(World().Initialising())
+	{
+		return;
+	}
+    
 	if(!m_exampleController.Event_TouchTap(data))
 	{
 		m_pCameraTouchController->Event_TouchTap(data);
@@ -239,6 +291,11 @@ void ExampleApp::Event_TouchTap(const AppInterface::TapData& data)
 
 void ExampleApp::Event_TouchDoubleTap(const AppInterface::TapData& data)
 {
+    if(World().Initialising())
+	{
+		return;
+	}
+    
 	if(!m_exampleController.Event_TouchDoubleTap(data))
 	{
 		m_pCameraTouchController->Event_TouchDoubleTap(data);
@@ -247,6 +304,11 @@ void ExampleApp::Event_TouchDoubleTap(const AppInterface::TapData& data)
 
 void ExampleApp::Event_TouchDown(const AppInterface::TouchData& data)
 {
+    if(World().Initialising())
+	{
+		return;
+	}
+    
 	if(!m_exampleController.Event_TouchDown(data))
 	{
 		m_pCameraTouchController->Event_TouchDown(data);
@@ -255,6 +317,11 @@ void ExampleApp::Event_TouchDown(const AppInterface::TouchData& data)
 
 void ExampleApp::Event_TouchMove(const AppInterface::TouchData& data)
 {
+    if(World().Initialising())
+	{
+		return;
+	}
+    
 	if(!m_exampleController.Event_TouchMove(data))
 	{
 		m_pCameraTouchController->Event_TouchMove(data);
@@ -263,6 +330,11 @@ void ExampleApp::Event_TouchMove(const AppInterface::TouchData& data)
 
 void ExampleApp::Event_TouchUp(const AppInterface::TouchData& data)
 {
+    if(World().Initialising())
+	{
+		return;
+	}
+    
 	if(!m_exampleController.Event_TouchUp(data))
 	{
 		m_pCameraTouchController->Event_TouchUp(data);
