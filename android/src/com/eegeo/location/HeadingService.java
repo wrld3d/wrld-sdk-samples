@@ -80,7 +80,10 @@ public class HeadingService implements SensorEventListener
     
     public void stopListening()
     {
-    	m_sensorManager.unregisterListener(this);
+    	if(m_listeningForUpdates)
+    	{
+    		m_sensorManager.unregisterListener(this);
+    	}	
 	    m_listeningForUpdates = false;
     }
     
