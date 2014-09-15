@@ -37,7 +37,7 @@
 #include "TrafficCongestionExampleFactory.h"
 #include "WebRequestExampleFactory.h"
 #include "CameraSplineExampleFactory.h"
-
+#include "ReadHeadingExampleFactory.h"
 
 ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
                        Eegeo::Camera::GlobeCamera::GlobeCameraInterestPointProvider& globeCameraInterestPointProvider,
@@ -110,6 +110,7 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
 	m_exampleController.RegisterCameraExample<Examples::PinsExampleFactory>(*m_pGlobeCameraController);
 	m_exampleController.RegisterCameraExample<Examples::PinOverModelExampleFactory>(*m_pGlobeCameraController);
 	m_exampleController.RegisterCameraExample<Examples::PODAnimationExampleFactory>(*m_pGlobeCameraController);
+	m_exampleController.RegisterCameraExample<Examples::ReadHeadingExampleFactory>(*m_pGlobeCameraController);
 	m_exampleController.RegisterCameraExample<Examples::RenderToTextureExampleFactory>(*m_pGlobeCameraController);
 	m_exampleController.RegisterCameraExample<Examples::ResourceSpatialQueryExampleFactory>(*m_pGlobeCameraController);
 	m_exampleController.RegisterCameraExample<Examples::RouteDrawingExampleFactory>(*m_pGlobeCameraController);

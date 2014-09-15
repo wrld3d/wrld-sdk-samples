@@ -3,7 +3,7 @@
 #ifndef __ExampleApp__DebugPrimitiveRenderingExample__
 #define __ExampleApp__DebugPrimitiveRenderingExample__
 
-#include "DebugRendering.h"
+#include "DebugRenderer.h"
 #include "IExample.h"
 
 namespace Examples

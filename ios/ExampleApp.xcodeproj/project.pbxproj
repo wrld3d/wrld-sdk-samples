@@ -135,6 +135,10 @@
 		18E18E91198BE4C80065F81D /* PostProcessVignetteShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18E18E85198BE4C80065F81D /* PostProcessVignetteShader.cpp */; };
 		18E18E92198BE4C80065F81D /* PostProcessVignetteShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18E18E85198BE4C80065F81D /* PostProcessVignetteShader.cpp */; };
 		18E6277F192F833A00B31DCE /* iOSExampleControllerView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 18E6277D192F833A00B31DCE /* iOSExampleControllerView.mm */; };
+		18F91C3519C70502000617D8 /* ReadHeadingExample.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18F91C3119C70502000617D8 /* ReadHeadingExample.cpp */; };
+		18F91C3619C70502000617D8 /* ReadHeadingExample.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18F91C3119C70502000617D8 /* ReadHeadingExample.cpp */; };
+		18F91C3719C70502000617D8 /* ReadHeadingExampleFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18F91C3319C70502000617D8 /* ReadHeadingExampleFactory.cpp */; };
+		18F91C3819C70502000617D8 /* ReadHeadingExampleFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18F91C3319C70502000617D8 /* ReadHeadingExampleFactory.cpp */; };
 		222E06491948B08B0004FFD9 /* ScreenUnprojectExampleFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 189971AE192CB63500E0E9F1 /* ScreenUnprojectExampleFactory.cpp */; };
 		222E064A1948B08B0004FFD9 /* ControlCityThemeExample.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1814384C192B6E4500BCDF2E /* ControlCityThemeExample.cpp */; };
 		222E064B1948B08B0004FFD9 /* SingleCityExampleFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 189971B4192CB77A00E0E9F1 /* SingleCityExampleFactory.cpp */; };
@@ -419,6 +423,10 @@
 		18E6277D192F833A00B31DCE /* iOSExampleControllerView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = iOSExampleControllerView.mm; sourceTree = "<group>"; };
 		18E6277E192F833A00B31DCE /* iOSExampleControllerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iOSExampleControllerView.h; sourceTree = "<group>"; };
 		18E62780192FAD6200B31DCE /* IExampleControllerView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IExampleControllerView.h; sourceTree = "<group>"; };
+		18F91C3119C70502000617D8 /* ReadHeadingExample.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ReadHeadingExample.cpp; sourceTree = "<group>"; };
+		18F91C3219C70502000617D8 /* ReadHeadingExample.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReadHeadingExample.h; sourceTree = "<group>"; };
+		18F91C3319C70502000617D8 /* ReadHeadingExampleFactory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ReadHeadingExampleFactory.cpp; sourceTree = "<group>"; };
+		18F91C3419C70502000617D8 /* ReadHeadingExampleFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReadHeadingExampleFactory.h; sourceTree = "<group>"; };
 		222E06C91948B08B0004FFD9 /* ExampleAppCpp11.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ExampleAppCpp11.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		222E06CB1948B0B70004FFD9 /* libapps-on-maps-cpp11-sim.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libapps-on-maps-cpp11-sim.a"; path = "Include/libapps-on-maps-cpp11-sim.a"; sourceTree = "<group>"; };
 		222E06CC1948B0B70004FFD9 /* libapps-on-maps-cpp11.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libapps-on-maps-cpp11.a"; path = "Include/libapps-on-maps-cpp11.a"; sourceTree = "<group>"; };
@@ -528,6 +536,7 @@
 				1814386E192B6E4500BCDF2E /* Pick3DObject */,
 				18143871192B6E4500BCDF2E /* PinOverModel */,
 				18143874192B6E4500BCDF2E /* Pins */,
+				18F91C3019C70502000617D8 /* ReadHeading */,
 				18143877192B6E4500BCDF2E /* PODAnimation */,
 				18E1845719891C990065F81D /* RenderToTexture */,
 				1814387A192B6E4500BCDF2E /* ResourceSpatialQuery */,
@@ -964,6 +973,17 @@
 			path = RenderToTexture;
 			sourceTree = "<group>";
 		};
+		18F91C3019C70502000617D8 /* ReadHeading */ = {
+			isa = PBXGroup;
+			children = (
+				18F91C3119C70502000617D8 /* ReadHeadingExample.cpp */,
+				18F91C3219C70502000617D8 /* ReadHeadingExample.h */,
+				18F91C3319C70502000617D8 /* ReadHeadingExampleFactory.cpp */,
+				18F91C3419C70502000617D8 /* ReadHeadingExampleFactory.h */,
+			);
+			path = ReadHeading;
+			sourceTree = "<group>";
+		};
 		7E1A248C197FF827000ED126 /* CameraSpline */ = {
 			isa = PBXGroup;
 			children = (
@@ -1238,6 +1258,7 @@
 				222E06731948B08B0004FFD9 /* ModifiedRenderingExample.cpp in Sources */,
 				222E06741948B08B0004FFD9 /* FileIOExampleFactory.cpp in Sources */,
 				18E1845F19891C990065F81D /* PostProcessVignetteRenderer.cpp in Sources */,
+				18F91C3819C70502000617D8 /* ReadHeadingExampleFactory.cpp in Sources */,
 				222E06751948B08B0004FFD9 /* RouteDrawingExampleFactory.cpp in Sources */,
 				222E06761948B08B0004FFD9 /* PODAnimationExampleFactory.cpp in Sources */,
 				222E06771948B08B0004FFD9 /* PinOverModelExample.cpp in Sources */,
@@ -1250,6 +1271,7 @@
 				222E067E1948B08B0004FFD9 /* RouteSimulationExample.cpp in Sources */,
 				222E067F1948B08B0004FFD9 /* ToggleTrafficExample.cpp in Sources */,
 				222E06801948B08B0004FFD9 /* CameraTransitionExampleFactory.cpp in Sources */,
+				18F91C3619C70502000617D8 /* ReadHeadingExample.cpp in Sources */,
 				222E06811948B08B0004FFD9 /* NavigationGraphExample.cpp in Sources */,
 				222E06821948B08B0004FFD9 /* WebRequestExampleFactory.cpp in Sources */,
 				18E18E90198BE4C80065F81D /* PostProcessVignetteRenderable.cpp in Sources */,
@@ -1322,6 +1344,7 @@
 				189971A4192CB35600E0E9F1 /* RouteDrawingExampleFactory.cpp in Sources */,
 				1899719E192CB24B00E0E9F1 /* PODAnimationExampleFactory.cpp in Sources */,
 				18E1845E19891C990065F81D /* PostProcessVignetteRenderer.cpp in Sources */,
+				18F91C3719C70502000617D8 /* ReadHeadingExampleFactory.cpp in Sources */,
 				181438B4192B6E4500BCDF2E /* PinOverModelExample.cpp in Sources */,
 				18E6277F192F833A00B31DCE /* iOSExampleControllerView.mm in Sources */,
 				189971C2192CBFFE00E0E9F1 /* RouteMatchingExampleFactory.cpp in Sources */,
@@ -1334,6 +1357,7 @@
 				181438BA192B6E4500BCDF2E /* RouteSimulationExample.cpp in Sources */,
 				181438C1192B6E4500BCDF2E /* ToggleTrafficExample.cpp in Sources */,
 				1899716A192C947D00E0E9F1 /* CameraTransitionExampleFactory.cpp in Sources */,
+				18F91C3519C70502000617D8 /* ReadHeadingExample.cpp in Sources */,
 				181438B2192B6E4500BCDF2E /* NavigationGraphExample.cpp in Sources */,
 				189971BF192CB93200E0E9F1 /* WebRequestExampleFactory.cpp in Sources */,
 				18E18E8F198BE4C80065F81D /* PostProcessVignetteRenderable.cpp in Sources */,
