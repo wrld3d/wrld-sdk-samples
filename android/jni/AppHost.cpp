@@ -184,6 +184,7 @@ void AppHost::Update(float dt)
 void AppHost::Draw(float dt)
 {
 	m_pApp->Draw(dt);
+	m_pInputProcessor->Update(dt);
 }
 
 void AppHost::ConfigureExamples()
