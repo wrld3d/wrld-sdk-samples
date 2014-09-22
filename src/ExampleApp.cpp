@@ -132,12 +132,14 @@ ExampleApp::~ExampleApp()
 
 void ExampleApp::OnPause()
 {
-
+	Eegeo::EegeoWorld& eegeoWorld = World();
+	eegeoWorld.OnPause();
 }
 
 void ExampleApp::OnResume()
 {
-
+	Eegeo::EegeoWorld& eegeoWorld = World();
+	eegeoWorld.OnResume();
 }
 
 void ExampleApp::Update (float dt)
