@@ -83,7 +83,7 @@ AppHost::AppHost(
 	ConfigureExamples();
     
 	m_pAppInputDelegate = new AppInputDelegate(*m_pApp, m_viewController, displayWidth, displayHeight, pixelScale);
-    m_pAppLocationDelegate = new AppLocationDelegate(*m_piOSLocationService);
+    m_pAppLocationDelegate = new AppLocationDelegate(*m_piOSLocationService, m_viewController);
 }
 
 AppHost::~AppHost()

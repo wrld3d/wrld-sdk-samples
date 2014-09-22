@@ -8,6 +8,8 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.view.Surface;
+import android.view.WindowManager;
 
 public class HeadingService implements SensorEventListener 
 {
@@ -101,8 +103,9 @@ public class HeadingService implements SensorEventListener
 			if (event.sensor.getType() == Sensor.TYPE_ORIENTATION)
 			{
 				float smoothing = 0.6f;
-				float newAzimuth = (event.values[0] + 360.f)%360.f;            
-				m_azimuthDegrees = (float) ((newAzimuth * smoothing) + (m_azimuthDegrees * (1.0 - smoothing)));       
+				float heading = event.values[0];
+				float newAzimuth = adjustHeadingForDeviceOrientation(heading);
+				m_azimuthDegrees = (float) ((newAzimuth * smoothing) + (m_azimuthDegrees * (1.0 - smoothing)));     
 				m_hasAzimuthAngle = true;
 				return;
 			}
@@ -166,4 +169,27 @@ public class HeadingService implements SensorEventListener
 		float resultDegrees = (float) Math.toDegrees(resultRadians);
 		return (resultDegrees + 360.f) % 360.f;
     }
+	
+	private float adjustHeadingForDeviceOrientation(float heading)
+	{
+		final int rotation = ((WindowManager) this.m_activity.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getRotation();
+		
+		switch (rotation) {
+		    case Surface.ROTATION_0:
+		        heading += 0.f;
+		        break;
+		    case Surface.ROTATION_90:
+		    	heading += 90.f;
+		        break;
+		    case Surface.ROTATION_180:
+		    	heading = 180.f;
+		        break;
+		    default:
+		    	heading += 90.f;
+		    	break;
+		}
+						
+		heading = (heading + 360.f)%360.f;
+		return heading;
+	}
 }

@@ -8,6 +8,8 @@
 #include "Types.h"
 #include "iOSLocationService.h"
 
+@class ViewController;
+
 @interface AppLocationDelegateLocationListener : NSObject<CLLocationManagerDelegate>
 {
     
@@ -19,7 +21,7 @@ class AppLocationDelegate : protected Eegeo::NonCopyable
     AppLocationDelegateLocationListener* m_pAppLocationDelegateLocationListener;
     
 public:
-	AppLocationDelegate(Eegeo::iOS::iOSLocationService& m_iOSLocationService);
+	AppLocationDelegate(Eegeo::iOS::iOSLocationService& m_iOSLocationService, ViewController& viewController);
     ~AppLocationDelegate();
 };
 
