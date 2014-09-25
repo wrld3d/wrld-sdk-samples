@@ -55,6 +55,9 @@ AppHost::AppHost(
 	,m_nativeState(nativeState)
 	,m_pAndroidPlatformAbstractionModule(NULL)
 {
+	Eegeo::TtyHandler::TtyEnabled = false;
+	Eegeo::AssertHandler::BreakOnAssert = true;
+
 	Eegeo_ASSERT(resourceBuildShareContext != EGL_NO_CONTEXT);
 
 	m_pAndroidLocationService = new AndroidLocationService(&nativeState);
@@ -125,29 +128,29 @@ AppHost::~AppHost()
 	delete m_pApp;
 	m_pApp = NULL;
 
+	delete m_pInterestPointProvider;
+	m_pInterestPointProvider = NULL;
+
 	delete m_pWorld;
 	m_pWorld = NULL;
 
-	delete m_pInterestPointProvider;
-	m_pInterestPointProvider = NULL;
+	delete m_pAndroidLocationService;
+	m_pAndroidLocationService = NULL;
+
+	delete m_pRenderContext;
+	m_pRenderContext = NULL;
+
+	delete m_pJpegLoader;
+	m_pJpegLoader = NULL;
+
+	delete m_pAndroidPlatformAbstractionModule;
+	m_pAndroidPlatformAbstractionModule = NULL;
 
 	Eegeo::EffectHandler::Reset();
 	Eegeo::EffectHandler::Shutdown();
 	m_pBlitter->Shutdown();
 	delete m_pBlitter;
 	m_pBlitter = NULL;
-
-	delete m_pAndroidPlatformAbstractionModule;
-	m_pAndroidPlatformAbstractionModule = NULL;
-
-	delete m_pJpegLoader;
-	m_pJpegLoader = NULL;
-
-	delete m_pRenderContext;
-	m_pRenderContext = NULL;
-
-	delete m_pAndroidLocationService;
-	m_pAndroidLocationService = NULL;
 }
 
 void AppHost::OnResume()
