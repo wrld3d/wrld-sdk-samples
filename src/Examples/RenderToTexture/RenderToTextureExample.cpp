@@ -16,6 +16,7 @@
 #include "PostProcessVignetteRenderable.h"
 #include "Quad.h"
 #include "RenderToTextureExample.h"
+#include "ScreenProperties.h"
 
 namespace Examples
 {
@@ -23,7 +24,7 @@ namespace Examples
     const float RenderToTextureExample::SecondsBetweenEffectUpdates = 0.1f;
     
     RenderToTextureExample::RenderToTextureExample(Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController,
-                                                   Eegeo::Rendering::RenderContext& renderContext,
+                                                   const Eegeo::Rendering::ScreenProperties& screenProperties,
                                                    Eegeo::Rendering::VertexLayouts::VertexLayoutPool& vertexLayoutPool,
                                                    Eegeo::Rendering::VertexLayouts::VertexBindingPool& vertexBindingPool,
                                                    Eegeo::Rendering::Shaders::ShaderIdGenerator& shaderIdGenerator,
@@ -31,7 +32,7 @@ namespace Examples
                                                    Eegeo::Rendering::RenderableFilters& renderableFilters,
                                                    Eegeo::Rendering::GlBufferPool& glBufferPool)
     :m_globeCameraStateRestorer(cameraController)
-    ,m_renderContext(renderContext)
+    ,m_screenProperties(screenProperties)
     ,m_vertexLayoutPool(vertexLayoutPool)
     ,m_vertexBindingPool(vertexBindingPool)
     ,m_shaderIdGenerator(shaderIdGenerator)
@@ -44,6 +45,7 @@ namespace Examples
     ,m_pRenderable(NULL)
     ,m_pVignetteRenderer(NULL)
     ,m_secondsSinceLastEffectUpate(0.f)
+    ,m_cameraController(cameraController)
     {
     }
     
@@ -56,8 +58,8 @@ namespace Examples
         //
         
         const bool needsDepthStencilBuffers = true;
-        m_pRenderTexture = Eegeo_NEW(Eegeo::Rendering::RenderTexture)(m_renderContext.GetScreenWidth() * m_renderContext.GetPixelScale(),
-                                                                      m_renderContext.GetScreenHeight() * m_renderContext.GetPixelScale(),
+        m_pRenderTexture = Eegeo_NEW(Eegeo::Rendering::RenderTexture)(m_screenProperties.GetScreenWidth() * m_screenProperties.GetPixelScale(),
+                                                                      m_screenProperties.GetScreenHeight() * m_screenProperties.GetPixelScale(),
                                                                       needsDepthStencilBuffers);
 
         m_pVignetteShader = PostProcessVignetteShader::Create(m_shaderIdGenerator.GetNextId());
@@ -127,6 +129,11 @@ namespace Examples
         m_pRenderable->SetVignetteColour(Eegeo::v3(0.9f, 0.8f, 0.6f));
         const float radiusIntensityVariance = (2-(rand()%5))/10.f;
         m_pRenderable->SetVignetteRadiusModifier(3.6f + radiusIntensityVariance);
+    }
+    
+    const Eegeo::Camera::RenderCamera& RenderToTextureExample::GetRenderCamera() const
+    {
+        return *m_cameraController.GetCamera();
     }
 }
 

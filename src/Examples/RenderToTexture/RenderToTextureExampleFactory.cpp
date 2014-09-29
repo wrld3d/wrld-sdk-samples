@@ -3,6 +3,8 @@
 #include "RenderToTextureExampleFactory.h"
 #include "RenderToTextureExample.h"
 
+#include "RenderingModule.h"
+
 namespace Examples
 {
     RenderToTextureExampleFactory::RenderToTextureExampleFactory(Eegeo::EegeoWorld& world,
@@ -15,14 +17,16 @@ namespace Examples
     
     IExample* RenderToTextureExampleFactory::CreateExample() const
     {
+        Eegeo::Modules::Core::RenderingModule& renderingModule = m_world.GetRenderingModule();
+        
         return new Examples::RenderToTextureExample(m_globeCameraController,
-                                                    m_world.GetRenderContext(),
-                                                    m_world.GetVertexLayoutPool(),
-                                                    m_world.GetVertexBindingPool(),
-                                                    m_world.GetShaderIdGenerator(),
-                                                    m_world.GetMaterialIdGenerator(),
-                                                    m_world.GetRenderableFilters(),
-                                                    m_world.GetGlBufferPool());
+                                                    m_world.GetScreenProperties(),
+                                                    renderingModule.GetVertexLayoutPool(),
+                                                    renderingModule.GetVertexBindingPool(),
+                                                    renderingModule.GetShaderIdGenerator(),
+                                                    renderingModule.GetMaterialIdGenerator(),
+                                                    renderingModule.GetRenderableFilters(),
+                                                    renderingModule.GetGlBufferPool());
     }
     
     std::string RenderToTextureExampleFactory::ExampleName() const

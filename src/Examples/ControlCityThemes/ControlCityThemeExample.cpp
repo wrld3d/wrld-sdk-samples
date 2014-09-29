@@ -55,6 +55,7 @@ ControlCityThemeExample::ControlCityThemeExample(Eegeo::Resources::CityThemes::I
 	,m_themeChanged(false)
 	,m_initialCityTheme(themeService.GetCurrentTheme())
 	,m_globeCameraStateRestorer(cameraController)
+    ,m_cameraController(cameraController)
 {
 }
 
@@ -79,11 +80,11 @@ void ControlCityThemeExample::ChangeTheme()
 	EXAMPLE_LOG("ICityThemesUpdater control over theme selection: %d\n", enabled);
 
 	EXAMPLE_LOG("Obtaining %s ThemeData\n", themeToSelect.c_str());
-	const Eegeo::Resources::CityThemes::CityThemeData& themeDataToSelect = m_themeRepository.GetThemeDataByName(themeToSelect);
+	const Eegeo::Resources::CityThemes::CityThemeData& themeDataToSelect = *m_themeRepository.GetThemeDataByName(themeToSelect);
 
 	EXAMPLE_LOG("Setting %s Theme\n", themeToSelect.c_str());
 	m_themeService.SetSpecificTheme(themeDataToSelect);
-	EXAMPLE_LOG("%s Theme will now be downloaded and applied asynchronsly. It will remain active until SetSpecificTheme is called again\n", themeToSelect.c_str());
+	EXAMPLE_LOG("%s Theme will now be downloaded and applied asynchronously. It will remain active until SetSpecificTheme is called again\n", themeToSelect.c_str());
 }
 
 void ControlCityThemeExample::FindThemeByPointInPolygon()
@@ -122,5 +123,10 @@ void ControlCityThemeExample::Update(float dt)
 			m_themeChanged = true;
 		}
 	}
+}
+    
+const Eegeo::Camera::RenderCamera& ControlCityThemeExample::GetRenderCamera() const
+{
+    return *m_cameraController.GetCamera();
 }
 }

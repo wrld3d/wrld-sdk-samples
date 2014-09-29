@@ -13,7 +13,7 @@ namespace Examples
         
     }
     
-    void PostProcessVignetteRenderer::EnqueueRenderables(Eegeo::Rendering::RenderContext& renderContext,
+    void PostProcessVignetteRenderer::EnqueueRenderables(const Eegeo::Rendering::RenderContext& renderContext,
                                                          Eegeo::Rendering::RenderQueue& renderQueue)
     {
         renderQueue.EnqueueRenderable(m_renderable);

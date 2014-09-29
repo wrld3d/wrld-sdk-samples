@@ -4,6 +4,10 @@
 #include "DynamicText3DExample.h"
 #include "RenderContext.h"
 
+#include "PlacenamesStreamingModule.h"
+#include "MapModule.h"
+#include "RenderingModule.h"
+
 using namespace Examples;
 
 DynamicText3DExampleFactory::DynamicText3DExampleFactory(Eegeo::EegeoWorld& world,
@@ -16,12 +20,17 @@ DynamicText3DExampleFactory::DynamicText3DExampleFactory(Eegeo::EegeoWorld& worl
 
 IExample* DynamicText3DExampleFactory::CreateExample() const
 {
-	return new Examples::DynamicText3DExample(m_world.GetRenderContext().GetGLState(),
-	        m_world.GetCameraProvider(),
-	        m_world.GetEnvironmentFlatteningService(),
-	        m_world.GetPlaceNameViewBuilder(),
-	        m_world,
-	        m_globeCameraController);
+    Eegeo::Modules::Map::MapModule& mapModule = m_world.GetMapModule();
+    Eegeo::Modules::Map::Layers::PlaceNamesStreamingModule& placenamesStreamingModule = mapModule.GetPlaceNamesStreamingModule();
+    Eegeo::Modules::Core::RenderingModule& renderingModule = m_world.GetRenderingModule();
+    Eegeo::Rendering::RenderableFilters& renderableFilters = renderingModule.GetRenderableFilters();
+    
+    return new Examples::DynamicText3DExample(mapModule.GetEnvironmentFlatteningService(),
+                                              placenamesStreamingModule.GetPlaceNameViewBuilder(),
+                                              m_world,
+                                              m_globeCameraController,
+                                              renderableFilters);
+
 }
 
 std::string DynamicText3DExampleFactory::ExampleName() const

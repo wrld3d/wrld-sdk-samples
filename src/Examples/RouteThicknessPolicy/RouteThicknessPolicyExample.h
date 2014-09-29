@@ -35,11 +35,11 @@ private:
 	Eegeo::Routes::Style::Thickness::IdentityRouteThicknessPolicy m_identityRouteThicknessPolicy;
 	Eegeo::Routes::Style::Thickness::LinearAltitudeBasedRouteThicknessPolicy m_linearAltitudeBasedRouteThicknessPolicy;
 	MyScalingRouteThicknessPolicy m_myScalingRouteThicknessPolicy;
+    Eegeo::Camera::GlobeCamera::GlobeCameraController& m_cameraController;
 	GlobeCameraStateRestorer m_globeCameraStateRestorer;
 
 public:
 	RouteThicknessPolicyExample(Eegeo::Routes::RouteService& routeService,
-	                            Eegeo::Rendering::RenderContext& renderContext,
 	                            Eegeo::EegeoWorld& eegeoWorld,
 	                            Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController);
 
@@ -56,6 +56,7 @@ public:
 	void Update(float dt);
 	void Draw() {}
 	void Suspend();
+    const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
 };
 }
 

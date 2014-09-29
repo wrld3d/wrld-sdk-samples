@@ -24,6 +24,7 @@ JavaHudCrossThreadCommunicationExample::JavaHudCrossThreadCommunicationExample(
 	, m_themeUpdater(themeUpdater)
 	, m_themeRepository(themeRepository)
 	, m_initialCityTheme(themeService.GetCurrentTheme())
+	, m_cameraController(globeCameraController)
 	, m_globeCameraStateRestorer(globeCameraController)
 {
 
@@ -88,11 +89,15 @@ void JavaHudCrossThreadCommunicationExample::Suspend()
 
 	m_themeService.SetSpecificTheme(m_initialCityTheme);
 }
+const Eegeo::Camera::RenderCamera& JavaHudCrossThreadCommunicationExample::GetRenderCamera() const
+{
+	return *m_cameraController.GetCamera();
+}
 
 void JavaHudCrossThreadCommunicationExample::SetCurrentThemeByName(const std::string& themeName)
 {
 	m_themeUpdater.SetEnabled(false);
-	const Eegeo::Resources::CityThemes::CityThemeData& themeDataToSelect = m_themeRepository.GetThemeDataByName(themeName);
+	const Eegeo::Resources::CityThemes::CityThemeData& themeDataToSelect = *m_themeRepository.GetThemeDataByName(themeName);
 	m_themeService.SetSpecificTheme(themeDataToSelect);
 }
 

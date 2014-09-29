@@ -2,45 +2,29 @@
 
 #include "ScreenPickExample.h"
 #include "CameraHelpers.h"
-#include "ICameraProvider.h"
 #include "EarthConstants.h"
 #include "SphereMesh.h"
 #include "TerrainHeightProvider.h"
 #include "RenderCamera.h"
 #include "TerrainRayPicker.h"
+#include "DebugRenderer.h"
 
 namespace Examples
 {
-ScreenPickExample::ScreenPickExample(Eegeo::Rendering::RenderContext& renderContext,
-                                     Eegeo::Camera::ICameraProvider& cameraProvider,
-                                     Eegeo::Resources::Terrain::Heights::TerrainHeightProvider& terrainHeightProvider,
+ScreenPickExample::ScreenPickExample(Eegeo::Resources::Terrain::Heights::TerrainHeightProvider& terrainHeightProvider,
                                      const Eegeo::Resources::Terrain::Collision::ICollisionMeshResourceProvider& collisionMeshResourceProvider,
+                                     Eegeo::DebugRendering::DebugRenderer& debugRenderer,
                                      Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController)
-	: m_renderContext(renderContext)
-	, m_cameraProvider(cameraProvider)
+    : m_cameraController(cameraController)
+    , m_debugRenderer(debugRenderer)
 	, m_globeCameraStateRestorer(cameraController)
 {
-	const float radius = 20.f;
-	const int numSegments = 16;
-	const Eegeo::v3 red(1.f, 0.f, 0.f);
-
-	m_pSphere = new Eegeo::DebugRendering::SphereMesh(
-	    renderContext,
-	    radius,
-	    numSegments, numSegments,
-	    Eegeo::dv3(),
-	    NULL,
-	    red
-	);
-	m_pSphere->Tesselate();
-
 	m_pRayPicker = new Eegeo::Resources::Terrain::Collision::TerrainRayPicker(terrainHeightProvider, collisionMeshResourceProvider);
 }
 
 ScreenPickExample::~ScreenPickExample()
 {
 	delete m_pRayPicker;
-	delete m_pSphere;
 }
 
 void ScreenPickExample::Start()
@@ -55,17 +39,22 @@ void ScreenPickExample::Suspend()
 
 void ScreenPickExample::Update(float dt)
 {
-
+    m_debugRenderer.DrawSphere(m_spherePosition, 50.f, Eegeo::v4(1.f, 0.f, 0.f, 1.f));
 }
 
 void ScreenPickExample::Draw()
 {
-	m_pSphere->Draw(m_renderContext);
+	
+}
+    
+const Eegeo::Camera::RenderCamera& ScreenPickExample::GetRenderCamera() const
+{
+    return *m_cameraController.GetCamera();
 }
 
 bool ScreenPickExample::Event_TouchTap(const AppInterface::TapData& data)
 {
-	const Eegeo::Camera::RenderCamera& renderCamera = m_cameraProvider.GetRenderCamera();
+	const Eegeo::Camera::RenderCamera& renderCamera = *m_cameraController.GetCamera();
 
 	float screenPixelX = data.point.GetX();
 	float screenPixelY = data.point.GetY();
@@ -79,7 +68,7 @@ bool ScreenPickExample::Event_TouchTap(const AppInterface::TapData& data)
 	bool rayPick = m_pRayPicker->TryGetRayIntersection(rayOrigin, rayDirection, rayIntersectionPoint, intersectionParam);
 	if (rayPick)
 	{
-		m_pSphere->SetPositionECEF(rayIntersectionPoint);
+        m_spherePosition = rayIntersectionPoint;
 	}
 
 	return true;

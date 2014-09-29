@@ -6,6 +6,10 @@
 #include "LatLongAltitude.h"
 #include "LocalAsyncTextureLoader.h"
 
+#include "IPlatformAbstractionModule.h"
+#include "AsyncLoadersModule.h"
+#include "LightingModule.h"
+
 using namespace Examples;
 
 LoadModelExampleFactory::LoadModelExampleFactory(Eegeo::EegeoWorld& world,
@@ -18,11 +22,14 @@ LoadModelExampleFactory::LoadModelExampleFactory(Eegeo::EegeoWorld& world,
 
 IExample* LoadModelExampleFactory::CreateExample() const
 {
-	return new Examples::LoadModelExample(m_world.GetRenderContext(),
-	                                      Eegeo::Space::LatLongAltitude::FromECEF(m_world.GetInterestPointProvider().GetEcefInterestPoint()),
-	                                      m_world.GetFileIO(),
-	                                      m_world.GetLocalAsyncTextureLoader(),
-	                                      m_world.GetGlobalFogging(),
+    Eegeo::Modules::IPlatformAbstractionModule& platformAbstractionModule = m_world.GetPlatformAbstractionModule();
+    Eegeo::Modules::Core::AsyncLoadersModule& asyncLoadersModule = m_world.GetAsyncLoadersModule();
+    Eegeo::Modules::Core::LightingModule& lightingModule = m_world.GetLightingModule();
+    
+	return new Examples::LoadModelExample(Eegeo::Space::LatLongAltitude::FromECEF(m_globeCameraController.GetEcefInterestPoint()),
+	                                      platformAbstractionModule.GetFileIO(),
+	                                      asyncLoadersModule.GetLocalAsyncTextureLoader(),
+	                                      lightingModule.GetGlobalFogging(),
 	                                      m_globeCameraController);
 }
 

@@ -12,7 +12,6 @@ namespace Examples
 PinsWithAttachedJavaUIExample::PinsWithAttachedJavaUIExample(
     Eegeo::EegeoWorld& world,
     AndroidNativeState& nativeState,
-    Eegeo::Rendering::RenderContext& renderContext,
     Eegeo::Helpers::ITextureFileLoader& textureLoader,
     Eegeo::Rendering::GlBufferPool& glBufferPool,
     Eegeo::Rendering::Shaders::ShaderIdGenerator& shaderIdGenerator,
@@ -20,19 +19,18 @@ PinsWithAttachedJavaUIExample::PinsWithAttachedJavaUIExample(
     Eegeo::Rendering::VertexLayouts::VertexBindingPool& vertexBindingPool,
     Eegeo::Rendering::VertexLayouts::VertexLayoutPool& vertexLayoutPool,
     Eegeo::Rendering::RenderableFilters& renderableFilters,
-    const Eegeo::Camera::ICameraProvider& cameraProvider,
     Eegeo::Resources::Terrain::Heights::TerrainHeightProvider& terrainHeightProvider,
     Eegeo::Rendering::EnvironmentFlatteningService& environmentFlatteningService,
     Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCameraController
 )
 	: m_nativeState(nativeState)
-	, m_renderContext(renderContext)
 	, m_world(world)
 	, m_buttonID(0)
 	, m_hudPinControllerClass(NULL)
 	, m_hudPinController(NULL)
 	, m_updateLocationMethodId(NULL)
 	, m_pinUserData("Pin User Data")
+	, m_cameraController(globeCameraController)
 	, m_globeCameraStateRestorer(globeCameraController)
 {
 	textureLoader.LoadTexture(m_pinIconsTexture, "pins_with_attached_java_ui_example/PinIconTexturePage.png", true);
@@ -55,7 +53,6 @@ PinsWithAttachedJavaUIExample::PinsWithAttachedJavaUIExample(
 	                    vertexBindingPool,
 	                    vertexLayoutPool,
 	                    renderableFilters,
-	                    cameraProvider,
 	                    terrainHeightProvider,
 	                    spriteWidthInMetres,
 	                    spriteHeightInMetres,
@@ -122,7 +119,7 @@ void PinsWithAttachedJavaUIExample::Suspend()
 void PinsWithAttachedJavaUIExample::Update(float dt)
 {
 	// Update the PinsModule to query terrain heights and update screen space coordinates for the Pins.
-	m_pPinsModule->Update(dt);
+	m_pPinsModule->Update(dt, *m_cameraController.GetCamera());
 }
 
 void PinsWithAttachedJavaUIExample::Draw()
@@ -165,6 +162,11 @@ void PinsWithAttachedJavaUIExample::Draw()
 	    screenPosition.GetX() - buttonOffsetPixelsX,
 	    screenPosition.GetY() - buttonOffsetPixelsY
 	);
+}
+
+const Eegeo::Camera::RenderCamera& PinsWithAttachedJavaUIExample::GetRenderCamera() const
+{
+	return *m_cameraController.GetCamera();
 }
 
 bool PinsWithAttachedJavaUIExample::Event_TouchTap(const AppInterface::TapData& data)

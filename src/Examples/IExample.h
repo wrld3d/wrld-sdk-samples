@@ -33,7 +33,9 @@ public:
 	virtual void Update(float dt) = 0;
     virtual void PreWorldDraw() { }
 	virtual void Draw() = 0;
-	virtual void Suspend()= 0 ;
+	virtual void Suspend()= 0;
+    
+    virtual const Eegeo::Camera::RenderCamera& GetRenderCamera() const = 0;
 
 	virtual bool Event_TouchRotate 			(const AppInterface::RotateData& data)
 	{

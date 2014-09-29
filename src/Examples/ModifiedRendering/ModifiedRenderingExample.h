@@ -34,7 +34,7 @@ public:
 	{
 	}
 
-	void Update(Eegeo::Rendering::RenderContext& renderContext)
+	void Update(const Eegeo::Rendering::RenderContext& renderContext)
 	{
 		m_originalRenderable.CalcUnpackMVP(renderContext, 1.0f);
 		m_originalRenderable.SetVisible();
@@ -65,19 +65,16 @@ private:
 
 	MyPoolFilterCriteria* m_pCriteria;
 
-	Eegeo::Rendering::RenderContext& m_renderContext;
-	Eegeo::Camera::ICameraProvider& m_cameraProvider;
-	Eegeo::Location::IInterestPointProvider& m_interestPointProvider;
 	Eegeo::Lighting::GlobalLighting& m_lighting;
 	Eegeo::Streaming::IStreamingVolume& m_visibleVolume;
 	Eegeo::Rendering::Scene::SceneElementRepository<Eegeo::Rendering::Renderables::PackedRenderable>& m_buildingRepository;
 	Eegeo::Rendering::Filters::PackedRenderableFilter& m_buildingFilter;
-	Eegeo::Rendering::RenderQueue& m_renderQueue;
 	Eegeo::Rendering::RenderableFilters& m_renderableFilters;
 	Eegeo::Rendering::Shaders::ShaderIdGenerator& m_shaderIdGenerator;
 	Eegeo::Rendering::Materials::MaterialIdGenerator& m_materialIdGenerator;
 	const Eegeo::Helpers::GLHelpers::TextureInfo& m_placeHolderTexture;
 	GlobeCameraStateRestorer m_globeCameraStateRestorer;
+    Eegeo::Camera::GlobeCamera::GlobeCameraController& m_cameraController;
 
 	Eegeo::Lighting::GlobalLighting* m_pAlternativeLighting;
 	Eegeo::Rendering::Shaders::PackedDiffuseShader* m_pAlternativeShader;
@@ -92,14 +89,10 @@ private:
     void PopulateAlternativeRenderablesFromInitialSceneGraph();
 
 public:
-	ModifiedRenderingExample(Eegeo::Rendering::RenderContext& renderContext,
-	                         Eegeo::Camera::ICameraProvider& cameraProvider,
-	                         Eegeo::Location::IInterestPointProvider& interestPointProvider,
-	                         Eegeo::Streaming::IStreamingVolume& visibleVolume,
+	ModifiedRenderingExample(Eegeo::Streaming::IStreamingVolume& visibleVolume,
 	                         Eegeo::Lighting::GlobalLighting& lighting,
 	                         Eegeo::Rendering::Scene::SceneElementRepository<Eegeo::Rendering::Renderables::PackedRenderable>& buildingRepository,
 	                         Eegeo::Rendering::Filters::PackedRenderableFilter& buildingFilter,
-	                         Eegeo::Rendering::RenderQueue& renderQueue,
 	                         Eegeo::Rendering::RenderableFilters& renderableFilters,
 	                         Eegeo::Rendering::Shaders::ShaderIdGenerator& shaderIdGenerator,
 	                         Eegeo::Rendering::Materials::MaterialIdGenerator& materialIdGenerator,
@@ -113,7 +106,7 @@ public:
 	void OnSceneElementRemoved(TMySceneElement& sceneElement);
 
 	//IRenderableFilter interface.
-	void EnqueueRenderables(Eegeo::Rendering::RenderContext& renderContext, Eegeo::Rendering::RenderQueue& renderQueue);
+	void EnqueueRenderables(const Eegeo::Rendering::RenderContext& renderContext, Eegeo::Rendering::RenderQueue& renderQueue);
 
 	static std::string GetName()
 	{
@@ -128,6 +121,7 @@ public:
 	void Update(float dt);
 	void Draw();
 	void Suspend();
+    const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
 };
 }
 

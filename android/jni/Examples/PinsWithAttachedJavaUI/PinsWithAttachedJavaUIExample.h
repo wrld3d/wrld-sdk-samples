@@ -34,8 +34,8 @@ private:
 
 	// java ui stuff
 	AndroidNativeState& m_nativeState;
-	Eegeo::Rendering::RenderContext& m_renderContext;
 	Eegeo::EegeoWorld& m_world;
+	Eegeo::Camera::GlobeCamera::GlobeCameraController& m_cameraController;
 	GlobeCameraStateRestorer m_globeCameraStateRestorer;
 
 	int m_buttonID;
@@ -47,7 +47,6 @@ public:
 	PinsWithAttachedJavaUIExample(
 	    Eegeo::EegeoWorld& world,
 	    AndroidNativeState& nativeState,
-	    Eegeo::Rendering::RenderContext& renderContext,
 	    Eegeo::Helpers::ITextureFileLoader& textureLoader,
 	    Eegeo::Rendering::GlBufferPool& glBufferPool,
 	    Eegeo::Rendering::Shaders::ShaderIdGenerator& shaderIdGenerator,
@@ -55,7 +54,6 @@ public:
 	    Eegeo::Rendering::VertexLayouts::VertexBindingPool& vertexBindingPool,
 	    Eegeo::Rendering::VertexLayouts::VertexLayoutPool& vertexLayoutPool,
 	    Eegeo::Rendering::RenderableFilters& renderableFilters,
-	    const Eegeo::Camera::ICameraProvider& cameraProvider,
 	    Eegeo::Resources::Terrain::Heights::TerrainHeightProvider& terrainHeightProvider,
 	    Eegeo::Rendering::EnvironmentFlatteningService& environmentFlatteningService,
 	    Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCameraController
@@ -75,6 +73,7 @@ public:
 	void Update(float dt);
 	void Draw();
 	void Suspend();
+	const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
 
 	bool Event_TouchTap(const AppInterface::TapData& data);
 

@@ -12,9 +12,10 @@ class ExampleApp : private Eegeo::NonCopyable
 private:
 	Eegeo::Camera::GlobeCamera::GlobeCameraController* m_pGlobeCameraController;
 	Eegeo::Camera::GlobeCamera::GlobeCameraTouchController* m_pCameraTouchController;
-	Eegeo::Camera::GlobeCamera::GlobeCameraInterestPointProvider& m_globeCameraInterestPointProvider;
 	Eegeo::EegeoWorld* m_pWorld;
 	Examples::ExampleController& m_exampleController;
+    
+    const Eegeo::Camera::RenderCamera* m_pActiveCamera;
 
 	Eegeo::EegeoWorld& World()
 	{
@@ -23,7 +24,6 @@ private:
 
 public:
 	ExampleApp(Eegeo::EegeoWorld* pWorld,
-	           Eegeo::Camera::GlobeCamera::GlobeCameraInterestPointProvider& globeCameraInterestPointProvider,
 	           Examples::ExampleController& exampleController);
 
 	~ExampleApp();

@@ -15,8 +15,9 @@ namespace Examples
 class PositionJavaPinButtonExample : public IExample
 {
 	AndroidNativeState& m_nativeState;
-	Eegeo::Rendering::RenderContext& m_renderContext;
 	Eegeo::EegeoWorld& m_world;
+	const Eegeo::Rendering::ScreenProperties& m_screenProperties;
+	Eegeo::Camera::GlobeCamera::GlobeCameraController& m_cameraController;
 	GlobeCameraStateRestorer m_globeCameraStateRestorer;
 
 	int m_buttonID;
@@ -28,7 +29,7 @@ public:
 	PositionJavaPinButtonExample(
 	    Eegeo::EegeoWorld& world,
 	    AndroidNativeState& pNativeState,
-	    Eegeo::Rendering::RenderContext& renderContext,
+	    const Eegeo::Rendering::ScreenProperties& screenProperties,
 	    Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCameraController);
 
 	static std::string GetName()
@@ -44,6 +45,7 @@ public:
 	void Update(float dt) {}
 	void Draw();
 	void Suspend();
+	const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
 
 private:
 	void CreateButton();

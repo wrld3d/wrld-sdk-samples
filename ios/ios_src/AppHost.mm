@@ -20,6 +20,7 @@
 #include "RouteSimulationExampleFactory.h"
 #include "JpegLoader.h"
 #include "iOSPlatformAbstractionModule.h"
+#include "ScreenProperties.h"
 
 using namespace Eegeo::iOS;
 
@@ -34,10 +35,8 @@ AppHost::AppHost(
     :m_viewController(viewController)
 	,m_pBlitter(NULL)
     ,m_pJpegLoader(NULL)
-	,m_pRenderContext(NULL)
 	,m_piOSLocationService(NULL)
 	,m_pWorld(NULL)
-	,m_pInterestPointProvider(NULL)
 	,m_iOSInputBoxFactory()
 	,m_iOSKeyboardInputFactory()
 	,m_iOSAlertBoxFactory()
@@ -46,21 +45,16 @@ AppHost::AppHost(
 	,m_pApp(NULL)
 	,m_pExampleController(NULL)
 {
+    m_pScreenProperties = new Eegeo::Rendering::ScreenProperties(displayWidth, displayHeight, 1.f, deviceDpi);
 	m_piOSLocationService = new iOSLocationService();
-
-	m_pRenderContext = new Eegeo::Rendering::RenderContext();
-	m_pRenderContext->SetScreenDimensions(displayWidth, displayHeight, 1.0f, deviceDpi);
     
     m_pJpegLoader = new Eegeo::Helpers::Jpeg::JpegLoader();
     
-    m_piOSPlatformAbstractionModule = new Eegeo::iOS::iOSPlatformAbstractionModule(m_pRenderContext->GetGLState(),
-                                                                                   *m_pJpegLoader);
+    m_piOSPlatformAbstractionModule = new Eegeo::iOS::iOSPlatformAbstractionModule(*m_pJpegLoader);
 
 	Eegeo::EffectHandler::Initialise();
-	m_pBlitter = new Eegeo::Blitter(1024 * 128, 1024 * 64, 1024 * 32, *m_pRenderContext);
+	m_pBlitter = new Eegeo::Blitter(1024 * 128, 1024 * 64, 1024 * 32, m_pScreenProperties->GetScreenWidth(), m_pScreenProperties->GetScreenHeight());
 	m_pBlitter->Initialise();
-
-	m_pInterestPointProvider = new Eegeo::Camera::GlobeCamera::GlobeCameraInterestPointProvider();
 
 	const Eegeo::EnvironmentCharacterSet::Type environmentCharacterSet = Eegeo::EnvironmentCharacterSet::Latin;
 	Eegeo::Config::PlatformConfig config = Eegeo::iOS::iOSPlatformConfigBuilder(App::GetDevice(), App::IsDeviceMultiCore()).Build();
@@ -68,17 +62,14 @@ AppHost::AppHost(
 	m_pWorld = new Eegeo::EegeoWorld(apiKey,
                                      *m_piOSPlatformAbstractionModule,
                                      *m_pJpegLoader,
-                                     *m_pRenderContext,
+                                     *m_pScreenProperties,
                                      *m_piOSLocationService,
                                      *m_pBlitter,
-                                     *m_pInterestPointProvider,
                                      m_iOSNativeUIFactories,
                                      environmentCharacterSet,
                                      config,
                                      NULL,
                                      "Default-Landscape@2x~ipad.png");
-    
-	m_pRenderContext->GetGLState().InvalidateAll();
     
 	ConfigureExamples();
     
@@ -99,23 +90,20 @@ AppHost::~AppHost()
 	delete m_pApp;
 	m_pApp = NULL;
 
-	delete m_pInterestPointProvider;
-	m_pInterestPointProvider = NULL;
-
 	delete m_pWorld;
 	m_pWorld = NULL;
 
 	delete m_piOSLocationService;
 	m_piOSLocationService = NULL;
 
-	delete m_pRenderContext;
-	m_pRenderContext = NULL;
-
     delete m_piOSPlatformAbstractionModule;
     m_piOSPlatformAbstractionModule = NULL;
     
     delete m_pJpegLoader;
     m_pJpegLoader = NULL;
+    
+    delete m_pScreenProperties;
+    m_pScreenProperties = NULL;
 
 	Eegeo::EffectHandler::Reset();
 	Eegeo::EffectHandler::Shutdown();
@@ -153,7 +141,7 @@ void AppHost::ConfigureExamples()
 	m_piOSExampleControllerView = new Examples::iOSExampleControllerView([&m_viewController view]);
 
 	m_pExampleController = new Examples::ExampleController(*m_pWorld, *m_piOSExampleControllerView);
-	m_pApp = new ExampleApp(m_pWorld, *m_pInterestPointProvider, *m_pExampleController);
+	m_pApp = new ExampleApp(m_pWorld, *m_pExampleController);
 
 	RegisteriOSSpecificExamples();
 

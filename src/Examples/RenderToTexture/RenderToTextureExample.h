@@ -14,7 +14,7 @@ namespace Examples
     {
     private:
         GlobeCameraStateRestorer m_globeCameraStateRestorer;
-        Eegeo::Rendering::RenderContext& m_renderContext;
+        const Eegeo::Rendering::ScreenProperties& m_screenProperties;
         Eegeo::Rendering::VertexLayouts::VertexLayoutPool& m_vertexLayoutPool;
         Eegeo::Rendering::VertexLayouts::VertexBindingPool& m_vertexBindingPool;
         Eegeo::Rendering::Shaders::ShaderIdGenerator& m_shaderIdGenerator;
@@ -31,6 +31,8 @@ namespace Examples
         PostProcessVignetteRenderer* m_pVignetteRenderer;
         Eegeo::Rendering::RenderTexture* m_pRenderTexture;
         
+        Eegeo::Camera::GlobeCamera::GlobeCameraController& m_cameraController;
+        
         static const float SecondsBetweenEffectUpdates;
         float m_secondsSinceLastEffectUpate;
         
@@ -38,7 +40,7 @@ namespace Examples
         
     public:
         RenderToTextureExample(Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController,
-                               Eegeo::Rendering::RenderContext& renderContext,
+                               const Eegeo::Rendering::ScreenProperties& screenProperties,
                                Eegeo::Rendering::VertexLayouts::VertexLayoutPool& vertexLayoutPool,
                                Eegeo::Rendering::VertexLayouts::VertexBindingPool& vertexBindingPool,
                                Eegeo::Rendering::Shaders::ShaderIdGenerator& shaderIdGenerator,
@@ -61,6 +63,7 @@ namespace Examples
         void PreWorldDraw();
         void Draw() {}
         void Suspend();
+        const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
     };
 }
 

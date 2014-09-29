@@ -8,12 +8,16 @@
 #include "GlobeCameraController.h"
 #include "CameraHelpers.h"
 #include "LatLongAltitude.h"
-#include "RenderContext.h"
+#include "ScreenProperties.h"
+
+// Modules
+#include "MapModule.h"
+#include "TerrainModelModule.h"
+
 //example factories
 #include "CameraTransitionExampleFactory.h"
 #include "ControlCityThemeExampleFactory.h"
 #include "DebugPrimitiveRenderingExampleFactory.h"
-#include "DebugSphereExampleFactory.h"
 #include "DynamicText3DExampleFactory.h"
 #include "EnvironmentFlatteningExampleFactory.h"
 #include "EnvironmentNotifierExampleFactory.h"
@@ -40,16 +44,13 @@
 #include "ReadHeadingExampleFactory.h"
 
 ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
-                       Eegeo::Camera::GlobeCamera::GlobeCameraInterestPointProvider& globeCameraInterestPointProvider,
                        Examples::ExampleController& exampleController)
 	: m_pGlobeCameraController(NULL)
 	, m_pCameraTouchController(NULL)
-	, m_globeCameraInterestPointProvider(globeCameraInterestPointProvider)
 	, m_pWorld(pWorld)
 	, m_exampleController(exampleController)
+    , m_pActiveCamera(NULL)
 {
-	Eegeo_ASSERT(&m_globeCameraInterestPointProvider != NULL);
-
 	Eegeo::EegeoWorld& eegeoWorld = *pWorld;
 
 	Eegeo::Camera::GlobeCamera::GlobeCameraTouchControllerConfiguration touchControllerConfig = Eegeo::Camera::GlobeCamera::GlobeCameraTouchControllerConfiguration::CreateDefault();
@@ -59,23 +60,25 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
 	const bool useLowSpecSettings = false;
 	Eegeo::Camera::GlobeCamera::GlobeCameraControllerConfiguration globeCameraControllerConfig = Eegeo::Camera::GlobeCamera::GlobeCameraControllerConfiguration::CreateDefault(useLowSpecSettings);
 
-	m_pGlobeCameraController = new Eegeo::Camera::GlobeCamera::GlobeCameraController(eegeoWorld.GetTerrainHeightProvider(),
-	        eegeoWorld.GetEnvironmentFlatteningService(),
-	        eegeoWorld.GetResourceCeilingProvider(),
+    Eegeo::Modules::Map::MapModule& mapModule = eegeoWorld.GetMapModule();
+    Eegeo::Modules::Map::Layers::TerrainModelModule& terrainModelModule = eegeoWorld.GetTerrainModelModule();
+    
+	m_pGlobeCameraController = new Eegeo::Camera::GlobeCamera::GlobeCameraController(terrainModelModule.GetTerrainHeightProvider(),
+	        mapModule.GetEnvironmentFlatteningService(),
+	        mapModule.GetResourceCeilingProvider(),
 	        *m_pCameraTouchController,
 	        globeCameraControllerConfig);
+    
+    m_pActiveCamera = m_pGlobeCameraController->GetCamera();
 
     // override default configuration to enable two-finger pan gesture to control additional camera pitch
     Eegeo::Camera::GlobeCamera::GlobeCameraTouchSettings touchSettings = m_pGlobeCameraController->GetTouchSettings();
     touchSettings.TiltEnabled = true;
     m_pGlobeCameraController->SetTouchSettings(touchSettings);
 
+    const Eegeo::Rendering::ScreenProperties& screenProperties = eegeoWorld.GetScreenProperties();
 	Eegeo::Camera::RenderCamera* renderCamera = m_pGlobeCameraController->GetCamera();
-	const Eegeo::Rendering::RenderContext& renderContext = eegeoWorld.GetRenderContext();
-	renderCamera->SetViewport(0.f, 0.f, renderContext.GetScreenWidth(), renderContext.GetScreenHeight());
-	eegeoWorld.SetCamera(renderCamera);
-
-	m_globeCameraInterestPointProvider.SetGlobeCamera(m_pGlobeCameraController);
+	renderCamera->SetViewport(0.f, 0.f, screenProperties.GetScreenWidth(), screenProperties.GetScreenHeight());
 
 	float interestPointLatitudeDegrees = 37.7858f;
 	float interestPointLongitudeDegrees = -122.401f;
@@ -98,7 +101,8 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
 	m_exampleController.RegisterCameraExample<Examples::CameraTransitionExampleFactory>(*m_pGlobeCameraController);
 	m_exampleController.RegisterCameraExample<Examples::ControlCityThemeExampleFactory>(*m_pGlobeCameraController);
 	m_exampleController.RegisterCameraExample<Examples::DebugPrimitiveRenderingExampleFactory>(*m_pGlobeCameraController);
-	m_exampleController.RegisterCameraExample<Examples::DebugSphereExampleFactory>(*m_pGlobeCameraController);
+    // TODO: Completely remove DebugSphere example as we should be using DebugRenderer now
+	//m_exampleController.RegisterCameraExample<Examples::DebugSphereExampleFactory>(*m_pGlobeCameraController);
 	m_exampleController.RegisterCameraExample<Examples::DynamicText3DExampleFactory>(*m_pGlobeCameraController);
 	m_exampleController.RegisterCameraExample<Examples::EnvironmentFlatteningExampleFactory>(*m_pGlobeCameraController);
 	m_exampleController.RegisterCameraExample<Examples::EnvironmentNotifierExampleFactory>(*m_pGlobeCameraController);
@@ -145,21 +149,23 @@ void ExampleApp::OnResume()
 void ExampleApp::Update (float dt)
 {
 	Eegeo::EegeoWorld& eegeoWorld = World();
+    
+    // Get active camera for current example
+    // Draw and update with this camera.
+    m_pActiveCamera = &m_exampleController.GetCurrentActiveCamera();
 
 	eegeoWorld.EarlyUpdate(dt);
 	m_exampleController.EarlyUpdate(dt, *m_pGlobeCameraController, *m_pCameraTouchController);
 
-	eegeoWorld.Update(dt);
-	m_exampleController.Update(dt);
+	eegeoWorld.Update(dt, *m_pActiveCamera, m_pGlobeCameraController->GetEcefInterestPoint());
+    m_exampleController.Update(dt);
 }
 
 void ExampleApp::Draw (float dt)
 {
-	Eegeo::Rendering::GLState& glState = World().GetRenderContext().GetGLState();
-	glState.ClearColor(0.8f, 0.8f, 0.8f, 1.f);
 	m_exampleController.PreWorldDraw();
-	World().Draw(dt);
-	m_exampleController.Draw();
+	World().Draw(dt, *m_pActiveCamera);
+    m_exampleController.Draw();
 }
 
 void ExampleApp::Event_TouchRotate(const AppInterface::RotateData& data)

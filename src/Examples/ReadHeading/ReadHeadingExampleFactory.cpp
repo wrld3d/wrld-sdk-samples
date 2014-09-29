@@ -5,6 +5,8 @@
 #include "Location.h"
 #include "EegeoWorld.h"
 
+#include "DebugRenderingModule.h"
+
 using namespace Examples;
 
 ReadHeadingExampleFactory::ReadHeadingExampleFactory(
@@ -18,10 +20,12 @@ ReadHeadingExampleFactory::ReadHeadingExampleFactory(
 
 IExample* ReadHeadingExampleFactory::CreateExample() const
 {
-	return new Examples::ReadHeadingExample(
+    Eegeo::Modules::Core::DebugRenderingModule& debugRenderingModule = m_world.GetDebugRenderingModule();
+	
+    return new Examples::ReadHeadingExample(
 		m_world,
 		m_globeCameraController,
-		m_world.GetDebugRenderer(),
+		debugRenderingModule.GetDebugRenderer(),
 		m_world.GetLocationService()
 	);
 }

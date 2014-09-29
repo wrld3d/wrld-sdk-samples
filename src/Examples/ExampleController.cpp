@@ -166,6 +166,11 @@ void ExampleController::DestroyCurrentExample()
 	}
 }
 
+const Eegeo::Camera::RenderCamera& ExampleController::GetCurrentActiveCamera() const
+{
+    return m_pCurrentExample->GetRenderCamera();
+}
+
 bool ExampleController::Event_TouchRotate(const AppInterface::RotateData& data)
 {
 	if(m_pCurrentExample != NULL)

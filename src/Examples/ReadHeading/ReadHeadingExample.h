@@ -17,6 +17,7 @@ private:
     Eegeo::EegeoWorld& m_world;
 	Eegeo::DebugRendering::DebugRenderer& m_debugRenderer;
     Eegeo::Location::ILocationService& m_locationService;
+    Eegeo::Camera::GlobeCamera::GlobeCameraController& m_cameraController;
 	GlobeCameraStateRestorer m_globeCameraStateRestorer;
 
 public:
@@ -41,6 +42,7 @@ public:
 	void Update(float dt);
 	void Draw() {}
 	void Suspend(){}
+    const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
 };
 }
 

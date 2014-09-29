@@ -18,6 +18,7 @@ namespace Examples
                                            Eegeo::DebugRendering::DebugRenderer& debugRenderer,
                                            Eegeo::Location::ILocationService& locationService)
     : m_world(eegeoWorld)
+    , m_cameraController(globeCameraController)
     , m_globeCameraStateRestorer(globeCameraController)
 	, m_debugRenderer(debugRenderer)
     , m_locationService(locationService)
@@ -41,5 +42,10 @@ namespace Examples
     	{
     		EXAMPLE_LOG("Unable to read heading from device.\n");
     	}
+    }
+    
+    const Eegeo::Camera::RenderCamera& ReadHeadingExample::GetRenderCamera() const
+    {
+        return *m_cameraController.GetCamera();
     }
 }

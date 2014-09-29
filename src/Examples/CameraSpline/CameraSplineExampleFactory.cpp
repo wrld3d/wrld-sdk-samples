@@ -6,6 +6,8 @@
 #include "GlobeCameraController.h"
 #include "ResourceCeilingProvider.h"
 
+#include "MapModule.h"
+
 using namespace Examples;
 
 CameraSplineExampleFactory::CameraSplineExampleFactory(Eegeo::EegeoWorld& world,
@@ -18,9 +20,11 @@ CameraSplineExampleFactory::CameraSplineExampleFactory(Eegeo::EegeoWorld& world,
 
 IExample* CameraSplineExampleFactory::CreateExample() const
 {
+    Eegeo::Modules::Map::MapModule& mapModule = m_world.GetMapModule();
+    
 	return new Examples::CameraSplineExample(m_world,
                                              m_globeCameraController,
-                                             m_world.GetResourceCeilingProvider());
+                                             mapModule.GetResourceCeilingProvider());
 }
 
 std::string CameraSplineExampleFactory::ExampleName() const

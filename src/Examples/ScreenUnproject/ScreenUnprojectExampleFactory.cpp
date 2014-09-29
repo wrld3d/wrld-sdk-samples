@@ -3,6 +3,9 @@
 #include "ScreenUnprojectExampleFactory.h"
 #include "ScreenUnprojectExample.h"
 
+#include "DebugRenderingModule.h"
+#include "TerrainModelModule.h"
+
 using namespace Examples;
 
 ScreenUnprojectExampleFactory::ScreenUnprojectExampleFactory(Eegeo::EegeoWorld& world,
@@ -15,10 +18,12 @@ ScreenUnprojectExampleFactory::ScreenUnprojectExampleFactory(Eegeo::EegeoWorld& 
 
 IExample* ScreenUnprojectExampleFactory::CreateExample() const
 {
-	return new Examples::ScreenUnprojectExample(m_world.GetRenderContext(),
-	        m_world.GetCameraProvider(),
-	        m_world.GetTerrainHeightProvider(),
-	        m_globeCameraController);
+    Eegeo::Modules::Core::DebugRenderingModule& debugRenderingModule = m_world.GetDebugRenderingModule();
+    Eegeo::Modules::Map::Layers::TerrainModelModule& terrainModelModule = m_world.GetTerrainModelModule();
+    
+	return new Examples::ScreenUnprojectExample(debugRenderingModule.GetDebugRenderer(),
+                                                terrainModelModule.GetTerrainHeightProvider(),
+                                                m_globeCameraController);
 }
 
 std::string ScreenUnprojectExampleFactory::ExampleName() const

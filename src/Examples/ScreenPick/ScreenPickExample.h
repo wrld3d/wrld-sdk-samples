@@ -21,17 +21,18 @@ namespace Examples
 class ScreenPickExample : public IExample
 {
 private:
-	Eegeo::DebugRendering::SphereMesh* m_pSphere;
-	Eegeo::Rendering::RenderContext& m_renderContext;
-	Eegeo::Camera::ICameraProvider& m_cameraProvider;
+
 	Eegeo::Resources::Terrain::Collision::TerrainRayPicker* m_pRayPicker;
+    Eegeo::DebugRendering::DebugRenderer& m_debugRenderer;
+    Eegeo::Camera::GlobeCamera::GlobeCameraController& m_cameraController;
 	GlobeCameraStateRestorer m_globeCameraStateRestorer;
+    
+    Eegeo::dv3 m_spherePosition;
 
 public:
-	ScreenPickExample(Eegeo::Rendering::RenderContext& renderContext,
-	                  Eegeo::Camera::ICameraProvider& cameraProvider,
-	                  Eegeo::Resources::Terrain::Heights::TerrainHeightProvider& terrainHeightProvider,
+	ScreenPickExample(Eegeo::Resources::Terrain::Heights::TerrainHeightProvider& terrainHeightProvider,
 	                  const Eegeo::Resources::Terrain::Collision::ICollisionMeshResourceProvider& collisionMeshResourceProvider,
+                      Eegeo::DebugRendering::DebugRenderer& debugRenderer,
 	                  Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController);
 
 	virtual ~ScreenPickExample();
@@ -49,6 +50,7 @@ public:
 	void Update(float dt);
 	void Draw();
 	void Suspend();
+    const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
 
 	bool Event_TouchTap(const AppInterface::TapData& data);
 };

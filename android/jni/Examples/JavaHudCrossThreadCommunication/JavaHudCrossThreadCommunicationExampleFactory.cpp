@@ -4,6 +4,8 @@
 #include "JavaHudCrossThreadCommunicationExample.h"
 #include "JavaHudCrossThreadCommunicationProxy.h"
 
+#include "CityThemesModule.h"
+
 using namespace Examples;
 
 JavaHudCrossThreadCommunicationExampleFactory::JavaHudCrossThreadCommunicationExampleFactory(
@@ -19,11 +21,13 @@ JavaHudCrossThreadCommunicationExampleFactory::JavaHudCrossThreadCommunicationEx
 
 IExample* JavaHudCrossThreadCommunicationExampleFactory::CreateExample() const
 {
+	Eegeo::Modules::Map::CityThemesModule& cityThemesModule = m_world.GetCityThemesModule();
+
 	return new Examples::JavaHudCrossThreadCommunicationExample(
 	           m_nativeState,
-	           m_world.GetCityThemesService(),
-	           m_world.GetCityThemesRepository(),
-	           m_world.GetCityThemesUpdater(),
+	           cityThemesModule.GetCityThemesService(),
+	           cityThemesModule.GetCityThemesRepository(),
+	           cityThemesModule.GetCityThemesUpdater(),
 	           m_globeCameraController);
 }
 

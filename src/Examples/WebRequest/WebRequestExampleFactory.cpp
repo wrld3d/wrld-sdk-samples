@@ -3,6 +3,8 @@
 #include "WebRequestExampleFactory.h"
 #include "WebRequestExample.h"
 
+#include "IPlatformAbstractionModule.h"
+
 using namespace Examples;
 
 WebRequestExampleFactory::WebRequestExampleFactory(Eegeo::EegeoWorld& world,
@@ -15,7 +17,9 @@ WebRequestExampleFactory::WebRequestExampleFactory(Eegeo::EegeoWorld& world,
 
 IExample* WebRequestExampleFactory::CreateExample() const
 {
-	return new Examples::WebRequestExample(m_world.GetWebRequestFactory(),
+    Eegeo::Modules::IPlatformAbstractionModule& platformAbstractionModule = m_world.GetPlatformAbstractionModule();
+    
+	return new Examples::WebRequestExample(platformAbstractionModule.GetWebLoadRequestFactory(),
 	                                       m_globeCameraController);
 }
 

@@ -3,6 +3,11 @@
 #include "ScreenPickExampleFactory.h"
 #include "ScreenPickExample.h"
 
+#include "CollisionMeshResourceRepository.h"
+
+#include "TerrainModelModule.h"
+#include "DebugRenderingModule.h"
+
 using namespace Examples;
 
 ScreenPickExampleFactory::ScreenPickExampleFactory(Eegeo::EegeoWorld& world,
@@ -15,10 +20,12 @@ ScreenPickExampleFactory::ScreenPickExampleFactory(Eegeo::EegeoWorld& world,
 
 IExample* ScreenPickExampleFactory::CreateExample() const
 {
-	return new Examples::ScreenPickExample(m_world.GetRenderContext(),
-	                                       m_world.GetCameraProvider(),
-	                                       m_world.GetTerrainHeightProvider(),
-	                                       m_world.GetCollisionMeshResourceProvider(),
+    Eegeo::Modules::Map::Layers::TerrainModelModule& terrainModelModule = m_world.GetTerrainModelModule();
+    Eegeo::Modules::Core::DebugRenderingModule& debugRenderingModule = m_world.GetDebugRenderingModule();
+    
+	return new Examples::ScreenPickExample(terrainModelModule.GetTerrainHeightProvider(),
+	                                       terrainModelModule.GetCollisionMeshResourceRepository(),
+                                           debugRenderingModule.GetDebugRenderer(),
 	                                       m_globeCameraController);
 }
 

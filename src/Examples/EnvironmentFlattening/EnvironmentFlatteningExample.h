@@ -15,6 +15,7 @@ private:
 	bool m_scaleUp;
 	Eegeo::Rendering::EnvironmentFlatteningService& m_environmentFlatteningService;
 	float m_initialEnvironmentScale;
+    Eegeo::Camera::GlobeCamera::GlobeCameraController& m_cameraController;
 	GlobeCameraStateRestorer m_globeCameraStateRestorer;
 
 public:
@@ -34,6 +35,7 @@ public:
 	void Update(float dt);
 	void Draw() {}
 	void Suspend();
+    const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
 };
 }
 

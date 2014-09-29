@@ -12,6 +12,7 @@ FileIOExample::FileIOExample(IFileIO& fileIO,
                              Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController)
 	:m_fileIO(fileIO)
 	,m_globeCameraStateRestorer(cameraController)
+    ,m_cameraController(cameraController)
 {
 }
 
@@ -59,5 +60,10 @@ void FileIOExample::Start()
 	Eegeo_TTY("Deleting %s %s!\n", filename.c_str(), deleted ? "succeeded" : "failed");
 
 	Eegeo_TTY("Done!\n");
+}
+    
+const Eegeo::Camera::RenderCamera& FileIOExample::GetRenderCamera() const
+{
+    return *m_cameraController.GetCamera();
 }
 }

@@ -10,8 +10,7 @@
 #include "NavigationGraphRemovalCallback.h"
 #include "NavigationGraph.h"
 #include "DebugRendering.h"
-#include "RenderContext.h"
-
+#include "GLState.h"
 
 namespace Examples
 {
@@ -44,7 +43,7 @@ private:
 	void HandleAddedGraph(const Eegeo::Resources::Roads::Navigation::NavigationGraph& navGraph);
 	void HandleRemovedGraph(const Eegeo::Resources::Roads::Navigation::NavigationGraph& navGraph);
 
-	Eegeo::Rendering::RenderContext& m_renderContext;
+    Eegeo::Camera::GlobeCamera::GlobeCameraController& m_cameraController;
 	Eegeo::Resources::Roads::Navigation::NavigationGraphRepository& m_navigationGraphRepository;
 	GlobeCameraStateRestorer m_globeCameraStateRestorer;
 
@@ -53,8 +52,7 @@ private:
 	MapType m_navGraphsToVisualisers;
 
 public:
-	NavigationGraphExample(Eegeo::Rendering::RenderContext& renderContext,
-	                       Eegeo::Resources::Roads::Navigation::NavigationGraphRepository& navigationGraphRepository,
+	NavigationGraphExample(Eegeo::Resources::Roads::Navigation::NavigationGraphRepository& navigationGraphRepository,
 	                       Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController);
 
 	static std::string GetName()
@@ -65,11 +63,12 @@ public:
 	{
 		return GetName();
 	}
-
+    
 	void Start();
 	void Update(float dt) {}
 	void Draw();
 	void Suspend();
+    const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
 };
 }
 

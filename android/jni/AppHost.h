@@ -15,7 +15,6 @@
 #include "AndroidLocationService.h"
 #include "IJpegLoader.h"
 #include "AndroidUrlEncoder.h"
-#include "GlobeCameraInterestPointProvider.h"
 #include "TerrainHeightProvider.h"
 #include "AndroidInputHandler.h"
 #include "AndroidInputBoxFactory.h"
@@ -73,11 +72,10 @@ public:
 private:
 	Eegeo::Blitter* m_pBlitter;
     Eegeo::Helpers::Jpeg::IJpegLoader* m_pJpegLoader;
-	Eegeo::Rendering::RenderContext* m_pRenderContext;
 	Eegeo::Android::AndroidLocationService* m_pAndroidLocationService;
+	Eegeo::Rendering::ScreenProperties* m_pScreenProperties;
 	Eegeo::EegeoWorld* m_pWorld;
 	AndroidNativeState& m_nativeState;
-	Eegeo::Camera::GlobeCamera::GlobeCameraInterestPointProvider* m_pInterestPointProvider;
 	AppInputDelegate* m_pAppInputDelegate;
 
 	Eegeo::Android::Input::AndroidInputHandler m_inputHandler;

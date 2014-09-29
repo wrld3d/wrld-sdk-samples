@@ -57,11 +57,9 @@ private:
 	Eegeo::Routes::RouteService& m_routeService;
 	Eegeo::Routes::Simulation::RouteSimulationService& m_routeSimulationService;
 	Eegeo::Routes::Simulation::View::RouteSimulationViewService& m_routeSimulationViewService;
-	Eegeo::Rendering::GLState& m_glState;
 	Eegeo::Helpers::IFileIO& m_fileIO;
 	Eegeo::Rendering::AsyncTexturing::IAsyncTextureRequestor& m_textureRequestor;
 	Eegeo::Camera::GlobeCamera::GlobeCameraController& m_defaultCamera;
-	Eegeo::Location::IInterestPointProvider& m_interestPointProvider;
 	Eegeo::Routes::Simulation::Camera::RouteSimulationGlobeCameraControllerFactory& m_routeSimulationGlobeCameraControllerFactory;
 	Eegeo::EegeoWorld& m_world;
 	const IRouteSimulationExampleViewFactory& m_routeSimulationExampleViewFactory;
@@ -98,11 +96,9 @@ public:
 	RouteSimulationExample(Eegeo::Routes::RouteService& routeService,
 	                       Eegeo::Routes::Simulation::RouteSimulationService& routeSimulationService,
 	                       Eegeo::Routes::Simulation::View::RouteSimulationViewService& routeSimulationViewService,
-	                       Eegeo::Rendering::GLState& glState,
 	                       Eegeo::Helpers::IFileIO& fileIO,
 	                       Eegeo::Rendering::AsyncTexturing::IAsyncTextureRequestor& textureRequestor,
 	                       Eegeo::Camera::GlobeCamera::GlobeCameraController& defaultCamera,
-	                       Eegeo::Location::IInterestPointProvider& interestPointProvider,
 	                       Eegeo::Routes::Simulation::Camera::RouteSimulationGlobeCameraControllerFactory& routeSimulationGlobeCameraControllerFactory,
 	                       const IRouteSimulationExampleViewFactory& routeSimulationExampleViewFactory,
 	                       Eegeo::EegeoWorld& eegeoWorld);
@@ -121,6 +117,7 @@ public:
 	void Update(float dt);
 	void Draw() {}
 	void Suspend();
+    const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
 
 	bool Event_TouchRotate 			(const AppInterface::RotateData& data);
 	bool Event_TouchRotate_Start	(const AppInterface::RotateData& data);

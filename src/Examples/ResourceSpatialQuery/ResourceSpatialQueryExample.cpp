@@ -1,15 +1,14 @@
 // Copyright eeGeo Ltd (2012-2014), All Rights Reserved
 
 #include "ResourceSpatialQueryExample.h"
-#include "IInterestPointProvider.h"
+#include "RenderCamera.h"
 
 using namespace Examples;
 
 ResourceSpatialQueryExample::ResourceSpatialQueryExample(Eegeo::Resources::ResourceSpatialQueryService& resourceSpatialQueryService,
-        Eegeo::Location::IInterestPointProvider& interestPointProvider,
         Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController)
 	:m_resourceSpatialQueryService(resourceSpatialQueryService)
-	,m_interestPointProvider(interestPointProvider)
+    ,m_cameraController(cameraController)
 	,m_numBuildings(0)
 	,m_key(0)
 	,m_globeCameraStateRestorer(cameraController)
@@ -19,7 +18,7 @@ ResourceSpatialQueryExample::ResourceSpatialQueryExample(Eegeo::Resources::Resou
 
 void ResourceSpatialQueryExample::Update(float dt)
 {
-	Eegeo::dv3 ecefPointOfInterest = m_interestPointProvider.GetEcefInterestPoint();
+	Eegeo::dv3 ecefPointOfInterest = m_cameraController.GetEcefInterestPoint();
 
 	Eegeo::Streaming::MortonKey lastKey = m_key;
 
@@ -44,4 +43,9 @@ void ResourceSpatialQueryExample::Update(float dt)
 			          m_key.Depth());
 		}
 	}
+}
+
+const Eegeo::Camera::RenderCamera& ResourceSpatialQueryExample::GetRenderCamera() const
+{
+    return *m_cameraController.GetCamera();
 }

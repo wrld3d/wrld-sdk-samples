@@ -54,10 +54,10 @@ private:
     ViewController& m_viewController;
 	Eegeo::Blitter* m_pBlitter;
     Eegeo::Helpers::Jpeg::IJpegLoader* m_pJpegLoader;
-	Eegeo::Rendering::RenderContext* m_pRenderContext;
 	Eegeo::iOS::iOSLocationService* m_piOSLocationService;
+    Eegeo::Rendering::ScreenProperties* m_pScreenProperties;
 	Eegeo::EegeoWorld* m_pWorld;
-	Eegeo::Camera::GlobeCamera::GlobeCameraInterestPointProvider* m_pInterestPointProvider;
+    
 	AppInputDelegate* m_pAppInputDelegate;
     AppLocationDelegate* m_pAppLocationDelegate;
 

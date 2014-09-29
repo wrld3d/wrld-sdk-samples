@@ -2,7 +2,13 @@
 
 #include "PODAnimationExampleFactory.h"
 #include "PODAnimationExample.h"
+
 #include "LocalAsyncTextureLoader.h"
+
+#include "IPlatformAbstractionModule.h"
+#include "RenderingModule.h"
+#include "AsyncLoadersModule.h"
+#include "LightingModule.h"
 
 using namespace Examples;
 
@@ -15,12 +21,19 @@ PODAnimationExampleFactory::PODAnimationExampleFactory(Eegeo::EegeoWorld& world,
 }
 
 IExample* PODAnimationExampleFactory::CreateExample() const
-{
-	return new Examples::PODAnimationExample(m_world.GetRenderContext(),
-	        m_world.GetFileIO(),
-	        m_world.GetLocalAsyncTextureLoader(),
-	        m_world.GetGlobalFogging(),
-	        m_globeCameraController);
+{ 
+    Eegeo::Modules::IPlatformAbstractionModule& platformAbstractioModule = m_world.GetPlatformAbstractionModule();
+    Eegeo::Modules::Core::RenderingModule& renderingModule = m_world.GetRenderingModule();
+    Eegeo::Modules::Core::AsyncLoadersModule& asyncLoadersModule = m_world.GetAsyncLoadersModule();
+    Eegeo::Modules::Core::LightingModule& lightingModule = m_world.GetLightingModule();
+    
+	return new Examples::PODAnimationExample(platformAbstractioModule.GetFileIO(),
+                                             asyncLoadersModule.GetLocalAsyncTextureLoader(),
+                                             lightingModule.GetGlobalFogging(),
+                                             renderingModule.GetRenderableFilters(),
+                                             renderingModule.GetNullMaterial(),
+                                             m_globeCameraController);
+    
 }
 
 std::string PODAnimationExampleFactory::ExampleName() const

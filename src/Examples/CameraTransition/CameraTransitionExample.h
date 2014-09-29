@@ -15,8 +15,7 @@ namespace Examples
 class CameraTransitioner
 {
 public:
-	CameraTransitioner(Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController,
-	                   Eegeo::Location::IInterestPointProvider& interestPointProvider);
+	CameraTransitioner(Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController);
 
 	void StartTransitionTo(Eegeo::dv3 newInterestPoint, double distanceFromInterest, bool jumpIfFarAway);
 	void StartTransitionTo(Eegeo::dv3 newInterestPoint, double distanceFromInterest, float newHeading, bool jumpIfFarAway);
@@ -32,7 +31,6 @@ private:
 	bool ShouldJumpTo(Eegeo::dv3 newInterestPoint);
 
 	Eegeo::Camera::GlobeCamera::GlobeCameraController& m_cameraController;
-	Eegeo::Location::IInterestPointProvider& m_interestPointProvider;
 	Eegeo::dv3 m_startTransitionInterestPoint;
 	Eegeo::dv3 m_endTransitionInterestPoint;
 	double m_startInterestDistance;
@@ -51,16 +49,13 @@ class CameraTransitionExample : public IExample
 {
 private:
 	Eegeo::Camera::GlobeCamera::GlobeCameraController& m_cameraController;
-	Eegeo::Location::IInterestPointProvider& m_interestPointProvider;
 	CameraTransitioner m_transitioner;
 	GlobeCameraStateRestorer m_globeCameraStateRestorer;
 	bool m_firstPoint;
-
 	void Transition();
 
 public:
-	CameraTransitionExample(Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController,
-	                        Eegeo::Location::IInterestPointProvider& interestPointProvider);
+	CameraTransitionExample(Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController);
 
 	static std::string GetName()
 	{
@@ -77,6 +72,8 @@ public:
 	void Draw() {}
 	void Suspend() {}
 
+    const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
+    
 	void UpdateCamera(Eegeo::Camera::GlobeCamera::GlobeCameraController* pGlobeCameraController,
 	                  Eegeo::Camera::GlobeCamera::GlobeCameraTouchController* pCameraTouchController,
 	                  float dt);

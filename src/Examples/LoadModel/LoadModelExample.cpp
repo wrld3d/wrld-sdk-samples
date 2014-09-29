@@ -8,33 +8,33 @@
 #include "Node.h"
 #include <sys/time.h>
 
+#include "GLState.h"
+
 namespace Examples
 {
 const size_t BoundsVisualiser::NumVerts = 8;
 const size_t BoundsVisualiser::NumIndices = 36;
 
-LoadModelExample::LoadModelExample(Eegeo::Rendering::RenderContext& renderContext,
-                                   Eegeo::Space::LatLongAltitude interestLocation,
+LoadModelExample::LoadModelExample(Eegeo::Space::LatLongAltitude interestLocation,
                                    Eegeo::Helpers::IFileIO& fileIO,
                                    Eegeo::Rendering::AsyncTexturing::IAsyncTextureRequestor& textureRequestor,
                                    Eegeo::Lighting::GlobalFogging& fogging,
                                    Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController)
-	:m_renderContext(renderContext)
-	,m_interestLocation(interestLocation)
+	:m_interestLocation(interestLocation)
 	,m_fileIO(fileIO)
 	,m_textureRequestor(textureRequestor)
 	,m_pModel(NULL)
-	,m_boundsVisualiser(renderContext)
 	,m_globalFogging(fogging)
 	,m_pDiscMaterial(NULL)
 	,m_elapsedTime(0.0f)
 	,m_globeCameraStateRestorer(cameraController)
+    ,m_cameraController(cameraController)
 {
 }
 
 void LoadModelExample::Start()
 {
-	m_pModel = Eegeo::Model::CreateFromPODFile("load_model_example/sanfrancisco_vehicles_alpha.POD", m_fileIO, m_renderContext.GetGLState(), &m_textureRequestor, "load_model_example/");
+	m_pModel = Eegeo::Model::CreateFromPODFile("load_model_example/sanfrancisco_vehicles_alpha.POD", m_fileIO, &m_textureRequestor, "load_model_example/");
 
 	//the layout of this resource is assumed - a "Vehicles" node should exist
 	Eegeo::Node* parentNode = m_pModel->FindNode("Vehicles");
@@ -108,8 +108,9 @@ void LoadModelExample::Draw()
 	Eegeo::v3 right(Eegeo::v3::Cross(up, forward).Norm());
 	up = Eegeo::v3::Cross(forward, right);
 
+    const Eegeo::Camera::RenderCamera& renderCamera = *m_cameraController.GetCamera();
 	//compute a camera local position
-	Eegeo::v3 cameraRelativePos = (m_mesh.m_positionEcef - m_renderContext.GetCameraOriginEcef()).ToSingle();
+	Eegeo::v3 cameraRelativePos = (m_mesh.m_positionEcef - renderCamera.GetEcefLocation()).ToSingle();
 
 	//generate a transform from this basis and position...
 	Eegeo::m44 cameraRelativeTransform;
@@ -130,22 +131,22 @@ void LoadModelExample::Draw()
 	m_mesh.m_pNode->UpdateBBRecursive();
 
 	// Enable z buffering.
-	Eegeo::Rendering::GLState& glState = m_renderContext.GetGLState();
+	Eegeo::Rendering::GLState glState;
+    glState.InvalidateAll();
 	glState.DepthTest.Enable();
 	glState.DepthFunc(GL_LEQUAL);
 	glState.DepthMask(GL_TRUE);
-
+    
 	//draw the mesh
-	m_mesh.m_pNode->DrawRecursive(m_renderContext, m_globalFogging, NULL, true, true);
+	m_mesh.m_pNode->DrawRecursive(glState, m_globalFogging, NULL, true, true);
 
 	Eegeo::v3 min, max;
 	m_mesh.m_pNode->GetMinExtent(min);
 	m_mesh.m_pNode->GetMaxExtent(max);
-	m_boundsVisualiser.Draw(min, max);
+	m_boundsVisualiser.Draw(min, max, renderCamera);
 }
 
-BoundsVisualiser::BoundsVisualiser(Eegeo::Rendering::RenderContext& renderContext)
-	:m_renderContext(renderContext)
+BoundsVisualiser::BoundsVisualiser()
 {
 	CompileShaders();
 }
@@ -306,7 +307,7 @@ void BoundsVisualiser::DestroyGeometry()
 	m_glIndexBuffer = 0;
 }
 
-void BoundsVisualiser::Draw(const Eegeo::v3& minExtents, const Eegeo::v3& maxExtents)
+void BoundsVisualiser::Draw(const Eegeo::v3& minExtents, const Eegeo::v3& maxExtents, const Eegeo::Camera::RenderCamera& renderCamera)
 {
 	Build(minExtents, maxExtents);
 
@@ -315,7 +316,7 @@ void BoundsVisualiser::Draw(const Eegeo::v3& minExtents, const Eegeo::v3& maxExt
 	Eegeo::m44 mvp;
 	Eegeo::m44 w;
 	w.Identity();
-	Eegeo::m44::Mul(mvp, m_renderContext.GetViewProjectionMatrix(), w);
+	Eegeo::m44::Mul(mvp, renderCamera.GetViewProjectionMatrix(), w);
 
 	Eegeo_GL(glUniformMatrix4fv(m_pShader->m_mvpUniform, 1, 0, (const GLfloat*)&mvp));
 
@@ -337,4 +338,9 @@ void BoundsVisualiser::Draw(const Eegeo::v3& minExtents, const Eegeo::v3& maxExt
 	DestroyGeometry();
 }
 
+    const Eegeo::Camera::RenderCamera& LoadModelExample::GetRenderCamera() const
+    {
+        return *m_cameraController.GetCamera();
+    }
+    
 }

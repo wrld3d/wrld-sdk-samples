@@ -11,13 +11,13 @@ using namespace Eegeo;
 using namespace Eegeo::Routes;
 
 RouteThicknessPolicyExample::RouteThicknessPolicyExample(RouteService& routeService,
-        Eegeo::Rendering::RenderContext& renderContext,
         EegeoWorld& world,
         Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController)
 	:m_routeService(routeService)
 	,m_world(world)
 	,m_createdRoutes(false)
-	,m_linearAltitudeBasedRouteThicknessPolicy(renderContext)
+    ,m_linearAltitudeBasedRouteThicknessPolicy(*cameraController.GetCamera())
+    ,m_cameraController(cameraController)
 	,m_globeCameraStateRestorer(cameraController)
 {
 	Eegeo::Space::EcefTangentBasis cameraInterestBasis;
@@ -134,4 +134,9 @@ void RouteThicknessPolicyExample::Suspend()
 
 	m_routes.clear();
 	m_createdRoutes = false;
+}
+
+const Eegeo::Camera::RenderCamera& RouteThicknessPolicyExample::GetRenderCamera() const
+{
+    return *m_cameraController.GetCamera();
 }

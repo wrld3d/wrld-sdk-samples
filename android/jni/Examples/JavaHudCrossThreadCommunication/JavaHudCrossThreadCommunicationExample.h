@@ -19,6 +19,7 @@ class JavaHudCrossThreadCommunicationExample : public IExample
 	Eegeo::Resources::CityThemes::ICityThemeRepository& m_themeRepository;
 	Eegeo::Resources::CityThemes::ICityThemesUpdater& m_themeUpdater;
 	Eegeo::Resources::CityThemes::CityThemeData m_initialCityTheme;
+	Eegeo::Camera::GlobeCamera::GlobeCameraController& m_cameraController;
 	GlobeCameraStateRestorer m_globeCameraStateRestorer;
 
 	jclass m_themeReaderWriterHudClass;
@@ -50,6 +51,7 @@ public:
 	void Update(float dt) {}
 	void Draw() {}
 	void Suspend();
+	const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
 };
 }
 

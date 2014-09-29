@@ -21,6 +21,7 @@ RouteMatchingExample::RouteMatchingExample(RouteService& routeService,
 	,m_routeMatchingViewFactory(routeMatchingViewFactory)
 	,m_pRouteMatchingView(NULL)
 	,m_toggleRouteMatchingHandler(this, &RouteMatchingExample::ToggleMatching)
+    ,m_cameraController(cameraController)
 	,m_globeCameraStateRestorer(cameraController)
 {
 	Eegeo::Space::EcefTangentBasis cameraInterestBasis;
@@ -152,6 +153,11 @@ void RouteMatchingExample::Suspend()
 	Eegeo_DELETE m_pRouteMatchingView;
 
 	m_pRouteMatchingView = NULL;
+}
+
+const Eegeo::Camera::RenderCamera& RouteMatchingExample::GetRenderCamera() const
+{
+    return *m_cameraController.GetCamera();
 }
 
 void RouteMatchingExample::ToggleMatching()

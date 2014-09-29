@@ -46,6 +46,7 @@ class ShowJavaPlaceJumpUIExample : public IExample
 	std::map<std::string, ViewLocation> m_locations;
 	AndroidNativeState& m_nativeState;
 	Eegeo::Camera::ICameraJumpController& m_cameraJumpController;
+	Eegeo::Camera::GlobeCamera::GlobeCameraController& m_cameraController;
 	GlobeCameraStateRestorer m_globeCameraStateRestorer;
 
 	jclass m_placeJumpMenuClass;
@@ -75,6 +76,7 @@ public:
 	void Update(float dt);
 	void Draw() {}
 	void Suspend();
+	const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
 };
 }
 

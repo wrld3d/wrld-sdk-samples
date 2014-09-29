@@ -16,6 +16,7 @@ EnvironmentFlatteningExample::EnvironmentFlatteningExample(Eegeo::Rendering::Env
 	,m_scaleUp(true)
 	,m_initialEnvironmentScale(environmentFlatteningService.GetCurrentScale())
 	,m_globeCameraStateRestorer(cameraController)
+    ,m_cameraController(cameraController)
 {
 }
 
@@ -44,4 +45,9 @@ void EnvironmentFlatteningExample::Update(float dt)
 	}
 
 	m_environmentFlatteningService.SetCurrentScale(scale);
+}
+
+const Eegeo::Camera::RenderCamera& EnvironmentFlatteningExample::GetRenderCamera() const
+{
+    return *m_cameraController.GetCamera();
 }

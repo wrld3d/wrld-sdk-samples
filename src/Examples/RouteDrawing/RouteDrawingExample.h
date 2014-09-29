@@ -21,6 +21,7 @@ private:
 	bool m_createdRoutes;
 	std::vector<Eegeo::Routes::Route*> m_routes;
 	Eegeo::Routes::Style::Thickness::IdentityRouteThicknessPolicy m_routeThicknessPolicy;
+    Eegeo::Camera::GlobeCamera::GlobeCameraController& m_cameraController;
 	GlobeCameraStateRestorer m_globeCameraStateRestorer;
 
 public:
@@ -41,6 +42,7 @@ public:
 	void Update(float dt);
 	void Draw() {}
 	void Suspend();
+    const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
 };
 }
 

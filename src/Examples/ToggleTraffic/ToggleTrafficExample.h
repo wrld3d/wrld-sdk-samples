@@ -13,6 +13,7 @@ class ToggleTrafficExample : public IExample
 private:
 	long long m_lastToggle;
 	Eegeo::Traffic::TrafficSimulationController& m_trafficSimulation;
+    Eegeo::Camera::GlobeCamera::GlobeCameraController& m_cameraController;
 	GlobeCameraStateRestorer m_globeCameraStateRestorer;
 
 public:
@@ -32,6 +33,7 @@ public:
 	void Update(float dt);
 	void Draw() {}
 	void Suspend();
+    const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
 };
 }
 

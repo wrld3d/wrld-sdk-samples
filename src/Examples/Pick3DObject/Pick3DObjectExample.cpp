@@ -2,25 +2,28 @@
 
 #include "Pick3DObjectExample.h"
 #include "Plane.h"
-#include "ICameraProvider.h"
 #include "RenderCamera.h"
+#include "ScreenProperties.h"
+#include "DebugRenderer.h"
 
 #define SPHERE_RADIUS 20.0
-#define UNPICKED_COLOUR Eegeo::v3(1.0f, 0.0f, 1.0f)
-#define PICKED_COLOUR Eegeo::v3(1.0f, 1.0f, 0.0f)
+#define UNPICKED_COLOUR Eegeo::v4(1.0f, 0.0f, 1.0f, 0.8f)
+#define PICKED_COLOUR Eegeo::v4(1.0f, 1.0f, 0.0f, 0.8f)
 
 namespace Examples
 {
-Pick3DObjectExample::Pick3DObjectExample(Eegeo::Rendering::RenderContext& renderContext,
-        Eegeo::Space::LatLongAltitude interestLocation,
-        Eegeo::Camera::ICameraProvider& cameraProvider,
-        Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController)
-	:m_renderContext(renderContext)
-	,m_interestLocation(interestLocation)
-	,m_cameraProvider(cameraProvider)
-	,m_movingObject(false)
+Pick3DObjectExample::Pick3DObjectExample(Eegeo::Space::LatLongAltitude interestLocation,
+                                         const Eegeo::Rendering::ScreenProperties& screenProperties,
+                                         Eegeo::DebugRendering::DebugRenderer& debugRenderer,
+                                         Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController
+                                         )
+	:m_interestLocation(interestLocation)
+    ,m_movingObject(false)
 	,m_pObject(NULL)
 	,m_globeCameraStateRestorer(cameraController)
+    ,m_cameraController(cameraController)
+    ,m_screenProperties(screenProperties)
+    ,m_debugRenderer(debugRenderer)
 {
 
 }
@@ -33,7 +36,7 @@ void Pick3DObjectExample::Start()
 	objectStartLocation.SetAltitude(200.0f);
 	m_objectLocationEcef = objectStartLocation.ToECEF();
 
-	CreateSphereAtLocation(m_objectLocationEcef, UNPICKED_COLOUR);
+    m_objectColor = UNPICKED_COLOUR;
 }
 
 void Pick3DObjectExample::Suspend()
@@ -44,12 +47,11 @@ void Pick3DObjectExample::Suspend()
 
 void Pick3DObjectExample::Update(float dt)
 {
-	m_pObject->SetPositionECEF(m_objectLocationEcef);
+	m_debugRenderer.DrawSphere(m_objectLocationEcef, 50.f, m_objectColor);
 }
 
 void Pick3DObjectExample::Draw()
 {
-	m_pObject->Draw(m_renderContext);
 }
 
 bool Pick3DObjectExample::Event_TouchPan(const AppInterface::PanData& data)
@@ -63,7 +65,7 @@ bool Pick3DObjectExample::Event_TouchDown(const AppInterface::TouchData& data)
 
 	if(insideSphere)
 	{
-		CreateSphereAtLocation(m_objectLocationEcef, PICKED_COLOUR);
+		m_objectColor = PICKED_COLOUR;
 		m_movingObject = true;
 	}
 
@@ -74,18 +76,18 @@ bool Pick3DObjectExample::Event_TouchUp(const AppInterface::TouchData& data)
 {
 	m_movingObject = false;
 
-	CreateSphereAtLocation(m_objectLocationEcef, UNPICKED_COLOUR);
+	m_objectColor = UNPICKED_COLOUR;
 
 	return m_movingObject;
 }
 
 void Pick3DObjectExample::CreateWorldSpaceRayFromScreen(const Eegeo::v2& screenPoint, Ray& ray)
 {
-	const Eegeo::Camera::RenderCamera& renderCamera = m_cameraProvider.GetRenderCamera();
+	const Eegeo::Camera::RenderCamera& renderCamera = *m_cameraController.GetCamera();
 
 	//normalize the point
-	double nx = 2.0 * screenPoint.GetX() / m_renderContext.GetScreenWidth() - 1;
-	double ny = - 2.0 * screenPoint.GetY() / m_renderContext.GetScreenHeight() + 1;
+	double nx = 2.0 * screenPoint.GetX() / m_screenProperties.GetScreenWidth() - 1;
+	double ny = - 2.0 * screenPoint.GetY() / m_screenProperties.GetScreenHeight() + 1;
 
 	//prepare near and far points
 	Eegeo::v4 near(nx, ny, 0.0f, 1.0);
@@ -152,18 +154,10 @@ bool Pick3DObjectExample::IsScreenPointInsideModel(const Eegeo::v2& screenPoint)
 
 	return true;
 }
+    
+    const Eegeo::Camera::RenderCamera& Pick3DObjectExample::GetRenderCamera() const
+    {
+        return *m_cameraController.GetCamera();
+    }
 
-void Pick3DObjectExample::CreateSphereAtLocation(const Eegeo::dv3& location, const Eegeo::v3& colour)
-{
-	//assumes sphere is null if not validly allocated so this delete is always safe
-	Eegeo_DELETE m_pObject;
-
-	m_pObject = new Eegeo::DebugRendering::SphereMesh(m_renderContext,
-	        SPHERE_RADIUS,
-	        16, 16, //tessellation parameters
-	        m_objectLocationEcef,
-	        NULL, //no texture, just color
-	        colour);
-	m_pObject->Tesselate();
-}
 }

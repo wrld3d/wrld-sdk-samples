@@ -15,6 +15,7 @@ class WebRequestExample : public IExample
 {
 private:
 	Eegeo::Web::IWebLoadRequestFactory& m_webRequestFactory;
+    Eegeo::Camera::GlobeCamera::GlobeCameraController& m_cameraController;
 	GlobeCameraStateRestorer m_globeCameraStateRestorer;
 
 public:
@@ -34,6 +35,7 @@ public:
 	void Update(float dt) {}
 	void Draw() {}
 	void Suspend() {}
+    const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
 };
 }
 

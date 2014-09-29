@@ -2,7 +2,8 @@
 
 #include "DebugPrimitiveRenderingExampleFactory.h"
 #include "DebugPrimitiveRenderingExample.h"
-#include "ICameraProvider.h"
+
+#include "DebugRenderingModule.h"
 
 using namespace Examples;
 
@@ -16,8 +17,9 @@ DebugPrimitiveRenderingExampleFactory::DebugPrimitiveRenderingExampleFactory(Eeg
 
 IExample* DebugPrimitiveRenderingExampleFactory::CreateExample() const
 {
-	return new Examples::DebugPrimitiveRenderingExample(m_world.GetDebugRenderer(),
-            m_world.GetCameraProvider().GetRenderCamera(),
+    Eegeo::Modules::Core::DebugRenderingModule& debugRenderingModule = m_world.GetDebugRenderingModule();
+    
+	return new Examples::DebugPrimitiveRenderingExample(debugRenderingModule.GetDebugRenderer(),
 	        m_globeCameraController);
 }
 

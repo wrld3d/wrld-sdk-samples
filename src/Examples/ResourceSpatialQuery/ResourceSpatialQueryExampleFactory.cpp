@@ -16,7 +16,6 @@ ResourceSpatialQueryExampleFactory::ResourceSpatialQueryExampleFactory(Eegeo::Ee
 IExample* ResourceSpatialQueryExampleFactory::CreateExample() const
 {
 	return new Examples::ResourceSpatialQueryExample(m_world.GetResourceSpatialQueryService(),
-	        m_world.GetInterestPointProvider(),
 	        m_globeCameraController);
 }
 

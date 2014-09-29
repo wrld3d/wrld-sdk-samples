@@ -4,7 +4,6 @@
 #include "AndroidWebRequestService.hpp"
 #include "LatLongAltitude.h"
 #include "EegeoWorld.h"
-#include "RenderContext.h"
 #include "AppInterface.h"
 #include "JpegLoader.h"
 #include "Blitter.h"
@@ -26,6 +25,7 @@
 #include "ExampleCameraJumpController.h"
 #include "ShowJavaPlaceJumpUIExampleFactory.h"
 #include "AndroidPlatformAbstractionModule.h"
+#include "ScreenProperties.h"
 
 using namespace Eegeo::Android;
 using namespace Eegeo::Android::Input;
@@ -41,10 +41,9 @@ AppHost::AppHost(
 )
 	:m_pBlitter(NULL)
     ,m_pJpegLoader(NULL)
-	,m_pRenderContext(NULL)
+	,m_pScreenProperties(NULL)
 	,m_pAndroidLocationService(NULL)
 	,m_pWorld(NULL)
-	,m_pInterestPointProvider(NULL)
 	,m_androidInputBoxFactory(&nativeState)
 	,m_androidKeyboardInputFactory(&nativeState, m_inputHandler)
 	,m_androidAlertBoxFactory(&nativeState)
@@ -59,8 +58,7 @@ AppHost::AppHost(
 
 	m_pAndroidLocationService = new AndroidLocationService(&nativeState);
 
-	m_pRenderContext = new Eegeo::Rendering::RenderContext();
-	m_pRenderContext->SetScreenDimensions(displayWidth, displayHeight, 1.0f, nativeState.deviceDpi);
+	m_pScreenProperties = new Eegeo::Rendering::ScreenProperties(displayWidth, displayHeight, 1.f, nativeState.deviceDpi);
 
 	std::set<std::string> customApplicationAssetDirectories;
 	customApplicationAssetDirectories.insert("load_model_example");
@@ -74,7 +72,6 @@ AppHost::AppHost(
 	m_pJpegLoader = new Eegeo::Helpers::Jpeg::JpegLoader();
 
 	m_pAndroidPlatformAbstractionModule = new Eegeo::Android::AndroidPlatformAbstractionModule(nativeState,
-																							   m_pRenderContext->GetGLState(),
 																							   *m_pJpegLoader,
 																							   display,
 																							   resourceBuildShareContext,
@@ -82,9 +79,8 @@ AppHost::AppHost(
 																							   customApplicationAssetDirectories);
 
 	Eegeo::EffectHandler::Initialise();
-	m_pBlitter = new Eegeo::Blitter(1024 * 128, 1024 * 64, 1024 * 32, *m_pRenderContext);
-	m_pBlitter->Initialise();
-	m_pInterestPointProvider = new Eegeo::Camera::GlobeCamera::GlobeCameraInterestPointProvider();
+	m_pBlitter = new Eegeo::Blitter(1024 * 128, 1024 * 64, 1024 * 32, m_pScreenProperties->GetScreenWidth(), m_pScreenProperties->GetScreenHeight());
+	m_pBlitter->Initialise();;
 
 	const Eegeo::EnvironmentCharacterSet::Type environmentCharacterSet = Eegeo::EnvironmentCharacterSet::Latin;
 	std::string deviceModel = std::string(nativeState.deviceModel, strlen(nativeState.deviceModel));
@@ -94,10 +90,9 @@ AppHost::AppHost(
 	    apiKey,
 	    *m_pAndroidPlatformAbstractionModule,
 	    *m_pJpegLoader,
-	    *m_pRenderContext,
+	    *m_pScreenProperties,
 	    *m_pAndroidLocationService,
 	    *m_pBlitter,
-	    *m_pInterestPointProvider,
 	    m_androidNativeUIFactories,
 	    environmentCharacterSet,
 	    config,
@@ -105,7 +100,7 @@ AppHost::AppHost(
 	    "Default-Landscape@2x~ipad.png");
 
 	m_pAndroidPlatformAbstractionModule->SetWebRequestServiceWorkPool(m_pWorld->GetWorkPool());
-	m_pInputProcessor = new Eegeo::Android::Input::AndroidInputProcessor(&m_inputHandler, m_pRenderContext->GetScreenWidth(), m_pRenderContext->GetScreenHeight());
+	m_pInputProcessor = new Eegeo::Android::Input::AndroidInputProcessor(&m_inputHandler, m_pScreenProperties->GetScreenWidth(), m_pScreenProperties->GetScreenHeight());
 
 	ConfigureExamples();
 
@@ -128,9 +123,6 @@ AppHost::~AppHost()
 	delete m_pWorld;
 	m_pWorld = NULL;
 
-	delete m_pInterestPointProvider;
-	m_pInterestPointProvider = NULL;
-
 	Eegeo::EffectHandler::Reset();
 	Eegeo::EffectHandler::Shutdown();
 	m_pBlitter->Shutdown();
@@ -143,8 +135,8 @@ AppHost::~AppHost()
 	delete m_pJpegLoader;
 	m_pJpegLoader = NULL;
 
-	delete m_pRenderContext;
-	m_pRenderContext = NULL;
+	delete m_pScreenProperties;
+	m_pScreenProperties = NULL;
 
 	delete m_pAndroidLocationService;
 	m_pAndroidLocationService = NULL;
@@ -184,7 +176,6 @@ void AppHost::Update(float dt)
 void AppHost::Draw(float dt)
 {
 	m_pApp->Draw(dt);
-	m_pInputProcessor->Update(dt);
 }
 
 void AppHost::ConfigureExamples()
@@ -192,7 +183,7 @@ void AppHost::ConfigureExamples()
 	m_pAndroidExampleControllerView = new Examples::AndroidExampleControllerView(m_nativeState);
 
 	m_pExampleController = new Examples::ExampleController(*m_pWorld, *m_pAndroidExampleControllerView);
-	m_pApp = new ExampleApp(m_pWorld, *m_pInterestPointProvider, *m_pExampleController);
+	m_pApp = new ExampleApp(m_pWorld, *m_pExampleController);
 
 	RegisterAndroidSpecificExamples();
 

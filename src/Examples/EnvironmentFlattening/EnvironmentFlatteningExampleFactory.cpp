@@ -3,6 +3,8 @@
 #include "EnvironmentFlatteningExampleFactory.h"
 #include "EnvironmentFlatteningExample.h"
 
+#include "MapModule.h"
+
 using namespace Examples;
 
 EnvironmentFlatteningExampleFactory::EnvironmentFlatteningExampleFactory(Eegeo::EegeoWorld& world,
@@ -15,7 +17,9 @@ EnvironmentFlatteningExampleFactory::EnvironmentFlatteningExampleFactory(Eegeo::
 
 IExample* EnvironmentFlatteningExampleFactory::CreateExample() const
 {
-	return new Examples::EnvironmentFlatteningExample(m_world.GetEnvironmentFlatteningService(),
+    Eegeo::Modules::Map::MapModule& mapModule = m_world.GetMapModule();
+    
+	return new Examples::EnvironmentFlatteningExample(mapModule.GetEnvironmentFlatteningService(),
 	        m_globeCameraController);
 }
 

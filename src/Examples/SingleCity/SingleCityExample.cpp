@@ -166,6 +166,11 @@ void SingleCityExample::ConstrainCamera()
 	if (tooHigh || tooFar)
 	{
 		// Also update the Streaming Volume as we'll have changed the position of the frustum.
-		m_streamingVolumeController.update(0.f);
+		m_streamingVolumeController.update(0.f, *m_globeCamera.GetCamera());
 	}
+}
+
+const Eegeo::Camera::RenderCamera& SingleCityExample::GetRenderCamera() const
+{
+    return *m_globeCamera.GetCamera();
 }

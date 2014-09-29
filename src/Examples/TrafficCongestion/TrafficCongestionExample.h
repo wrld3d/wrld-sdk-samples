@@ -15,6 +15,7 @@ private:
 	float m_timeAccumulator;
 	Eegeo::Streaming::MortonKey m_key;
 	int m_congestionValue;
+    Eegeo::Camera::GlobeCamera::GlobeCameraController& m_cameraController;
 	GlobeCameraStateRestorer m_globeCameraStateRestorer;
 
 public:
@@ -35,5 +36,6 @@ public:
 	void Update(float dt);
 	void Draw() {}
 	void Suspend();
+    const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
 };
 }

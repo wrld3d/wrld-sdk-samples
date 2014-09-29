@@ -53,18 +53,12 @@ namespace Examples
         // Loop the animation
         m_pSplineCameraController->SetLooped(true);
         
-        // Tell the SDK that we want to use the animated CameraSplinePlaybackController's camera for viewing the world.
-        m_world.SetCamera(m_pSplineCameraController->GetCamera());
-        
         // Start the animation
         m_pSplineCameraController->Begin();
     }
     
     void CameraSplineExample::Suspend()
     {
-        // Switch back to the normal camera.
-        m_world.SetCamera(m_globeCameraController.GetCamera());
-        
         // Stop the animation
         m_pSplineCameraController->Reset();
         
@@ -78,5 +72,10 @@ namespace Examples
     {
         // Update the camera spline animation
         m_pSplineCameraController->Update(dt);
+    }
+    
+    const Eegeo::Camera::RenderCamera& CameraSplineExample::GetRenderCamera() const
+    {
+        return *m_pSplineCameraController->GetCamera();
     }
 }

@@ -44,6 +44,7 @@ public:
 	void Update(float dt) { }
 	void Draw() {}
 	void Suspend();
+    const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
     
 	void UpdateCamera(Eegeo::Camera::GlobeCamera::GlobeCameraController* pGlobeCameraController,
 	                  Eegeo::Camera::GlobeCamera::GlobeCameraTouchController* pCameraTouchController,

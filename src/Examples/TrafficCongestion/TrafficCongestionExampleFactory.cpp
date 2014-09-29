@@ -3,6 +3,8 @@
 #include "TrafficCongestionExampleFactory.h"
 #include "TrafficCongestionExample.h"
 
+#include "TrafficModule.h"
+
 using namespace Examples;
 
 TrafficCongestionExampleFactory::TrafficCongestionExampleFactory(Eegeo::EegeoWorld& world,
@@ -15,7 +17,9 @@ TrafficCongestionExampleFactory::TrafficCongestionExampleFactory(Eegeo::EegeoWor
 
 IExample* TrafficCongestionExampleFactory::CreateExample() const
 {
-	return new Examples::TrafficCongestionExample(m_world.GetTrafficCongestionService(),
+    Eegeo::Modules::TrafficModule& trafficModule = m_world.GetTrafficModule();
+    
+	return new Examples::TrafficCongestionExample(trafficModule.GetTrafficCongestionService(),
 	        m_globeCameraController);
 }
 

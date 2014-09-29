@@ -16,10 +16,9 @@
 namespace Examples
 {
 DebugPrimitiveRenderingExample::DebugPrimitiveRenderingExample(Eegeo::DebugRendering::DebugRenderer &debugRenderer,
-        const Eegeo::Camera::RenderCamera& renderCamera,
         Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController)
 	:m_debugRenderer(debugRenderer)
-    ,m_camera(renderCamera)
+    ,m_camera(*cameraController.GetCamera())
 	,m_globeCameraStateRestorer(cameraController)
     ,m_frustumDrawTimer(0.0)
 {
@@ -102,5 +101,10 @@ void DebugPrimitiveRenderingExample::Draw()
 void DebugPrimitiveRenderingExample::Suspend()
 {
 
+}
+    
+const Eegeo::Camera::RenderCamera& DebugPrimitiveRenderingExample::GetRenderCamera() const
+{
+    return m_camera;
 }
 }

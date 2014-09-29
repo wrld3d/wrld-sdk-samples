@@ -3,24 +3,27 @@
 #include "EnvironmentNotifierExample.h"
 #include "CubeMapCellInfo.h"
 
+#include "DebugRenderer.h"
+
 #define SPHERE_HEIGHT_ABOVE_SEA 10.0
 
 namespace Examples
 {
 //EnvironmentNotifierExample//
-EnvironmentNotifierExample::EnvironmentNotifierExample(Eegeo::Rendering::RenderContext& renderContext,
+EnvironmentNotifierExample::EnvironmentNotifierExample(Eegeo::DebugRendering::DebugRenderer& debugRenderer,
         Eegeo::Resources::Terrain::TerrainStreaming& terrainStreaming,
         Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController)
-	:m_renderContext(renderContext)
-	,m_terrainStreaming(terrainStreaming)
+	:m_terrainStreaming(terrainStreaming)
 	,m_pObserver(NULL)
 	,m_globeCameraStateRestorer(cameraController)
+    ,m_cameraController(cameraController)
+    , m_debugRenderer(debugRenderer)
 {
 }
 
 void EnvironmentNotifierExample::Start()
 {
-	m_pObserver = new EnvironmentNotifierExampleTerrainStreamObserver(m_renderContext, m_renderables);
+	m_pObserver = new EnvironmentNotifierExampleTerrainStreamObserver(m_spheres, m_debugRenderer);
 	m_terrainStreaming.AddStreamingObserver(m_pObserver);
 }
 
@@ -33,20 +36,24 @@ void EnvironmentNotifierExample::Suspend()
 
 void EnvironmentNotifierExample::Update(float dt)
 {
+
 }
 
 
 void EnvironmentNotifierExample::Draw()
 {
-	//draw all the spheres
-	for(std::map<Eegeo::Streaming::MortonKey, Eegeo::DebugRendering::SphereMesh*>::iterator
-	        it = m_renderables.begin(); it != m_renderables.end(); ++ it)
-	{
-		Eegeo::DebugRendering::SphereMesh& mesh = *(*it).second;
-		mesh.Draw(m_renderContext);
-	}
+    for (TKeySphereMap::iterator it = m_spheres.begin(); it != m_spheres.end(); ++it)
+    {
+        const SphereData& sphere = it->second;
+        
+        m_debugRenderer.DrawSphere(sphere.position, 100.f, sphere.color);
+    }
 }
-
+    
+const Eegeo::Camera::RenderCamera& EnvironmentNotifierExample::GetRenderCamera() const
+{
+    return *m_cameraController.GetCamera();
+}
 
 //EnvironmentNotifierExampleTerrainStreamObserver///
 void EnvironmentNotifierExampleTerrainStreamObserver::AddSphere(const Eegeo::Streaming::MortonKey& key)
@@ -61,19 +68,11 @@ void EnvironmentNotifierExampleTerrainStreamObserver::AddSphere(const Eegeo::Str
 	Eegeo::dv3 up = worldSpaceCellCenter.Norm();
 	Eegeo::dv3 spherePosition = Eegeo::dv3::Scale(up, Eegeo::Space::EarthConstants::Radius + SPHERE_HEIGHT_ABOVE_SEA);
 
-	Eegeo::v3 color(1.f, 0.f, 1.f);
+	Eegeo::v4 color(1.f, 0.f, 1.f, 0.75f);
+    
+    SphereData sphereData(spherePosition, color);
 
-	Eegeo::DebugRendering::SphereMesh* sphere = new Eegeo::DebugRendering::SphereMesh(
-	    m_renderContext,
-	    20.0f,
-	    16, 16,
-	    spherePosition,
-	    NULL,
-	    color
-	);
-	sphere->Tesselate();
-
-	m_renderables.insert(std::make_pair(key,sphere));
+	m_spheres.insert(std::make_pair(key,sphereData));
 }
 
 void EnvironmentNotifierExampleTerrainStreamObserver::AddedStreamingResourceToSceneGraph(const Eegeo::Streaming::MortonKey& key)
@@ -85,6 +84,8 @@ void EnvironmentNotifierExampleTerrainStreamObserver::AddedStreamingResourceToSc
 void EnvironmentNotifierExampleTerrainStreamObserver::RemovedStreamingResourceFromSceneGraph(const Eegeo::Streaming::MortonKey& key)
 {
 	Eegeo_TTY("Removing Terrain Resource :: %s\n", key.ToString().c_str());
-	m_renderables.erase(key);
+	m_spheres.erase(key);
 }
+    
+
 }

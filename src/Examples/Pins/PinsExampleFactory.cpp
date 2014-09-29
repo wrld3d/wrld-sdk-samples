@@ -3,6 +3,11 @@
 #include "PinsExampleFactory.h"
 #include "PinsExample.h"
 
+#include "IPlatformAbstractionModule.h"
+#include "RenderingModule.h"
+#include "TerrainModelModule.h"
+#include "MapModule.h"
+
 using namespace Examples;
 
 PinsExampleFactory::PinsExampleFactory(Eegeo::EegeoWorld& world,
@@ -15,16 +20,20 @@ PinsExampleFactory::PinsExampleFactory(Eegeo::EegeoWorld& world,
 
 IExample* PinsExampleFactory::CreateExample() const
 {
-	return new Examples::PinsExample(m_world.GetTextureLoader(),
-	                                 m_world.GetGlBufferPool(),
-	                                 m_world.GetShaderIdGenerator(),
-	                                 m_world.GetMaterialIdGenerator(),
-	                                 m_world.GetVertexBindingPool(),
-	                                 m_world.GetVertexLayoutPool(),
-	                                 m_world.GetRenderableFilters(),
-	                                 m_world.GetCameraProvider(),
-	                                 m_world.GetTerrainHeightProvider(),
-	                                 m_world.GetEnvironmentFlatteningService(),
+    Eegeo::Modules::IPlatformAbstractionModule& platformAbstractioModule = m_world.GetPlatformAbstractionModule();
+    Eegeo::Modules::Core::RenderingModule& renderingModule = m_world.GetRenderingModule();
+    Eegeo::Modules::Map::Layers::TerrainModelModule& terrainModelModule = m_world.GetTerrainModelModule();
+    Eegeo::Modules::Map::MapModule& mapModule = m_world.GetMapModule();
+    
+	return new Examples::PinsExample(platformAbstractioModule.GetTextureFileLoader(),
+	                                 renderingModule.GetGlBufferPool(),
+	                                 renderingModule.GetShaderIdGenerator(),
+	                                 renderingModule.GetMaterialIdGenerator(),
+	                                 renderingModule.GetVertexBindingPool(),
+	                                 renderingModule.GetVertexLayoutPool(),
+	                                 renderingModule.GetRenderableFilters(),
+	                                 terrainModelModule.GetTerrainHeightProvider(),
+	                                 mapModule.GetEnvironmentFlatteningService(),
 	                                 m_globeCameraController);
 }
 

@@ -18,7 +18,6 @@ private:
 
 public:
 	DebugPrimitiveRenderingExample(Eegeo::DebugRendering::DebugRenderer &debugRenderer,
-                                   const Eegeo::Camera::RenderCamera& camera,
 	                               Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController);
 
 	static std::string GetName()
@@ -34,6 +33,7 @@ public:
 	void Update(float dt);
 	void Draw();
 	void Suspend();
+    const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
 };
 }
 

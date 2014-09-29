@@ -11,18 +11,17 @@
 
 namespace Examples
 {
+    
 class ScreenUnprojectExample : public IExample
 {
 private:
-	Eegeo::DebugRendering::SphereMesh* m_pSphere;
-	Eegeo::Rendering::RenderContext& m_renderContext;
-	Eegeo::Camera::ICameraProvider& m_cameraProvider;
+    Eegeo::DebugRendering::DebugRenderer& m_debugRenderer;
 	Eegeo::Resources::Terrain::Heights::TerrainHeightProvider& m_terrainHeightProvider;
 	GlobeCameraStateRestorer m_globeCameraStateRestorer;
+    Eegeo::Camera::GlobeCamera::GlobeCameraController& m_globeCameraController;
 
 public:
-	ScreenUnprojectExample(Eegeo::Rendering::RenderContext& renderContext,
-	                       Eegeo::Camera::ICameraProvider& cameraProvider,
+	ScreenUnprojectExample(Eegeo::DebugRendering::DebugRenderer& debugRenderer,
 	                       Eegeo::Resources::Terrain::Heights::TerrainHeightProvider& terrainHeightProvider,
 	                       Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController);
 
@@ -36,9 +35,12 @@ public:
 	}
 
 	void Start();
-	void Update(float dt);
-	void Draw();
+	void Update(float dt){}
+    void AfterCameraUpdate();
+
+	void Draw(){}
 	void Suspend();
+    const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
 };
 }
 

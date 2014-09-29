@@ -9,8 +9,6 @@
 #include "GlobeCameraController.h"
 #include "EcefTangentBasis.h"
 #include <math.h>
-#include "ICameraProvider.h"
-#include "IInterestPointProvider.h"
 #include "GlobeCameraTouchController.h"
 #include "EarthConstants.h"
 #include "LatLongAltitude.h"
@@ -37,11 +35,9 @@ Eegeo::v3 ComputeHeadingVector(Eegeo::dv3 interestPosition, float heading)
 }
 
 CameraTransitioner::CameraTransitioner(
-    Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController,
-    Eegeo::Location::IInterestPointProvider& interestPointProvider
+    Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController
 )
 	: m_cameraController(cameraController)
-	, m_interestPointProvider(interestPointProvider)
 	, m_isTransitioning(false)
 	, m_transitionDuration(0.f)
 	, m_transitionTime(0.f)
@@ -61,7 +57,7 @@ void CameraTransitioner::StartTransitionTo(Eegeo::dv3 newInterestPoint, double d
 bool CameraTransitioner::ShouldJumpTo(Eegeo::dv3 newInterestPoint)
 {
 	const double MAX_CAMERA_TRANSITION_DISTANCE = 5000;
-	Eegeo::dv3 currentInterestPoint = m_interestPointProvider.GetEcefInterestPoint();
+	Eegeo::dv3 currentInterestPoint = m_cameraController.GetEcefInterestPoint();
 	double distance = (newInterestPoint - currentInterestPoint).Length();
 	return distance > MAX_CAMERA_TRANSITION_DISTANCE;
 }
@@ -149,11 +145,9 @@ void CameraTransitioner::StopCurrentTransition()
 	m_transitionDuration = 0.f;
 }
 
-CameraTransitionExample::CameraTransitionExample(Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController,
-        Eegeo::Location::IInterestPointProvider& interestPointProvider)
+CameraTransitionExample::CameraTransitionExample(Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController)
 	: m_cameraController(cameraController)
-	, m_interestPointProvider(interestPointProvider)
-	, m_transitioner(cameraController, interestPointProvider)
+	, m_transitioner(cameraController)
 	, m_firstPoint(true)
 	,m_globeCameraStateRestorer(cameraController)
 {
@@ -194,5 +188,10 @@ void CameraTransitionExample::UpdateCamera(Eegeo::Camera::GlobeCamera::GlobeCame
 		pCameraTouchController->Update(dt);
 		pGlobeCameraController->Update(dt);
 	}
+}
+    
+const Eegeo::Camera::RenderCamera& CameraTransitionExample::GetRenderCamera() const
+{
+    return *m_cameraController.GetCamera();
 }
 }

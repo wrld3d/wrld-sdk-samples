@@ -25,17 +25,20 @@ private:
 	bool m_movingObject;
 	Eegeo::DebugRendering::SphereMesh* m_pObject;
 	Eegeo::dv3 m_objectLocationEcef;
+    Eegeo::v4 m_objectColor;
+    
+    Eegeo::Space::LatLongAltitude m_interestLocation;
+    const Eegeo::Rendering::ScreenProperties& m_screenProperties;
+    Eegeo::DebugRendering::DebugRenderer& m_debugRenderer;
 
-	Eegeo::Rendering::RenderContext& m_renderContext;
-	Eegeo::Space::LatLongAltitude m_interestLocation;
-	Eegeo::Camera::ICameraProvider& m_cameraProvider;
 	GlobeCameraStateRestorer m_globeCameraStateRestorer;
+    Eegeo::Camera::GlobeCamera::GlobeCameraController& m_cameraController;
 
 public:
-	Pick3DObjectExample(Eegeo::Rendering::RenderContext& renderContext,
-	                    Eegeo::Space::LatLongAltitude interestLocation,
-	                    Eegeo::Camera::ICameraProvider& cameraProvider,
-	                    Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController);
+	Pick3DObjectExample(Eegeo::Space::LatLongAltitude interestLocation,
+                        const Eegeo::Rendering::ScreenProperties& screenProperties,
+                        Eegeo::DebugRendering::DebugRenderer& debugRenderer,
+                        Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController);
 
 	static std::string GetName()
 	{
@@ -50,6 +53,7 @@ public:
 	void Update(float dt);
 	void Draw();
 	void Suspend();
+    const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
 
 	bool Event_TouchPan				(const AppInterface::PanData& data);
 	bool Event_TouchDown            (const AppInterface::TouchData& data);

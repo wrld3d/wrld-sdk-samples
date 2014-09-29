@@ -18,6 +18,8 @@ private:
 	Eegeo::EegeoWorld& m_eegeoWorld;
 	bool m_themeChanged;
 	Eegeo::Resources::CityThemes::CityThemeData m_initialCityTheme;
+    
+    Eegeo::Camera::GlobeCamera::GlobeCameraController& m_cameraController;
 	GlobeCameraStateRestorer m_globeCameraStateRestorer;
 
 	void ChangeTheme();
@@ -42,6 +44,7 @@ public:
 	void Update(float dt);
 	void Draw() {}
 	void Suspend();
+    const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
 };
 }
 

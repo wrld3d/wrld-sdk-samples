@@ -5,6 +5,8 @@
 
 using namespace Examples;
 
+#include "RoutesModule.h"
+
 RouteMatchingExampleFactory::RouteMatchingExampleFactory(Eegeo::EegeoWorld& world,
         const IRouteMatchingExampleViewFactory& routeMatchingViewFactory,
         Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCameraController)
@@ -17,7 +19,9 @@ RouteMatchingExampleFactory::RouteMatchingExampleFactory(Eegeo::EegeoWorld& worl
 
 IExample* RouteMatchingExampleFactory::CreateExample() const
 {
-	return new Examples::RouteMatchingExample(m_world.GetRouteService(),
+    Eegeo::Modules::RoutesModule& routesModule = m_world.GetRoutesModule();
+    
+	return new Examples::RouteMatchingExample(routesModule.GetRouteService(),
 	        m_world,
 	        m_routeMatchingViewFactory,
 	        m_globeCameraController);

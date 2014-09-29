@@ -15,7 +15,7 @@ namespace Examples
     public:
         PostProcessVignetteRenderer(PostProcessVignetteRenderable& renderable);
         
-        void EnqueueRenderables(Eegeo::Rendering::RenderContext& renderContext, Eegeo::Rendering::RenderQueue& renderQueue);
+        void EnqueueRenderables(const Eegeo::Rendering::RenderContext& renderContext, Eegeo::Rendering::RenderQueue& renderQueue);
     private:
         PostProcessVignetteRenderable& m_renderable;
     };

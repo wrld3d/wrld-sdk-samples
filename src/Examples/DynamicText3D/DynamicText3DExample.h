@@ -8,34 +8,36 @@
 #include "IExample.h"
 
 #include "PlaceNameView.h"
-#include "ICameraProvider.h"
 #include "EnvironmentFlatteningService.h"
 #include "PlaceNameView.h"
 #include "PlaceNameViewBuilder.h"
 #include "GlState.h"
 #include "EegeoWorld.h"
+#include "IRenderableFilter.h"
 
 namespace Examples
 {
-class DynamicText3DExample : public IExample
+
+class DynamicText3DExample : public IExample, public Eegeo::Rendering::IRenderableFilter
 {
-	Eegeo::Rendering::GLState& m_glState;
-	Eegeo::Camera::ICameraProvider& m_cameraProvider;
 	Eegeo::Rendering::EnvironmentFlatteningService& m_environmentFlatteningService;
 	Eegeo::Resources::PlaceNames::PlaceNameViewBuilder& m_placeNameViewBuilder;
 	Eegeo::EegeoWorld& m_world;
 	GlobeCameraStateRestorer m_globeCameraStateRestorer;
+    const Eegeo::Camera::RenderCamera& m_renderCamera;
+    Eegeo::Rendering::RenderableFilters& m_renderableFilters;
 
 	bool m_initialised;
 	std::vector<Eegeo::Resources::PlaceNames::PlaceNameView*> m_views;
 
 public:
-	DynamicText3DExample(Eegeo::Rendering::GLState& glState,
-	                     Eegeo::Camera::ICameraProvider& cameraProvider,
-	                     Eegeo::Rendering::EnvironmentFlatteningService& environmentFlatteningService,
+	DynamicText3DExample(Eegeo::Rendering::EnvironmentFlatteningService& environmentFlatteningService,
 	                     Eegeo::Resources::PlaceNames::PlaceNameViewBuilder& placeNameViewBuilder,
 	                     Eegeo::EegeoWorld& world,
-	                     Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCameraController);
+	                     Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCameraController,
+                         Eegeo::Rendering::RenderableFilters& renderableFilters);
+    
+    ~DynamicText3DExample();
 
 	static std::string GetName()
 	{
@@ -50,6 +52,9 @@ public:
 	void Update(float dt);
 	void Draw();
 	void Suspend();
+    const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
+    
+    void EnqueueRenderables(const Eegeo::Rendering::RenderContext& renderContext, Eegeo::Rendering::RenderQueue& renderQueue);
 
 private:
 	void CreateDynamic3DText(const std::string& str,

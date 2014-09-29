@@ -5,6 +5,15 @@
 #include "LocalAsyncTextureLoader.h"
 #include "RenderContext.h"
 
+#include "CollisionMeshResourceRepository.h"
+
+#include "MapModule.h"
+#include "TerrainModelModule.h"
+#include "RoutesModule.h"
+#include "RenderingModule.h"
+#include "IPlatformAbstractionModule.h"
+#include "AsyncLoadersModule.h"
+
 using namespace Examples;
 
 RouteSimulationAnimationExampleFactory::RouteSimulationAnimationExampleFactory(Eegeo::EegeoWorld& world,
@@ -13,11 +22,15 @@ RouteSimulationAnimationExampleFactory::RouteSimulationAnimationExampleFactory(E
 	, m_globeCameraController(globeCameraController)
 	, m_pRouteSimulationGlobeCameraControllerFactory(NULL)
 {
+    Eegeo::Modules::Map::MapModule& mapModule = m_world.GetMapModule();
+    Eegeo::Modules::Map::Layers::TerrainModelModule& terrainModelModule = m_world.GetTerrainModelModule();
+    
 	m_pRouteSimulationGlobeCameraControllerFactory = new Eegeo::Routes::Simulation::Camera::RouteSimulationGlobeCameraControllerFactory
-	(                                                                                                                                        m_world.GetTerrainHeightProvider(),
-	        m_world.GetEnvironmentFlatteningService(),
-	        m_world.GetResourceCeilingProvider(),
-	        m_world.GetCollisionMeshResourceProvider()
+	(
+            terrainModelModule.GetTerrainHeightProvider(),
+	        mapModule.GetEnvironmentFlatteningService(),
+	        mapModule.GetResourceCeilingProvider(),
+	        terrainModelModule.GetCollisionMeshResourceRepository()
 	);
 }
 
@@ -29,14 +42,16 @@ RouteSimulationAnimationExampleFactory::~RouteSimulationAnimationExampleFactory(
 
 IExample* RouteSimulationAnimationExampleFactory::CreateExample() const
 {
-	return new Examples::RouteSimulationAnimationExample(m_world.GetRouteService(),
-	        m_world.GetRouteSimulationService(),
-	        m_world.GetRouteSimulationViewService(),
+    Eegeo::Modules::RoutesModule& routesModule = m_world.GetRoutesModule();
+    Eegeo::Modules::IPlatformAbstractionModule& platformAbstractionModule = m_world.GetPlatformAbstractionModule();
+    Eegeo::Modules::Core::AsyncLoadersModule& asyncLoadersModule = m_world.GetAsyncLoadersModule();
+    
+	return new Examples::RouteSimulationAnimationExample(routesModule.GetRouteService(),
+	        routesModule.GetRouteSimulationService(),
+	        routesModule.GetRouteSimulationViewService(),
 	        m_globeCameraController,
-	        m_world.GetCameraProvider(),
-	        m_world.GetRenderContext().GetGLState(),
-	        m_world.GetFileIO(),
-	        m_world.GetLocalAsyncTextureLoader(),
+	        platformAbstractionModule.GetFileIO(),
+	        asyncLoadersModule.GetLocalAsyncTextureLoader(),
 	        *m_pRouteSimulationGlobeCameraControllerFactory,
 	        m_world);
 }

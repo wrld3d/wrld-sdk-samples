@@ -21,7 +21,7 @@ IExample* PositionJavaPinButtonExampleFactory::CreateExample() const
 	return new Examples::PositionJavaPinButtonExample(
 	           m_world,
 	           m_nativeState,
-	           m_world.GetRenderContext(),
+	           m_world.GetScreenProperties(),
 	           m_globeCameraController);
 }
 

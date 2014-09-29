@@ -6,29 +6,63 @@
 #include "IExample.h"
 #include "RenderContext.h"
 #include "LatLongAltitude.h"
+#include "RenderableBase.h"
+#include "IRenderableFilter.h"
 
 #include "Model.h"
 
 namespace Examples
 {
+    
 class PODAnimationExample : public IExample
 {
 private:
-
-	Eegeo::Rendering::RenderContext& m_renderContext;
+    class MyModelRenderable : public Eegeo::Rendering::RenderableBase
+	{
+		Eegeo::Model& m_model;
+		Eegeo::Lighting::GlobalFogging& m_globalFogging;
+        const Eegeo::Camera::RenderCamera& m_renderCamera;
+        
+	public:
+		MyModelRenderable(Eegeo::Model& model,
+		                  Eegeo::Lighting::GlobalFogging& globalFogging,
+		                  Eegeo::Rendering::Materials::NullMaterial& nullMat,
+                          const Eegeo::Camera::RenderCamera& renderCamera);
+        
+		void Render(Eegeo::Rendering::GLState& glState) const;
+	};
+    
+    class MyRenderableFilter : public Eegeo::Rendering::IRenderableFilter
+	{
+		Eegeo::Rendering::RenderableBase& m_renderable;
+	public:
+		MyRenderableFilter(Eegeo::Rendering::RenderableBase& renderable);
+        
+		void EnqueueRenderables(const Eegeo::Rendering::RenderContext& renderContext, Eegeo::Rendering::RenderQueue& renderQueue);
+	};
+    
 	Eegeo::Helpers::IFileIO& m_fileIO;
 	Eegeo::Rendering::AsyncTexturing::IAsyncTextureRequestor& m_textureRequestor;
 	Eegeo::Lighting::GlobalFogging& m_globalFogging;
+    Eegeo::Camera::GlobeCamera::GlobeCameraController& m_cameraController;
 	GlobeCameraStateRestorer m_globeCameraStateRestorer;
-
+    Eegeo::Rendering::RenderableFilters& m_renderableFilters;
+    Eegeo::Rendering::Materials::NullMaterial& m_nullMaterial;
+    
 	Eegeo::Model* m_pModel;
+    
+    MyModelRenderable* m_pMyModelRenderable;
+    MyRenderableFilter* m_pMyRenderableFilter;
 
 public:
-	PODAnimationExample(Eegeo::Rendering::RenderContext& renderContext,
-	                    Eegeo::Helpers::IFileIO& fileIO,
-	                    Eegeo::Rendering::AsyncTexturing::IAsyncTextureRequestor& textureRequestor,
-	                    Eegeo::Lighting::GlobalFogging& fogging,
-	                    Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController);
+	PODAnimationExample(Eegeo::Helpers::IFileIO& fileIO,
+                        Eegeo::Rendering::AsyncTexturing::IAsyncTextureRequestor& textureRequestor,
+                        Eegeo::Lighting::GlobalFogging& fogging,
+                        Eegeo::Rendering::RenderableFilters& renderableFilters,
+                        Eegeo::Rendering::Materials::NullMaterial& nullMaterial,
+                        Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController);
+    
+    ~PODAnimationExample();
 
 	static std::string GetName()
 	{
@@ -43,6 +77,7 @@ public:
 	void Update(float dt);
 	void Draw();
 	void Suspend();
+    const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
 };
 }
 

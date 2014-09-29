@@ -15,18 +15,34 @@
 
 namespace Examples
 {
+    
+    struct SphereData
+    {
+        SphereData(const Eegeo::dv3& position, const Eegeo::v4& color)
+        : position(position)
+        , color(color)
+        {
+            
+        }
+        
+        Eegeo::dv3 position;
+        Eegeo::v4 color;
+    };
+    
+    typedef std::map<Eegeo::Streaming::MortonKey, SphereData> TKeySphereMap;
+    
 class EnvironmentNotifierExampleTerrainStreamObserver : public Eegeo::Streaming::IStreamingObserver
 {
 private:
-	Eegeo::Rendering::RenderContext& m_renderContext;
-	std::map<Eegeo::Streaming::MortonKey, Eegeo::DebugRendering::SphereMesh*, Eegeo::Streaming::MortonKeyCompare>& m_renderables;
+	TKeySphereMap& m_spheres;
+    Eegeo::DebugRendering::DebugRenderer& m_debugRenderer;
 
 	void AddSphere(const Eegeo::Streaming::MortonKey& key);
 public:
-	EnvironmentNotifierExampleTerrainStreamObserver(Eegeo::Rendering::RenderContext& renderContext,
-	        std::map<Eegeo::Streaming::MortonKey, Eegeo::DebugRendering::SphereMesh*, Eegeo::Streaming::MortonKeyCompare>& renderables)
-		:m_renderables(renderables)
-		,m_renderContext(renderContext)
+	EnvironmentNotifierExampleTerrainStreamObserver(TKeySphereMap& spheres,
+                                                    Eegeo::DebugRendering::DebugRenderer& debugRenderer)
+    : m_spheres(spheres)
+    , m_debugRenderer(debugRenderer)
 	{
 
 	}
@@ -38,16 +54,17 @@ public:
 class EnvironmentNotifierExample : public IExample
 {
 private:
-	Eegeo::Rendering::RenderContext& m_renderContext;
 	Eegeo::Resources::Terrain::TerrainStreaming& m_terrainStreaming;
 	EnvironmentNotifierExampleTerrainStreamObserver* m_pObserver;
+    Eegeo::Camera::GlobeCamera::GlobeCameraController& m_cameraController;
 	GlobeCameraStateRestorer m_globeCameraStateRestorer;
+    Eegeo::DebugRendering::DebugRenderer& m_debugRenderer;
 
-	std::map<Eegeo::Streaming::MortonKey, Eegeo::DebugRendering::SphereMesh*, Eegeo::Streaming::MortonKeyCompare> m_renderables;
+	TKeySphereMap m_spheres;
 
 
 public:
-	EnvironmentNotifierExample(Eegeo::Rendering::RenderContext& renderContext,
+	EnvironmentNotifierExample(Eegeo::DebugRendering::DebugRenderer& debugRenderer,
 	                           Eegeo::Resources::Terrain::TerrainStreaming& terrainStreaming,
 	                           Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController);
 
@@ -64,6 +81,7 @@ public:
 	void Update(float dt);
 	void Draw();
 	void Suspend();
+    const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
 };
 }
 

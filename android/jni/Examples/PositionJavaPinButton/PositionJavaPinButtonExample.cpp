@@ -4,6 +4,8 @@
 #include "VectorMath.h"
 #include "LatLongAltitude.h"
 #include "PositionJavaPinButtonExample.h"
+#include "RenderCamera.h"
+#include "ScreenProperties.h"
 
 namespace Examples
 {
@@ -12,12 +14,13 @@ namespace Examples
 PositionJavaPinButtonExample::PositionJavaPinButtonExample(
     Eegeo::EegeoWorld& world,
     AndroidNativeState& nativeState,
-    Eegeo::Rendering::RenderContext& renderContext,
+    const Eegeo::Rendering::ScreenProperties& screenProperties,
     Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCameraController)
 	:m_nativeState(nativeState)
-	,m_renderContext(renderContext)
 	,m_world(world)
 	,m_buttonID(0)
+	,m_screenProperties(screenProperties)
+	,m_cameraController(globeCameraController)
 	,m_globeCameraStateRestorer(globeCameraController)
 {
 }
@@ -118,16 +121,23 @@ void PositionJavaPinButtonExample::Draw()
 	);
 }
 
+const Eegeo::Camera::RenderCamera& PositionJavaPinButtonExample::GetRenderCamera() const
+{
+	return *m_cameraController.GetCamera();
+}
+
 void PositionJavaPinButtonExample::Project (const Eegeo::Space::LatLongAltitude& location, Eegeo::v3& screenPosition)
 {
 	//project a 3D Ecef location to the screen
 	Eegeo::m44 finalMatrix;
 
-	Eegeo::m44::Mul (finalMatrix,
-	                 m_renderContext.GetProjectionMatrix(),
-	                 m_renderContext.GetViewMatrix());
+	const Eegeo::Camera::RenderCamera& renderCamera = *m_cameraController.GetCamera();
 
-	Eegeo::v3 local = (location.ToECEF() - m_renderContext.GetCameraOriginEcef()).ToSingle();
+	Eegeo::m44::Mul (finalMatrix,
+	                 renderCamera.GetProjectionMatrix(),
+	                 renderCamera.GetViewMatrix());
+
+	Eegeo::v3 local = (location.ToECEF() - renderCamera.GetEcefLocation()).ToSingle();
 	Eegeo::v4 inVector(local, 1.0f);
 
 	// get clip space coords
@@ -142,7 +152,7 @@ void PositionJavaPinButtonExample::Project (const Eegeo::Space::LatLongAltitude&
 	screenPosition.SetX((screenPosition.GetX() + 1.0f) * 0.5f);
 	screenPosition.SetY(1.0f - ((screenPosition.GetY() + 1.0f) * 0.5f));
 
-	float viewport[] = {0, 0, m_renderContext.GetScreenWidth(), m_renderContext.GetScreenHeight()};
+	float viewport[] = {0, 0, m_screenProperties.GetScreenWidth(), m_screenProperties.GetScreenHeight()};
 
 	// transform from [0, 1] to screen coords.
 	screenPosition.SetX((screenPosition.GetX()*(viewport[2]-viewport[0])) + viewport[0]);

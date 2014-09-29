@@ -3,6 +3,9 @@
 #include "EnvironmentNotifierExampleFactory.h"
 #include "EnvironmentNotifierExample.h"
 
+#include "DebugRenderingModule.h"
+#include "TerrainStreamingModule.h"
+
 using namespace Examples;
 
 EnvironmentNotifierExampleFactory::EnvironmentNotifierExampleFactory(Eegeo::EegeoWorld& world,
@@ -15,8 +18,11 @@ EnvironmentNotifierExampleFactory::EnvironmentNotifierExampleFactory(Eegeo::Eege
 
 IExample* EnvironmentNotifierExampleFactory::CreateExample() const
 {
-	return new Examples::EnvironmentNotifierExample(m_world.GetRenderContext(),
-	        m_world.GetTerrainStreaming(),
+    Eegeo::Modules::Core::DebugRenderingModule& debugRenderingModule = m_world.GetDebugRenderingModule();
+    Eegeo::Modules::Map::Layers::TerrainStreamingModule& terrainStreamingModule = m_world.GetTerrainStreamingModule();
+    
+	return new Examples::EnvironmentNotifierExample(debugRenderingModule.GetDebugRenderer(),
+	        terrainStreamingModule.GetTerrainStream(),
 	        m_globeCameraController);
 }
 

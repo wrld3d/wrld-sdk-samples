@@ -3,6 +3,8 @@
 #include "ControlCityThemeExampleFactory.h"
 #include "ControlCityThemeExample.h"
 
+#include "CityThemesModule.h"
+
 using namespace Examples;
 
 ControlCityThemeExampleFactory::ControlCityThemeExampleFactory(Eegeo::EegeoWorld& world,
@@ -15,9 +17,11 @@ ControlCityThemeExampleFactory::ControlCityThemeExampleFactory(Eegeo::EegeoWorld
 
 IExample* ControlCityThemeExampleFactory::CreateExample() const
 {
-	return new Examples::ControlCityThemeExample(m_world.GetCityThemesService(),
-	        m_world.GetCityThemesRepository(),
-	        m_world.GetCityThemesUpdater(),
+    Eegeo::Modules::Map::CityThemesModule& cityThemesModule = m_world.GetCityThemesModule();
+    
+	return new Examples::ControlCityThemeExample(cityThemesModule.GetCityThemesService(),
+	        cityThemesModule.GetCityThemesRepository(),
+	        cityThemesModule.GetCityThemesUpdater(),
 	        m_world,
 	        m_globeCameraController);
 }

@@ -8,6 +8,7 @@
 #include "GlobeCameraTouchControllerConfiguration.h"
 #include "Logger.h"
 #include "CameraHelpers.h"
+#include "RenderCamera.h"
 
 using namespace Examples;
 using namespace Eegeo;
@@ -41,22 +42,18 @@ void RouteSimulationExampleObserver::OnLinkReached(const Eegeo::Routes::Simulati
 RouteSimulationExample::RouteSimulationExample(RouteService& routeService,
         RouteSimulationService& routeSimulationService,
         RouteSimulationViewService& routeSimulationViewService,
-        Eegeo::Rendering::GLState& glState,
         Eegeo::Helpers::IFileIO& fileIO,
         Eegeo::Rendering::AsyncTexturing::IAsyncTextureRequestor& textureRequestor,
         Eegeo::Camera::GlobeCamera::GlobeCameraController& defaultCamera,
-        Eegeo::Location::IInterestPointProvider& interestPointProvider,
         RouteSimulationGlobeCameraControllerFactory& routeSimulationGlobeCameraControllerFactory,
         const IRouteSimulationExampleViewFactory& routeSimulationExampleViewFactory,
         EegeoWorld& world)
 	:m_routeService(routeService)
 	,m_routeSimulationService(routeSimulationService)
 	,m_routeSimulationViewService(routeSimulationViewService)
-	,m_glState(glState)
 	,m_fileIO(fileIO)
 	,m_textureRequestor(textureRequestor)
 	,m_defaultCamera(defaultCamera)
-	,m_interestPointProvider(interestPointProvider)
 	,m_routeSimulationGlobeCameraControllerFactory(routeSimulationGlobeCameraControllerFactory)
 	,m_world(world)
 	,m_initialised(false)
@@ -173,17 +170,12 @@ void RouteSimulationExample::EarlyUpdate(float dt)
 		//We have initialised so don't need to do so again.
 		m_initialised = true;
 	}
-
+    
 	//If we are using a follow camera bound to a route simulation session, we should update this camera.
 	//Otherwise, the default camera should be used.
 	if(m_usingFollowCamera)
 	{
 		m_pRouteSessionFollowCameraController->Update(dt);
-		m_world.SetCamera(m_pRouteSessionFollowCameraController->GetCamera());
-	}
-	else
-	{
-		m_world.SetCamera(m_defaultCamera.GetCamera());
 	}
 }
 
@@ -194,10 +186,17 @@ void RouteSimulationExample::Update(float dt)
 	{
 		return;
 	}
-
+    
+    const Eegeo::Camera::RenderCamera* pCamera = m_usingFollowCamera ? m_pRouteSessionFollowCameraController->GetCamera()
+                                                                     : m_defaultCamera.GetCamera();
+    
+    m_pViewBindingForCycleSession->UpdateCameraLocation(pCamera->GetEcefLocation());
+    m_pViewBindingForOscillatingSession->UpdateCameraLocation(pCamera->GetEcefLocation());
+    m_pViewBindingForCameraSession->UpdateCameraLocation(pCamera->GetEcefLocation());
+    
 	//The route session for which we want to project a position to (in this case, the ecef interest
 	//point) should be updated giving it the latest position.
-	Eegeo::dv3 ecefPositionToProjectToRoute = m_interestPointProvider.GetEcefInterestPoint();
+	Eegeo::dv3 ecefPositionToProjectToRoute = m_defaultCamera.GetEcefInterestPoint();
 	m_pSessionCamera->SetCurrentPositionSnappedToRoute(ecefPositionToProjectToRoute);
 
 	//For the session which should just cycle the route forever, when it has completed simply end
@@ -263,9 +262,19 @@ void RouteSimulationExample::Suspend()
 
 	m_pRouteSimulationView = NULL;
 
-	m_world.SetCamera(m_defaultCamera.GetCamera());
-
 	m_initialised = false;
+}
+
+const Eegeo::Camera::RenderCamera& RouteSimulationExample::GetRenderCamera() const
+{
+    if (m_usingFollowCamera)
+    {
+        return *m_pRouteSessionFollowCameraController->GetCamera();
+    }
+    else
+    {
+        return *m_defaultCamera.GetCamera();
+    }
 }
 
 void RouteSimulationExample::ToggleFollowCamera()
@@ -364,7 +373,7 @@ Eegeo::Model* RouteSimulationExample::LoadModelVehicleNodes(Eegeo::Node*& pVehic
         Eegeo::Node*& pVehicle2,
         Eegeo::Node*& pVehicle3) const
 {
-	Eegeo::Model* pModel = Eegeo::Model::CreateFromPODFile("route_simulation_example/SanFrancisco_Vehicles.pod", m_fileIO, m_glState, &m_textureRequestor, "route_simulation_example/");
+	Eegeo::Model* pModel = Eegeo::Model::CreateFromPODFile("route_simulation_example/SanFrancisco_Vehicles.pod", m_fileIO, &m_textureRequestor, "route_simulation_example/");
 	Eegeo::Node* parentNode = pModel->FindNode("Vehicles");
 
 	Eegeo_ASSERT(parentNode);

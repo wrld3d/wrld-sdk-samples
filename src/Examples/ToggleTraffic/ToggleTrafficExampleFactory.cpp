@@ -3,6 +3,8 @@
 #include "ToggleTrafficExampleFactory.h"
 #include "ToggleTrafficExample.h"
 
+#include "TrafficModule.h"
+
 using namespace Examples;
 
 ToggleTrafficExampleFactory::ToggleTrafficExampleFactory(Eegeo::EegeoWorld& world,
@@ -15,7 +17,9 @@ ToggleTrafficExampleFactory::ToggleTrafficExampleFactory(Eegeo::EegeoWorld& worl
 
 IExample* ToggleTrafficExampleFactory::CreateExample() const
 {
-	return new Examples::ToggleTrafficExample(m_world.GetTrafficSimulationController(),
+    Eegeo::Modules::TrafficModule& trafficModule = m_world.GetTrafficModule();
+    
+	return new Examples::ToggleTrafficExample(trafficModule.GetTrafficSimulationController(),
 	        m_globeCameraController);
 }
 

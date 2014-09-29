@@ -2,7 +2,8 @@
 
 #include "RouteThicknessPolicyExampleFactory.h"
 #include "RouteThicknessPolicyExample.h"
-#include "LocalAsyncTextureLoader.h"
+
+#include "RoutesModule.h"
 
 using namespace Examples;
 
@@ -16,8 +17,9 @@ RouteThicknessPolicyExampleFactory::RouteThicknessPolicyExampleFactory(Eegeo::Ee
 
 IExample* RouteThicknessPolicyExampleFactory::CreateExample() const
 {
-	return new Examples::RouteThicknessPolicyExample(m_world.GetRouteService(),
-	        m_world.GetRenderContext(),
+    Eegeo::Modules::RoutesModule& routesModule = m_world.GetRoutesModule();
+    
+	return new Examples::RouteThicknessPolicyExample(routesModule.GetRouteService(),
 	        m_world,
 	        m_globeCameraController);
 }

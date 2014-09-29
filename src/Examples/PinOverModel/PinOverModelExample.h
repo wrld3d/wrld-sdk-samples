@@ -28,14 +28,14 @@ private:
 	class MyModelRenderable : public Eegeo::Rendering::RenderableBase
 	{
 		Eegeo::Model& m_model;
-		Eegeo::Rendering::RenderContext& m_renderContext;
 		Eegeo::Lighting::GlobalFogging& m_globalFogging;
+        const Eegeo::Camera::RenderCamera& m_renderCamera;
 
 	public:
 		MyModelRenderable(Eegeo::Model& model,
-		                  Eegeo::Rendering::RenderContext& renderContext,
 		                  Eegeo::Lighting::GlobalFogging& globalFogging,
-		                  Eegeo::Rendering::Materials::NullMaterial& nullMat);
+		                  Eegeo::Rendering::Materials::NullMaterial& nullMat,
+                          const Eegeo::Camera::RenderCamera& renderCamera);
 
 		void Render(Eegeo::Rendering::GLState& glState) const;
 	};
@@ -46,7 +46,7 @@ private:
 	public:
 		MyRenderableFilter(Eegeo::Rendering::RenderableBase& renderable);
 
-		void EnqueueRenderables(Eegeo::Rendering::RenderContext& renderContext, Eegeo::Rendering::RenderQueue& renderQueue);
+		void EnqueueRenderables(const Eegeo::Rendering::RenderContext& renderContext, Eegeo::Rendering::RenderQueue& renderQueue);
 	};
 
 	Eegeo::Rendering::ITexturePageLayout* m_pPinIconsTexturePageLayout;
@@ -55,12 +55,12 @@ private:
 	std::string m_pin0UserData;
 
 	Eegeo::Pins::Pin* m_pPin0;
-
-	Eegeo::Rendering::RenderContext& m_renderContext;
+    
 	Eegeo::Helpers::IFileIO& m_fileIO;
 	Eegeo::Rendering::AsyncTexturing::IAsyncTextureRequestor& m_textureRequestor;
 	Eegeo::Lighting::GlobalFogging& m_globalFogging;
 	Eegeo::Rendering::RenderableFilters& m_renderableFilters;
+    Eegeo::Camera::GlobeCamera::GlobeCameraController& m_cameraController;
 	GlobeCameraStateRestorer m_globeCameraStateRestorer;
 
 	Eegeo::Model* m_pModel;
@@ -78,10 +78,8 @@ public:
 	    Eegeo::Rendering::VertexLayouts::VertexBindingPool& vertexBindingPool,
 	    Eegeo::Rendering::VertexLayouts::VertexLayoutPool& vertexLayoutPool,
 	    Eegeo::Rendering::RenderableFilters& renderableFilters,
-	    const Eegeo::Camera::ICameraProvider& cameraProvider,
 	    Eegeo::Resources::Terrain::Heights::TerrainHeightProvider& terrainHeightProvider,
 	    Eegeo::Rendering::EnvironmentFlatteningService& environmentFlatteningService,
-	    Eegeo::Rendering::RenderContext& renderContext,
 	    Eegeo::Helpers::IFileIO& fileIO,
 	    Eegeo::Rendering::AsyncTexturing::IAsyncTextureRequestor& textureRequestor,
 	    Eegeo::Lighting::GlobalFogging& fogging,
@@ -104,6 +102,7 @@ public:
 	void Update(float dt);
 	void Draw();
 	void Suspend();
+    const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
 
 private:
 	void CreateExamplePins();

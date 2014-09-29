@@ -4,6 +4,8 @@
 #include "NavigationGraphRoad.h"
 #include "CameraHelpers.h"
 #include "DebugRenderable.h"
+#include "RenderCamera.h"
+#include "GLState.h"
 
 using namespace Eegeo::Rendering;
 using namespace Eegeo::DebugRendering;
@@ -11,21 +13,19 @@ using namespace Eegeo::Resources::Roads::Navigation;
 
 namespace
 {
-DebugRenderable* CreateVisualisation(RenderContext& renderContext,
-                                     const Eegeo::v3& roadColor,
+DebugRenderable* CreateVisualisation(const Eegeo::v3& roadColor,
                                      const Eegeo::Resources::Roads::Navigation::NavigationGraph& navGraph);
 }
 
 namespace Examples
 {
-NavigationGraphExample::NavigationGraphExample(RenderContext& renderContext,
-        NavigationGraphRepository& navigationGraphRepository,
+NavigationGraphExample::NavigationGraphExample(NavigationGraphRepository& navigationGraphRepository,
         Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController)
 	:m_navigationGraphRepository(navigationGraphRepository)
-	,m_renderContext(renderContext)
 	,m_addedHandler(*this)
 	,m_removedHandler(*this)
 	,m_globeCameraStateRestorer(cameraController)
+    ,m_cameraController(cameraController)
 {
 }
 
@@ -44,21 +44,26 @@ void NavigationGraphExample::Suspend()
 
 void NavigationGraphExample::Draw()
 {
+    Eegeo::Rendering::GLState glState;
+    glState.InvalidateAll();
+    
 	for(MapType::const_iterator it = m_navGraphsToVisualisers.begin(); it != m_navGraphsToVisualisers.end(); ++ it)
 	{
 		const NavigationGraph &navGraph = *it->first;
 		DebugRenderable &renderable = *it->second;
 
 		Eegeo::dv3 ecefPosition = navGraph.GetCellInfo().GetFaceCentreECEF() + Eegeo::dv3::FromSingle(navGraph.GetUpECEF() * 2.0f);
-		Eegeo::v3 m_cameraRelativePosition = Eegeo::Camera::CameraHelpers::CameraRelativePoint(ecefPosition, m_renderContext.GetCameraOriginEcef());
-		renderable.Draw(m_cameraRelativePosition);
+        
+        const Eegeo::Camera::RenderCamera& renderCamera = *m_cameraController.GetCamera();
+		Eegeo::v3 m_cameraRelativePosition = Eegeo::Camera::CameraHelpers::CameraRelativePoint(ecefPosition, renderCamera.GetEcefLocation());
+		renderable.Draw(m_cameraRelativePosition, renderCamera, glState);
 	}
 }
 
 void NavigationGraphExample::HandleAddedGraph(const Eegeo::Resources::Roads::Navigation::NavigationGraph& navGraph)
 {
 	Eegeo::v3 roadColor((rand()%256)/256.0f, (rand()%256)/256.0f, (rand()%256)/256.0f);
-	m_navGraphsToVisualisers[&navGraph] = CreateVisualisation(m_renderContext, roadColor, navGraph);
+	m_navGraphsToVisualisers[&navGraph] = CreateVisualisation(roadColor, navGraph);
 }
 
 void NavigationGraphExample::HandleRemovedGraph(const Eegeo::Resources::Roads::Navigation::NavigationGraph& navGraph)
@@ -66,15 +71,19 @@ void NavigationGraphExample::HandleRemovedGraph(const Eegeo::Resources::Roads::N
 	delete m_navGraphsToVisualisers[&navGraph];
 	m_navGraphsToVisualisers.erase(m_navGraphsToVisualisers.find(&navGraph));
 }
+    
+    const Eegeo::Camera::RenderCamera& NavigationGraphExample::GetRenderCamera() const
+    {
+        return *m_cameraController.GetCamera();
+    }
 }
 
 namespace
 {
-DebugRenderable* CreateVisualisation(RenderContext& renderContext,
-                                     const Eegeo::v3& roadColor,
+DebugRenderable* CreateVisualisation(const Eegeo::v3& roadColor,
                                      const Eegeo::Resources::Roads::Navigation::NavigationGraph& navGraph)
 {
-	DebugRenderable* renderable = new DebugRenderable(renderContext, NULL);
+	DebugRenderable* renderable = new DebugRenderable(NULL);
 
 	const NavigationGraph::TRoadsVector& roads = navGraph.GetRoads();
 
@@ -134,7 +143,10 @@ DebugRenderable* CreateVisualisation(RenderContext& renderContext,
 		}
 	}
 
-	renderable->Build(verts, colors, indices, uvs);
+    Eegeo::Rendering::GLState glState;
+    glState.SetDefaultState();
+    
+	renderable->Build(verts, colors, indices, uvs, glState);
 	return renderable;
 }
 }

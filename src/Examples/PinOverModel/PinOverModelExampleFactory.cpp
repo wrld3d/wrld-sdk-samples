@@ -4,6 +4,13 @@
 #include "PinOverModelExample.h"
 #include "LocalAsyncTextureLoader.h"
 
+#include "IPlatformAbstractionModule.h"
+#include "RenderingModule.h"
+#include "TerrainModelModule.h"
+#include "MapModule.h"
+#include "AsyncLoadersModule.h"
+#include "LightingModule.h"
+
 using namespace Examples;
 
 PinOverModelExampleFactory::PinOverModelExampleFactory(Eegeo::EegeoWorld& world,
@@ -16,21 +23,26 @@ PinOverModelExampleFactory::PinOverModelExampleFactory(Eegeo::EegeoWorld& world,
 
 IExample* PinOverModelExampleFactory::CreateExample() const
 {
-	return new Examples::PinOverModelExample(m_world.GetTextureLoader(),
-	        m_world.GetGlBufferPool(),
-	        m_world.GetShaderIdGenerator(),
-	        m_world.GetMaterialIdGenerator(),
-	        m_world.GetVertexBindingPool(),
-	        m_world.GetVertexLayoutPool(),
-	        m_world.GetRenderableFilters(),
-	        m_world.GetCameraProvider(),
-	        m_world.GetTerrainHeightProvider(),
-	        m_world.GetEnvironmentFlatteningService(),
-	        m_world.GetRenderContext(),
-	        m_world.GetFileIO(),
-	        m_world.GetLocalAsyncTextureLoader(),
-	        m_world.GetGlobalFogging(),
-	        m_world.GetNullMaterial(),
+    Eegeo::Modules::IPlatformAbstractionModule& platformAbstractioModule = m_world.GetPlatformAbstractionModule();
+    Eegeo::Modules::Core::RenderingModule& renderingModule = m_world.GetRenderingModule();
+    Eegeo::Modules::Map::Layers::TerrainModelModule& terrainModelModule = m_world.GetTerrainModelModule();
+    Eegeo::Modules::Map::MapModule& mapModule = m_world.GetMapModule();
+    Eegeo::Modules::Core::AsyncLoadersModule& asyncLoadersModule = m_world.GetAsyncLoadersModule();
+    Eegeo::Modules::Core::LightingModule& lightingModule = m_world.GetLightingModule();
+    
+	return new Examples::PinOverModelExample(platformAbstractioModule.GetTextureFileLoader(),
+	        renderingModule.GetGlBufferPool(),
+	        renderingModule.GetShaderIdGenerator(),
+	        renderingModule.GetMaterialIdGenerator(),
+	        renderingModule.GetVertexBindingPool(),
+	        renderingModule.GetVertexLayoutPool(),
+	        renderingModule.GetRenderableFilters(),
+	        terrainModelModule.GetTerrainHeightProvider(),
+	        mapModule.GetEnvironmentFlatteningService(),
+	        platformAbstractioModule.GetFileIO(),
+	        asyncLoadersModule.GetLocalAsyncTextureLoader(),
+	        lightingModule.GetGlobalFogging(),
+	        renderingModule.GetNullMaterial(),
 	        m_globeCameraController);
 }
 

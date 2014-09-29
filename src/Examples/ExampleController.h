@@ -9,6 +9,7 @@
 #include "EegeoWorld.h"
 #include "UIActionHandler.h"
 #include "IExampleControllerView.h"
+#include "Camera.h"
 #include <vector>
 #include <string>
 
@@ -56,6 +57,8 @@ public:
 	void Draw();
 
 	void RegisterExample(IExampleFactory* pFactory);
+    
+    const Eegeo::Camera::RenderCamera& GetCurrentActiveCamera() const;
 
 	template <typename TExampleFactory>
 	void RegisterExample()

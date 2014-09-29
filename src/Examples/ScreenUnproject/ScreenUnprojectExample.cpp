@@ -2,12 +2,12 @@
 
 #include "ScreenUnprojectExample.h"
 #include "EarthConstants.h"
-#include "ICameraProvider.h"
 #include "RenderCamera.h"
 #include "VectorMath.h"
 #include "SphereMesh.h"
 #include "TerrainHeightProvider.h"
 #include "LatLongAltitude.h"
+#include "DebugRenderer.h"
 
 namespace
 {
@@ -61,43 +61,29 @@ bool TryGetRayIntersectionWithEarthSizedSphereCenteredAtOrigin(const Ray &ray, E
 
 namespace Examples
 {
-ScreenUnprojectExample::ScreenUnprojectExample(Eegeo::Rendering::RenderContext& renderContext,
-        Eegeo::Camera::ICameraProvider& cameraProvider,
-        Eegeo::Resources::Terrain::Heights::TerrainHeightProvider& terrainHeightProvider,
-        Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController)
-	:m_renderContext(renderContext)
-	,m_cameraProvider(cameraProvider)
-	,m_terrainHeightProvider(terrainHeightProvider)
-	,m_globeCameraStateRestorer(cameraController)
+    ScreenUnprojectExample::ScreenUnprojectExample(Eegeo::DebugRendering::DebugRenderer& debugRenderer,
+                                                   Eegeo::Resources::Terrain::Heights::TerrainHeightProvider& terrainHeightProvider,
+                                                   Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController)
+    : m_debugRenderer(debugRenderer)
+	, m_terrainHeightProvider(terrainHeightProvider)
+	, m_globeCameraStateRestorer(cameraController)
+    , m_globeCameraController(cameraController)
 {
 
 }
 
 void ScreenUnprojectExample::Start()
 {
-	//create and tessellate a sphere mesh as in the DebugSphereExample program
-	m_pSphere = new Eegeo::DebugRendering::SphereMesh(
-	    m_renderContext,
-	    20.0f,
-	    16, 16,
-	    Eegeo::dv3(),
-	    NULL,
-	    Eegeo::v3(1.0f, 0.0f, 0.0f)
-	);
-	m_pSphere->Tesselate();
 
 }
 
 void ScreenUnprojectExample::Suspend()
 {
-	//destroy the sphere
-	delete m_pSphere;
 }
 
-void ScreenUnprojectExample::Update(float dt)
+void ScreenUnprojectExample::AfterCameraUpdate()
 {
-	const Eegeo::Camera::RenderCamera& renderCamera = m_cameraProvider.GetRenderCamera();
-
+    const Eegeo::Camera::RenderCamera& renderCamera = *m_globeCameraController.GetCamera();
 	//select the middle of the client screen as the position of the sphere
 	double screenPointOfInterestX = (renderCamera.GetViewportWidth()/2.0f);
 	double screenPointOfInterestY = (renderCamera.GetViewportHeight()/2.0f);
@@ -135,13 +121,15 @@ void ScreenUnprojectExample::Update(float dt)
 		m_terrainHeightProvider.TryGetHeight(intersectionPoint, 0, height);
 		Eegeo::Space::LatLongAltitude intersectionLocation = Eegeo::Space::LatLongAltitude::FromECEF(intersectionPoint);
 		intersectionLocation.SetAltitude(height);
-		m_pSphere->SetPositionECEF(intersectionLocation.ToECEF());
+    
+        m_debugRenderer.SetDepthTestEnabled(true);
+        m_debugRenderer.DrawSphere(intersectionLocation.ToECEF(), 50.f, Eegeo::v4(1.f, 0.f, 0.f, 1.f));
 	}
 }
+    const Eegeo::Camera::RenderCamera& ScreenUnprojectExample::GetRenderCamera() const
+    {
+        return *m_globeCameraController.GetCamera();
+    }
 
-void ScreenUnprojectExample::Draw()
-{
-	//draw the sphere at the current location
-	m_pSphere->Draw(m_renderContext);
-}
+
 }

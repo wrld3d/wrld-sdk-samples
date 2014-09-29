@@ -33,11 +33,9 @@ private:
 	Eegeo::Routes::RouteService& m_routeService;
 	Eegeo::Routes::Simulation::RouteSimulationService& m_routeSimulationService;
 	Eegeo::Routes::Simulation::View::RouteSimulationViewService& m_routeSimulationViewService;
-	Eegeo::Rendering::GLState& m_glState;
 	Eegeo::Helpers::IFileIO& m_fileIO;
 	Eegeo::Rendering::AsyncTexturing::IAsyncTextureRequestor& m_textureRequestor;
 	Eegeo::Camera::GlobeCamera::GlobeCameraController& m_defaultCamera;
-	Eegeo::Camera::ICameraProvider& m_cameraProvider;
 	Eegeo::Routes::Simulation::Camera::RouteSimulationGlobeCameraControllerFactory& m_routeSimulationGlobeCameraControllerFactory;
 	Eegeo::EegeoWorld& m_world;
 	float m_modelAnimationSpeed;
@@ -62,8 +60,6 @@ public:
 	                                Eegeo::Routes::Simulation::RouteSimulationService& routeSimulationService,
 	                                Eegeo::Routes::Simulation::View::RouteSimulationViewService& routeSimulationViewService,
 	                                Eegeo::Camera::GlobeCamera::GlobeCameraController& defaultCamera,
-	                                Eegeo::Camera::ICameraProvider& cameraProvider,
-	                                Eegeo::Rendering::GLState& glState,
 	                                Eegeo::Helpers::IFileIO& fileIO,
 	                                Eegeo::Rendering::AsyncTexturing::IAsyncTextureRequestor& textureRequestor,
 	                                Eegeo::Routes::Simulation::Camera::RouteSimulationGlobeCameraControllerFactory& routeSimulationGlobeCameraControllerFactory,
@@ -83,7 +79,8 @@ public:
 	void Update(float dt);
 	void Draw() {}
 	void Suspend();
-
+    const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
+    
 	bool Event_TouchRotate 			(const AppInterface::RotateData& data);
 	bool Event_TouchRotate_Start	(const AppInterface::RotateData& data);
 	bool Event_TouchRotate_End 		(const AppInterface::RotateData& data);

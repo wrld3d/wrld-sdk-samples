@@ -3,7 +3,7 @@
 #include "PinOverModelExample.h"
 
 #include "RegularTexturePageLayout.h"
-#include "RenderContext.h"
+#include "RenderCamera.h"
 #include "Node.h"
 #include "EffectHandler.h"
 #include "RenderQueue.h"
@@ -18,10 +18,8 @@ PinOverModelExample::PinOverModelExample(
     Eegeo::Rendering::VertexLayouts::VertexBindingPool& vertexBindingPool,
     Eegeo::Rendering::VertexLayouts::VertexLayoutPool& vertexLayoutPool,
     Eegeo::Rendering::RenderableFilters& renderableFilters,
-    const Eegeo::Camera::ICameraProvider& cameraProvider,
     Eegeo::Resources::Terrain::Heights::TerrainHeightProvider& terrainHeightProvider,
     Eegeo::Rendering::EnvironmentFlatteningService& environmentFlatteningService,
-    Eegeo::Rendering::RenderContext& renderContext,
     Eegeo::Helpers::IFileIO& fileIO,
     Eegeo::Rendering::AsyncTexturing::IAsyncTextureRequestor& textureRequestor,
     Eegeo::Lighting::GlobalFogging& fogging,
@@ -30,7 +28,6 @@ PinOverModelExample::PinOverModelExample(
 )
 	:m_pin0UserData("Pin Zero(0) User Data")
 	,m_pPin0(NULL)
-	,m_renderContext(renderContext)
 	,m_fileIO(fileIO)
 	,m_textureRequestor(textureRequestor)
 	,m_pModel(NULL)
@@ -38,6 +35,7 @@ PinOverModelExample::PinOverModelExample(
 	,m_renderableFilters(renderableFilters)
 	,m_nullMat(nullMat)
 	,m_globeCameraStateRestorer(cameraController)
+    ,m_cameraController(cameraController)
 {
 	textureLoader.LoadTexture(m_pinIconsTexture, "pin_over_model_example/PinIconTexturePage.png", true);
 	Eegeo_ASSERT(m_pinIconsTexture.textureId != 0);
@@ -63,7 +61,6 @@ PinOverModelExample::PinOverModelExample(
 	                    vertexBindingPool,
 	                    vertexLayoutPool,
 	                    renderableFilters,
-	                    cameraProvider,
 	                    terrainHeightProvider,
 	                    spriteWidthInMetres,
 	                    spriteHeightInMetres,
@@ -109,10 +106,10 @@ void PinOverModelExample::CreateExamplePins()
 
 void PinOverModelExample::Start()
 {
-	m_pModel = Eegeo::Model::CreateFromPODFile("pin_over_model_example/Test_ROBOT_ARM.pod", m_fileIO, m_renderContext.GetGLState(), &m_textureRequestor, "pin_over_model_example/");
+	m_pModel = Eegeo::Model::CreateFromPODFile("pin_over_model_example/Test_ROBOT_ARM.pod", m_fileIO, &m_textureRequestor, "pin_over_model_example/");
 	Eegeo_ASSERT(m_pModel->GetRootNode());
 
-	m_pMyModelRenderable = Eegeo_NEW (MyModelRenderable)(*m_pModel, m_renderContext, m_globalFogging, m_nullMat);
+	m_pMyModelRenderable = Eegeo_NEW (MyModelRenderable)(*m_pModel, m_globalFogging, m_nullMat, *m_cameraController.GetCamera());
 	m_pMyRenderableFilter = Eegeo_NEW (MyRenderableFilter)(*m_pMyModelRenderable);
 	m_renderableFilters.AddRenderableFilter(*m_pMyRenderableFilter);
 }
@@ -126,29 +123,34 @@ void PinOverModelExample::Suspend()
 void PinOverModelExample::Update(float dt)
 {
 	// Update the PinsModule to query terrain heights and update screen space coordinats for the Pins.
-	m_pPinsModule->Update(dt);
-
+	m_pPinsModule->Update(dt, *m_cameraController.GetCamera());
+    
 	m_pModel->UpdateAnimator(1.0f/30.0f);
 }
 
 void PinOverModelExample::Draw()
 {
 }
+    
+    const Eegeo::Camera::RenderCamera& PinOverModelExample::GetRenderCamera() const
+    {
+        return *m_cameraController.GetCamera();
+    }
 
 PinOverModelExample::MyModelRenderable::MyModelRenderable(Eegeo::Model& model,
-        Eegeo::Rendering::RenderContext& renderContext,
         Eegeo::Lighting::GlobalFogging& globalFogging,
-        Eegeo::Rendering::Materials::NullMaterial& nullMat)
+        Eegeo::Rendering::Materials::NullMaterial& nullMat,
+                                                          const Eegeo::Camera::RenderCamera& renderCamera)
 	: Eegeo::Rendering::RenderableBase(Eegeo::Rendering::LayerIds::Buildings,
 	                                   Eegeo::Space::LatLong::FromDegrees(37.7858,-122.401).ToECEF(),
 	                                   &nullMat)
 	, m_model(model)
-	, m_renderContext(renderContext)
 	, m_globalFogging(globalFogging)
+    , m_renderCamera(renderCamera)
 {
 
 }
-
+    
 void PinOverModelExample::MyModelRenderable::Render(Eegeo::Rendering::GLState& glState) const
 {
 	Eegeo::m44 transform;
@@ -157,7 +159,7 @@ void PinOverModelExample::MyModelRenderable::Render(Eegeo::Rendering::GLState& g
 	Eegeo::v3 forward = (location  - Eegeo::v3(0.f, 1.f, 0.f)).Norm().ToSingle();
 	Eegeo::v3 right(Eegeo::v3::Cross(up, forward).Norm());
 	forward = Eegeo::v3::Cross(up, right);
-	Eegeo::v3 cameraRelativePos = (location - m_renderContext.GetCameraOriginEcef()).ToSingle();
+	Eegeo::v3 cameraRelativePos = (location - m_renderCamera.GetEcefLocation()).ToSingle();
 	Eegeo::m44 scaleMatrix;
 	scaleMatrix.Scale(1.f);
 	Eegeo::m44 cameraRelativeTransform;
@@ -175,7 +177,7 @@ void PinOverModelExample::MyModelRenderable::Render(Eegeo::Rendering::GLState& g
 	m_model.GetRootNode()->SetLocalMatrix(transform);
 	m_model.GetRootNode()->UpdateRecursive();
 	m_model.GetRootNode()->UpdateSphereRecursive();
-	m_model.GetRootNode()->DrawRecursive(m_renderContext, m_globalFogging, NULL, true, false);
+	m_model.GetRootNode()->DrawRecursive(glState, m_globalFogging, NULL, true, false);
 
 	glState.FrontFace(GL_CW);
 
@@ -187,7 +189,7 @@ PinOverModelExample::MyRenderableFilter::MyRenderableFilter(Eegeo::Rendering::Re
 {
 
 }
-void PinOverModelExample::MyRenderableFilter::EnqueueRenderables(Eegeo::Rendering::RenderContext& renderContext,
+void PinOverModelExample::MyRenderableFilter::EnqueueRenderables(const Eegeo::Rendering::RenderContext& renderContext,
         Eegeo::Rendering::RenderQueue& renderQueue)
 {
 	renderQueue.EnqueueRenderable(m_renderable);

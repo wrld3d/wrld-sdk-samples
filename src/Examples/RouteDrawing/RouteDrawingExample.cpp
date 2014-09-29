@@ -16,6 +16,7 @@ RouteDrawingExample::RouteDrawingExample(RouteService& routeService,
 	:m_routeService(routeService)
 	,m_world(world)
 	,m_createdRoutes(false)
+    ,m_cameraController(cameraController)
 	,m_globeCameraStateRestorer(cameraController)
 {
 	Eegeo::Space::EcefTangentBasis cameraInterestBasis;
@@ -155,4 +156,9 @@ void RouteDrawingExample::Suspend()
 
 	m_routes.clear();
 	m_createdRoutes = false;
+}
+
+const Eegeo::Camera::RenderCamera& RouteDrawingExample::GetRenderCamera() const
+{
+    return *m_cameraController.GetCamera();
 }

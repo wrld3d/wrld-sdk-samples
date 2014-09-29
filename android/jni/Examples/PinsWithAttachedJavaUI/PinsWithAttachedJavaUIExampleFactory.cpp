@@ -3,6 +3,11 @@
 #include "PinsWithAttachedJavaUIExampleFactory.h"
 #include "PinsWithAttachedJavaUIExample.h"
 
+#include "IPlatformAbstractionModule.h"
+#include "RenderingModule.h"
+#include "TerrainModelModule.h"
+#include "MapModule.h"
+
 using namespace Examples;
 
 PinsWithAttachedJavaUIExampleFactory::PinsWithAttachedJavaUIExampleFactory(
@@ -18,20 +23,23 @@ PinsWithAttachedJavaUIExampleFactory::PinsWithAttachedJavaUIExampleFactory(
 
 IExample* PinsWithAttachedJavaUIExampleFactory::CreateExample() const
 {
+	Eegeo::Modules::IPlatformAbstractionModule& platformAbstractionModule = m_world.GetPlatformAbstractionModule();
+	Eegeo::Modules::Core::RenderingModule& renderingModule = m_world.GetRenderingModule();
+	Eegeo::Modules::Map::Layers::TerrainModelModule& terrainModelModule = m_world.GetTerrainModelModule();
+	Eegeo::Modules::Map::MapModule& mapModule = m_world.GetMapModule();
+
 	return new Examples::PinsWithAttachedJavaUIExample(
 	           m_world,
 	           m_nativeState,
-	           m_world.GetRenderContext(),
-	           m_world.GetTextureLoader(),
-	           m_world.GetGlBufferPool(),
-	           m_world.GetShaderIdGenerator(),
-	           m_world.GetMaterialIdGenerator(),
-	           m_world.GetVertexBindingPool(),
-	           m_world.GetVertexLayoutPool(),
-	           m_world.GetRenderableFilters(),
-	           m_world.GetCameraProvider(),
-	           m_world.GetTerrainHeightProvider(),
-	           m_world.GetEnvironmentFlatteningService(),
+	           platformAbstractionModule.GetTextureFileLoader(),
+	           renderingModule.GetGlBufferPool(),
+	           renderingModule.GetShaderIdGenerator(),
+	           renderingModule.GetMaterialIdGenerator(),
+	           renderingModule.GetVertexBindingPool(),
+	           renderingModule.GetVertexLayoutPool(),
+	           renderingModule.GetRenderableFilters(),
+	           terrainModelModule.GetTerrainHeightProvider(),
+	           mapModule.GetEnvironmentFlatteningService(),
 	           m_globeCameraController);
 }
 

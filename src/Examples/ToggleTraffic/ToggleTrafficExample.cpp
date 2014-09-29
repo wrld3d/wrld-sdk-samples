@@ -13,6 +13,7 @@ ToggleTrafficExample::ToggleTrafficExample(Eegeo::Traffic::TrafficSimulationCont
         Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController)
 	:m_trafficSimulation(trafficSimulation)
 	,m_lastToggle(MillisecondsSinceEpoch())
+    ,m_cameraController(cameraController)
 	,m_globeCameraStateRestorer(cameraController)
 {
 }
@@ -33,4 +34,9 @@ void ToggleTrafficExample::Update(float dt)
 		Eegeo_TTY("Toggling Traffic - Setting enabled = %s\n", m_trafficSimulation.Enabled() ? "false!" : "true!");
 		m_trafficSimulation.SetEnabled(!m_trafficSimulation.Enabled());
 	}
+}
+
+const Eegeo::Camera::RenderCamera& ToggleTrafficExample::GetRenderCamera() const
+{
+    return *m_cameraController.GetCamera();
 }

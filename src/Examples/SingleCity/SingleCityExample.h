@@ -46,6 +46,7 @@ public:
 	void AfterCameraUpdate();
 	void Draw() {}
 	void Suspend();
+    const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
 };
 }
 

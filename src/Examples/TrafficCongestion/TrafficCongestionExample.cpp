@@ -19,6 +19,7 @@ TrafficCongestionExample::TrafficCongestionExample(Eegeo::TrafficCongestion::ITr
 	, m_timeAccumulator(5.f)
 	, m_congestionValue(static_cast<int>(Eegeo::TrafficCongestion::CongestionLevel::Light))
 	, m_key(Eegeo::Streaming::MortonKey::CreateFromString("01131232132001"))
+    , m_cameraController(cameraController)
 	, m_globeCameraStateRestorer(cameraController)
 {
 
@@ -60,4 +61,9 @@ void TrafficCongestionExample::Update(float dt)
 
 	m_timeAccumulator += dt;
 }
+    
+    const Eegeo::Camera::RenderCamera& TrafficCongestionExample::GetRenderCamera() const
+    {
+        return *m_cameraController.GetCamera();
+    }
 }

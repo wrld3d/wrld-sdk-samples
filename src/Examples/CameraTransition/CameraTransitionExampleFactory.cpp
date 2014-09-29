@@ -15,8 +15,7 @@ CameraTransitionExampleFactory::CameraTransitionExampleFactory(Eegeo::EegeoWorld
 
 IExample* CameraTransitionExampleFactory::CreateExample() const
 {
-	return new Examples::CameraTransitionExample(m_globeCameraController,
-	        m_world.GetInterestPointProvider());
+	return new Examples::CameraTransitionExample(m_globeCameraController);
 }
 
 std::string CameraTransitionExampleFactory::ExampleName() const

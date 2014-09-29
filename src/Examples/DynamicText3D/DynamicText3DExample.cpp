@@ -10,24 +10,26 @@
 #include "IMaterial.h"
 #include "PlaceNameRenderable.h"
 
+#include "RenderQueue.h"
+#include "RenderableFilters.h"
+
 using namespace Eegeo;
 using namespace Eegeo::Resources::PlaceNames;
 
 namespace Examples
 {
-DynamicText3DExample::DynamicText3DExample(Eegeo::Rendering::GLState& glState,
-        Eegeo::Camera::ICameraProvider& cameraProvider,
-        Eegeo::Rendering::EnvironmentFlatteningService& environmentFlatteningService,
-        Eegeo::Resources::PlaceNames::PlaceNameViewBuilder& placeNameViewBuilder,
-        Eegeo::EegeoWorld& world,
-        Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCameraController)
-	: m_glState(glState)
-	, m_cameraProvider(cameraProvider)
-	, m_environmentFlatteningService(environmentFlatteningService)
+DynamicText3DExample::DynamicText3DExample(Eegeo::Rendering::EnvironmentFlatteningService& environmentFlatteningService,
+                                           Eegeo::Resources::PlaceNames::PlaceNameViewBuilder& placeNameViewBuilder,
+                                           Eegeo::EegeoWorld& world,
+                                           Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCameraController,
+                                           Eegeo::Rendering::RenderableFilters& renderableFilters)
+	: m_environmentFlatteningService(environmentFlatteningService)
 	, m_placeNameViewBuilder(placeNameViewBuilder)
 	, m_world(world)
 	, m_initialised(false)
 	, m_globeCameraStateRestorer(globeCameraController)
+    , m_renderCamera(*globeCameraController.GetCamera())
+    , m_renderableFilters(renderableFilters)
 {
 	Eegeo::Space::EcefTangentBasis cameraInterestBasis;
 
@@ -37,6 +39,13 @@ DynamicText3DExample::DynamicText3DExample(Eegeo::Rendering::GLState& glState,
 	    cameraInterestBasis);
 
 	globeCameraController.SetView(cameraInterestBasis, 1781.0);
+    
+    m_renderableFilters.AddRenderableFilter(*this);
+}
+    
+DynamicText3DExample::~DynamicText3DExample()
+{
+    m_renderableFilters.RemoveRenderableFilter(*this);
 }
 
 void DynamicText3DExample::Update(float dt)
@@ -88,46 +97,40 @@ void DynamicText3DExample::CreateDynamic3DText(const std::string& str,
 	}
 }
 
-void DynamicText3DExample::Draw()
+void DynamicText3DExample::EnqueueRenderables(const Eegeo::Rendering::RenderContext& renderContext, Eegeo::Rendering::RenderQueue& renderQueue)
 {
-	bool setMat = false;
-	const Rendering::Materials::IMaterial* pMaterial = NULL;
-	Rendering::GLState defaultState = m_glState;
-
-	const Camera::RenderCamera& renderCamera = m_cameraProvider.GetRenderCamera();
-	const dv3& ecefCameraPosition = renderCamera.GetEcefLocation();
+	const dv3& ecefCameraPosition = m_renderCamera.GetEcefLocation();
 	v3 camSurfaceNormal = ecefCameraPosition.Norm().ToSingle();
 	float environmentScale = m_environmentFlatteningService.GetCurrentScale();
-
+    
 	for(std::vector<PlaceNameView*>::const_iterator it = m_views.begin(); it != m_views.end(); ++it)
 	{
 		PlaceNameView& view = **it;
-
-		view.UpdateTransformsAndVisibility(renderCamera, camSurfaceNormal, 4.0, environmentScale);
-
+        
+		view.UpdateTransformsAndVisibility(m_renderCamera, camSurfaceNormal, 4.0, environmentScale);
+        
 		if(view.IsInFrustum() && !view.IsCompletelyTransparent())
 		{
 			typedef std::vector<PlaceNameRenderable*> TRenderables;
 			const TRenderables& renderables = view.GetRenderables();
-
+            
 			for(TRenderables::const_iterator it = renderables.begin(); it != renderables.end(); ++it)
 			{
 				const Rendering::RenderableBase* pRenderable = *it;;
-				pMaterial = pRenderable->GetMaterial();
-
-				if(!setMat)
-				{
-					pMaterial->SetState(m_glState);
-				}
-
-				pRenderable->Render(m_glState);
+                
+                renderQueue.EnqueueRenderable(pRenderable);
 			}
 		}
 	}
+}
+    
+void DynamicText3DExample::Draw()
+{
+	
+}
 
-	if(pMaterial != NULL)
-	{
-        m_glState.TrySet(defaultState);
-	}
+const Eegeo::Camera::RenderCamera& DynamicText3DExample::GetRenderCamera() const
+{
+    return m_renderCamera;
 }
 }

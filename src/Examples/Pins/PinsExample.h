@@ -28,6 +28,8 @@ private:
 	Eegeo::Helpers::GLHelpers::TextureInfo m_pinIconsTexture;
 	Eegeo::Pins::PinsModule* m_pPinsModule;
 	GlobeCameraStateRestorer m_globeCameraStateRestorer;
+    Eegeo::Camera::GlobeCamera::GlobeCameraController& m_cameraController;
+    
 	std::string m_pin0UserData;
 	std::string m_pin1UserData;
 	std::string m_pin2UserData;
@@ -45,7 +47,6 @@ public:
 	    Eegeo::Rendering::VertexLayouts::VertexBindingPool& vertexBindingPool,
 	    Eegeo::Rendering::VertexLayouts::VertexLayoutPool& vertexLayoutPool,
 	    Eegeo::Rendering::RenderableFilters& renderableFilters,
-	    const Eegeo::Camera::ICameraProvider& cameraProvider,
 	    Eegeo::Resources::Terrain::Heights::TerrainHeightProvider& terrainHeightProvider,
 	    Eegeo::Rendering::EnvironmentFlatteningService& environmentFlatteningService,
 	    Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController
@@ -65,6 +66,7 @@ public:
 	void Update(float dt);
 	void Draw();
 	void Suspend();
+    const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
 
 	bool Event_TouchTap(const AppInterface::TapData& data);
 

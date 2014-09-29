@@ -3,6 +3,8 @@
 #include "FileIOExampleFactory.h"
 #include "FileIOExample.h"
 
+#include "IPlatformAbstractionModule.h"
+
 using namespace Examples;
 
 FileIOExampleFactory::FileIOExampleFactory(Eegeo::EegeoWorld& world,
@@ -15,7 +17,9 @@ FileIOExampleFactory::FileIOExampleFactory(Eegeo::EegeoWorld& world,
 
 IExample* FileIOExampleFactory::CreateExample() const
 {
-	return new Examples::FileIOExample(m_world.GetFileIO(),
+    Eegeo::Modules::IPlatformAbstractionModule& platformAbstractionModule = m_world.GetPlatformAbstractionModule();
+    
+	return new Examples::FileIOExample(platformAbstractionModule.GetFileIO(),
 	                                   m_globeCameraController);
 }
 

@@ -5,6 +5,8 @@
 
 using namespace Examples;
 
+#include "RoutesModule.h"
+
 RouteDrawingExampleFactory::RouteDrawingExampleFactory(Eegeo::EegeoWorld& world,
         Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCameraController)
 	: m_world(world)
@@ -15,7 +17,9 @@ RouteDrawingExampleFactory::RouteDrawingExampleFactory(Eegeo::EegeoWorld& world,
 
 IExample* RouteDrawingExampleFactory::CreateExample() const
 {
-	return new Examples::RouteDrawingExample(m_world.GetRouteService(),
+    Eegeo::Modules::RoutesModule& routesModule = m_world.GetRoutesModule();
+    
+	return new Examples::RouteDrawingExample(routesModule.GetRouteService(),
 	        m_world,
 	        m_globeCameraController);
 }

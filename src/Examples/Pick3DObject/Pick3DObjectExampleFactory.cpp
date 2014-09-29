@@ -5,6 +5,8 @@
 #include "IInterestPointProvider.h"
 #include "LatLongAltitude.h"
 
+#include "DebugRenderingModule.h"
+
 using namespace Examples;
 
 Pick3DObjectExampleFactory::Pick3DObjectExampleFactory(Eegeo::EegeoWorld& world,
@@ -17,10 +19,12 @@ Pick3DObjectExampleFactory::Pick3DObjectExampleFactory(Eegeo::EegeoWorld& world,
 
 IExample* Pick3DObjectExampleFactory::CreateExample() const
 {
-	return new Examples::Pick3DObjectExample(m_world.GetRenderContext(),
-	        Eegeo::Space::LatLongAltitude::FromECEF(m_world.GetInterestPointProvider().GetEcefInterestPoint()),
-	        m_world.GetCameraProvider(),
-	        m_globeCameraController);
+    Eegeo::Modules::Core::DebugRenderingModule& debugRenderingModule = m_world.GetDebugRenderingModule();
+    
+	return new Examples::Pick3DObjectExample(Eegeo::Space::LatLongAltitude::FromECEF(m_globeCameraController.GetEcefInterestPoint()),
+                                             m_world.GetScreenProperties(),
+                                             debugRenderingModule.GetDebugRenderer(),
+                                             m_globeCameraController);
 }
 
 std::string Pick3DObjectExampleFactory::ExampleName() const
