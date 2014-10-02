@@ -164,7 +164,7 @@ void ExampleApp::Update (float dt)
 void ExampleApp::Draw (float dt)
 {
 	m_exampleController.PreWorldDraw();
-	World().Draw(dt, *m_pActiveCamera);
+	World().Draw(*m_pActiveCamera);
     m_exampleController.Draw();
 }
 

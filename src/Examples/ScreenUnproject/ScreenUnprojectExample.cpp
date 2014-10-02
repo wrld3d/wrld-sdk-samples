@@ -81,7 +81,7 @@ void ScreenUnprojectExample::Suspend()
 {
 }
 
-void ScreenUnprojectExample::AfterCameraUpdate()
+void ScreenUnprojectExample::Update(float dt)
 {
     const Eegeo::Camera::RenderCamera& renderCamera = *m_globeCameraController.GetCamera();
 	//select the middle of the client screen as the position of the sphere
