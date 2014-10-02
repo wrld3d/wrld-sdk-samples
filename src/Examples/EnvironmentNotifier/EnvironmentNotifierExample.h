@@ -15,12 +15,11 @@
 
 namespace Examples
 {
-    
     struct SphereData
     {
-        SphereData(const Eegeo::dv3& position, const Eegeo::v4& color)
-        : position(position)
-        , color(color)
+        SphereData(const Eegeo::dv3& spherePosition, const Eegeo::v4& sphereColor)
+        : position(spherePosition)
+        , color(sphereColor)
         {
             
         }
