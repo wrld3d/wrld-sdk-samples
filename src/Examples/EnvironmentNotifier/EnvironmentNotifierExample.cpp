@@ -46,7 +46,7 @@ void EnvironmentNotifierExample::Draw()
     {
         const SphereData& sphere = it->second;
         
-        m_debugRenderer.DrawSphere(sphere.position, 100.f, sphere.color);
+        m_debugRenderer.DrawSphere(sphere.spherePosition, 100.f, sphere.sphereColor);
     }
 }
     

@@ -17,15 +17,15 @@ namespace Examples
 {
     struct SphereData
     {
-        SphereData(const Eegeo::dv3& spherePosition, const Eegeo::v4& sphereColor)
-        : position(spherePosition)
-        , color(sphereColor)
+        SphereData(const Eegeo::dv3& position, const Eegeo::v4& color)
+        : spherePosition(position)
+        , sphereColor(color)
         {
             
         }
         
-        Eegeo::dv3 position;
-        Eegeo::v4 color;
+        Eegeo::dv3 spherePosition;
+        Eegeo::v4 sphereColor;
     };
     
     typedef std::map<Eegeo::Streaming::MortonKey, SphereData> TKeySphereMap;
