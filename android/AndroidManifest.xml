@@ -16,7 +16,7 @@
        
         <activity android:name="com.eegeo.BackgroundThreadActivity"
                   android:label="EegeoDroid"
-                  android:configChanges="orientation|keyboardHidden"
+                  android:configChanges="orientation|keyboardHidden|screenSize"
                   android:screenOrientation="landscape"
               	  android:launchMode="singleInstance"
               	  android:hardwareAccelerated="false">

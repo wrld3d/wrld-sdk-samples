@@ -18,10 +18,12 @@ public:
 	void ReleaseDisplay();
 
 	bool IsDisplayAvailable() const;
+    bool IsPortraitAspect() const;
 	int GetDisplayWidth() const;
 	int GetDisplayHeight() const;
 	int GetDisplayDpi() const;
     int GetPixelScale() const;
+    
     
 private:
 	int m_displayWidth;
@@ -29,6 +31,7 @@ private:
 	int m_displayDpi;
     int m_pixelScale;
 	bool m_displayBound;
+    bool m_isPortraitAspect;
 };
 
 #endif

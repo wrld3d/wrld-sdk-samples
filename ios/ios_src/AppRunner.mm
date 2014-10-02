@@ -100,7 +100,7 @@ void AppRunner::Update(float deltaSeconds)
 
 bool AppRunner::ShouldAutoRotateToInterfaceOrientation(UIInterfaceOrientation interfaceOrientation)
 {
-    if(App::IsDeviceSmall())
+    if (m_displayService.IsPortraitAspect())
     {
         return (interfaceOrientation == UIInterfaceOrientationPortrait);
     }

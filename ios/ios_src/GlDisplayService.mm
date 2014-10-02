@@ -3,8 +3,17 @@
 #include "GlDisplayService.h"
 #include "App.h"
 
+#include <algorithm>
+
+#ifndef __clang_analyzer__
+
 GlDisplayService::GlDisplayService()
-    : m_displayBound(false)
+: m_displayWidth(0)
+, m_displayHeight(0)
+, m_displayDpi(0)
+, m_pixelScale(0)
+, m_displayBound(false)
+, m_isPortraitAspect(false)
 {
     
 }
@@ -37,6 +46,11 @@ int GlDisplayService::GetDisplayDpi() const
 int GlDisplayService::GetPixelScale() const
 {
 	return m_pixelScale;
+}
+
+bool GlDisplayService::IsPortraitAspect() const
+{
+    return m_isPortraitAspect;
 }
 
 bool GlDisplayService::TryBindDisplay(GLKView& view)
@@ -84,20 +98,31 @@ bool GlDisplayService::TryBindDisplay(GLKView& view)
 		m_pixelScale = 1.f;
 	}
     
-	float width 		= pView.bounds.size.width * m_pixelScale;
-	float height 		= pView.bounds.size.height * m_pixelScale;
+    CGSize screenBounds;
     
-	bool boPortrait = App::IsDeviceSmall();
-	if (!boPortrait)
-	{
-		float temp = width;
-		width = height;
-		height = temp;
-	}
+    if ([screen respondsToSelector:@selector(fixedCoordinateSpace)])
+    {
+        screenBounds = [screen.coordinateSpace convertRect:screen.bounds toCoordinateSpace:screen.fixedCoordinateSpace].size;
+    }
+    else
+    {
+        screenBounds = screen.bounds.size;
+    }
+
+    OrientationMode orientationMode = App::GetOrientationMode();
     
+    // if we were not able to query info.plist, default to landscape on ipad, portrait on iphone/ipod
+    m_isPortraitAspect = (orientationMode == ORIENTATION_MODE_UNKNOWN)
+        ? App::IsDeviceSmall()
+        : (orientationMode == ORIENTATION_MODE_PORTRAIT);
+
+    if (!m_isPortraitAspect)
+    {
+        std::swap(screenBounds.width, screenBounds.height);
+    }
     
-    m_displayWidth = width;
-    m_displayHeight = height;
+	m_displayWidth = screenBounds.width * m_pixelScale;
+	m_displayHeight = screenBounds.height * m_pixelScale;
     m_displayDpi = App::GetDeviceDpi() * m_pixelScale;
 
 	m_displayBound = true;
@@ -109,6 +134,4 @@ void GlDisplayService::ReleaseDisplay()
 	m_displayBound = false;
 }
 
-
-
-
+#endif

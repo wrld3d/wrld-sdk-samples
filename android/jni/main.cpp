@@ -113,7 +113,11 @@ JNIEXPORT void JNICALL Java_com_eegeo_NativeJniCalls_setNativeSurface(JNIEnv* je
 	if (surface != NULL)
 	{
 		g_nativeState.window = ANativeWindow_fromSurface(jenv, surface);
-		g_pAppRunner->ActivateSurface();
+
+		if (g_nativeState.window != NULL)
+		{
+			g_pAppRunner->ActivateSurface();
+		}
 	}
 }
 
