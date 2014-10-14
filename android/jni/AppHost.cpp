@@ -99,8 +99,7 @@ AppHost::AppHost(
 	    m_androidNativeUIFactories,
 	    environmentCharacterSet,
 	    config,
-	    NULL,
-	    "Default-Landscape@2x~ipad.png");
+	    NULL);
 
 	m_pAndroidPlatformAbstractionModule->SetWebRequestServiceWorkPool(m_pWorld->GetWorkPool());
 	m_pInputProcessor = new Eegeo::Android::Input::AndroidInputProcessor(&m_inputHandler, m_pScreenProperties->GetScreenWidth(), m_pScreenProperties->GetScreenHeight());

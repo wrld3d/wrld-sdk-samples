@@ -13,6 +13,7 @@ private:
 	Eegeo::Camera::GlobeCamera::GlobeCameraController* m_pGlobeCameraController;
 	Eegeo::Camera::GlobeCamera::GlobeCameraTouchController* m_pCameraTouchController;
 	Eegeo::EegeoWorld* m_pWorld;
+    Eegeo::Rendering::LoadingScreen* m_pLoadingScreen;
 	Examples::ExampleController& m_exampleController;
     
     const Eegeo::Camera::RenderCamera* m_pActiveCamera;
@@ -21,6 +22,8 @@ private:
 	{
 		return * m_pWorld;
 	}
+    
+    void UpdateLoadingScreen(float dt);
 
 public:
 	ExampleApp(Eegeo::EegeoWorld* pWorld,

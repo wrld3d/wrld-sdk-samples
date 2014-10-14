@@ -68,8 +68,7 @@ AppHost::AppHost(
                                      m_iOSNativeUIFactories,
                                      environmentCharacterSet,
                                      config,
-                                     NULL,
-                                     "Default-Landscape@2x~ipad.png");
+                                     NULL);
     
 	ConfigureExamples();
     

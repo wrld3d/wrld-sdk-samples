@@ -43,11 +43,40 @@
 #include "CameraSplineExampleFactory.h"
 #include "ReadHeadingExampleFactory.h"
 
+
+namespace
+{
+    Eegeo::Rendering::LoadingScreen* CreateLoadingScreen(const Eegeo::Rendering::ScreenProperties& screenProperties,
+                                                         const Eegeo::Modules::Core::RenderingModule& renderingModule,
+                                                         const Eegeo::Modules::IPlatformAbstractionModule& platformAbstractionModule)
+    {
+        Eegeo::Rendering::LoadingScreenConfig loadingScreenConfig;
+        loadingScreenConfig.loadingBarBackgroundColor = Eegeo::v4(0.45f, 0.7f, 1.0f, 1.0f);
+        loadingScreenConfig.fadeOutDurationSeconds = 1.5f;
+        loadingScreenConfig.screenWidth = screenProperties.GetScreenWidth();
+        loadingScreenConfig.screenHeight = screenProperties.GetScreenHeight();
+        
+        
+        Eegeo::Rendering::LoadingScreen* loadingScreen = Eegeo::Rendering::LoadingScreen::Create(
+            "Default-Landscape@2x~ipad.png",
+            loadingScreenConfig,
+            renderingModule.GetShaderIdGenerator(),
+            renderingModule.GetMaterialIdGenerator(),
+            renderingModule.GetGlBufferPool(),
+            renderingModule.GetVertexLayoutPool(),
+            renderingModule.GetVertexBindingPool(),
+            platformAbstractionModule.GetTextureFileLoader());
+            
+        return loadingScreen;
+    }
+}
+
 ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
                        Examples::ExampleController& exampleController)
 	: m_pGlobeCameraController(NULL)
 	, m_pCameraTouchController(NULL)
 	, m_pWorld(pWorld)
+    , m_pLoadingScreen(NULL)
 	, m_exampleController(exampleController)
     , m_pActiveCamera(NULL)
 {
@@ -95,6 +124,9 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
 	Eegeo::Camera::CameraHelpers::EcefTangentBasisFromPointAndHeading(location.ToECEF(), cameraControllerOrientationDegrees, cameraInterestBasis);
 
 	m_pGlobeCameraController->SetView(cameraInterestBasis, cameraControllerDistanceFromInterestPointMeters);
+    
+    m_pLoadingScreen = CreateLoadingScreen(screenProperties, eegeoWorld.GetRenderingModule(), eegeoWorld.GetPlatformAbstractionModule());
+    
 
 	//register all generic examples
     m_exampleController.RegisterCameraExample<Examples::CameraSplineExampleFactory>(*m_pGlobeCameraController);
@@ -132,6 +164,7 @@ ExampleApp::~ExampleApp()
 {
 	delete m_pGlobeCameraController;
 	delete m_pCameraTouchController;
+    delete m_pLoadingScreen;
 }
 
 void ExampleApp::OnPause()
@@ -159,13 +192,46 @@ void ExampleApp::Update (float dt)
 
 	eegeoWorld.Update(dt, *m_pActiveCamera, m_pGlobeCameraController->GetEcefInterestPoint());
     m_exampleController.Update(dt);
+    
+    UpdateLoadingScreen(dt);
 }
 
 void ExampleApp::Draw (float dt)
 {
-	m_exampleController.PreWorldDraw();
-	World().Draw(*m_pActiveCamera);
+    m_exampleController.PreWorldDraw();
+    
+    Eegeo::EegeoWorld& eegeoWorld = World();
+    
+    eegeoWorld.Draw(*m_pActiveCamera);
+    
     m_exampleController.Draw();
+    
+    if (m_pLoadingScreen != NULL)
+    {
+        m_pLoadingScreen->Draw();
+    }
+}
+
+void ExampleApp::UpdateLoadingScreen(float dt)
+{
+    if (m_pLoadingScreen == NULL)
+        return;
+    
+    Eegeo::EegeoWorld& eegeoWorld = World();
+    
+    if (!eegeoWorld.Initialising() && !m_pLoadingScreen->IsDismissed())
+    {
+        m_pLoadingScreen->Dismiss();
+    }
+    
+    m_pLoadingScreen->SetProgress(eegeoWorld.GetInitialisationProgress());
+    m_pLoadingScreen->Update(dt);
+    
+    if (!m_pLoadingScreen->IsVisible())
+    {
+        Eegeo_DELETE m_pLoadingScreen;
+        m_pLoadingScreen = NULL;
+    }
 }
 
 void ExampleApp::Event_TouchRotate(const AppInterface::RotateData& data)
