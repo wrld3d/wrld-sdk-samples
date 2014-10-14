@@ -50,6 +50,7 @@ public class ExampleControllerHud
 				{
 					final RelativeLayout uiRoot = (RelativeLayout)m_activity.findViewById(R.id.ui_container);
 					m_view = m_activity.getLayoutInflater().inflate(R.layout.example_controller_layout, uiRoot, false);
+					uiRoot.setVisibility(View.GONE);
 
 					final Button previousExample = (Button)m_view.findViewById(R.id.previous_example);
 					previousExample.setOnClickListener(m_previousExampleClickListener);
@@ -76,6 +77,9 @@ public class ExampleControllerHud
 		{
 			public void run()
 			{
+				final RelativeLayout uiRoot = (RelativeLayout)m_activity.findViewById(R.id.ui_container);
+				uiRoot.setVisibility(View.VISIBLE);
+				
 				final Button previousExample = (Button)m_view.findViewById(R.id.previous_example);
 				final Button nextExample = (Button)m_view.findViewById(R.id.next_example);
 
