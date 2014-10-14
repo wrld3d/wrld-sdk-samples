@@ -142,13 +142,6 @@ AppHost::~AppHost()
 
 	delete m_pAndroidPlatformAbstractionModule;
 	m_pAndroidPlatformAbstractionModule = NULL;
-
-
-	Eegeo::EffectHandler::Reset();
-	Eegeo::EffectHandler::Shutdown();
-	m_pBlitter->Shutdown();
-	delete m_pBlitter;
-	m_pBlitter = NULL;
 }
 
 void AppHost::OnResume()
