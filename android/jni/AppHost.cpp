@@ -13,7 +13,6 @@
 #include "GlobeCameraController.h"
 #include "RenderCamera.h"
 #include "CameraHelpers.h"
-#include "LoadingScreen.h"
 #include "PlatformConfig.h"
 #include "AndroidPlatformConfigBuilder.h"
 #include "AndroidLocationService.h"
