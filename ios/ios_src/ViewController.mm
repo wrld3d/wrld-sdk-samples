@@ -17,6 +17,16 @@ using namespace Eegeo::iOS;
 	self.preferredFramesPerSecond = 60.0f;
     
     m_pAppRunner = new AppRunner(ApiKey, *self);
+    
+    if ([self respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)]) {
+        // iOS 7>=
+        [self performSelector:@selector(setNeedsStatusBarAppearanceUpdate)];
+    }
+}
+
+- (BOOL)prefersStatusBarHidden
+{
+    return NO;
 }
 
 - (void)glkView:(GLKView *)view drawInRect:(CGRect)rect

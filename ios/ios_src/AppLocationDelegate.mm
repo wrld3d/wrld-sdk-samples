@@ -20,6 +20,11 @@ ViewController* m_pUIViewController;
 	m_pLocationManager.desiredAccuracy = kCLLocationAccuracyBest;
 	m_pLocationManager.headingFilter = kCLHeadingFilterNone;
     
+    if([m_pLocationManager respondsToSelector:@selector(requestWhenInUseAuthorization)])
+    {
+        [m_pLocationManager requestWhenInUseAuthorization];
+    }
+    
 	[m_pLocationManager startUpdatingLocation];
 	[m_pLocationManager startUpdatingHeading];
 }
