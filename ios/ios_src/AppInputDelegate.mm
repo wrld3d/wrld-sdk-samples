@@ -181,8 +181,12 @@ UILongPressGestureRecognizer* gestureTouch;
 	CGPoint positionAbs = [recognizer locationInView:m_pViewController.view];
 	CGPoint velocity = [recognizer velocityInView:m_pViewController.view];
     
-	positionAbs.x *= m_pixelScale;
-	positionAbs.y *= m_pixelScale;
+    positionAbs.x *= m_pixelScale;
+    positionAbs.y *= m_pixelScale;
+    position.x *= m_pixelScale;
+    position.y *= m_pixelScale;
+    velocity.x *= m_pixelScale;
+    velocity.y *= m_pixelScale;
     
 	AppInterface::PanData data;
     
