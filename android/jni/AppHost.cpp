@@ -171,6 +171,7 @@ void AppHost::HandleTouchInputEvent(const Eegeo::Android::Input::TouchInputEvent
 
 void AppHost::Update(float dt)
 {
+	m_pInputProcessor->Update(dt);
 	m_pApp->Update(dt);
 }
 
