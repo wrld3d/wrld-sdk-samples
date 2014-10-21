@@ -55,10 +55,12 @@ namespace
         loadingScreenConfig.fadeOutDurationSeconds = 1.5f;
         loadingScreenConfig.screenWidth = screenProperties.GetScreenWidth();
         loadingScreenConfig.screenHeight = screenProperties.GetScreenHeight();
-        
+        loadingScreenConfig.backgroundColor = Eegeo::v4(132.f/255.f, 203.f/255.f, 235.f/255.f, 1.f);
+        loadingScreenConfig.layout = Eegeo::Rendering::LoadingScreenLayout::Centred;
+       
         
         Eegeo::Rendering::LoadingScreen* loadingScreen = Eegeo::Rendering::LoadingScreen::Create(
-            "Default-Landscape@2x~ipad.png",
+            "SplashScreen-1024x768.png",
             loadingScreenConfig,
             renderingModule.GetShaderIdGenerator(),
             renderingModule.GetMaterialIdGenerator(),
