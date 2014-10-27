@@ -42,6 +42,7 @@
 #include "WebRequestExampleFactory.h"
 #include "CameraSplineExampleFactory.h"
 #include "ReadHeadingExampleFactory.h"
+#include "FireworksExampleFactory.h"
 
 
 namespace
@@ -141,6 +142,7 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
 	m_exampleController.RegisterCameraExample<Examples::EnvironmentFlatteningExampleFactory>(*m_pGlobeCameraController);
 	m_exampleController.RegisterCameraExample<Examples::EnvironmentNotifierExampleFactory>(*m_pGlobeCameraController);
 	m_exampleController.RegisterCameraExample<Examples::FileIOExampleFactory>(*m_pGlobeCameraController);
+    m_exampleController.RegisterCameraExample<Examples::FireworksExampleFactory>(*m_pGlobeCameraController);
 	m_exampleController.RegisterCameraExample<Examples::LoadModelExampleFactory>(*m_pGlobeCameraController);
 	m_exampleController.RegisterCameraExample<Examples::ModifiedRenderingExampleFactory>(*m_pGlobeCameraController);
 	m_exampleController.RegisterCameraExample<Examples::NavigationGraphExampleFactory>(*m_pGlobeCameraController);
