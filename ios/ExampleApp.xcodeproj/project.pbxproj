@@ -202,8 +202,8 @@
 		7E841E9619FE681000D002A2 /* FireworksExample.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7E841E9119FE681000D002A2 /* FireworksExample.cpp */; };
 		7E841E9719FE681000D002A2 /* FireworksExampleFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7E841E9319FE681000D002A2 /* FireworksExampleFactory.cpp */; };
 		7E841E9819FE681000D002A2 /* FireworksExampleFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7E841E9319FE681000D002A2 /* FireworksExampleFactory.cpp */; };
-		7E841E9A19FE91A800D002A2 /* firework_02.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E841E9919FE91A800D002A2 /* firework_02.png */; };
-		7E841E9B19FE91A800D002A2 /* firework_02.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E841E9919FE91A800D002A2 /* firework_02.png */; };
+		7E841E9A19FE91A800D002A2 /* firework_01.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E841E9919FE91A800D002A2 /* firework_01.png */; };
+		7E841E9B19FE91A800D002A2 /* firework_01.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E841E9919FE91A800D002A2 /* firework_01.png */; };
 		7EE481EB16836F370006E99B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EE481EA16836F370006E99B /* UIKit.framework */; };
 		7EE481ED16836F370006E99B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EE481EC16836F370006E99B /* Foundation.framework */; };
 		7EE481EF16836F370006E99B /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EE481EE16836F370006E99B /* CoreGraphics.framework */; };
@@ -408,7 +408,7 @@
 		7E841E9219FE681000D002A2 /* FireworksExample.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FireworksExample.h; sourceTree = "<group>"; };
 		7E841E9319FE681000D002A2 /* FireworksExampleFactory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FireworksExampleFactory.cpp; sourceTree = "<group>"; };
 		7E841E9419FE681000D002A2 /* FireworksExampleFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FireworksExampleFactory.h; sourceTree = "<group>"; };
-		7E841E9919FE91A800D002A2 /* firework_02.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = firework_02.png; sourceTree = "<group>"; };
+		7E841E9919FE91A800D002A2 /* firework_01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = firework_01.png; sourceTree = "<group>"; };
 		7EE481E616836F370006E99B /* ExampleApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ExampleApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7EE481EA16836F370006E99B /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		7EE481EC16836F370006E99B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -892,7 +892,7 @@
 		18D1D363194A0EA000FAA1B9 /* platform_assets */ = {
 			isa = PBXGroup;
 			children = (
-				7E841E9919FE91A800D002A2 /* firework_02.png */,
+				7E841E9919FE91A800D002A2 /* firework_01.png */,
 				E096AE1B19F6713300C3D04A /* SplashScreen-1024x768.png */,
 				18D1D34A194A057200FAA1B9 /* placeholder.pvr */,
 				18D1D343194A057200FAA1B9 /* FrankBold50_A8_icons_0.png */,
@@ -1110,7 +1110,7 @@
 				186D293B196D9E4B00E004E0 /* pins_example in Resources */,
 				186D293C196D9E4B00E004E0 /* pod_animation_example in Resources */,
 				186D293D196D9E4B00E004E0 /* route_simulation_animation_example in Resources */,
-				7E841E9B19FE91A800D002A2 /* firework_02.png in Resources */,
+				7E841E9B19FE91A800D002A2 /* firework_01.png in Resources */,
 				186D293E196D9E4B00E004E0 /* route_simulation_example in Resources */,
 				E0B9CF9319F697090012D0B4 /* Images.xcassets in Resources */,
 				E096AE1D19F6713300C3D04A /* SplashScreen-1024x768.png in Resources */,
@@ -1132,7 +1132,7 @@
 				E096AE1A19F670F100C3D04A /* Images.xcassets in Resources */,
 				18D1D35C194A057200FAA1B9 /* pod_animation_example in Resources */,
 				18D1D359194A057200FAA1B9 /* pins_example in Resources */,
-				7E841E9A19FE91A800D002A2 /* firework_02.png in Resources */,
+				7E841E9A19FE91A800D002A2 /* firework_01.png in Resources */,
 				18D1D358194A057200FAA1B9 /* pin_over_model_example in Resources */,
 				18D1D35B194A057200FAA1B9 /* placeholder.pvr in Resources */,
 				18D1D357194A057200FAA1B9 /* load_model_example in Resources */,

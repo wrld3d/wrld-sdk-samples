@@ -20,7 +20,8 @@ FireworksExample::FireworksExample(Eegeo::Camera::GlobeCamera::GlobeCameraContro
 : m_cameraController(cameraController)
 , m_cityThemesService(cityThemesService)
 {
-    m_pFireworksModule = Eegeo::Modules::FireworksModule::Create(renderingModule,
+    m_pFireworksModule = Eegeo::Modules::FireworksModule::Create("firework_01.png",
+                                                                 renderingModule,
                                                                  platformModule,
                                                                  streamingModule,
                                                                  mapModule,
