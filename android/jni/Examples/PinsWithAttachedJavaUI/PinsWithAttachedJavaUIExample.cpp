@@ -220,7 +220,7 @@ void PinsWithAttachedJavaUIExample::CreateJavaUIButton()
 	jmethodID addJavaPinButton = env->GetMethodID(m_hudPinControllerClass, "addJavaPinButton", "()I");
 
 	//get the constructor for the HudPinController, which takes the activity as a parameter
-	jmethodID hudPinControllerConstructor = env->GetMethodID(m_hudPinControllerClass, "<init>", "(Lcom/eegeo/MainActivity;)V");
+	jmethodID hudPinControllerConstructor = env->GetMethodID(m_hudPinControllerClass, "<init>", "(Lcom/eegeo/mobilesdkharness/MainActivity;)V");
 
 	//construct an instance of the HudPinController, and create and cache a persistent reference to it.
 	//we will make calls on to this instance, and it will add elements to the UI for us form Java.

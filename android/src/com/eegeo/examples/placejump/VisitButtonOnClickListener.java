@@ -2,7 +2,7 @@ package com.eegeo.examples.placejump;
 
 import android.widget.Spinner;
 
-import com.eegeo.INativeMessageRunner;
+import com.eegeo.mobilesdkharness.INativeMessageRunner;
 import com.eegeo.examples.NativeThreadOnClickHandler;
 
 class VisitButtonOnClickListener extends NativeThreadOnClickHandler

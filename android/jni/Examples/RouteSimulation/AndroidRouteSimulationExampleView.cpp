@@ -29,7 +29,7 @@ AndroidRouteSimulationExampleView::AndroidRouteSimulationExampleView(
 
 	//get the constructor for the RouteSimulationExampleHud, which takes the activity, a pointer to 'this' as
 	//a parameter, and a flag to indicate if currently in follow mode.
-	jmethodID routeSimulationExampleHudConstructor = env->GetMethodID(routeSimulationExampleHudClass, "<init>", "(Lcom/eegeo/MainActivity;JZ)V");
+	jmethodID routeSimulationExampleHudConstructor = env->GetMethodID(routeSimulationExampleHudClass, "<init>", "(Lcom/eegeo/mobilesdkharness/MainActivity;JZ)V");
 
 	jobject instance = env->NewObject(
 	                       m_routeSimulationExampleHudClass,

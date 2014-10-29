@@ -5,7 +5,7 @@ import android.widget.AdapterView;
 import android.widget.Spinner;
 import android.widget.AdapterView.OnItemSelectedListener;
 
-import com.eegeo.INativeMessageRunner;
+import com.eegeo.mobilesdkharness.INativeMessageRunner;
 
 class SelectExampleOnItemSelectedListener implements OnItemSelectedListener
 {

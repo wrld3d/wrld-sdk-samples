@@ -1,7 +1,7 @@
 package com.eegeo.examples.routematching;
 
 
-import com.eegeo.INativeMessageRunner;
+import com.eegeo.mobilesdkharness.INativeMessageRunner;
 import com.eegeo.examples.NativeThreadOnClickHandler;
 
 class ToggleRouteMatchingOnClickListener extends NativeThreadOnClickHandler

@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity" >
 
-    <com.eegeo.EegeoSurfaceView
+    <com.eegeo.mobilesdkharness.EegeoSurfaceView
         android:id="@+id/surface"
     	android:layout_width="fill_parent" 
     	android:layout_height="fill_parent"/>

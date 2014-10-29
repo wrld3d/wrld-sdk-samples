@@ -5,7 +5,7 @@ import java.util.Vector;
 import android.view.View;
 import android.widget.Button;
 
-import com.eegeo.INativeMessageRunner;
+import com.eegeo.mobilesdkharness.INativeMessageRunner;
 import com.eegeo.examples.NativeThreadOnClickHandler;
 
 class ToggleFollowCameraOnClickListener extends NativeThreadOnClickHandler

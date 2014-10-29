@@ -7,8 +7,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 
-import com.eegeo.MainActivity;
-import com.eegeo.R;
+import com.eegeo.mobilesdkharness.MainActivity;
+import com.eegeo.mobilesdkharness.R;
 
 public class RouteMatchingExampleHud
 {

@@ -1,7 +1,7 @@
 package com.eegeo.examples.themereaderwriter;
 
 
-import com.eegeo.INativeMessageRunner;
+import com.eegeo.mobilesdkharness.INativeMessageRunner;
 import com.eegeo.examples.NativeThreadOnClickHandler;
 
 class ReadThemeNameOnClickListener extends NativeThreadOnClickHandler

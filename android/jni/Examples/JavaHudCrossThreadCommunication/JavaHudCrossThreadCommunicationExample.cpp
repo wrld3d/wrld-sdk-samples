@@ -52,7 +52,7 @@ void JavaHudCrossThreadCommunicationExample::Start()
 	m_themeReaderWriterHudClass = static_cast<jclass>(env->NewGlobalRef(themeReaderWriterHudClass));
 
 	//get the constructor for the ThemeReaderWriterHud, which takes the activity as a parameter
-	jmethodID themeReaderWriterHudClassConstructor = env->GetMethodID(m_themeReaderWriterHudClass, "<init>", "(Lcom/eegeo/MainActivity;)V");
+	jmethodID themeReaderWriterHudClassConstructor = env->GetMethodID(m_themeReaderWriterHudClass, "<init>", "(Lcom/eegeo/mobilesdkharness/MainActivity;)V");
 
 	//construct an instance of the ThemeReaderWriterHud, and create and cache a persistent reference to it.
 	//we will make calls on to this instance, and it will add elements to the UI for us from Java.

@@ -2,7 +2,7 @@ package com.eegeo.examples.themereaderwriter;
 
 import android.widget.Spinner;
 
-import com.eegeo.INativeMessageRunner;
+import com.eegeo.mobilesdkharness.INativeMessageRunner;
 import com.eegeo.examples.NativeThreadOnClickHandler;
 
 class SetThemeOnClickListener extends NativeThreadOnClickHandler

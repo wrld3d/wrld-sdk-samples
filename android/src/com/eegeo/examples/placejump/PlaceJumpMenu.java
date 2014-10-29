@@ -10,8 +10,8 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
-import com.eegeo.MainActivity;
-import com.eegeo.R;
+import com.eegeo.mobilesdkharness.MainActivity;
+import com.eegeo.mobilesdkharness.R;
 
 
 //this is the java companion type to native ShowJavaPlaceJumpUIExample

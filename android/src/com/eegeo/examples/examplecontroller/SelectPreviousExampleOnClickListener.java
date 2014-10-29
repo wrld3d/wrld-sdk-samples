@@ -1,7 +1,7 @@
 package com.eegeo.examples.examplecontroller;
 
 
-import com.eegeo.INativeMessageRunner;
+import com.eegeo.mobilesdkharness.INativeMessageRunner;
 import com.eegeo.examples.NativeThreadOnClickHandler;
 
 class SelectPreviousExampleOnClickListener extends NativeThreadOnClickHandler

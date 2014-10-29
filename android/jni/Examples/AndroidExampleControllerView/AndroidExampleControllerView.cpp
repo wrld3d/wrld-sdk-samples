@@ -31,7 +31,7 @@ AndroidExampleControllerView::AndroidExampleControllerView(
 
 	//get the constructor for the ExampleControllerHud, which takes the activity, a pointer to 'this' as
 	//a parameter, and a flag to indicate if currently in follow mode.
-	jmethodID exampleControllerHudConstructor = env->GetMethodID(routeMatchingExampleHudClass, "<init>", "(Lcom/eegeo/MainActivity;J)V");
+	jmethodID exampleControllerHudConstructor = env->GetMethodID(routeMatchingExampleHudClass, "<init>", "(Lcom/eegeo/mobilesdkharness/MainActivity;J)V");
 
 	jobject instance = env->NewObject(
 	                       m_androidExampleControllerViewClass,

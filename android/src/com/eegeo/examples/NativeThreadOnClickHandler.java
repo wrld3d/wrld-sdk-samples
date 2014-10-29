@@ -3,7 +3,7 @@ package com.eegeo.examples;
 import android.view.View;
 import android.view.View.OnClickListener;
 
-import com.eegeo.INativeMessageRunner;
+import com.eegeo.mobilesdkharness.INativeMessageRunner;
 
 public abstract class NativeThreadOnClickHandler implements OnClickListener
 {
