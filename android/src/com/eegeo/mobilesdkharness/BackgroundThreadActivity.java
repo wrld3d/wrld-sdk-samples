@@ -5,6 +5,7 @@ package com.eegeo.mobilesdkharness;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.SystemClock;
 import android.util.DisplayMetrics;
 import android.view.SurfaceHolder;
 import android.app.Activity;
@@ -222,6 +223,10 @@ public class BackgroundThreadActivity extends MainActivity
 							if(m_running)
 							{
 								NativeJniCalls.updateNativeCode(deltaSeconds);
+							}
+							else
+							{
+								SystemClock.sleep(200);
 							}
 
 							m_endOfLastFrameNano = timeNowNano;
