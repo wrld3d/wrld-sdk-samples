@@ -64,8 +64,9 @@ private:
 	GlobeCameraStateRestorer m_globeCameraStateRestorer;
 
 	Eegeo::Model* m_pModel;
-	Eegeo::Rendering::Materials::NullMaterial& m_nullMat;
-
+	Eegeo::Rendering::Materials::NullMaterialFactory& m_nullMaterialFactory;
+    
+    Eegeo::Rendering::Materials::NullMaterial* m_pNullMaterial;
 	MyModelRenderable* m_pMyModelRenderable;
 	MyRenderableFilter* m_pMyRenderableFilter;
 
@@ -83,7 +84,7 @@ public:
 	    Eegeo::Helpers::IFileIO& fileIO,
 	    Eegeo::Rendering::AsyncTexturing::IAsyncTextureRequestor& textureRequestor,
 	    Eegeo::Lighting::GlobalFogging& fogging,
-	    Eegeo::Rendering::Materials::NullMaterial& nullMat,
+	    Eegeo::Rendering::Materials::NullMaterialFactory& nullMaterialFactory,
 	    Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController
 	);
 

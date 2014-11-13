@@ -7,6 +7,8 @@
 #include "Node.h"
 #include "EffectHandler.h"
 #include "RenderQueue.h"
+#include "NullMaterial.h"
+#include "NullMaterialFactory.h"
 
 namespace Examples
 {
@@ -23,7 +25,7 @@ PinOverModelExample::PinOverModelExample(
     Eegeo::Helpers::IFileIO& fileIO,
     Eegeo::Rendering::AsyncTexturing::IAsyncTextureRequestor& textureRequestor,
     Eegeo::Lighting::GlobalFogging& fogging,
-    Eegeo::Rendering::Materials::NullMaterial& nullMat,
+    Eegeo::Rendering::Materials::NullMaterialFactory& nullMaterialFactory,
     Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController
 )
 	:m_pin0UserData("Pin Zero(0) User Data")
@@ -33,7 +35,8 @@ PinOverModelExample::PinOverModelExample(
 	,m_pModel(NULL)
 	,m_globalFogging(fogging)
 	,m_renderableFilters(renderableFilters)
-	,m_nullMat(nullMat)
+	,m_nullMaterialFactory(nullMaterialFactory)
+    ,m_pNullMaterial(NULL)
 	,m_globeCameraStateRestorer(cameraController)
     ,m_cameraController(cameraController)
 {
@@ -87,6 +90,7 @@ PinOverModelExample::~PinOverModelExample()
 
 	Eegeo_DELETE m_pMyRenderableFilter;
 	Eegeo_DELETE m_pMyModelRenderable;
+    Eegeo_DELETE m_pNullMaterial;
 }
 
 void PinOverModelExample::CreateExamplePins()
@@ -109,7 +113,9 @@ void PinOverModelExample::Start()
 	m_pModel = Eegeo::Model::CreateFromPODFile("pin_over_model_example/Test_ROBOT_ARM.pod", m_fileIO, &m_textureRequestor, "pin_over_model_example/");
 	Eegeo_ASSERT(m_pModel->GetRootNode());
 
-	m_pMyModelRenderable = Eegeo_NEW (MyModelRenderable)(*m_pModel, m_globalFogging, m_nullMat, *m_cameraController.GetCamera());
+    m_pNullMaterial = m_nullMaterialFactory.Create("PinOverModelExampleNullMaterial");
+
+	m_pMyModelRenderable = Eegeo_NEW (MyModelRenderable)(*m_pModel, m_globalFogging, *m_pNullMaterial, *m_cameraController.GetCamera());
 	m_pMyRenderableFilter = Eegeo_NEW (MyRenderableFilter)(*m_pMyModelRenderable);
 	m_renderableFilters.AddRenderableFilter(*m_pMyRenderableFilter);
 }

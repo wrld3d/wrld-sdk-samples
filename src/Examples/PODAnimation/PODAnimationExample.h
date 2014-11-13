@@ -26,7 +26,7 @@ private:
 	public:
 		MyModelRenderable(Eegeo::Model& model,
 		                  Eegeo::Lighting::GlobalFogging& globalFogging,
-		                  Eegeo::Rendering::Materials::NullMaterial& nullMat,
+		                  Eegeo::Rendering::Materials::NullMaterial& nullMaterial,
                           const Eegeo::Camera::RenderCamera& renderCamera);
         
 		void Render(Eegeo::Rendering::GLState& glState) const;
@@ -47,7 +47,8 @@ private:
     Eegeo::Camera::GlobeCamera::GlobeCameraController& m_cameraController;
 	GlobeCameraStateRestorer m_globeCameraStateRestorer;
     Eegeo::Rendering::RenderableFilters& m_renderableFilters;
-    Eegeo::Rendering::Materials::NullMaterial& m_nullMaterial;
+    Eegeo::Rendering::Materials::NullMaterialFactory& m_nullMaterialFactory;
+    Eegeo::Rendering::Materials::NullMaterial* m_pNullMaterial;
     
 	Eegeo::Model* m_pModel;
     
@@ -59,7 +60,7 @@ public:
                         Eegeo::Rendering::AsyncTexturing::IAsyncTextureRequestor& textureRequestor,
                         Eegeo::Lighting::GlobalFogging& fogging,
                         Eegeo::Rendering::RenderableFilters& renderableFilters,
-                        Eegeo::Rendering::Materials::NullMaterial& nullMaterial,
+                        Eegeo::Rendering::Materials::NullMaterialFactory& nullMaterialFactory,
                         Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController);
     
     ~PODAnimationExample();

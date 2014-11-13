@@ -42,7 +42,7 @@ IExample* PinOverModelExampleFactory::CreateExample() const
 	        platformAbstractioModule.GetFileIO(),
 	        asyncLoadersModule.GetLocalAsyncTextureLoader(),
 	        lightingModule.GetGlobalFogging(),
-	        renderingModule.GetNullMaterial(),
+	        renderingModule.GetNullMaterialFactory(),
 	        m_globeCameraController);
 }
 

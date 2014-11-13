@@ -31,7 +31,7 @@ IExample* PODAnimationExampleFactory::CreateExample() const
                                              asyncLoadersModule.GetLocalAsyncTextureLoader(),
                                              lightingModule.GetGlobalFogging(),
                                              renderingModule.GetRenderableFilters(),
-                                             renderingModule.GetNullMaterial(),
+                                             renderingModule.GetNullMaterialFactory(),
                                              m_globeCameraController);
     
 }
