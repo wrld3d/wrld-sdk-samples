@@ -109,7 +109,7 @@ iOSRouteSimulationExampleView::iOSRouteSimulationExampleView(UIView* pView)
 	screenHeight -= ApplyPlatformScale(60.f);
     
     m_pDecreaseSpeedButton = CreateVerticalMenuButton(screenHeight, @"Decrease Speed!");
-	[m_pDecreaseSpeedButton addTarget:m_pBinding action:@selector(increaseSpeedFollowed) forControlEvents:UIControlEventTouchDown];
+	[m_pDecreaseSpeedButton addTarget:m_pBinding action:@selector(decreaseSpeedFollowed) forControlEvents:UIControlEventTouchDown];
 	[m_pView addSubview:m_pDecreaseSpeedButton];
     
 	screenHeight -= ApplyPlatformScale(60.f);
