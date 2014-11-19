@@ -11,7 +11,17 @@ using namespace Eegeo::iOS;
 
 - (void)viewDidLoad
 {
-	[super viewDidLoad];
+    [super viewDidLoad];
+    
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(onPause)
+                                                 name: @"handlePause"
+                                               object: nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(onResume)
+                                                 name: @"handleResume"
+                                               object: nil];
     
 	m_previousTimestamp = CFAbsoluteTimeGetCurrent();
 	self.preferredFramesPerSecond = 60.0f;
@@ -27,6 +37,16 @@ using namespace Eegeo::iOS;
 - (BOOL)prefersStatusBarHidden
 {
     return NO;
+}
+
+- (void)onPause
+{
+    m_pAppRunner->Pause();
+}
+
+- (void)onResume
+{
+    m_pAppRunner->Resume();
 }
 
 - (void)glkView:(GLKView *)view drawInRect:(CGRect)rect
