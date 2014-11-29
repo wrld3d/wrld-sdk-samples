@@ -6,17 +6,21 @@
 #include "IExampleFactory.h"
 #include "IExample.h"
 #include "EegeoWorld.h"
+#include "ScreenPropertiesProvider.h"
 
 namespace Examples
 {
 class RenderToTextureExampleFactory : public IExampleFactory
 {
 	Eegeo::EegeoWorld& m_world;
-	Eegeo::Camera::GlobeCamera::GlobeCameraController& m_globeCameraController;
+	DefaultCameraControllerFactory& m_defaultCameraControllerFactory;
+    
+    const IScreenPropertiesProvider& m_screenPropertiesProvider;
     
 public:
 	RenderToTextureExampleFactory(Eegeo::EegeoWorld& world,
-                                  Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCameraController);
+                                  DefaultCameraControllerFactory& defaultCameraControllerFactory,
+                                  const IScreenPropertiesProvider& screenPropertiesProvider);
     
 	std::string ExampleName() const;
     

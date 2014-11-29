@@ -23,7 +23,7 @@ namespace Examples
     //Give the effect a 10 frames per second intensity update to give it an old-timey movie vibe...
     const float RenderToTextureExample::SecondsBetweenEffectUpdates = 0.1f;
     
-    RenderToTextureExample::RenderToTextureExample(Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController,
+    RenderToTextureExample::RenderToTextureExample(Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
                                                    const Eegeo::Rendering::ScreenProperties& screenProperties,
                                                    Eegeo::Rendering::VertexLayouts::VertexLayoutPool& vertexLayoutPool,
                                                    Eegeo::Rendering::VertexLayouts::VertexBindingPool& vertexBindingPool,
@@ -31,7 +31,7 @@ namespace Examples
                                                    Eegeo::Rendering::Materials::MaterialIdGenerator& materialIdGenerator,
                                                    Eegeo::Rendering::RenderableFilters& renderableFilters,
                                                    Eegeo::Rendering::GlBufferPool& glBufferPool)
-    :m_globeCameraStateRestorer(cameraController)
+    :m_globeCameraStateRestorer(*pCameraController)
     ,m_screenProperties(screenProperties)
     ,m_vertexLayoutPool(vertexLayoutPool)
     ,m_vertexBindingPool(vertexBindingPool)
@@ -45,7 +45,7 @@ namespace Examples
     ,m_pRenderable(NULL)
     ,m_pVignetteRenderer(NULL)
     ,m_secondsSinceLastEffectUpate(0.f)
-    ,m_cameraController(cameraController)
+    ,m_pCameraController(pCameraController)
     {
     }
     
@@ -69,7 +69,7 @@ namespace Examples
                                                                      *m_pVignetteShader,
                                                                      *m_pRenderTexture);
         
-        m_pRenderableMesh = Eegeo::Rendering::Geometry::CreatePositionUVViewportQuad(m_glBufferPool, m_vertexLayoutPool, 1.f);
+        m_pRenderableMesh = Eegeo::Rendering::Geometry::CreatePositionUVViewportQuad(m_glBufferPool, m_vertexLayoutPool);
         
         const Eegeo::Rendering::VertexLayouts::VertexLayout& vertexLayout = m_pRenderableMesh->GetVertexLayout();
         const Eegeo::Rendering::VertexLayouts::VertexAttribs& vertexAttributes = m_pVignetteShader->GetVertexAttributes();
@@ -105,6 +105,19 @@ namespace Examples
         
         Eegeo_DELETE m_pRenderTexture;
         m_pRenderTexture = NULL;
+        
+        delete m_pCameraController;
+        m_pCameraController = NULL;
+    }
+    
+    void RenderToTextureExample::NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties)
+    {
+        if (m_screenProperties.GetScreenWidth() != screenProperties.GetScreenWidth() ||
+            m_screenProperties.GetScreenHeight() != screenProperties.GetScreenHeight())
+        {
+            // recreate stuff
+        }
+        
     }
     
     void RenderToTextureExample::PreWorldDraw()
@@ -133,7 +146,12 @@ namespace Examples
     
     const Eegeo::Camera::RenderCamera& RenderToTextureExample::GetRenderCamera() const
     {
-        return *m_cameraController.GetCamera();
+        return *m_pCameraController->GetCamera();
+    }
+    
+    Eegeo::dv3 RenderToTextureExample::GetInterestPoint() const
+    {
+        return m_pCameraController->GetEcefInterestPoint();
     }
 }
 

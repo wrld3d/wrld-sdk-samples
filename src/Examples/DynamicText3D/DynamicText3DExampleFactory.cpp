@@ -11,9 +11,9 @@
 using namespace Examples;
 
 DynamicText3DExampleFactory::DynamicText3DExampleFactory(Eegeo::EegeoWorld& world,
-        Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCameraController)
+        DefaultCameraControllerFactory& defaultCameraControllerFactory)
 	: m_world(world)
-	, m_globeCameraController(globeCameraController)
+	, m_defaultCameraControllerFactory(defaultCameraControllerFactory)
 {
 
 }
@@ -28,7 +28,7 @@ IExample* DynamicText3DExampleFactory::CreateExample() const
     return new Examples::DynamicText3DExample(mapModule.GetEnvironmentFlatteningService(),
                                               placenamesStreamingModule.GetPlaceNameViewBuilder(),
                                               m_world,
-                                              m_globeCameraController,
+                                              m_defaultCameraControllerFactory.Create(),
                                               renderableFilters);
 
 }

@@ -9,10 +9,10 @@ using namespace Eegeo::Helpers;
 namespace Examples
 {
 FileIOExample::FileIOExample(IFileIO& fileIO,
-                             Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController)
+                             Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController)
 	:m_fileIO(fileIO)
-	,m_globeCameraStateRestorer(cameraController)
-    ,m_cameraController(cameraController)
+	,m_globeCameraStateRestorer(*pCameraController)
+    ,m_pCameraController(pCameraController)
 {
 }
 
@@ -64,6 +64,11 @@ void FileIOExample::Start()
     
 const Eegeo::Camera::RenderCamera& FileIOExample::GetRenderCamera() const
 {
-    return *m_cameraController.GetCamera();
+    return *m_pCameraController->GetCamera();
+}
+
+Eegeo::dv3 FileIOExample::GetInterestPoint() const
+{
+    return m_pCameraController->GetEcefInterestPoint();
 }
 }

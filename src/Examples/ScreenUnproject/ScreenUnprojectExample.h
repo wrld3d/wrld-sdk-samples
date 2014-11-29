@@ -18,12 +18,12 @@ private:
     Eegeo::DebugRendering::DebugRenderer& m_debugRenderer;
 	Eegeo::Resources::Terrain::Heights::TerrainHeightProvider& m_terrainHeightProvider;
 	GlobeCameraStateRestorer m_globeCameraStateRestorer;
-    Eegeo::Camera::GlobeCamera::GlobeCameraController& m_globeCameraController;
+    Eegeo::Camera::GlobeCamera::GlobeCameraController* m_pCameraController;
 
 public:
 	ScreenUnprojectExample(Eegeo::DebugRendering::DebugRenderer& debugRenderer,
 	                       Eegeo::Resources::Terrain::Heights::TerrainHeightProvider& terrainHeightProvider,
-	                       Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController);
+	                       Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController);
 
 	static std::string GetName()
 	{
@@ -40,6 +40,7 @@ public:
 	void Draw(){}
 	void Suspend();
     const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
+    Eegeo::dv3 GetInterestPoint() const;
 };
 }
 

@@ -12,11 +12,11 @@ namespace Examples
 class Pick3DObjectExampleFactory : public IExampleFactory
 {
 	Eegeo::EegeoWorld& m_world;
-	Eegeo::Camera::GlobeCamera::GlobeCameraController& m_globeCameraController;
+	DefaultCameraControllerFactory& m_defaultCameraControllerFactory;
 
 public:
 	Pick3DObjectExampleFactory(Eegeo::EegeoWorld& world,
-	                           Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCameraController);
+	                           DefaultCameraControllerFactory& defaultCameraControllerFactory);
 
 	std::string ExampleName() const;
 

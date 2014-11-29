@@ -16,7 +16,7 @@ PinsExample::PinsExample(
     Eegeo::Rendering::RenderableFilters& renderableFilters,
     Eegeo::Resources::Terrain::Heights::TerrainHeightProvider& terrainHeightProvider,
     Eegeo::Rendering::EnvironmentFlatteningService& environmentFlatteningService,
-    Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController
+    Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController
 )
 	: m_pin0UserData("Pin Zero(0) User Data")
 	, m_pin1UserData("Pin One(1) User Data")
@@ -24,8 +24,8 @@ PinsExample::PinsExample(
 	, m_pin3UserData("Pin Three(3) User Data")
 	, m_addRemoveTimer(0.0f)
 	, m_pPin0(NULL)
-	, m_globeCameraStateRestorer(cameraController)
-    , m_cameraController(cameraController)
+	, m_globeCameraStateRestorer(*pCameraController)
+    , m_pCameraController(pCameraController)
 {
 	textureLoader.LoadTexture(m_pinIconsTexture, "pins_example/PinIconTexturePage.png", true);
 	Eegeo_ASSERT(m_pinIconsTexture.textureId != 0);
@@ -114,6 +114,8 @@ void PinsExample::Start()
 
 void PinsExample::Suspend()
 {
+    delete m_pCameraController;
+    m_pCameraController = NULL;
 }
 
 void PinsExample::Update(float dt)
@@ -126,17 +128,22 @@ void PinsExample::Update(float dt)
 	}
 
 	// Update the PinsModule to query terrain heights and update screen space coordinats for the Pins.
-	m_pPinsModule->Update(dt, *m_cameraController.GetCamera());
+	m_pPinsModule->Update(dt, *m_pCameraController->GetCamera());
 }
 
 void PinsExample::Draw()
 {
 }
     
-    const Eegeo::Camera::RenderCamera& PinsExample::GetRenderCamera() const
-    {
-        return *m_cameraController.GetCamera();
-    }
+const Eegeo::Camera::RenderCamera& PinsExample::GetRenderCamera() const
+{
+    return *m_pCameraController->GetCamera();
+}
+
+Eegeo::dv3 PinsExample::GetInterestPoint() const
+{
+    return m_pCameraController->GetEcefInterestPoint();
+}
 
 void PinsExample::AddRemovePin0()
 {

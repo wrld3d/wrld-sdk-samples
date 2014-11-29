@@ -12,11 +12,11 @@ namespace Examples
 class DynamicText3DExampleFactory : public IExampleFactory
 {
 	Eegeo::EegeoWorld& m_world;
-	Eegeo::Camera::GlobeCamera::GlobeCameraController& m_globeCameraController;
+	DefaultCameraControllerFactory& m_defaultCameraControllerFactory;
 
 public:
 	DynamicText3DExampleFactory(Eegeo::EegeoWorld& world,
-	                            Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCameraController);
+	                            DefaultCameraControllerFactory& defaultCameraControllerFactory);
 
 	std::string ExampleName() const;
 

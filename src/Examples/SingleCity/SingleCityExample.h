@@ -14,7 +14,7 @@ namespace Examples
 class SingleCityExample : public IExample
 {
 private:
-	Eegeo::Camera::GlobeCamera::GlobeCameraController& m_globeCamera;
+	Eegeo::Camera::GlobeCamera::GlobeCameraController* m_pCameraController;
 	Eegeo::Web::PrecacheService& m_precacheService;
 	Eegeo::Streaming::StreamingVolumeController& m_streamingVolumeController;
 	Eegeo::EegeoWorld& m_world;
@@ -24,13 +24,15 @@ private:
 	bool m_precacheComplete;
 
 	void ConstrainCamera();
+    
+    Eegeo::Camera::GlobeCamera::GlobeCameraController& GlobeCamera() { return *m_pCameraController; }
 
 public:
-	SingleCityExample(Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCamera,
+	SingleCityExample(
 	                  Eegeo::Web::PrecacheService& precacheService,
 	                  Eegeo::Streaming::StreamingVolumeController& streamingVolumeController,
 	                  Eegeo::EegeoWorld& world,
-	                  Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController);
+	                  Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController);
 
 	static std::string GetName()
 	{
@@ -47,6 +49,7 @@ public:
 	void Draw() {}
 	void Suspend();
     const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
+    Eegeo::dv3 GetInterestPoint() const;
 };
 }
 

@@ -8,9 +8,11 @@
 namespace Examples
 {
     RenderToTextureExampleFactory::RenderToTextureExampleFactory(Eegeo::EegeoWorld& world,
-                                                                 Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCameraController)
+                                                                 DefaultCameraControllerFactory& defaultCameraControllerFactory,
+                                                                 const IScreenPropertiesProvider& screenPropertiesProvider)
     : m_world(world)
-    , m_globeCameraController(globeCameraController)
+    , m_defaultCameraControllerFactory(defaultCameraControllerFactory)
+    , m_screenPropertiesProvider(screenPropertiesProvider)
     {
         
     }
@@ -19,8 +21,8 @@ namespace Examples
     {
         Eegeo::Modules::Core::RenderingModule& renderingModule = m_world.GetRenderingModule();
         
-        return new Examples::RenderToTextureExample(m_globeCameraController,
-                                                    m_world.GetScreenProperties(),
+        return new Examples::RenderToTextureExample(m_defaultCameraControllerFactory.Create(),
+                                                    m_screenPropertiesProvider.GetScreenProperties(),
                                                     renderingModule.GetVertexLayoutPool(),
                                                     renderingModule.GetVertexBindingPool(),
                                                     renderingModule.GetShaderIdGenerator(),

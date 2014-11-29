@@ -9,9 +9,9 @@ using namespace Examples;
 
 RouteMatchingExampleFactory::RouteMatchingExampleFactory(Eegeo::EegeoWorld& world,
         const IRouteMatchingExampleViewFactory& routeMatchingViewFactory,
-        Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCameraController)
+        DefaultCameraControllerFactory& defaultCameraControllerFactory)
 	: m_world(world)
-	, m_globeCameraController(globeCameraController)
+	, m_defaultCameraControllerFactory(defaultCameraControllerFactory)
 	, m_routeMatchingViewFactory(routeMatchingViewFactory)
 {
 
@@ -24,7 +24,7 @@ IExample* RouteMatchingExampleFactory::CreateExample() const
 	return new Examples::RouteMatchingExample(routesModule.GetRouteService(),
 	        m_world,
 	        m_routeMatchingViewFactory,
-	        m_globeCameraController);
+	        m_defaultCameraControllerFactory.Create());
 }
 
 std::string RouteMatchingExampleFactory::ExampleName() const

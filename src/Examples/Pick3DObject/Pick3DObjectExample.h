@@ -28,17 +28,15 @@ private:
     Eegeo::v4 m_objectColor;
     
     Eegeo::Space::LatLongAltitude m_interestLocation;
-    const Eegeo::Rendering::ScreenProperties& m_screenProperties;
     Eegeo::DebugRendering::DebugRenderer& m_debugRenderer;
 
 	GlobeCameraStateRestorer m_globeCameraStateRestorer;
-    Eegeo::Camera::GlobeCamera::GlobeCameraController& m_cameraController;
+    Eegeo::Camera::GlobeCamera::GlobeCameraController* m_pCameraController;
 
 public:
-	Pick3DObjectExample(Eegeo::Space::LatLongAltitude interestLocation,
-                        const Eegeo::Rendering::ScreenProperties& screenProperties,
+	Pick3DObjectExample(
                         Eegeo::DebugRendering::DebugRenderer& debugRenderer,
-                        Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController);
+                        Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController);
 
 	static std::string GetName()
 	{
@@ -54,6 +52,7 @@ public:
 	void Draw();
 	void Suspend();
     const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
+    Eegeo::dv3 GetInterestPoint() const;
 
 	bool Event_TouchPan				(const AppInterface::PanData& data);
 	bool Event_TouchDown            (const AppInterface::TouchData& data);

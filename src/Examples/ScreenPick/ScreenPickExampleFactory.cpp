@@ -11,9 +11,9 @@
 using namespace Examples;
 
 ScreenPickExampleFactory::ScreenPickExampleFactory(Eegeo::EegeoWorld& world,
-        Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCameraController)
+        DefaultCameraControllerFactory& defaultCameraControllerFactory)
 	: m_world(world)
-	, m_globeCameraController(globeCameraController)
+	, m_defaultCameraControllerFactory(defaultCameraControllerFactory)
 {
 
 }
@@ -26,7 +26,7 @@ IExample* ScreenPickExampleFactory::CreateExample() const
 	return new Examples::ScreenPickExample(terrainModelModule.GetTerrainHeightProvider(),
 	                                       terrainModelModule.GetCollisionMeshResourceRepository(),
                                            debugRenderingModule.GetDebugRenderer(),
-	                                       m_globeCameraController);
+	                                       m_defaultCameraControllerFactory.Create());
 }
 
 std::string ScreenPickExampleFactory::ExampleName() const

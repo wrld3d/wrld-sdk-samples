@@ -12,13 +12,13 @@ using namespace Eegeo::Routes;
 
 RouteThicknessPolicyExample::RouteThicknessPolicyExample(RouteService& routeService,
         EegeoWorld& world,
-        Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController)
+        Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController)
 	:m_routeService(routeService)
 	,m_world(world)
 	,m_createdRoutes(false)
-    ,m_linearAltitudeBasedRouteThicknessPolicy(*cameraController.GetCamera())
-    ,m_cameraController(cameraController)
-	,m_globeCameraStateRestorer(cameraController)
+    ,m_linearAltitudeBasedRouteThicknessPolicy(*pCameraController->GetCamera())
+    ,m_pCameraController(pCameraController)
+	,m_globeCameraStateRestorer(*pCameraController)
 {
 	Eegeo::Space::EcefTangentBasis cameraInterestBasis;
 
@@ -27,7 +27,7 @@ RouteThicknessPolicyExample::RouteThicknessPolicyExample(RouteService& routeServ
 	    354.824249f,
 	    cameraInterestBasis);
 
-	cameraController.SetView(cameraInterestBasis, 1374.298706f);
+	m_pCameraController->SetView(cameraInterestBasis, 1374.298706f);
 }
 
 void RouteThicknessPolicyExample::Update(float dt)
@@ -134,9 +134,17 @@ void RouteThicknessPolicyExample::Suspend()
 
 	m_routes.clear();
 	m_createdRoutes = false;
+    
+    delete m_pCameraController;
+    m_pCameraController = NULL;
 }
 
 const Eegeo::Camera::RenderCamera& RouteThicknessPolicyExample::GetRenderCamera() const
 {
-    return *m_cameraController.GetCamera();
+    return *m_pCameraController->GetCamera();
+}
+
+Eegeo::dv3 RouteThicknessPolicyExample::GetInterestPoint() const
+{
+    return m_pCameraController->GetEcefInterestPoint();
 }

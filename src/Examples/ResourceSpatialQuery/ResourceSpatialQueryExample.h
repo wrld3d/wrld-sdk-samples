@@ -14,7 +14,7 @@ class ResourceSpatialQueryExample : public IExample
 {
 private:
 	Eegeo::Resources::ResourceSpatialQueryService& m_resourceSpatialQueryService;
-	Eegeo::Camera::GlobeCamera::GlobeCameraController& m_cameraController;
+	Eegeo::Camera::GlobeCamera::GlobeCameraController* m_pCameraController;
 	GlobeCameraStateRestorer m_globeCameraStateRestorer;
 
 	Eegeo::Streaming::MortonKey m_key;
@@ -22,7 +22,7 @@ private:
 
 public:
 	ResourceSpatialQueryExample(Eegeo::Resources::ResourceSpatialQueryService& resourceSpatialQueryService,
-	                            Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController);
+	                            Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController);
 
 	static std::string GetName()
 	{
@@ -38,6 +38,7 @@ public:
 	void Draw() {}
 	void Suspend() {}
     const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
+    Eegeo::dv3 GetInterestPoint() const;
 };
 }
 

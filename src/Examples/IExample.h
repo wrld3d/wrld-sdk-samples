@@ -7,10 +7,13 @@
 #include "GlobeCameraController.h"
 #include "GlobeCameraTouchController.h"
 #include "EcefTangentBasis.h"
+#include "RenderCamera.h"
 #include <string>
 
 namespace Examples
 {
+
+
 class IExample
 {
 public:
@@ -20,22 +23,17 @@ public:
 
 	virtual void Start() = 0;
 	virtual void EarlyUpdate(float dt) { }
-
-	virtual void UpdateCamera(Eegeo::Camera::GlobeCamera::GlobeCameraController* pGlobeCameraController,
-	                          Eegeo::Camera::GlobeCamera::GlobeCameraTouchController* pCameraTouchController,
-	                          float dt)
-	{
-		pCameraTouchController->Update(dt);
-		pGlobeCameraController->Update(dt);
-	}
-
-	virtual void AfterCameraUpdate() { }
 	virtual void Update(float dt) = 0;
     virtual void PreWorldDraw() { }
 	virtual void Draw() = 0;
 	virtual void Suspend()= 0;
     
+    virtual void NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties) { ; }
+    
     virtual const Eegeo::Camera::RenderCamera& GetRenderCamera() const = 0;
+    
+    virtual Eegeo::dv3 GetInterestPoint() const = 0;
+    
 
 	virtual bool Event_TouchRotate 			(const AppInterface::RotateData& data)
 	{
@@ -98,6 +96,9 @@ public:
 		return false;
 	}
 };
+
+
+
 
 class GlobeCameraStateRestorer
 {

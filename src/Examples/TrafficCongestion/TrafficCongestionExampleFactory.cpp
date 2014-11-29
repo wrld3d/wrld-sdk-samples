@@ -8,9 +8,9 @@
 using namespace Examples;
 
 TrafficCongestionExampleFactory::TrafficCongestionExampleFactory(Eegeo::EegeoWorld& world,
-        Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCameraController)
+        DefaultCameraControllerFactory& defaultCameraControllerFactory)
 	: m_world(world)
-	, m_globeCameraController(globeCameraController)
+	, m_defaultCameraControllerFactory(defaultCameraControllerFactory)
 {
 
 }
@@ -20,7 +20,7 @@ IExample* TrafficCongestionExampleFactory::CreateExample() const
     Eegeo::Modules::TrafficModule& trafficModule = m_world.GetTrafficModule();
     
 	return new Examples::TrafficCongestionExample(trafficModule.GetTrafficCongestionService(),
-	        m_globeCameraController);
+	        m_defaultCameraControllerFactory.Create());
 }
 
 std::string TrafficCongestionExampleFactory::ExampleName() const

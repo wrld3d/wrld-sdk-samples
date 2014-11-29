@@ -17,9 +17,9 @@
 using namespace Examples;
 
 RouteSimulationAnimationExampleFactory::RouteSimulationAnimationExampleFactory(Eegeo::EegeoWorld& world,
-        Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCameraController)
+        DefaultCameraControllerFactory& defaultCameraControllerFactory)
 	: m_world(world)
-	, m_globeCameraController(globeCameraController)
+	, m_defaultCameraControllerFactory(defaultCameraControllerFactory)
 	, m_pRouteSimulationGlobeCameraControllerFactory(NULL)
 {
     Eegeo::Modules::Map::MapModule& mapModule = m_world.GetMapModule();
@@ -49,7 +49,7 @@ IExample* RouteSimulationAnimationExampleFactory::CreateExample() const
 	return new Examples::RouteSimulationAnimationExample(routesModule.GetRouteService(),
 	        routesModule.GetRouteSimulationService(),
 	        routesModule.GetRouteSimulationViewService(),
-	        m_globeCameraController,
+	        m_defaultCameraControllerFactory.Create(),
 	        platformAbstractionModule.GetFileIO(),
 	        asyncLoadersModule.GetLocalAsyncTextureLoader(),
 	        *m_pRouteSimulationGlobeCameraControllerFactory,

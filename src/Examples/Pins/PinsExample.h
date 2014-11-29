@@ -28,7 +28,7 @@ private:
 	Eegeo::Helpers::GLHelpers::TextureInfo m_pinIconsTexture;
 	Eegeo::Pins::PinsModule* m_pPinsModule;
 	GlobeCameraStateRestorer m_globeCameraStateRestorer;
-    Eegeo::Camera::GlobeCamera::GlobeCameraController& m_cameraController;
+    Eegeo::Camera::GlobeCamera::GlobeCameraController* m_pCameraController;
     
 	std::string m_pin0UserData;
 	std::string m_pin1UserData;
@@ -49,7 +49,7 @@ public:
 	    Eegeo::Rendering::RenderableFilters& renderableFilters,
 	    Eegeo::Resources::Terrain::Heights::TerrainHeightProvider& terrainHeightProvider,
 	    Eegeo::Rendering::EnvironmentFlatteningService& environmentFlatteningService,
-	    Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController
+	    Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController
 	);
 	virtual ~PinsExample();
 
@@ -67,6 +67,7 @@ public:
 	void Draw();
 	void Suspend();
     const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
+    Eegeo::dv3 GetInterestPoint() const;
 
 	bool Event_TouchTap(const AppInterface::TapData& data);
 

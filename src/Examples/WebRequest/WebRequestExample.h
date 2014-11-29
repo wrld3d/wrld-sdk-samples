@@ -15,12 +15,12 @@ class WebRequestExample : public IExample
 {
 private:
 	Eegeo::Web::IWebLoadRequestFactory& m_webRequestFactory;
-    Eegeo::Camera::GlobeCamera::GlobeCameraController& m_cameraController;
+    Eegeo::Camera::GlobeCamera::GlobeCameraController* m_pCameraController;
 	GlobeCameraStateRestorer m_globeCameraStateRestorer;
 
 public:
 	WebRequestExample(Eegeo::Web::IWebLoadRequestFactory& webRequestFactory,
-	                  Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController);
+	                  Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController);
 
 	static std::string GetName()
 	{
@@ -36,6 +36,7 @@ public:
 	void Draw() {}
 	void Suspend() {}
     const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
+    Eegeo::dv3 GetInterestPoint() const;
 };
 }
 

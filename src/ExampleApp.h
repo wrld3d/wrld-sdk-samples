@@ -6,17 +6,23 @@
 #include "GlobeCamera.h"
 #include "EegeoWorld.h"
 #include "ExampleController.h"
+#include "ScreenProperties.h"
+#include "DefaultCameraControllerFactory.h"
+
+
 
 class ExampleApp : private Eegeo::NonCopyable
 {
 private:
-	Eegeo::Camera::GlobeCamera::GlobeCameraController* m_pGlobeCameraController;
+	//Eegeo::Camera::GlobeCamera::GlobeCameraController* m_pGlobeCameraController;
+    Examples::DefaultCameraControllerFactory* m_pCameraControllerFactory;
 	Eegeo::Camera::GlobeCamera::GlobeCameraTouchController* m_pCameraTouchController;
 	Eegeo::EegeoWorld* m_pWorld;
     Eegeo::Rendering::LoadingScreen* m_pLoadingScreen;
-	Examples::ExampleController& m_exampleController;
+	Examples::ExampleController* m_pExampleController;
+    Eegeo::Rendering::ScreenProperties m_screenProperties;
+    Examples::ScreenPropertiesProvider m_screenPropertiesProvider;
     
-    const Eegeo::Camera::RenderCamera* m_pActiveCamera;
 
 	Eegeo::EegeoWorld& World()
 	{
@@ -27,7 +33,8 @@ private:
 
 public:
 	ExampleApp(Eegeo::EegeoWorld* pWorld,
-	           Examples::ExampleController& exampleController);
+	           Examples::IExampleControllerView& view,
+               const Eegeo::Rendering::ScreenProperties& screenProperties);
 
 	~ExampleApp();
 
@@ -38,11 +45,12 @@ public:
 	void Update (float dt);
 
 	void Draw (float dt);
-
-	Eegeo::Camera::GlobeCamera::GlobeCameraController& GetCameraController()
-	{
-		return *m_pGlobeCameraController;
-	}
+    
+    void NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties);
+    
+    Examples::ExampleController& GetExampleController() const { return *m_pExampleController; }
+    
+    Examples::DefaultCameraControllerFactory& GetDefaultCameraControllerFactory() const { return *m_pCameraControllerFactory; }
 
 	Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& GetTouchController()
 	{

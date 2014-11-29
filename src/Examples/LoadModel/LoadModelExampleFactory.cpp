@@ -13,9 +13,9 @@
 using namespace Examples;
 
 LoadModelExampleFactory::LoadModelExampleFactory(Eegeo::EegeoWorld& world,
-        Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCameraController)
+        DefaultCameraControllerFactory& defaultCameraControllerFactory)
 	: m_world(world)
-	, m_globeCameraController(globeCameraController)
+	, m_defaultCameraControllerFactory(defaultCameraControllerFactory)
 {
 
 }
@@ -26,11 +26,11 @@ IExample* LoadModelExampleFactory::CreateExample() const
     Eegeo::Modules::Core::AsyncLoadersModule& asyncLoadersModule = m_world.GetAsyncLoadersModule();
     Eegeo::Modules::Core::LightingModule& lightingModule = m_world.GetLightingModule();
     
-	return new Examples::LoadModelExample(Eegeo::Space::LatLongAltitude::FromECEF(m_globeCameraController.GetEcefInterestPoint()),
+	return new Examples::LoadModelExample(
 	                                      platformAbstractionModule.GetFileIO(),
 	                                      asyncLoadersModule.GetLocalAsyncTextureLoader(),
 	                                      lightingModule.GetGlobalFogging(),
-	                                      m_globeCameraController);
+	                                      m_defaultCameraControllerFactory.Create());
 }
 
 std::string LoadModelExampleFactory::ExampleName() const

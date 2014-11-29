@@ -13,9 +13,9 @@ using namespace Examples;
 #include "CameraFrustumStreamingVolume.h"
 
 ModifiedRenderingExampleFactory::ModifiedRenderingExampleFactory(Eegeo::EegeoWorld& world,
-        Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCameraController)
+        DefaultCameraControllerFactory& defaultCameraControllerFactory)
 	: m_world(world)
-	, m_globeCameraController(globeCameraController)
+	, m_defaultCameraControllerFactory(defaultCameraControllerFactory)
 {
 
 }
@@ -37,7 +37,7 @@ IExample* ModifiedRenderingExampleFactory::CreateExample() const
 	        renderingModule.GetShaderIdGenerator(),
 	        renderingModule.GetMaterialIdGenerator(),
 	        m_world.GetEnvironmentPlaceholderTexture(),
-	        m_globeCameraController);
+	        m_defaultCameraControllerFactory.Create());
 }
 
 std::string ModifiedRenderingExampleFactory::ExampleName() const

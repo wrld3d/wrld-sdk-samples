@@ -24,7 +24,7 @@ class DynamicText3DExample : public IExample, public Eegeo::Rendering::IRenderab
 	Eegeo::Resources::PlaceNames::PlaceNameViewBuilder& m_placeNameViewBuilder;
 	Eegeo::EegeoWorld& m_world;
 	GlobeCameraStateRestorer m_globeCameraStateRestorer;
-    const Eegeo::Camera::RenderCamera& m_renderCamera;
+    Eegeo::Camera::GlobeCamera::GlobeCameraController* m_pCameraController;
     Eegeo::Rendering::RenderableFilters& m_renderableFilters;
 
 	bool m_initialised;
@@ -34,7 +34,7 @@ public:
 	DynamicText3DExample(Eegeo::Rendering::EnvironmentFlatteningService& environmentFlatteningService,
 	                     Eegeo::Resources::PlaceNames::PlaceNameViewBuilder& placeNameViewBuilder,
 	                     Eegeo::EegeoWorld& world,
-	                     Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCameraController,
+	                     Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
                          Eegeo::Rendering::RenderableFilters& renderableFilters);
     
     ~DynamicText3DExample();
@@ -53,6 +53,7 @@ public:
 	void Draw();
 	void Suspend();
     const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
+    Eegeo::dv3 GetInterestPoint() const;
     
     void EnqueueRenderables(const Eegeo::Rendering::RenderContext& renderContext, Eegeo::Rendering::RenderQueue& renderQueue);
 

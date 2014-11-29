@@ -8,9 +8,9 @@
 using namespace Examples;
 
 EnvironmentFlatteningExampleFactory::EnvironmentFlatteningExampleFactory(Eegeo::EegeoWorld& world,
-        Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCameraController)
+        DefaultCameraControllerFactory& defaultCameraControllerFactory)
 	: m_world(world)
-	, m_globeCameraController(globeCameraController)
+	, m_defaultCameraControllerFactory(defaultCameraControllerFactory)
 {
 
 }
@@ -20,7 +20,7 @@ IExample* EnvironmentFlatteningExampleFactory::CreateExample() const
     Eegeo::Modules::Map::MapModule& mapModule = m_world.GetMapModule();
     
 	return new Examples::EnvironmentFlatteningExample(mapModule.GetEnvironmentFlatteningService(),
-	        m_globeCameraController);
+	        m_defaultCameraControllerFactory.Create());
 }
 
 std::string EnvironmentFlatteningExampleFactory::ExampleName() const

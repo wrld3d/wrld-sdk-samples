@@ -74,7 +74,7 @@ private:
 	Eegeo::Rendering::Materials::MaterialIdGenerator& m_materialIdGenerator;
 	const Eegeo::Helpers::GLHelpers::TextureInfo& m_placeHolderTexture;
 	GlobeCameraStateRestorer m_globeCameraStateRestorer;
-    Eegeo::Camera::GlobeCamera::GlobeCameraController& m_cameraController;
+    Eegeo::Camera::GlobeCamera::GlobeCameraController* m_pCameraController;
 
 	Eegeo::Lighting::GlobalLighting* m_pAlternativeLighting;
 	Eegeo::Rendering::Shaders::PackedDiffuseShader* m_pAlternativeShader;
@@ -97,7 +97,7 @@ public:
 	                         Eegeo::Rendering::Shaders::ShaderIdGenerator& shaderIdGenerator,
 	                         Eegeo::Rendering::Materials::MaterialIdGenerator& materialIdGenerator,
 	                         const Eegeo::Helpers::GLHelpers::TextureInfo& placeHolderTexture,
-	                         Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController
+	                         Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController
 	                        );
 
 	//ISceneElementObserver interface.
@@ -122,6 +122,7 @@ public:
 	void Draw();
 	void Suspend();
     const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
+    Eegeo::dv3 GetInterestPoint() const;
 };
 }
 

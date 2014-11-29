@@ -6,9 +6,9 @@
 using namespace Examples;
 
 ResourceSpatialQueryExampleFactory::ResourceSpatialQueryExampleFactory(Eegeo::EegeoWorld& world,
-        Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCameraController)
+        DefaultCameraControllerFactory& defaultCameraControllerFactory)
 	: m_world(world)
-	, m_globeCameraController(globeCameraController)
+	, m_defaultCameraControllerFactory(defaultCameraControllerFactory)
 {
 
 }
@@ -16,7 +16,7 @@ ResourceSpatialQueryExampleFactory::ResourceSpatialQueryExampleFactory(Eegeo::Ee
 IExample* ResourceSpatialQueryExampleFactory::CreateExample() const
 {
 	return new Examples::ResourceSpatialQueryExample(m_world.GetResourceSpatialQueryService(),
-	        m_globeCameraController);
+	        m_defaultCameraControllerFactory.Create());
 }
 
 std::string ResourceSpatialQueryExampleFactory::ExampleName() const

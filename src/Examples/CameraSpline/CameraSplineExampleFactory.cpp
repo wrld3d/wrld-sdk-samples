@@ -11,9 +11,9 @@
 using namespace Examples;
 
 CameraSplineExampleFactory::CameraSplineExampleFactory(Eegeo::EegeoWorld& world,
-                                                       Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCameraController)
+                                                       DefaultCameraControllerFactory& defaultCameraControllerFactory)
 : m_world(world)
-, m_globeCameraController(globeCameraController)
+, m_defaultCameraControllerFactory(defaultCameraControllerFactory)
 {
     
 }
@@ -23,7 +23,7 @@ IExample* CameraSplineExampleFactory::CreateExample() const
     Eegeo::Modules::Map::MapModule& mapModule = m_world.GetMapModule();
     
 	return new Examples::CameraSplineExample(m_world,
-                                             m_globeCameraController,
+                                             m_defaultCameraControllerFactory.Create(),
                                              mapModule.GetResourceCeilingProvider());
 }
 

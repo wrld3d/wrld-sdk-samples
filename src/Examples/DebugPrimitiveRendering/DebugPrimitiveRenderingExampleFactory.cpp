@@ -8,9 +8,9 @@
 using namespace Examples;
 
 DebugPrimitiveRenderingExampleFactory::DebugPrimitiveRenderingExampleFactory(Eegeo::EegeoWorld& world,
-        Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCameraController)
+        DefaultCameraControllerFactory& defaultCameraControllerFactory)
 	: m_world(world)
-	, m_globeCameraController(globeCameraController)
+	, m_defaultCameraControllerFactory(defaultCameraControllerFactory)
 {
 
 }
@@ -20,7 +20,7 @@ IExample* DebugPrimitiveRenderingExampleFactory::CreateExample() const
     Eegeo::Modules::Core::DebugRenderingModule& debugRenderingModule = m_world.GetDebugRenderingModule();
     
 	return new Examples::DebugPrimitiveRenderingExample(debugRenderingModule.GetDebugRenderer(),
-	        m_globeCameraController);
+	        m_defaultCameraControllerFactory.Create());
 }
 
 std::string DebugPrimitiveRenderingExampleFactory::ExampleName() const

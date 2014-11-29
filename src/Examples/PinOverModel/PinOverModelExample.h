@@ -60,7 +60,7 @@ private:
 	Eegeo::Rendering::AsyncTexturing::IAsyncTextureRequestor& m_textureRequestor;
 	Eegeo::Lighting::GlobalFogging& m_globalFogging;
 	Eegeo::Rendering::RenderableFilters& m_renderableFilters;
-    Eegeo::Camera::GlobeCamera::GlobeCameraController& m_cameraController;
+    Eegeo::Camera::GlobeCamera::GlobeCameraController* m_pCameraController;
 	GlobeCameraStateRestorer m_globeCameraStateRestorer;
 
 	Eegeo::Model* m_pModel;
@@ -85,7 +85,7 @@ public:
 	    Eegeo::Rendering::AsyncTexturing::IAsyncTextureRequestor& textureRequestor,
 	    Eegeo::Lighting::GlobalFogging& fogging,
 	    Eegeo::Rendering::Materials::NullMaterialFactory& nullMaterialFactory,
-	    Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController
+	    Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController
 	);
 
 	virtual ~PinOverModelExample();
@@ -104,6 +104,7 @@ public:
 	void Draw();
 	void Suspend();
     const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
+    Eegeo::dv3 GetInterestPoint() const;
 
 private:
 	void CreateExamplePins();

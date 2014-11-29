@@ -10,9 +10,9 @@
 using namespace Examples;
 
 Pick3DObjectExampleFactory::Pick3DObjectExampleFactory(Eegeo::EegeoWorld& world,
-        Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCameraController)
+        DefaultCameraControllerFactory& defaultCameraControllerFactory)
 	: m_world(world)
-	, m_globeCameraController(globeCameraController)
+	, m_defaultCameraControllerFactory(defaultCameraControllerFactory)
 {
 
 }
@@ -21,10 +21,9 @@ IExample* Pick3DObjectExampleFactory::CreateExample() const
 {
     Eegeo::Modules::Core::DebugRenderingModule& debugRenderingModule = m_world.GetDebugRenderingModule();
     
-	return new Examples::Pick3DObjectExample(Eegeo::Space::LatLongAltitude::FromECEF(m_globeCameraController.GetEcefInterestPoint()),
-                                             m_world.GetScreenProperties(),
+	return new Examples::Pick3DObjectExample(
                                              debugRenderingModule.GetDebugRenderer(),
-                                             m_globeCameraController);
+                                             m_defaultCameraControllerFactory.Create());
 }
 
 std::string Pick3DObjectExampleFactory::ExampleName() const

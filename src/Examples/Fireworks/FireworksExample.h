@@ -17,11 +17,11 @@ class FireworksExample : public IExample
 {
 private:
     Eegeo::Modules::FireworksModule* m_pFireworksModule;
-    Eegeo::Camera::GlobeCamera::GlobeCameraController& m_cameraController;
+    Eegeo::Camera::GlobeCamera::GlobeCameraController* m_pCameraController;
     Eegeo::Resources::CityThemes::ICityThemesService& m_cityThemesService;
 
 public:
-    FireworksExample(Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController,
+    FireworksExample(Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
                      Eegeo::Modules::Core::RenderingModule& renderingModule,
                      Eegeo::Modules::IPlatformAbstractionModule& platformModule,
                      Eegeo::Modules::Map::StreamingModule& streamingModule,
@@ -47,5 +47,6 @@ public:
     void Suspend();
 
     const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
+    Eegeo::dv3 GetInterestPoint() const;
 };
 }

@@ -15,7 +15,7 @@ namespace Examples
 class CameraTransitioner
 {
 public:
-	CameraTransitioner(Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController);
+	CameraTransitioner(Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController);
 
 	void StartTransitionTo(Eegeo::dv3 newInterestPoint, double distanceFromInterest, bool jumpIfFarAway);
 	void StartTransitionTo(Eegeo::dv3 newInterestPoint, double distanceFromInterest, float newHeading, bool jumpIfFarAway);
@@ -30,7 +30,7 @@ public:
 private:
 	bool ShouldJumpTo(Eegeo::dv3 newInterestPoint);
 
-	Eegeo::Camera::GlobeCamera::GlobeCameraController& m_cameraController;
+	Eegeo::Camera::GlobeCamera::GlobeCameraController* m_pCameraController;
 	Eegeo::dv3 m_startTransitionInterestPoint;
 	Eegeo::dv3 m_endTransitionInterestPoint;
 	double m_startInterestDistance;
@@ -48,14 +48,14 @@ private:
 class CameraTransitionExample : public IExample
 {
 private:
-	Eegeo::Camera::GlobeCamera::GlobeCameraController& m_cameraController;
+	Eegeo::Camera::GlobeCamera::GlobeCameraController* m_pCameraController;
 	CameraTransitioner m_transitioner;
 	GlobeCameraStateRestorer m_globeCameraStateRestorer;
 	bool m_firstPoint;
 	void Transition();
 
 public:
-	CameraTransitionExample(Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController);
+	CameraTransitionExample(Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController);
 
 	static std::string GetName()
 	{
@@ -73,6 +73,7 @@ public:
 	void Suspend() {}
 
     const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
+    Eegeo::dv3 GetInterestPoint() const;
     
 	void UpdateCamera(Eegeo::Camera::GlobeCamera::GlobeCameraController* pGlobeCameraController,
 	                  Eegeo::Camera::GlobeCamera::GlobeCameraTouchController* pCameraTouchController,

@@ -5,8 +5,10 @@
 using namespace Examples;
 
 ExampleController::ExampleController(Eegeo::EegeoWorld& world,
-                                     IExampleControllerView& view)
+                                     IExampleControllerView& view,
+                                     DefaultCameraControllerFactory& defaultCameraControllerFactory)
 	: m_world(world)
+    , m_defaultCameraControllerFactory(defaultCameraControllerFactory)
 	, m_pCurrentExample(NULL)
 	, m_currentExampleFactoryIndex(-1)
 	, m_view(view)
@@ -108,15 +110,11 @@ void ExampleController::ActivateNext()
 	RefreshExample();
 }
 
-void ExampleController::EarlyUpdate(float dt,
-                                    Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCamera,
-                                    Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController)
+void ExampleController::EarlyUpdate(float dt)
 {
 	if(m_pCurrentExample != NULL)
 	{
 		m_pCurrentExample->EarlyUpdate(dt);
-		m_pCurrentExample->UpdateCamera(&globeCamera, &globeCameraTouchController, dt);
-		m_pCurrentExample->AfterCameraUpdate();
 	}
 }
 
@@ -170,6 +168,21 @@ const Eegeo::Camera::RenderCamera& ExampleController::GetCurrentActiveCamera() c
 {
     return m_pCurrentExample->GetRenderCamera();
 }
+
+Eegeo::dv3 ExampleController::GetCurrentInterestPoint() const
+{
+    return m_pCurrentExample->GetInterestPoint();
+}
+
+
+void ExampleController::NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties)
+{
+    if (m_pCurrentExample != NULL)
+    {
+        m_pCurrentExample->NotifyScreenPropertiesChanged(screenProperties);
+    }
+}
+
 
 bool ExampleController::Event_TouchRotate(const AppInterface::RotateData& data)
 {

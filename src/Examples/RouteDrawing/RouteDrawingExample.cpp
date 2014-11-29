@@ -12,12 +12,12 @@ using namespace Eegeo::Routes;
 
 RouteDrawingExample::RouteDrawingExample(RouteService& routeService,
         EegeoWorld& world,
-        Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController)
+        Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController)
 	:m_routeService(routeService)
 	,m_world(world)
 	,m_createdRoutes(false)
-    ,m_cameraController(cameraController)
-	,m_globeCameraStateRestorer(cameraController)
+    ,m_pCameraController(pCameraController)
+	,m_globeCameraStateRestorer(*pCameraController)
 {
 	Eegeo::Space::EcefTangentBasis cameraInterestBasis;
 
@@ -26,7 +26,7 @@ RouteDrawingExample::RouteDrawingExample(RouteService& routeService,
 	    354.824249,
 	    cameraInterestBasis);
 
-	cameraController.SetView(cameraInterestBasis, 1374.298706);
+	m_pCameraController->SetView(cameraInterestBasis, 1374.298706);
 }
 
 void RouteDrawingExample::Update(float dt)
@@ -163,9 +163,17 @@ void RouteDrawingExample::Suspend()
 
 	m_routes.clear();
 	m_createdRoutes = false;
+    
+    delete m_pCameraController;
+    m_pCameraController = NULL;
 }
 
 const Eegeo::Camera::RenderCamera& RouteDrawingExample::GetRenderCamera() const
 {
-    return *m_cameraController.GetCamera();
+    return *m_pCameraController->GetCamera();
+}
+
+Eegeo::dv3 RouteDrawingExample::GetInterestPoint() const
+{
+    return m_pCameraController->GetEcefInterestPoint();
 }

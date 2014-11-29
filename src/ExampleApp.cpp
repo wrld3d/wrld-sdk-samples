@@ -74,14 +74,19 @@ namespace
     }
 }
 
+
+
+
 ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
-                       Examples::ExampleController& exampleController)
-	: m_pGlobeCameraController(NULL)
+                       Examples::IExampleControllerView& view,
+                       const Eegeo::Rendering::ScreenProperties& screenProperties)
+	: m_pCameraControllerFactory(NULL)
 	, m_pCameraTouchController(NULL)
 	, m_pWorld(pWorld)
     , m_pLoadingScreen(NULL)
-	, m_exampleController(exampleController)
-    , m_pActiveCamera(NULL)
+	, m_pExampleController(NULL)
+    , m_screenProperties(screenProperties)
+    , m_screenPropertiesProvider(m_screenProperties)
 {
 	Eegeo::EegeoWorld& eegeoWorld = *pWorld;
 
@@ -95,80 +100,70 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     Eegeo::Modules::Map::MapModule& mapModule = eegeoWorld.GetMapModule();
     Eegeo::Modules::Map::Layers::TerrainModelModule& terrainModelModule = eegeoWorld.GetTerrainModelModule();
     
-	m_pGlobeCameraController = new Eegeo::Camera::GlobeCamera::GlobeCameraController(terrainModelModule.GetTerrainHeightProvider(),
-	        mapModule.GetEnvironmentFlatteningService(),
-	        mapModule.GetResourceCeilingProvider(),
-	        *m_pCameraTouchController,
-	        globeCameraControllerConfig);
+    const bool twoFingerPanTiltEnabled = true;
+    const float interestPointLatitudeDegrees = 37.7858f;
+    const float interestPointLongitudeDegrees = -122.401f;
+    const float interestPointAltitudeMeters = 2.7;
+    const float cameraControllerOrientationDegrees = 0.0f;
+    const float cameraControllerDistanceFromInterestPointMeters = 1781.0f;
     
-    m_pActiveCamera = m_pGlobeCameraController->GetCamera();
-
-    // override default configuration to enable two-finger pan gesture to control additional camera pitch
-    Eegeo::Camera::GlobeCamera::GlobeCameraTouchSettings touchSettings = m_pGlobeCameraController->GetTouchSettings();
-    touchSettings.TiltEnabled = true;
-    m_pGlobeCameraController->SetTouchSettings(touchSettings);
-
-    const Eegeo::Rendering::ScreenProperties& screenProperties = eegeoWorld.GetScreenProperties();
-	Eegeo::Camera::RenderCamera* renderCamera = m_pGlobeCameraController->GetCamera();
-	renderCamera->SetViewport(0.f, 0.f, screenProperties.GetScreenWidth(), screenProperties.GetScreenHeight());
-
-	float interestPointLatitudeDegrees = 37.7858f;
-	float interestPointLongitudeDegrees = -122.401f;
-	float interestPointAltitudeMeters = 2.7;
-
-	Eegeo::Space::LatLongAltitude location = Eegeo::Space::LatLongAltitude::FromDegrees(interestPointLatitudeDegrees,
-	        interestPointLongitudeDegrees,
-	        interestPointAltitudeMeters);
-
-	float cameraControllerOrientationDegrees = 0.0f;
-	float cameraControllerDistanceFromInterestPointMeters = 1781.0f;
-
-	Eegeo::Space::EcefTangentBasis cameraInterestBasis;
-	Eegeo::Camera::CameraHelpers::EcefTangentBasisFromPointAndHeading(location.ToECEF(), cameraControllerOrientationDegrees, cameraInterestBasis);
-
-	m_pGlobeCameraController->SetView(cameraInterestBasis, cameraControllerDistanceFromInterestPointMeters);
+    m_pCameraControllerFactory = new Examples::DefaultCameraControllerFactory(
+                                                                    terrainModelModule,
+                                                                    mapModule,
+                                                                    *m_pCameraTouchController,
+                                                                    m_screenPropertiesProvider,
+                                                                    globeCameraControllerConfig,
+                                                                    twoFingerPanTiltEnabled,
+                                                                    interestPointLatitudeDegrees,
+                                                                    interestPointLongitudeDegrees,
+                                                                    interestPointAltitudeMeters,
+                                                                    cameraControllerOrientationDegrees,
+                                                                    cameraControllerDistanceFromInterestPointMeters);
+    
     
     m_pLoadingScreen = CreateLoadingScreen(screenProperties, eegeoWorld.GetRenderingModule(), eegeoWorld.GetPlatformAbstractionModule());
     
+    m_pExampleController = new Examples::ExampleController(*m_pWorld, view, *m_pCameraControllerFactory);
 
 	//register all generic examples
-    m_exampleController.RegisterCameraExample<Examples::CameraSplineExampleFactory>(*m_pGlobeCameraController);
-	m_exampleController.RegisterCameraExample<Examples::CameraTransitionExampleFactory>(*m_pGlobeCameraController);
-	m_exampleController.RegisterCameraExample<Examples::ControlCityThemeExampleFactory>(*m_pGlobeCameraController);
-	m_exampleController.RegisterCameraExample<Examples::DebugPrimitiveRenderingExampleFactory>(*m_pGlobeCameraController);
+    m_pExampleController->RegisterCameraExample<Examples::CameraSplineExampleFactory>();
+	m_pExampleController->RegisterCameraExample<Examples::CameraTransitionExampleFactory>();
+	m_pExampleController->RegisterCameraExample<Examples::ControlCityThemeExampleFactory>();
+	m_pExampleController->RegisterCameraExample<Examples::DebugPrimitiveRenderingExampleFactory>();
     // TODO: Completely remove DebugSphere example as we should be using DebugRenderer now
-	//m_exampleController.RegisterCameraExample<Examples::DebugSphereExampleFactory>(*m_pGlobeCameraController);
-	m_exampleController.RegisterCameraExample<Examples::DynamicText3DExampleFactory>(*m_pGlobeCameraController);
-	m_exampleController.RegisterCameraExample<Examples::EnvironmentFlatteningExampleFactory>(*m_pGlobeCameraController);
-	m_exampleController.RegisterCameraExample<Examples::EnvironmentNotifierExampleFactory>(*m_pGlobeCameraController);
-	m_exampleController.RegisterCameraExample<Examples::FileIOExampleFactory>(*m_pGlobeCameraController);
-    m_exampleController.RegisterCameraExample<Examples::FireworksExampleFactory>(*m_pGlobeCameraController);
-	m_exampleController.RegisterCameraExample<Examples::LoadModelExampleFactory>(*m_pGlobeCameraController);
-	m_exampleController.RegisterCameraExample<Examples::ModifiedRenderingExampleFactory>(*m_pGlobeCameraController);
-	m_exampleController.RegisterCameraExample<Examples::NavigationGraphExampleFactory>(*m_pGlobeCameraController);
-	m_exampleController.RegisterCameraExample<Examples::Pick3DObjectExampleFactory>(*m_pGlobeCameraController);
-	m_exampleController.RegisterCameraExample<Examples::PinsExampleFactory>(*m_pGlobeCameraController);
-	m_exampleController.RegisterCameraExample<Examples::PinOverModelExampleFactory>(*m_pGlobeCameraController);
-	m_exampleController.RegisterCameraExample<Examples::PODAnimationExampleFactory>(*m_pGlobeCameraController);
-	m_exampleController.RegisterCameraExample<Examples::ReadHeadingExampleFactory>(*m_pGlobeCameraController);
-	m_exampleController.RegisterCameraExample<Examples::RenderToTextureExampleFactory>(*m_pGlobeCameraController);
-	m_exampleController.RegisterCameraExample<Examples::ResourceSpatialQueryExampleFactory>(*m_pGlobeCameraController);
-	m_exampleController.RegisterCameraExample<Examples::RouteDrawingExampleFactory>(*m_pGlobeCameraController);
-	m_exampleController.RegisterCameraExample<Examples::RouteSimulationAnimationExampleFactory>(*m_pGlobeCameraController);
-	m_exampleController.RegisterCameraExample<Examples::RouteThicknessPolicyExampleFactory>(*m_pGlobeCameraController);
-	m_exampleController.RegisterCameraExample<Examples::ScreenPickExampleFactory>(*m_pGlobeCameraController);
-	m_exampleController.RegisterCameraExample<Examples::ScreenUnprojectExampleFactory>(*m_pGlobeCameraController);
-	m_exampleController.RegisterCameraExample<Examples::SingleCityExampleFactory>(*m_pGlobeCameraController);
-	m_exampleController.RegisterCameraExample<Examples::ToggleTrafficExampleFactory>(*m_pGlobeCameraController);
-	m_exampleController.RegisterCameraExample<Examples::TrafficCongestionExampleFactory>(*m_pGlobeCameraController);
-	m_exampleController.RegisterCameraExample<Examples::WebRequestExampleFactory>(*m_pGlobeCameraController);
+	//m_pExampleController->RegisterCameraExample<Examples::DebugSphereExampleFactory>();
+	m_pExampleController->RegisterCameraExample<Examples::DynamicText3DExampleFactory>();
+	m_pExampleController->RegisterCameraExample<Examples::EnvironmentFlatteningExampleFactory>();
+	m_pExampleController->RegisterCameraExample<Examples::EnvironmentNotifierExampleFactory>();
+	m_pExampleController->RegisterCameraExample<Examples::FileIOExampleFactory>();
+    m_pExampleController->RegisterCameraExample<Examples::FireworksExampleFactory>();
+	m_pExampleController->RegisterCameraExample<Examples::LoadModelExampleFactory>();
+	m_pExampleController->RegisterCameraExample<Examples::ModifiedRenderingExampleFactory>();
+	m_pExampleController->RegisterCameraExample<Examples::NavigationGraphExampleFactory>();
+	m_pExampleController->RegisterCameraExample<Examples::Pick3DObjectExampleFactory>();
+	m_pExampleController->RegisterCameraExample<Examples::PinsExampleFactory>();
+	m_pExampleController->RegisterCameraExample<Examples::PinOverModelExampleFactory>();
+	m_pExampleController->RegisterCameraExample<Examples::PODAnimationExampleFactory>();
+	m_pExampleController->RegisterCameraExample<Examples::ReadHeadingExampleFactory>();
+	m_pExampleController->RegisterCameraExample<Examples::ResourceSpatialQueryExampleFactory>();
+	m_pExampleController->RegisterCameraExample<Examples::RouteDrawingExampleFactory>();
+	m_pExampleController->RegisterCameraExample<Examples::RouteSimulationAnimationExampleFactory>();
+	m_pExampleController->RegisterCameraExample<Examples::RouteThicknessPolicyExampleFactory>();
+	m_pExampleController->RegisterCameraExample<Examples::ScreenPickExampleFactory>();
+	m_pExampleController->RegisterCameraExample<Examples::ScreenUnprojectExampleFactory>();
+	m_pExampleController->RegisterCameraExample<Examples::SingleCityExampleFactory>();
+	m_pExampleController->RegisterCameraExample<Examples::ToggleTrafficExampleFactory>();
+	m_pExampleController->RegisterCameraExample<Examples::TrafficCongestionExampleFactory>();
+	m_pExampleController->RegisterCameraExample<Examples::WebRequestExampleFactory>();
+    
+    m_pExampleController->RegisterCameraScreenPropertiesProviderExample<Examples::RenderToTextureExampleFactory>(m_screenPropertiesProvider);
 }
 
 ExampleApp::~ExampleApp()
 {
-	delete m_pGlobeCameraController;
 	delete m_pCameraTouchController;
     delete m_pLoadingScreen;
+    delete m_pExampleController;
 }
 
 void ExampleApp::OnPause()
@@ -187,33 +182,54 @@ void ExampleApp::Update (float dt)
 {
 	Eegeo::EegeoWorld& eegeoWorld = World();
     
-    // Get active camera for current example
-    // Draw and update with this camera.
-    m_pActiveCamera = &m_exampleController.GetCurrentActiveCamera();
+    
+    m_pCameraTouchController->Update(dt);
 
 	eegeoWorld.EarlyUpdate(dt);
-	m_exampleController.EarlyUpdate(dt, *m_pGlobeCameraController, *m_pCameraTouchController);
+    
 
-	eegeoWorld.Update(dt, *m_pActiveCamera, m_pGlobeCameraController->GetEcefInterestPoint());
-    m_exampleController.Update(dt);
+	m_pExampleController->EarlyUpdate(dt);
+    
+    const Eegeo::Camera::RenderCamera& currentRenderCamera = m_pExampleController->GetCurrentActiveCamera();
+    const Eegeo::dv3& currentInterestPoint = m_pExampleController->GetCurrentInterestPoint();
+
+    // todo fix incorrect camera interest point
+	eegeoWorld.Update(dt, currentRenderCamera, currentInterestPoint);
+    m_pExampleController->Update(dt);
     
     UpdateLoadingScreen(dt);
 }
 
 void ExampleApp::Draw (float dt)
 {
-    m_exampleController.PreWorldDraw();
+    m_pExampleController->PreWorldDraw();
     
     Eegeo::EegeoWorld& eegeoWorld = World();
     
-    eegeoWorld.Draw(*m_pActiveCamera);
+    const Eegeo::Camera::RenderCamera& currentRenderCamera = m_pExampleController->GetCurrentActiveCamera();
     
-    m_exampleController.Draw();
+    eegeoWorld.Draw(currentRenderCamera, m_screenProperties);
+    
+    m_pExampleController->Draw();
     
     if (m_pLoadingScreen != NULL)
     {
         m_pLoadingScreen->Draw();
     }
+}
+
+void ExampleApp::NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties)
+{
+    m_screenProperties = screenProperties;
+    
+    if (m_pLoadingScreen != NULL)
+    {
+        m_pLoadingScreen->NotifyScreenDimensionsChanged(m_screenProperties.GetScreenWidth(), m_screenProperties.GetScreenHeight());
+    }
+    
+    //m_pGlobeCameraController->GetCamera()->SetViewport(0.f, 0.f, m_screenProperties.GetScreenWidth(), m_screenProperties.GetScreenHeight());
+    
+    m_pExampleController->NotifyScreenPropertiesChanged(screenProperties);
 }
 
 void ExampleApp::UpdateLoadingScreen(float dt)
@@ -245,7 +261,7 @@ void ExampleApp::Event_TouchRotate(const AppInterface::RotateData& data)
 		return;
 	}
 
-	if(!m_exampleController.Event_TouchRotate(data))
+	if(!m_pExampleController->Event_TouchRotate(data))
 	{
 		m_pCameraTouchController->Event_TouchRotate(data);
 	}
@@ -258,7 +274,7 @@ void ExampleApp::Event_TouchRotate_Start(const AppInterface::RotateData& data)
 		return;
 	}
     
-	if(!m_exampleController.Event_TouchRotate_Start(data))
+	if(!m_pExampleController->Event_TouchRotate_Start(data))
 	{
 		m_pCameraTouchController->Event_TouchRotate_Start(data);
 	}
@@ -271,7 +287,7 @@ void ExampleApp::Event_TouchRotate_End(const AppInterface::RotateData& data)
 		return;
 	}
     
-	if(!m_exampleController.Event_TouchRotate_End(data))
+	if(!m_pExampleController->Event_TouchRotate_End(data))
 	{
 		m_pCameraTouchController->Event_TouchRotate_End(data);
 	}
@@ -284,7 +300,7 @@ void ExampleApp::Event_TouchPinch(const AppInterface::PinchData& data)
 		return;
 	}
     
-	if(!m_exampleController.Event_TouchPinch(data))
+	if(!m_pExampleController->Event_TouchPinch(data))
 	{
 		m_pCameraTouchController->Event_TouchPinch(data);
 	}
@@ -297,7 +313,7 @@ void ExampleApp::Event_TouchPinch_Start(const AppInterface::PinchData& data)
 		return;
 	}
     
-	if(!m_exampleController.Event_TouchPinch_Start(data))
+	if(!m_pExampleController->Event_TouchPinch_Start(data))
 	{
 		m_pCameraTouchController->Event_TouchPinch_Start(data);
 	}
@@ -310,7 +326,7 @@ void ExampleApp::Event_TouchPinch_End(const AppInterface::PinchData& data)
 		return;
 	}
     
-	if(!m_exampleController.Event_TouchPinch_End(data))
+	if(!m_pExampleController->Event_TouchPinch_End(data))
 	{
 		m_pCameraTouchController->Event_TouchPinch_End(data);
 	}
@@ -323,7 +339,7 @@ void ExampleApp::Event_TouchPan(const AppInterface::PanData& data)
 		return;
 	}
     
-	if(!m_exampleController.Event_TouchPan(data))
+	if(!m_pExampleController->Event_TouchPan(data))
 	{
 		m_pCameraTouchController->Event_TouchPan(data);
 	}
@@ -336,7 +352,7 @@ void ExampleApp::Event_TouchPan_Start(const AppInterface::PanData& data)
 		return;
 	}
     
-	if(!m_exampleController.Event_TouchPan_Start(data))
+	if(!m_pExampleController->Event_TouchPan_Start(data))
 	{
 		m_pCameraTouchController->Event_TouchPan_Start(data);
 	}
@@ -349,7 +365,7 @@ void ExampleApp::Event_TouchPan_End(const AppInterface::PanData& data)
 		return;
 	}
     
-	if(!m_exampleController.Event_TouchPan_End(data))
+	if(!m_pExampleController->Event_TouchPan_End(data))
 	{
 		m_pCameraTouchController->Event_TouchPan_End(data);
 	}
@@ -362,7 +378,7 @@ void ExampleApp::Event_TouchTap(const AppInterface::TapData& data)
 		return;
 	}
     
-	if(!m_exampleController.Event_TouchTap(data))
+	if(!m_pExampleController->Event_TouchTap(data))
 	{
 		m_pCameraTouchController->Event_TouchTap(data);
 	}
@@ -375,7 +391,7 @@ void ExampleApp::Event_TouchDoubleTap(const AppInterface::TapData& data)
 		return;
 	}
     
-	if(!m_exampleController.Event_TouchDoubleTap(data))
+	if(!m_pExampleController->Event_TouchDoubleTap(data))
 	{
 		m_pCameraTouchController->Event_TouchDoubleTap(data);
 	}
@@ -388,7 +404,7 @@ void ExampleApp::Event_TouchDown(const AppInterface::TouchData& data)
 		return;
 	}
     
-	if(!m_exampleController.Event_TouchDown(data))
+	if(!m_pExampleController->Event_TouchDown(data))
 	{
 		m_pCameraTouchController->Event_TouchDown(data);
 	}
@@ -401,7 +417,7 @@ void ExampleApp::Event_TouchMove(const AppInterface::TouchData& data)
 		return;
 	}
     
-	if(!m_exampleController.Event_TouchMove(data))
+	if(!m_pExampleController->Event_TouchMove(data))
 	{
 		m_pCameraTouchController->Event_TouchMove(data);
 	}
@@ -414,7 +430,7 @@ void ExampleApp::Event_TouchUp(const AppInterface::TouchData& data)
 		return;
 	}
     
-	if(!m_exampleController.Event_TouchUp(data))
+	if(!m_pExampleController->Event_TouchUp(data))
 	{
 		m_pCameraTouchController->Event_TouchUp(data);
 	}

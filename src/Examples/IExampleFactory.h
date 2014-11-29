@@ -4,6 +4,7 @@
 #define ExampleApp_IExampleFactory_h
 
 #include "IExample.h"
+#include "DefaultCameraControllerFactory.h" // todo move
 #include <string>
 
 namespace Examples

@@ -44,7 +44,7 @@ RouteSimulationExample::RouteSimulationExample(RouteService& routeService,
         RouteSimulationViewService& routeSimulationViewService,
         Eegeo::Helpers::IFileIO& fileIO,
         Eegeo::Rendering::AsyncTexturing::IAsyncTextureRequestor& textureRequestor,
-        Eegeo::Camera::GlobeCamera::GlobeCameraController& defaultCamera,
+        Eegeo::Camera::GlobeCamera::GlobeCameraController* pDefaultCameraController,
         RouteSimulationGlobeCameraControllerFactory& routeSimulationGlobeCameraControllerFactory,
         const IRouteSimulationExampleViewFactory& routeSimulationExampleViewFactory,
         EegeoWorld& world)
@@ -53,7 +53,7 @@ RouteSimulationExample::RouteSimulationExample(RouteService& routeService,
 	,m_routeSimulationViewService(routeSimulationViewService)
 	,m_fileIO(fileIO)
 	,m_textureRequestor(textureRequestor)
-	,m_defaultCamera(defaultCamera)
+	,m_pDefaultCameraController(pDefaultCameraController)
 	,m_routeSimulationGlobeCameraControllerFactory(routeSimulationGlobeCameraControllerFactory)
 	,m_world(world)
 	,m_initialised(false)
@@ -67,7 +67,7 @@ RouteSimulationExample::RouteSimulationExample(RouteService& routeService,
 	,m_rotateToFollowToggledHandler(this, &RouteSimulationExample::ToggleRotateToFollow)
 	,m_directionChangedHandler(this, &RouteSimulationExample::ChangeFollowDirection)
 	,m_roadSideChangedHandler(this, &RouteSimulationExample::ToggleSideOfRoadToDriveOn)
-	,m_globeCameraStateRestorer(defaultCamera)
+	,m_globeCameraStateRestorer(*pDefaultCameraController)
 {
 	Eegeo::Space::EcefTangentBasis cameraInterestBasis;
 
@@ -76,7 +76,7 @@ RouteSimulationExample::RouteSimulationExample(RouteService& routeService,
 	    354.824249,
 	    cameraInterestBasis);
 
-	defaultCamera.SetView(cameraInterestBasis, 1374.298706);
+	m_pDefaultCameraController->SetView(cameraInterestBasis, 1374.298706);
 }
 
 void RouteSimulationExample::Initialise()
@@ -188,7 +188,7 @@ void RouteSimulationExample::Update(float dt)
 	}
     
     const Eegeo::Camera::RenderCamera* pCamera = m_usingFollowCamera ? m_pRouteSessionFollowCameraController->GetCamera()
-                                                                     : m_defaultCamera.GetCamera();
+                                                                     : m_pDefaultCameraController->GetCamera();
     
     m_pViewBindingForCycleSession->UpdateCameraLocation(pCamera->GetEcefLocation());
     m_pViewBindingForOscillatingSession->UpdateCameraLocation(pCamera->GetEcefLocation());
@@ -196,7 +196,7 @@ void RouteSimulationExample::Update(float dt)
     
 	//The route session for which we want to project a position to (in this case, the ecef interest
 	//point) should be updated giving it the latest position.
-	Eegeo::dv3 ecefPositionToProjectToRoute = m_defaultCamera.GetEcefInterestPoint();
+	Eegeo::dv3 ecefPositionToProjectToRoute = m_pDefaultCameraController->GetEcefInterestPoint();
 	m_pSessionCamera->SetCurrentPositionSnappedToRoute(ecefPositionToProjectToRoute);
 
 	//For the session which should just cycle the route forever, when it has completed simply end
@@ -261,6 +261,9 @@ void RouteSimulationExample::Suspend()
 	Eegeo_DELETE m_pRouteSimulationView;
 
 	m_pRouteSimulationView = NULL;
+    
+    delete m_pDefaultCameraController;
+    m_pDefaultCameraController = NULL;
 
 	m_initialised = false;
 }
@@ -273,9 +276,22 @@ const Eegeo::Camera::RenderCamera& RouteSimulationExample::GetRenderCamera() con
     }
     else
     {
-        return *m_defaultCamera.GetCamera();
+        return *m_pDefaultCameraController->GetCamera();
     }
 }
+
+Eegeo::dv3 RouteSimulationExample::GetInterestPoint() const
+{
+    if (m_usingFollowCamera)
+    {
+        return m_pRouteSessionFollowCameraController->GetEcefInterestPoint();
+    }
+    else
+    {
+        return m_pDefaultCameraController->GetEcefInterestPoint();
+    }
+}
+
 
 void RouteSimulationExample::ToggleFollowCamera()
 {

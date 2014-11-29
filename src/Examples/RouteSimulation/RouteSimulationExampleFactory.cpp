@@ -15,10 +15,10 @@ using namespace Examples;
 #include "AsyncLoadersModule.h"
 
 RouteSimulationExampleFactory::RouteSimulationExampleFactory(Eegeo::EegeoWorld& world,
-        Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCameraController,
+        DefaultCameraControllerFactory& defaultCameraControllerFactory,
         const IRouteSimulationExampleViewFactory& routeSimulationViewFactory)
 	: m_world(world)
-	, m_globeCameraController(globeCameraController)
+	, m_defaultCameraControllerFactory(defaultCameraControllerFactory)
 	, m_routeSimulationViewFactory(routeSimulationViewFactory)
 {
     Eegeo::Modules::Map::Layers::TerrainModelModule& terrainModelModule = m_world.GetTerrainModelModule();
@@ -49,7 +49,7 @@ IExample* RouteSimulationExampleFactory::CreateExample() const
 	        routesModule.GetRouteSimulationViewService(),
 	        platformAbstractionModule.GetFileIO(),
 	        asyncLoadersModule.GetLocalAsyncTextureLoader(),
-	        m_globeCameraController,
+	        m_defaultCameraControllerFactory.Create(),
 	        *m_pRouteSimulationGlobeCameraControllerFactory,
 	        m_routeSimulationViewFactory,
 	        m_world);

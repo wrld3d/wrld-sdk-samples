@@ -10,17 +10,20 @@ using namespace Eegeo::Helpers::Time;
 #define TRAFFIC_ENABLED_SWITCH_DELAY_MILLISECONDS 5000
 
 ToggleTrafficExample::ToggleTrafficExample(Eegeo::Traffic::TrafficSimulationController& trafficSimulation,
-        Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController)
+        Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController)
 	:m_trafficSimulation(trafficSimulation)
 	,m_lastToggle(MillisecondsSinceEpoch())
-    ,m_cameraController(cameraController)
-	,m_globeCameraStateRestorer(cameraController)
+    ,m_pCameraController(pCameraController)
+	,m_globeCameraStateRestorer(*pCameraController)
 {
 }
 
 void ToggleTrafficExample::Suspend()
 {
 	m_trafficSimulation.SetEnabled(true);
+    
+    delete m_pCameraController;
+    m_pCameraController = NULL;
 }
 
 void ToggleTrafficExample::Update(float dt)
@@ -38,5 +41,10 @@ void ToggleTrafficExample::Update(float dt)
 
 const Eegeo::Camera::RenderCamera& ToggleTrafficExample::GetRenderCamera() const
 {
-    return *m_cameraController.GetCamera();
+    return *m_pCameraController->GetCamera();
+}
+
+Eegeo::dv3 ToggleTrafficExample::GetInterestPoint() const
+{
+    return m_pCameraController->GetEcefInterestPoint();
 }

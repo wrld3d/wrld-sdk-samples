@@ -25,7 +25,7 @@ private:
 	UIActionHandler<RouteMatchingExample> m_toggleRouteMatchingHandler;
 	IRouteMatchingExampleView* m_pRouteMatchingView;
     
-    Eegeo::Camera::GlobeCamera::GlobeCameraController& m_cameraController;
+    Eegeo::Camera::GlobeCamera::GlobeCameraController* m_pCameraController;
 	GlobeCameraStateRestorer m_globeCameraStateRestorer;
 
 	bool m_createdRoutes;
@@ -41,7 +41,7 @@ public:
 	RouteMatchingExample(Eegeo::Routes::RouteService& routeService,
 	                     Eegeo::EegeoWorld& eegeoWorld,
 	                     const IRouteMatchingExampleViewFactory& routeMatchingViewFactory,
-	                     Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController);
+	                     Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController);
 
 	static std::string GetName()
 	{
@@ -57,6 +57,7 @@ public:
 	void Draw() {}
 	void Suspend();
     const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
+    Eegeo::dv3 GetInterestPoint() const;
 
 	void ToggleMatching();
 };

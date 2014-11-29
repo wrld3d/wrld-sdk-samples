@@ -10,19 +10,21 @@ using namespace Eegeo::Helpers::Time;
 #define ENVIRONMENT_FLATTEN_DIRECTION_SWITCH_DELAY_MILLISECONDS 5000
 
 EnvironmentFlatteningExample::EnvironmentFlatteningExample(Eegeo::Rendering::EnvironmentFlatteningService& environmentFlatteningService,
-        Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController)
+        Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController)
 	:m_environmentFlatteningService(environmentFlatteningService)
 	,m_lastToggle(MillisecondsSinceEpoch())
 	,m_scaleUp(true)
 	,m_initialEnvironmentScale(environmentFlatteningService.GetCurrentScale())
-	,m_globeCameraStateRestorer(cameraController)
-    ,m_cameraController(cameraController)
+	,m_globeCameraStateRestorer(*pCameraController)
+    ,m_pCameraController(pCameraController)
 {
 }
 
 void EnvironmentFlatteningExample::Suspend()
 {
 	m_environmentFlatteningService.SetCurrentScale(m_initialEnvironmentScale);
+    delete m_pCameraController;
+    m_pCameraController = NULL;
 }
 
 void EnvironmentFlatteningExample::Update(float dt)
@@ -49,5 +51,10 @@ void EnvironmentFlatteningExample::Update(float dt)
 
 const Eegeo::Camera::RenderCamera& EnvironmentFlatteningExample::GetRenderCamera() const
 {
-    return *m_cameraController.GetCamera();
+    return *m_pCameraController->GetCamera();
+}
+
+Eegeo::dv3 EnvironmentFlatteningExample::GetInterestPoint() const
+{
+    return m_pCameraController->GetEcefInterestPoint();
 }

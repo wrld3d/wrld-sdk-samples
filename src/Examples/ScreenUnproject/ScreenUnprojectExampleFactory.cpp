@@ -9,9 +9,9 @@
 using namespace Examples;
 
 ScreenUnprojectExampleFactory::ScreenUnprojectExampleFactory(Eegeo::EegeoWorld& world,
-        Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCameraController)
+        DefaultCameraControllerFactory& defaultCameraControllerFactory)
 	: m_world(world)
-	, m_globeCameraController(globeCameraController)
+	, m_defaultCameraControllerFactory(defaultCameraControllerFactory)
 {
 
 }
@@ -23,7 +23,7 @@ IExample* ScreenUnprojectExampleFactory::CreateExample() const
     
 	return new Examples::ScreenUnprojectExample(debugRenderingModule.GetDebugRenderer(),
                                                 terrainModelModule.GetTerrainHeightProvider(),
-                                                m_globeCameraController);
+                                                m_defaultCameraControllerFactory.Create());
 }
 
 std::string ScreenUnprojectExampleFactory::ExampleName() const

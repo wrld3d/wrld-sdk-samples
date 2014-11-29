@@ -17,13 +17,13 @@ private:
     Eegeo::EegeoWorld& m_world;
 	Eegeo::DebugRendering::DebugRenderer& m_debugRenderer;
     Eegeo::Location::ILocationService& m_locationService;
-    Eegeo::Camera::GlobeCamera::GlobeCameraController& m_cameraController;
+    Eegeo::Camera::GlobeCamera::GlobeCameraController* m_pCameraController;
 	GlobeCameraStateRestorer m_globeCameraStateRestorer;
 
 public:
     ReadHeadingExample(
 		Eegeo::EegeoWorld& eegeoWorld,
-		Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCameraController,
+		Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
 		Eegeo::DebugRendering::DebugRenderer& debugRenderer,
 		Eegeo::Location::ILocationService& locationService
 	);
@@ -43,6 +43,7 @@ public:
 	void Draw() {}
 	void Suspend(){}
     const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
+    Eegeo::dv3 GetInterestPoint() const;
 };
 }
 

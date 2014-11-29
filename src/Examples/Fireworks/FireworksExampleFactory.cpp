@@ -6,16 +6,16 @@
 using namespace Examples;
 
 FireworksExampleFactory::FireworksExampleFactory(Eegeo::EegeoWorld& world,
-                                                 Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCameraController)
+                                                 DefaultCameraControllerFactory& defaultCameraControllerFactory)
 	: m_world(world)
-	, m_globeCameraController(globeCameraController)
+	, m_defaultCameraControllerFactory(defaultCameraControllerFactory)
 {
 
 }
 
 IExample* FireworksExampleFactory::CreateExample() const
 {
-	return new Examples::FireworksExample(m_globeCameraController,
+	return new Examples::FireworksExample(m_defaultCameraControllerFactory.Create(),
                                           m_world.GetRenderingModule(),
                                           m_world.GetPlatformAbstractionModule(),
                                           m_world.GetStreamingModule(),

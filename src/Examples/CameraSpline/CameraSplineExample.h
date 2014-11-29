@@ -19,7 +19,7 @@ private:
 	
     Eegeo::EegeoWorld& m_world;
     Eegeo::Streaming::ResourceCeilingProvider& m_resourceCeilingProvider;
-    Eegeo::Camera::GlobeCamera::GlobeCameraController& m_globeCameraController;
+    Eegeo::Camera::GlobeCamera::GlobeCameraController* m_pCameraController;
     
     Eegeo::Geometry::CatmullRomSpline* m_pPositionSpline;
 	Eegeo::Geometry::CatmullRomSpline* m_pTargetSpline;
@@ -27,7 +27,7 @@ private:
     
 public:
 	CameraSplineExample(Eegeo::EegeoWorld& eegeoWorld,
-                        Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCameraController,
+                        Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
                         Eegeo::Streaming::ResourceCeilingProvider& resourceCeilingProvider);
     
 	static std::string GetName()
@@ -45,6 +45,7 @@ public:
 	void Draw() {}
 	void Suspend();
     const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
+    Eegeo::dv3 GetInterestPoint() const;
     
 	void UpdateCamera(Eegeo::Camera::GlobeCamera::GlobeCameraController* pGlobeCameraController,
 	                  Eegeo::Camera::GlobeCamera::GlobeCameraTouchController* pCameraTouchController,

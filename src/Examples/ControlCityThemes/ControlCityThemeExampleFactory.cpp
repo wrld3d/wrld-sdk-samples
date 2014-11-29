@@ -8,9 +8,9 @@
 using namespace Examples;
 
 ControlCityThemeExampleFactory::ControlCityThemeExampleFactory(Eegeo::EegeoWorld& world,
-        Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCameraController)
+        DefaultCameraControllerFactory& defaultCameraControllerFactory)
 	: m_world(world)
-	, m_globeCameraController(globeCameraController)
+	, m_defaultCameraControllerFactory(defaultCameraControllerFactory)
 {
 
 }
@@ -23,7 +23,7 @@ IExample* ControlCityThemeExampleFactory::CreateExample() const
 	        cityThemesModule.GetCityThemesRepository(),
 	        cityThemesModule.GetCityThemesUpdater(),
 	        m_world,
-	        m_globeCameraController);
+	        m_defaultCameraControllerFactory.Create());
 }
 
 std::string ControlCityThemeExampleFactory::ExampleName() const

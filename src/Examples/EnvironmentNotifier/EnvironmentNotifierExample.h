@@ -55,7 +55,7 @@ class EnvironmentNotifierExample : public IExample
 private:
 	Eegeo::Resources::Terrain::TerrainStreaming& m_terrainStreaming;
 	EnvironmentNotifierExampleTerrainStreamObserver* m_pObserver;
-    Eegeo::Camera::GlobeCamera::GlobeCameraController& m_cameraController;
+    Eegeo::Camera::GlobeCamera::GlobeCameraController* m_pCameraController;
 	GlobeCameraStateRestorer m_globeCameraStateRestorer;
     Eegeo::DebugRendering::DebugRenderer& m_debugRenderer;
 
@@ -65,7 +65,7 @@ private:
 public:
 	EnvironmentNotifierExample(Eegeo::DebugRendering::DebugRenderer& debugRenderer,
 	                           Eegeo::Resources::Terrain::TerrainStreaming& terrainStreaming,
-	                           Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController);
+	                           Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController);
 
 	static std::string GetName()
 	{
@@ -81,6 +81,7 @@ public:
 	void Draw();
 	void Suspend();
     const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
+    Eegeo::dv3 GetInterestPoint() const;
 };
 }
 

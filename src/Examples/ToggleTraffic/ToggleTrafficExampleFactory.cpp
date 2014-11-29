@@ -8,9 +8,9 @@
 using namespace Examples;
 
 ToggleTrafficExampleFactory::ToggleTrafficExampleFactory(Eegeo::EegeoWorld& world,
-        Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCameraController)
+        DefaultCameraControllerFactory& defaultCameraControllerFactory)
 	: m_world(world)
-	, m_globeCameraController(globeCameraController)
+	, m_defaultCameraControllerFactory(defaultCameraControllerFactory)
 {
 
 }
@@ -20,7 +20,7 @@ IExample* ToggleTrafficExampleFactory::CreateExample() const
     Eegeo::Modules::TrafficModule& trafficModule = m_world.GetTrafficModule();
     
 	return new Examples::ToggleTrafficExample(trafficModule.GetTrafficSimulationController(),
-	        m_globeCameraController);
+	        m_defaultCameraControllerFactory.Create());
 }
 
 std::string ToggleTrafficExampleFactory::ExampleName() const

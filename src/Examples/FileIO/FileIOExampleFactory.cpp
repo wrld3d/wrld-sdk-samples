@@ -8,9 +8,9 @@
 using namespace Examples;
 
 FileIOExampleFactory::FileIOExampleFactory(Eegeo::EegeoWorld& world,
-        Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCameraController)
+        DefaultCameraControllerFactory& defaultCameraControllerFactory)
 	: m_world(world)
-	, m_globeCameraController(globeCameraController)
+	, m_defaultCameraControllerFactory(defaultCameraControllerFactory)
 {
 
 }
@@ -20,7 +20,7 @@ IExample* FileIOExampleFactory::CreateExample() const
     Eegeo::Modules::IPlatformAbstractionModule& platformAbstractionModule = m_world.GetPlatformAbstractionModule();
     
 	return new Examples::FileIOExample(platformAbstractionModule.GetFileIO(),
-	                                   m_globeCameraController);
+	                                   m_defaultCameraControllerFactory.Create());
 }
 
 std::string FileIOExampleFactory::ExampleName() const

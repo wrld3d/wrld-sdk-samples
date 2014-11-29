@@ -12,11 +12,11 @@ namespace Examples
 //EnvironmentNotifierExample//
 EnvironmentNotifierExample::EnvironmentNotifierExample(Eegeo::DebugRendering::DebugRenderer& debugRenderer,
         Eegeo::Resources::Terrain::TerrainStreaming& terrainStreaming,
-        Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController)
+        Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController)
 	:m_terrainStreaming(terrainStreaming)
 	,m_pObserver(NULL)
-	,m_globeCameraStateRestorer(cameraController)
-    ,m_cameraController(cameraController)
+	,m_globeCameraStateRestorer(*pCameraController)
+    ,m_pCameraController(pCameraController)
     , m_debugRenderer(debugRenderer)
 {
 }
@@ -32,6 +32,8 @@ void EnvironmentNotifierExample::Suspend()
 	m_terrainStreaming.RemoveStreamingObserver(m_pObserver);
 	delete m_pObserver;
 	m_pObserver = NULL;
+    delete m_pCameraController;
+    m_pCameraController = NULL;
 }
 
 void EnvironmentNotifierExample::Update(float dt)
@@ -52,7 +54,12 @@ void EnvironmentNotifierExample::Draw()
     
 const Eegeo::Camera::RenderCamera& EnvironmentNotifierExample::GetRenderCamera() const
 {
-    return *m_cameraController.GetCamera();
+    return *m_pCameraController->GetCamera();
+}
+
+Eegeo::dv3 EnvironmentNotifierExample::GetInterestPoint() const
+{
+    return m_pCameraController->GetEcefInterestPoint();
 }
 
 //EnvironmentNotifierExampleTerrainStreamObserver///

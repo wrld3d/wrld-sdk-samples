@@ -14,12 +14,12 @@ class RouteMatchingExampleFactory : public IExampleFactory
 {
 	Eegeo::EegeoWorld& m_world;
 	const IRouteMatchingExampleViewFactory& m_routeMatchingViewFactory;
-	Eegeo::Camera::GlobeCamera::GlobeCameraController& m_globeCameraController;
+	DefaultCameraControllerFactory& m_defaultCameraControllerFactory;
 
 public:
 	RouteMatchingExampleFactory(Eegeo::EegeoWorld& world,
 	                            const IRouteMatchingExampleViewFactory& routeMatchingViewFactory,
-	                            Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCameraController);
+	                            DefaultCameraControllerFactory& defaultCameraControllerFactory);
 
 	std::string ExampleName() const;
 

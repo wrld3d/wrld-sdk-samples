@@ -21,14 +21,14 @@ namespace Examples
 DynamicText3DExample::DynamicText3DExample(Eegeo::Rendering::EnvironmentFlatteningService& environmentFlatteningService,
                                            Eegeo::Resources::PlaceNames::PlaceNameViewBuilder& placeNameViewBuilder,
                                            Eegeo::EegeoWorld& world,
-                                           Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCameraController,
+                                           Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
                                            Eegeo::Rendering::RenderableFilters& renderableFilters)
 	: m_environmentFlatteningService(environmentFlatteningService)
 	, m_placeNameViewBuilder(placeNameViewBuilder)
 	, m_world(world)
 	, m_initialised(false)
-	, m_globeCameraStateRestorer(globeCameraController)
-    , m_renderCamera(*globeCameraController.GetCamera())
+	, m_globeCameraStateRestorer(*pCameraController)
+    , m_pCameraController(pCameraController)
     , m_renderableFilters(renderableFilters)
 {
 	Eegeo::Space::EcefTangentBasis cameraInterestBasis;
@@ -38,7 +38,7 @@ DynamicText3DExample::DynamicText3DExample(Eegeo::Rendering::EnvironmentFlatteni
 	    0.0,
 	    cameraInterestBasis);
 
-	globeCameraController.SetView(cameraInterestBasis, 1781.0);
+	m_pCameraController->SetView(cameraInterestBasis, 1781.0);
     
     m_renderableFilters.AddRenderableFilter(*this);
 }
@@ -70,6 +70,8 @@ void DynamicText3DExample::Suspend()
 	}
 
 	m_views.clear();
+    delete m_pCameraController;
+    m_pCameraController = NULL;
 	m_initialised = false;
 }
 
@@ -99,7 +101,7 @@ void DynamicText3DExample::CreateDynamic3DText(const std::string& str,
 
 void DynamicText3DExample::EnqueueRenderables(const Eegeo::Rendering::RenderContext& renderContext, Eegeo::Rendering::RenderQueue& renderQueue)
 {
-	const dv3& ecefCameraPosition = m_renderCamera.GetEcefLocation();
+	const dv3& ecefCameraPosition = GetRenderCamera().GetEcefLocation();
 	v3 camSurfaceNormal = ecefCameraPosition.Norm().ToSingle();
 	float environmentScale = m_environmentFlatteningService.GetCurrentScale();
     
@@ -107,7 +109,7 @@ void DynamicText3DExample::EnqueueRenderables(const Eegeo::Rendering::RenderCont
 	{
 		PlaceNameView& view = **it;
         
-		view.UpdateTransformsAndVisibility(m_renderCamera, camSurfaceNormal, 4.0, environmentScale);
+		view.UpdateTransformsAndVisibility(GetRenderCamera(), camSurfaceNormal, 4.0, environmentScale);
         
 		if(view.IsInFrustum() && !view.IsCompletelyTransparent())
 		{
@@ -131,6 +133,11 @@ void DynamicText3DExample::Draw()
 
 const Eegeo::Camera::RenderCamera& DynamicText3DExample::GetRenderCamera() const
 {
-    return m_renderCamera;
+    return *m_pCameraController->GetCamera();
+}
+
+Eegeo::dv3 DynamicText3DExample::GetInterestPoint() const
+{
+    return m_pCameraController->GetEcefInterestPoint();
 }
 }

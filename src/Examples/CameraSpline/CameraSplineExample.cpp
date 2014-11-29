@@ -9,14 +9,15 @@
 #include "GlobeCameraController.h"
 #include "GlobeCameraTouchController.h"
 #include "EegeoWorld.h"
+#include "EarthConstants.h"
 
 namespace Examples
 {
     CameraSplineExample::CameraSplineExample(Eegeo::EegeoWorld& eegeoWorld,
-                                             Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCameraController,
+                                             Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
                                              Eegeo::Streaming::ResourceCeilingProvider& resourceCeilingProvider)
     : m_world(eegeoWorld)
-    , m_globeCameraController(globeCameraController)
+    , m_pCameraController(pCameraController)
     , m_resourceCeilingProvider(resourceCeilingProvider)
     {
         
@@ -66,6 +67,8 @@ namespace Examples
         delete m_pSplineCameraController;
         delete m_pPositionSpline;
         delete m_pTargetSpline;
+        delete m_pCameraController;
+        m_pCameraController = NULL;
     }
     
     void CameraSplineExample::UpdateCamera(Eegeo::Camera::GlobeCamera::GlobeCameraController *pGlobeCameraController, Eegeo::Camera::GlobeCamera::GlobeCameraTouchController *pCameraTouchController, float dt)
@@ -77,5 +80,11 @@ namespace Examples
     const Eegeo::Camera::RenderCamera& CameraSplineExample::GetRenderCamera() const
     {
         return *m_pSplineCameraController->GetCamera();
+    }
+    
+    Eegeo::dv3 CameraSplineExample::GetInterestPoint() const
+    {
+        // todo - spline camera controller does not model streaming interest point
+        return m_pSplineCameraController->GetCamera()->GetEcefLocation().Norm() * Eegeo::Space::EarthConstants::Radius;
     }
 }

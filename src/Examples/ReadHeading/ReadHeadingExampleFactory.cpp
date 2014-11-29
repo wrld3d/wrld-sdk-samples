@@ -11,9 +11,9 @@ using namespace Examples;
 
 ReadHeadingExampleFactory::ReadHeadingExampleFactory(
 	Eegeo::EegeoWorld& world,
-	Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCameraController)
+	DefaultCameraControllerFactory& defaultCameraControllerFactory)
 : m_world(world)
-, m_globeCameraController(globeCameraController)
+, m_defaultCameraControllerFactory(defaultCameraControllerFactory)
 {
 
 }
@@ -24,7 +24,7 @@ IExample* ReadHeadingExampleFactory::CreateExample() const
 	
     return new Examples::ReadHeadingExample(
 		m_world,
-		m_globeCameraController,
+		m_defaultCameraControllerFactory.Create(),
 		debugRenderingModule.GetDebugRenderer(),
 		m_world.GetLocationService()
 	);

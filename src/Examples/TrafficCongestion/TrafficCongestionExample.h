@@ -15,13 +15,13 @@ private:
 	float m_timeAccumulator;
 	Eegeo::Streaming::MortonKey m_key;
 	int m_congestionValue;
-    Eegeo::Camera::GlobeCamera::GlobeCameraController& m_cameraController;
+    Eegeo::Camera::GlobeCamera::GlobeCameraController* m_pCameraController;
 	GlobeCameraStateRestorer m_globeCameraStateRestorer;
 
 public:
 	TrafficCongestionExample(
 	    Eegeo::TrafficCongestion::ITrafficCongestionService& trafficCongestionService,
-	    Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController);
+	    Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController);
 
 	static std::string GetName()
 	{
@@ -37,5 +37,6 @@ public:
 	void Draw() {}
 	void Suspend();
     const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
+    Eegeo::dv3 GetInterestPoint() const;
 };
 }

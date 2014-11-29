@@ -14,12 +14,12 @@
 namespace Examples
 {
 	ReadHeadingExample::ReadHeadingExample(Eegeo::EegeoWorld& eegeoWorld,
-                                           Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCameraController,
+                                           Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
                                            Eegeo::DebugRendering::DebugRenderer& debugRenderer,
                                            Eegeo::Location::ILocationService& locationService)
     : m_world(eegeoWorld)
-    , m_cameraController(globeCameraController)
-    , m_globeCameraStateRestorer(globeCameraController)
+    , m_pCameraController(pCameraController)
+    , m_globeCameraStateRestorer(*pCameraController)
 	, m_debugRenderer(debugRenderer)
     , m_locationService(locationService)
     {
@@ -46,6 +46,11 @@ namespace Examples
     
     const Eegeo::Camera::RenderCamera& ReadHeadingExample::GetRenderCamera() const
     {
-        return *m_cameraController.GetCamera();
+        return *m_pCameraController->GetCamera();
+    }
+    
+    Eegeo::dv3 ReadHeadingExample::GetInterestPoint() const
+    {
+        return m_pCameraController->GetEcefInterestPoint();
     }
 }

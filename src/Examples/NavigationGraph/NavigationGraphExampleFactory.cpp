@@ -8,9 +8,9 @@
 using namespace Examples;
 
 NavigationGraphExampleFactory::NavigationGraphExampleFactory(Eegeo::EegeoWorld& world,
-        Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCameraController)
+        DefaultCameraControllerFactory& defaultCameraControllerFactory)
 	: m_world(world)
-	, m_globeCameraController(globeCameraController)
+	, m_defaultCameraControllerFactory(defaultCameraControllerFactory)
 {
 
 }
@@ -20,7 +20,7 @@ IExample* NavigationGraphExampleFactory::CreateExample() const
     Eegeo::Modules::Map::Layers::TransportModelModule& transportModelModule = m_world.GetTransportModelModule();
     
 	return new Examples::NavigationGraphExample(transportModelModule.GetRoadNavigationGraphRepository(),
-                                                m_globeCameraController);
+                                                m_defaultCameraControllerFactory.Create());
 }
 
 std::string NavigationGraphExampleFactory::ExampleName() const

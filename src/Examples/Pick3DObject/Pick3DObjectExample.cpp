@@ -12,17 +12,15 @@
 
 namespace Examples
 {
-Pick3DObjectExample::Pick3DObjectExample(Eegeo::Space::LatLongAltitude interestLocation,
-                                         const Eegeo::Rendering::ScreenProperties& screenProperties,
+Pick3DObjectExample::Pick3DObjectExample(
                                          Eegeo::DebugRendering::DebugRenderer& debugRenderer,
-                                         Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController
+                                         Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController
                                          )
-	:m_interestLocation(interestLocation)
+	:m_interestLocation(Eegeo::Space::LatLongAltitude::FromECEF(pCameraController->GetEcefInterestPoint()))
     ,m_movingObject(false)
 	,m_pObject(NULL)
-	,m_globeCameraStateRestorer(cameraController)
-    ,m_cameraController(cameraController)
-    ,m_screenProperties(screenProperties)
+	,m_globeCameraStateRestorer(*pCameraController)
+    ,m_pCameraController(pCameraController)
     ,m_debugRenderer(debugRenderer)
 {
 
@@ -43,6 +41,9 @@ void Pick3DObjectExample::Suspend()
 {
 	delete m_pObject;
 	m_pObject = NULL;
+    
+    delete m_pCameraController;
+    m_pCameraController = NULL;
 }
 
 void Pick3DObjectExample::Update(float dt)
@@ -83,11 +84,13 @@ bool Pick3DObjectExample::Event_TouchUp(const AppInterface::TouchData& data)
 
 void Pick3DObjectExample::CreateWorldSpaceRayFromScreen(const Eegeo::v2& screenPoint, Ray& ray)
 {
-	const Eegeo::Camera::RenderCamera& renderCamera = *m_cameraController.GetCamera();
+	const Eegeo::Camera::RenderCamera& renderCamera = *m_pCameraController->GetCamera();
+
+    // todo - this assumes viewport origin is 0,0
 
 	//normalize the point
-	double nx = 2.0 * screenPoint.GetX() / m_screenProperties.GetScreenWidth() - 1;
-	double ny = - 2.0 * screenPoint.GetY() / m_screenProperties.GetScreenHeight() + 1;
+	double nx = 2.0 * screenPoint.GetX() / renderCamera.GetViewportWidth() - 1;
+	double ny = - 2.0 * screenPoint.GetY() / renderCamera.GetViewportHeight() + 1;
 
 	//prepare near and far points
 	Eegeo::v4 near(nx, ny, 0.0f, 1.0);
@@ -155,9 +158,14 @@ bool Pick3DObjectExample::IsScreenPointInsideModel(const Eegeo::v2& screenPoint)
 	return true;
 }
     
-    const Eegeo::Camera::RenderCamera& Pick3DObjectExample::GetRenderCamera() const
-    {
-        return *m_cameraController.GetCamera();
-    }
+const Eegeo::Camera::RenderCamera& Pick3DObjectExample::GetRenderCamera() const
+{
+    return *m_pCameraController->GetCamera();
+}
+
+Eegeo::dv3 Pick3DObjectExample::GetInterestPoint() const
+{
+    return m_pCameraController->GetEcefInterestPoint();
+}
 
 }

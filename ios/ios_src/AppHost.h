@@ -35,10 +35,7 @@ public:
 	AppHost(
 	    const std::string& apiKey,
         ViewController& viewController,
-	    float displayWidth,
-	    float displayHeight,
-        float deviceDpi,
-        float pixelScale
+        const Eegeo::Rendering::ScreenProperties& screenProperties
 	);
 	~AppHost();
 
@@ -49,15 +46,15 @@ public:
 	void OnResume();
     
 	void SetViewportOffset(float x, float y);
+    
+    void NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties);
 
 private:
     ViewController& m_viewController;
 	Eegeo::Blitter* m_pBlitter;
     Eegeo::Helpers::Jpeg::IJpegLoader* m_pJpegLoader;
 	Eegeo::iOS::iOSLocationService* m_piOSLocationService;
-    Eegeo::Rendering::ScreenProperties* m_pScreenProperties;
 	Eegeo::EegeoWorld* m_pWorld;
-    
 	AppInputDelegate* m_pAppInputDelegate;
     AppLocationDelegate* m_pAppLocationDelegate;
 
@@ -68,12 +65,11 @@ private:
     Eegeo::iOS::iOSPlatformAbstractionModule* m_piOSPlatformAbstractionModule;
 
 	ExampleApp* m_pApp;
-	Examples::ExampleController* m_pExampleController;
 	Examples::iOSExampleControllerView* m_piOSExampleControllerView;
 	Examples::iOSRouteMatchingExampleViewFactory* m_piOSRouteMatchingExampleViewFactory;
 	Examples::iOSRouteSimulationExampleViewFactory* m_piOSRouteSimulationExampleViewFactory;
     
-    void ConfigureExamples();
+    void ConfigureExamples(const Eegeo::Rendering::ScreenProperties& screenProperties);
 	void DestroyExamples();
 	void RegisteriOSSpecificExamples();
 };

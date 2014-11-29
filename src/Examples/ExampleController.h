@@ -10,6 +10,9 @@
 #include "UIActionHandler.h"
 #include "IExampleControllerView.h"
 #include "Camera.h"
+#include "ScreenPropertiesProvider.h"
+#include "DefaultCameraControllerFactory.h"
+
 #include <vector>
 #include <string>
 
@@ -22,6 +25,7 @@ class ExampleController : private Eegeo::NonCopyable
 	Eegeo::EegeoWorld& m_world;
 	std::vector<IExampleFactory*> m_factories;
 	bool m_uiVisible;
+    DefaultCameraControllerFactory& m_defaultCameraControllerFactory;
 
 	IExampleControllerView& m_view;
 	UIActionHandler<ExampleController> m_nextExampleHandler;
@@ -34,7 +38,8 @@ class ExampleController : private Eegeo::NonCopyable
 
 public:
 	ExampleController(Eegeo::EegeoWorld& world,
-	                  IExampleControllerView& view);
+	                  IExampleControllerView& view,
+                      DefaultCameraControllerFactory& defaultCameraControllerFactory);
 
 	~ExampleController();
 
@@ -46,9 +51,7 @@ public:
 
 	void ActivateNext();
 
-	void EarlyUpdate(float dt,
-	                 Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCamera,
-	                 Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController);
+	void EarlyUpdate(float dt);
 
 	void Update(float dt);
     
@@ -59,6 +62,10 @@ public:
 	void RegisterExample(IExampleFactory* pFactory);
     
     const Eegeo::Camera::RenderCamera& GetCurrentActiveCamera() const;
+    
+    Eegeo::dv3 GetCurrentInterestPoint() const;
+    
+    void NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties);
 
 	template <typename TExampleFactory>
 	void RegisterExample()
@@ -67,10 +74,16 @@ public:
 	}
 
 	template <typename TExampleFactory>
-	void RegisterCameraExample(Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCamera)
+	void RegisterCameraExample()
 	{
-		m_factories.push_back(Eegeo_NEW((TExampleFactory)(m_world, globeCamera)));
+		m_factories.push_back(Eegeo_NEW((TExampleFactory)(m_world, m_defaultCameraControllerFactory)));
 	}
+    
+    template <typename TExampleFactory>
+    void RegisterCameraScreenPropertiesProviderExample(const ScreenPropertiesProvider& screenPropertiesProvider)
+    {
+        m_factories.push_back(Eegeo_NEW((TExampleFactory)(m_world, m_defaultCameraControllerFactory, screenPropertiesProvider)));
+    }
 
 	bool Event_TouchRotate(const AppInterface::RotateData& data);
 	bool Event_TouchRotate_Start(const AppInterface::RotateData& data);

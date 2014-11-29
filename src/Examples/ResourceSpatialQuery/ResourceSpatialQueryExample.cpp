@@ -6,19 +6,19 @@
 using namespace Examples;
 
 ResourceSpatialQueryExample::ResourceSpatialQueryExample(Eegeo::Resources::ResourceSpatialQueryService& resourceSpatialQueryService,
-        Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController)
+        Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController)
 	:m_resourceSpatialQueryService(resourceSpatialQueryService)
-    ,m_cameraController(cameraController)
+    ,m_pCameraController(pCameraController)
 	,m_numBuildings(0)
 	,m_key(0)
-	,m_globeCameraStateRestorer(cameraController)
+	,m_globeCameraStateRestorer(*pCameraController)
 {
 
 }
 
 void ResourceSpatialQueryExample::Update(float dt)
 {
-	Eegeo::dv3 ecefPointOfInterest = m_cameraController.GetEcefInterestPoint();
+	Eegeo::dv3 ecefPointOfInterest = m_pCameraController->GetEcefInterestPoint();
 
 	Eegeo::Streaming::MortonKey lastKey = m_key;
 
@@ -47,5 +47,10 @@ void ResourceSpatialQueryExample::Update(float dt)
 
 const Eegeo::Camera::RenderCamera& ResourceSpatialQueryExample::GetRenderCamera() const
 {
-    return *m_cameraController.GetCamera();
+    return *m_pCameraController->GetCamera();
+}
+
+Eegeo::dv3 ResourceSpatialQueryExample::GetInterestPoint() const
+{
+    return m_pCameraController->GetEcefInterestPoint();
 }

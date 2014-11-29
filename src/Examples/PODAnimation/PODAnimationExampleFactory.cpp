@@ -13,9 +13,9 @@
 using namespace Examples;
 
 PODAnimationExampleFactory::PODAnimationExampleFactory(Eegeo::EegeoWorld& world,
-        Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCameraController)
+        DefaultCameraControllerFactory& defaultCameraControllerFactory)
 	: m_world(world)
-	, m_globeCameraController(globeCameraController)
+	, m_defaultCameraControllerFactory(defaultCameraControllerFactory)
 {
 
 }
@@ -32,7 +32,7 @@ IExample* PODAnimationExampleFactory::CreateExample() const
                                              lightingModule.GetGlobalFogging(),
                                              renderingModule.GetRenderableFilters(),
                                              renderingModule.GetNullMaterialFactory(),
-                                             m_globeCameraController);
+                                             m_defaultCameraControllerFactory.Create());
     
 }
 

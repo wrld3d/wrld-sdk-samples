@@ -10,14 +10,14 @@
 namespace Examples
 {
 
-FireworksExample::FireworksExample(Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController,
+FireworksExample::FireworksExample(Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
                                    Eegeo::Modules::Core::RenderingModule& renderingModule,
                                    Eegeo::Modules::IPlatformAbstractionModule& platformModule,
                                    Eegeo::Modules::Map::StreamingModule& streamingModule,
                                    Eegeo::Modules::Map::MapModule& mapModule,
                                    Eegeo::Modules::Map::Layers::TerrainModelModule& terrainModelModule,
                                    Eegeo::Resources::CityThemes::ICityThemesService& cityThemesService)
-: m_cameraController(cameraController)
+: m_pCameraController(pCameraController)
 , m_cityThemesService(cityThemesService)
 {
     m_pFireworksModule = Eegeo::Modules::FireworksModule::Create("firework_01.png",
@@ -75,6 +75,8 @@ void FireworksExample::Suspend()
     m_cityThemesService.RequestTransitionToState("DayDefault", 1.0f);
     
     m_pFireworksModule->Clear();
+    delete m_pCameraController;
+    m_pCameraController = NULL;
 }
 
 void FireworksExample::Update(float dt)
@@ -84,6 +86,11 @@ void FireworksExample::Update(float dt)
     
 const Eegeo::Camera::RenderCamera& FireworksExample::GetRenderCamera() const
 {
-    return *m_cameraController.GetCamera();
+    return *m_pCameraController->GetCamera();
+}
+
+Eegeo::dv3 FireworksExample::GetInterestPoint() const
+{
+    return m_pCameraController->GetEcefInterestPoint();
 }
 }

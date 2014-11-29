@@ -7,6 +7,7 @@
 #include "RenderTexture.h"
 #include "Rendering.h"
 #include "RenderToTextureExampleIncludes.h"
+#include "ScreenProperties.h"
 
 namespace Examples
 {
@@ -14,7 +15,7 @@ namespace Examples
     {
     private:
         GlobeCameraStateRestorer m_globeCameraStateRestorer;
-        const Eegeo::Rendering::ScreenProperties& m_screenProperties;
+
         Eegeo::Rendering::VertexLayouts::VertexLayoutPool& m_vertexLayoutPool;
         Eegeo::Rendering::VertexLayouts::VertexBindingPool& m_vertexBindingPool;
         Eegeo::Rendering::Shaders::ShaderIdGenerator& m_shaderIdGenerator;
@@ -31,15 +32,17 @@ namespace Examples
         PostProcessVignetteRenderer* m_pVignetteRenderer;
         Eegeo::Rendering::RenderTexture* m_pRenderTexture;
         
-        Eegeo::Camera::GlobeCamera::GlobeCameraController& m_cameraController;
+        Eegeo::Camera::GlobeCamera::GlobeCameraController* m_pCameraController;
         
         static const float SecondsBetweenEffectUpdates;
         float m_secondsSinceLastEffectUpate;
+
+        Eegeo::Rendering::ScreenProperties m_screenProperties;
         
         void UpdateEffect();
         
     public:
-        RenderToTextureExample(Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController,
+        RenderToTextureExample(Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
                                const Eegeo::Rendering::ScreenProperties& screenProperties,
                                Eegeo::Rendering::VertexLayouts::VertexLayoutPool& vertexLayoutPool,
                                Eegeo::Rendering::VertexLayouts::VertexBindingPool& vertexBindingPool,
@@ -63,7 +66,10 @@ namespace Examples
         void PreWorldDraw();
         void Draw() {}
         void Suspend();
+        void NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties);
+        
         const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
+    Eegeo::dv3 GetInterestPoint() const;
     };
 }
 

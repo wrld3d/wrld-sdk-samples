@@ -63,7 +63,7 @@ private:
 	Eegeo::Space::LatLongAltitude m_interestLocation;
 	Eegeo::Lighting::GlobalFogging& m_globalFogging;
 	GlobeCameraStateRestorer m_globeCameraStateRestorer;
-    Eegeo::Camera::GlobeCamera::GlobeCameraController& m_cameraController;
+    Eegeo::Camera::GlobeCamera::GlobeCameraController* m_pCameraController;
 
 	Eegeo::Model* m_pModel;
 	BoundsVisualiser m_boundsVisualiser;
@@ -72,11 +72,11 @@ private:
 	float m_elapsedTime;
 
 public:
-	LoadModelExample(Eegeo::Space::LatLongAltitude interestLocation,
+	LoadModelExample(
 	                 Eegeo::Helpers::IFileIO& fileIO,
 	                 Eegeo::Rendering::AsyncTexturing::IAsyncTextureRequestor& textureRequestor,
 	                 Eegeo::Lighting::GlobalFogging& fogging,
-	                 Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController);
+	                 Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController);
 
 	static std::string GetName()
 	{
@@ -92,6 +92,7 @@ public:
 	void Draw();
 	void Suspend();
     const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
+    Eegeo::dv3 GetInterestPoint() const;
 };
 }
 

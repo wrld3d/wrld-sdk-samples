@@ -8,9 +8,9 @@
 using namespace Examples;
 
 WebRequestExampleFactory::WebRequestExampleFactory(Eegeo::EegeoWorld& world,
-        Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCameraController)
+        DefaultCameraControllerFactory& defaultCameraControllerFactory)
 	: m_world(world)
-	, m_globeCameraController(globeCameraController)
+	, m_defaultCameraControllerFactory(defaultCameraControllerFactory)
 {
 
 }
@@ -20,7 +20,7 @@ IExample* WebRequestExampleFactory::CreateExample() const
     Eegeo::Modules::IPlatformAbstractionModule& platformAbstractionModule = m_world.GetPlatformAbstractionModule();
     
 	return new Examples::WebRequestExample(platformAbstractionModule.GetWebLoadRequestFactory(),
-	                                       m_globeCameraController);
+	                                       m_defaultCameraControllerFactory.Create());
 }
 
 std::string WebRequestExampleFactory::ExampleName() const

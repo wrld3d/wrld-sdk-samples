@@ -47,15 +47,15 @@ ControlCityThemeExample::ControlCityThemeExample(Eegeo::Resources::CityThemes::I
         Eegeo::Resources::CityThemes::ICityThemeRepository& themeRepository,
         Eegeo::Resources::CityThemes::ICityThemesUpdater& themeUpdater,
         Eegeo::EegeoWorld& eegeoWorld,
-        Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController)
+        Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController)
 	:m_themeService(themeService)
 	,m_themeRepository(themeRepository)
 	,m_themeUpdater(themeUpdater)
 	,m_eegeoWorld(eegeoWorld)
 	,m_themeChanged(false)
 	,m_initialCityTheme(themeService.GetCurrentTheme())
-	,m_globeCameraStateRestorer(cameraController)
-    ,m_cameraController(cameraController)
+	,m_globeCameraStateRestorer(*pCameraController)
+    ,m_pCameraController(pCameraController)
 {
 }
 
@@ -63,6 +63,8 @@ void ControlCityThemeExample::Suspend()
 {
 	m_themeService.SetSpecificTheme(m_initialCityTheme);
 	m_themeUpdater.SetEnabled(true);
+    delete m_pCameraController;
+    m_pCameraController = NULL;
 }
 
 // This method does the following:
@@ -127,6 +129,12 @@ void ControlCityThemeExample::Update(float dt)
     
 const Eegeo::Camera::RenderCamera& ControlCityThemeExample::GetRenderCamera() const
 {
-    return *m_cameraController.GetCamera();
+    return *m_pCameraController->GetCamera();
 }
+
+Eegeo::dv3 ControlCityThemeExample::GetInterestPoint() const
+{
+    return m_pCameraController->GetEcefInterestPoint();
+}
+
 }

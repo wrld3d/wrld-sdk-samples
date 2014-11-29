@@ -14,10 +14,10 @@ namespace Examples
 ScreenPickExample::ScreenPickExample(Eegeo::Resources::Terrain::Heights::TerrainHeightProvider& terrainHeightProvider,
                                      const Eegeo::Resources::Terrain::Collision::ICollisionMeshResourceProvider& collisionMeshResourceProvider,
                                      Eegeo::DebugRendering::DebugRenderer& debugRenderer,
-                                     Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController)
-    : m_cameraController(cameraController)
+                                     Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController)
+    : m_pCameraController(pCameraController)
     , m_debugRenderer(debugRenderer)
-	, m_globeCameraStateRestorer(cameraController)
+	, m_globeCameraStateRestorer(*pCameraController)
 {
 	m_pRayPicker = new Eegeo::Resources::Terrain::Collision::TerrainRayPicker(terrainHeightProvider, collisionMeshResourceProvider);
 }
@@ -34,7 +34,8 @@ void ScreenPickExample::Start()
 
 void ScreenPickExample::Suspend()
 {
-
+    delete m_pCameraController;
+    m_pCameraController = NULL;
 }
 
 void ScreenPickExample::Update(float dt)
@@ -49,12 +50,17 @@ void ScreenPickExample::Draw()
     
 const Eegeo::Camera::RenderCamera& ScreenPickExample::GetRenderCamera() const
 {
-    return *m_cameraController.GetCamera();
+    return *m_pCameraController->GetCamera();
 }
 
+Eegeo::dv3 ScreenPickExample::GetInterestPoint() const
+{
+    return m_pCameraController->GetEcefInterestPoint();
+}
+    
 bool ScreenPickExample::Event_TouchTap(const AppInterface::TapData& data)
 {
-	const Eegeo::Camera::RenderCamera& renderCamera = *m_cameraController.GetCamera();
+	const Eegeo::Camera::RenderCamera& renderCamera = *m_pCameraController->GetCamera();
 
 	float screenPixelX = data.point.GetX();
 	float screenPixelY = data.point.GetY();

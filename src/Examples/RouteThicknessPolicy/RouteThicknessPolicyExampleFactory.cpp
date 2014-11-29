@@ -8,9 +8,9 @@
 using namespace Examples;
 
 RouteThicknessPolicyExampleFactory::RouteThicknessPolicyExampleFactory(Eegeo::EegeoWorld& world,
-        Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCameraController)
+        DefaultCameraControllerFactory& defaultCameraControllerFactory)
 	: m_world(world)
-	, m_globeCameraController(globeCameraController)
+	, m_defaultCameraControllerFactory(defaultCameraControllerFactory)
 {
 
 }
@@ -21,7 +21,7 @@ IExample* RouteThicknessPolicyExampleFactory::CreateExample() const
     
 	return new Examples::RouteThicknessPolicyExample(routesModule.GetRouteService(),
 	        m_world,
-	        m_globeCameraController);
+	        m_defaultCameraControllerFactory.Create());
 }
 
 std::string RouteThicknessPolicyExampleFactory::ExampleName() const

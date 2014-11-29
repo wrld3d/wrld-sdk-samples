@@ -23,8 +23,10 @@ public:
 	void Pause();
 	void Resume();
 	void Update(float deltaSeconds);
+    
     bool ShouldAutoRotateToInterfaceOrientation(UIInterfaceOrientation interfaceOrientation);
 
+    void NotifyViewLayoutChanged();
 private:
     ViewController& m_viewController;
 	const std::string& m_apiKey;

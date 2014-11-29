@@ -13,7 +13,7 @@ using namespace Eegeo::Routes;
 RouteMatchingExample::RouteMatchingExample(RouteService& routeService,
         EegeoWorld& world,
         const IRouteMatchingExampleViewFactory& routeMatchingViewFactory,
-        Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController)
+        Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController)
 	:m_routeService(routeService)
 	,m_world(world)
 	,m_createdRoutes(false)
@@ -21,8 +21,8 @@ RouteMatchingExample::RouteMatchingExample(RouteService& routeService,
 	,m_routeMatchingViewFactory(routeMatchingViewFactory)
 	,m_pRouteMatchingView(NULL)
 	,m_toggleRouteMatchingHandler(this, &RouteMatchingExample::ToggleMatching)
-    ,m_cameraController(cameraController)
-	,m_globeCameraStateRestorer(cameraController)
+    ,m_pCameraController(pCameraController)
+	,m_globeCameraStateRestorer(*pCameraController)
 {
 	Eegeo::Space::EcefTangentBasis cameraInterestBasis;
 
@@ -31,7 +31,7 @@ RouteMatchingExample::RouteMatchingExample(RouteService& routeService,
 	    9.429380,
 	    cameraInterestBasis);
 
-	cameraController.SetView(cameraInterestBasis, 963.714111f);
+	m_pCameraController->SetView(cameraInterestBasis, 963.714111f);
 }
 
 void RouteMatchingExample::CreateRoutes(bool shouldMatchToNavigationGraph)
@@ -153,11 +153,19 @@ void RouteMatchingExample::Suspend()
 	Eegeo_DELETE m_pRouteMatchingView;
 
 	m_pRouteMatchingView = NULL;
+    
+    delete m_pCameraController;
+    m_pCameraController = NULL;
 }
 
 const Eegeo::Camera::RenderCamera& RouteMatchingExample::GetRenderCamera() const
 {
-    return *m_cameraController.GetCamera();
+    return *m_pCameraController->GetCamera();
+}
+
+Eegeo::dv3 RouteMatchingExample::GetInterestPoint() const
+{
+    return m_pCameraController->GetEcefInterestPoint();
 }
 
 void RouteMatchingExample::ToggleMatching()

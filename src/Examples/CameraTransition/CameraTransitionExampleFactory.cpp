@@ -6,16 +6,16 @@
 using namespace Examples;
 
 CameraTransitionExampleFactory::CameraTransitionExampleFactory(Eegeo::EegeoWorld& world,
-        Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCameraController)
+        DefaultCameraControllerFactory& defaultCameraControllerFactory)
 	: m_world(world)
-	, m_globeCameraController(globeCameraController)
+	, m_defaultCameraControllerFactory(defaultCameraControllerFactory)
 {
 
 }
 
 IExample* CameraTransitionExampleFactory::CreateExample() const
 {
-	return new Examples::CameraTransitionExample(m_globeCameraController);
+	return new Examples::CameraTransitionExample(m_defaultCameraControllerFactory.Create());
 }
 
 std::string CameraTransitionExampleFactory::ExampleName() const

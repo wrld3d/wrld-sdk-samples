@@ -33,14 +33,18 @@ void AppRunner::CreateAppHost()
 {
 	if(m_pAppHost == NULL && m_displayService.IsDisplayAvailable())
 	{
+        const Eegeo::Rendering::ScreenProperties& screenProperties =
+            Eegeo::Rendering::ScreenProperties::Make(
+                                                 m_displayService.GetDisplayWidth(),
+                                                 m_displayService.GetDisplayHeight(),
+                                                 m_displayService.GetPixelScale(),
+                                                 m_displayService.GetDisplayDpi());
+        
 		m_pAppHost = Eegeo_NEW(AppHost)
         (
          m_apiKey,
          m_viewController,
-         m_displayService.GetDisplayWidth(),
-         m_displayService.GetDisplayHeight(),
-         m_displayService.GetDisplayDpi(),
-         m_displayService.GetPixelScale()
+         screenProperties
         );
 	}
 }
@@ -96,14 +100,26 @@ void AppRunner::Update(float deltaSeconds)
 	}
 }
 
+void AppRunner::NotifyViewLayoutChanged()
+{
+    if (m_displayService.IsDisplayAvailable())
+    {
+        m_displayService.UpdateDisplayDimensions();
+        
+        const Eegeo::Rendering::ScreenProperties& screenProperties =
+            Eegeo::Rendering::ScreenProperties::Make(
+                                                     m_displayService.GetDisplayWidth(),
+                                                     m_displayService.GetDisplayHeight(),
+                                                     m_displayService.GetPixelScale(),
+                                                     m_displayService.GetDisplayDpi());
+        
+        m_pAppHost->NotifyScreenPropertiesChanged(screenProperties);
+    }
+}
+
 bool AppRunner::ShouldAutoRotateToInterfaceOrientation(UIInterfaceOrientation interfaceOrientation)
 {
-    if (m_displayService.IsPortraitAspect())
-    {
-        return (interfaceOrientation == UIInterfaceOrientationPortrait);
-    }
-    else
-    {
-        return (interfaceOrientation == UIInterfaceOrientationLandscapeLeft || interfaceOrientation == UIInterfaceOrientationLandscapeRight);
-    }
+    // if return true , OS intersects interfaceOrientation with supported orientations for app (specified in info.plist), only
+    // rotates if mode is allowed 
+    return true;
 }

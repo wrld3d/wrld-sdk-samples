@@ -44,7 +44,7 @@ private:
 	Eegeo::Helpers::IFileIO& m_fileIO;
 	Eegeo::Rendering::AsyncTexturing::IAsyncTextureRequestor& m_textureRequestor;
 	Eegeo::Lighting::GlobalFogging& m_globalFogging;
-    Eegeo::Camera::GlobeCamera::GlobeCameraController& m_cameraController;
+    Eegeo::Camera::GlobeCamera::GlobeCameraController* m_pCameraController;
 	GlobeCameraStateRestorer m_globeCameraStateRestorer;
     Eegeo::Rendering::RenderableFilters& m_renderableFilters;
     Eegeo::Rendering::Materials::NullMaterialFactory& m_nullMaterialFactory;
@@ -61,7 +61,7 @@ public:
                         Eegeo::Lighting::GlobalFogging& fogging,
                         Eegeo::Rendering::RenderableFilters& renderableFilters,
                         Eegeo::Rendering::Materials::NullMaterialFactory& nullMaterialFactory,
-                        Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController);
+                        Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController);
     
     ~PODAnimationExample();
 
@@ -79,6 +79,7 @@ public:
 	void Draw();
 	void Suspend();
     const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
+    Eegeo::dv3 GetInterestPoint() const;
 };
 }
 

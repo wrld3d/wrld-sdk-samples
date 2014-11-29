@@ -12,11 +12,11 @@ namespace Examples
 class NavigationGraphExampleFactory : public IExampleFactory
 {
 	Eegeo::EegeoWorld& m_world;
-	Eegeo::Camera::GlobeCamera::GlobeCameraController& m_globeCameraController;
+	DefaultCameraControllerFactory& m_defaultCameraControllerFactory;
 
 public:
 	NavigationGraphExampleFactory(Eegeo::EegeoWorld& world,
-	                              Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCameraController);
+	                              DefaultCameraControllerFactory& defaultCameraControllerFactory);
 
 	std::string ExampleName() const;
 

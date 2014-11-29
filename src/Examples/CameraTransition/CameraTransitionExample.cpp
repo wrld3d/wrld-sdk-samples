@@ -35,9 +35,9 @@ Eegeo::v3 ComputeHeadingVector(Eegeo::dv3 interestPosition, float heading)
 }
 
 CameraTransitioner::CameraTransitioner(
-    Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController
+    Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController
 )
-	: m_cameraController(cameraController)
+	: m_pCameraController(pCameraController)
 	, m_isTransitioning(false)
 	, m_transitionDuration(0.f)
 	, m_transitionTime(0.f)
@@ -47,7 +47,7 @@ CameraTransitioner::CameraTransitioner(
 
 void CameraTransitioner::StartTransitionTo(Eegeo::dv3 newInterestPoint, double distanceFromInterest, bool jumpIfFarAway)
 {
-	const Eegeo::Space::EcefTangentBasis& cameraInterestBasis = m_cameraController.GetInterestBasis();
+	const Eegeo::Space::EcefTangentBasis& cameraInterestBasis = m_pCameraController->GetInterestBasis();
 
 	float bearingRadians = Eegeo::Camera::CameraHelpers::GetAbsoluteBearingRadians(cameraInterestBasis.GetPointEcef(), cameraInterestBasis.GetForward());
 
@@ -57,7 +57,7 @@ void CameraTransitioner::StartTransitionTo(Eegeo::dv3 newInterestPoint, double d
 bool CameraTransitioner::ShouldJumpTo(Eegeo::dv3 newInterestPoint)
 {
 	const double MAX_CAMERA_TRANSITION_DISTANCE = 5000;
-	Eegeo::dv3 currentInterestPoint = m_cameraController.GetEcefInterestPoint();
+	Eegeo::dv3 currentInterestPoint = m_pCameraController->GetEcefInterestPoint();
 	double distance = (newInterestPoint - currentInterestPoint).Length();
 	return distance > MAX_CAMERA_TRANSITION_DISTANCE;
 }
@@ -73,14 +73,14 @@ void CameraTransitioner::StartTransitionTo(Eegeo::dv3 newInterestPoint, double d
 	{
 		Eegeo::Space::EcefTangentBasis newInterestBasis;
 		Eegeo::Camera::CameraHelpers::EcefTangentBasisFromPointAndHeading(newInterestPoint, Eegeo::Math::Rad2Deg(newHeading), newInterestBasis);
-		m_cameraController.SetView(newInterestBasis, distanceFromInterest);
+		m_pCameraController->SetView(newInterestBasis, distanceFromInterest);
 		StopCurrentTransition();
 		return;
 	}
 
-	const Eegeo::Space::EcefTangentBasis& currentInterestBasis = m_cameraController.GetInterestBasis();
+	const Eegeo::Space::EcefTangentBasis& currentInterestBasis = m_pCameraController->GetInterestBasis();
 	m_startTransitionInterestPoint = currentInterestBasis.GetPointEcef();
-	m_startInterestDistance = m_cameraController.GetDistanceToInterest();
+	m_startInterestDistance = m_pCameraController->GetDistanceToInterest();
 
 	float bearingRadians = Eegeo::Camera::CameraHelpers::GetAbsoluteBearingRadians(currentInterestBasis.GetPointEcef(), currentInterestBasis.GetForward());
 	m_startTransitionHeading = bearingRadians;
@@ -130,7 +130,7 @@ void CameraTransitioner::Update(float dt)
 	Eegeo::v3 interpolatedHeadingVector = ComputeHeadingVector(interpolatedInterestPosition, interpolatedHeading);
 
 	Eegeo::Space::EcefTangentBasis newInterestBasis(interpolatedInterestPosition, interpolatedHeadingVector);
-	m_cameraController.SetView(newInterestBasis, interpolatedDistance);
+	m_pCameraController->SetView(newInterestBasis, interpolatedDistance);
 
 	if(transitionParam >= 1.f)
 	{
@@ -145,11 +145,11 @@ void CameraTransitioner::StopCurrentTransition()
 	m_transitionDuration = 0.f;
 }
 
-CameraTransitionExample::CameraTransitionExample(Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController)
-	: m_cameraController(cameraController)
-	, m_transitioner(cameraController)
+CameraTransitionExample::CameraTransitionExample(Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController)
+	: m_pCameraController(pCameraController)
+	, m_transitioner(pCameraController)
 	, m_firstPoint(true)
-	,m_globeCameraStateRestorer(cameraController)
+	,m_globeCameraStateRestorer(*pCameraController)
 {
 }
 
@@ -192,6 +192,11 @@ void CameraTransitionExample::UpdateCamera(Eegeo::Camera::GlobeCamera::GlobeCame
     
 const Eegeo::Camera::RenderCamera& CameraTransitionExample::GetRenderCamera() const
 {
-    return *m_cameraController.GetCamera();
+    return *m_pCameraController->GetCamera();
+}
+
+Eegeo::dv3 CameraTransitionExample::GetInterestPoint() const
+{
+    return m_pCameraController->GetEcefInterestPoint();
 }
 }

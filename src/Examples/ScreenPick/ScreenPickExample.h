@@ -24,7 +24,7 @@ private:
 
 	Eegeo::Resources::Terrain::Collision::TerrainRayPicker* m_pRayPicker;
     Eegeo::DebugRendering::DebugRenderer& m_debugRenderer;
-    Eegeo::Camera::GlobeCamera::GlobeCameraController& m_cameraController;
+    Eegeo::Camera::GlobeCamera::GlobeCameraController* m_pCameraController;
 	GlobeCameraStateRestorer m_globeCameraStateRestorer;
     
     Eegeo::dv3 m_spherePosition;
@@ -33,7 +33,7 @@ public:
 	ScreenPickExample(Eegeo::Resources::Terrain::Heights::TerrainHeightProvider& terrainHeightProvider,
 	                  const Eegeo::Resources::Terrain::Collision::ICollisionMeshResourceProvider& collisionMeshResourceProvider,
                       Eegeo::DebugRendering::DebugRenderer& debugRenderer,
-	                  Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController);
+	                  Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController);
 
 	virtual ~ScreenPickExample();
 
@@ -51,6 +51,7 @@ public:
 	void Draw();
 	void Suspend();
     const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
+    Eegeo::dv3 GetInterestPoint() const;
 
 	bool Event_TouchTap(const AppInterface::TapData& data);
 };

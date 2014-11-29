@@ -35,13 +35,13 @@ private:
 	Eegeo::Routes::Style::Thickness::IdentityRouteThicknessPolicy m_identityRouteThicknessPolicy;
 	Eegeo::Routes::Style::Thickness::LinearAltitudeBasedRouteThicknessPolicy m_linearAltitudeBasedRouteThicknessPolicy;
 	MyScalingRouteThicknessPolicy m_myScalingRouteThicknessPolicy;
-    Eegeo::Camera::GlobeCamera::GlobeCameraController& m_cameraController;
+    Eegeo::Camera::GlobeCamera::GlobeCameraController* m_pCameraController;
 	GlobeCameraStateRestorer m_globeCameraStateRestorer;
 
 public:
 	RouteThicknessPolicyExample(Eegeo::Routes::RouteService& routeService,
 	                            Eegeo::EegeoWorld& eegeoWorld,
-	                            Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController);
+	                            Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController);
 
 	static std::string GetName()
 	{
@@ -57,6 +57,7 @@ public:
 	void Draw() {}
 	void Suspend();
     const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
+    Eegeo::dv3 GetInterestPoint() const;
 };
 }
 
