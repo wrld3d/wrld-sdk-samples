@@ -2,7 +2,7 @@
 
 #include "PODAnimationExampleFactory.h"
 #include "PODAnimationExample.h"
-
+#include "DefaultCameraControllerFactory.h"
 #include "LocalAsyncTextureLoader.h"
 
 #include "IPlatformAbstractionModule.h"
@@ -10,12 +10,15 @@
 #include "AsyncLoadersModule.h"
 #include "LightingModule.h"
 
-using namespace Examples;
+namespace Examples
+{
 
 PODAnimationExampleFactory::PODAnimationExampleFactory(Eegeo::EegeoWorld& world,
-        DefaultCameraControllerFactory& defaultCameraControllerFactory)
+        DefaultCameraControllerFactory& defaultCameraControllerFactory,
+                                          Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController)
 	: m_world(world)
 	, m_defaultCameraControllerFactory(defaultCameraControllerFactory)
+    , m_globeCameraTouchController(globeCameraTouchController)
 {
 
 }
@@ -32,7 +35,8 @@ IExample* PODAnimationExampleFactory::CreateExample() const
                                              lightingModule.GetGlobalFogging(),
                                              renderingModule.GetRenderableFilters(),
                                              renderingModule.GetNullMaterialFactory(),
-                                             m_defaultCameraControllerFactory.Create());
+                                             m_defaultCameraControllerFactory.Create(),
+                                             m_globeCameraTouchController);
     
 }
 
@@ -41,3 +45,4 @@ std::string PODAnimationExampleFactory::ExampleName() const
 	return Examples::PODAnimationExample::GetName();
 }
 
+}

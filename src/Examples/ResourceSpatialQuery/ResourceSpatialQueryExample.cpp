@@ -3,22 +3,22 @@
 #include "ResourceSpatialQueryExample.h"
 #include "RenderCamera.h"
 
-using namespace Examples;
-
+namespace Examples
+{
 ResourceSpatialQueryExample::ResourceSpatialQueryExample(Eegeo::Resources::ResourceSpatialQueryService& resourceSpatialQueryService,
-        Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController)
-	:m_resourceSpatialQueryService(resourceSpatialQueryService)
-    ,m_pCameraController(pCameraController)
+        Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
+                        Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController)
+    : GlobeCameraExampleBase(pCameraController, cameraTouchController)
+	, m_resourceSpatialQueryService(resourceSpatialQueryService)
 	,m_numBuildings(0)
 	,m_key(0)
-	,m_globeCameraStateRestorer(*pCameraController)
 {
 
 }
 
 void ResourceSpatialQueryExample::Update(float dt)
 {
-	Eegeo::dv3 ecefPointOfInterest = m_pCameraController->GetEcefInterestPoint();
+	const Eegeo::dv3& ecefPointOfInterest = GetInterestPoint();
 
 	Eegeo::Streaming::MortonKey lastKey = m_key;
 
@@ -45,12 +45,4 @@ void ResourceSpatialQueryExample::Update(float dt)
 	}
 }
 
-const Eegeo::Camera::RenderCamera& ResourceSpatialQueryExample::GetRenderCamera() const
-{
-    return *m_pCameraController->GetCamera();
-}
-
-Eegeo::dv3 ResourceSpatialQueryExample::GetInterestPoint() const
-{
-    return m_pCameraController->GetEcefInterestPoint();
 }

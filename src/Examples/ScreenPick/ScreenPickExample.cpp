@@ -14,10 +14,10 @@ namespace Examples
 ScreenPickExample::ScreenPickExample(Eegeo::Resources::Terrain::Heights::TerrainHeightProvider& terrainHeightProvider,
                                      const Eegeo::Resources::Terrain::Collision::ICollisionMeshResourceProvider& collisionMeshResourceProvider,
                                      Eegeo::DebugRendering::DebugRenderer& debugRenderer,
-                                     Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController)
-    : m_pCameraController(pCameraController)
+                                     Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
+                        Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController)
+    : GlobeCameraExampleBase(pCameraController, cameraTouchController)
     , m_debugRenderer(debugRenderer)
-	, m_globeCameraStateRestorer(*pCameraController)
 {
 	m_pRayPicker = new Eegeo::Resources::Terrain::Collision::TerrainRayPicker(terrainHeightProvider, collisionMeshResourceProvider);
 }
@@ -34,8 +34,8 @@ void ScreenPickExample::Start()
 
 void ScreenPickExample::Suspend()
 {
-    delete m_pCameraController;
-    m_pCameraController = NULL;
+    
+    
 }
 
 void ScreenPickExample::Update(float dt)
@@ -48,19 +48,10 @@ void ScreenPickExample::Draw()
 	
 }
     
-const Eegeo::Camera::RenderCamera& ScreenPickExample::GetRenderCamera() const
+   
+void ScreenPickExample::Event_TouchTap(const AppInterface::TapData& data)
 {
-    return *m_pCameraController->GetCamera();
-}
-
-Eegeo::dv3 ScreenPickExample::GetInterestPoint() const
-{
-    return m_pCameraController->GetEcefInterestPoint();
-}
-    
-bool ScreenPickExample::Event_TouchTap(const AppInterface::TapData& data)
-{
-	const Eegeo::Camera::RenderCamera& renderCamera = *m_pCameraController->GetCamera();
+	const Eegeo::Camera::RenderCamera& renderCamera = GetRenderCamera();
 
 	float screenPixelX = data.point.GetX();
 	float screenPixelY = data.point.GetY();
@@ -76,7 +67,8 @@ bool ScreenPickExample::Event_TouchTap(const AppInterface::TapData& data)
 	{
         m_spherePosition = rayIntersectionPoint;
 	}
-
-	return true;
+    
+    GlobeCameraExampleBase::Event_TouchTap(data);
 }
+
 }

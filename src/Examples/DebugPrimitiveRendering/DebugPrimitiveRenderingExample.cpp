@@ -16,11 +16,11 @@
 namespace Examples
 {
 DebugPrimitiveRenderingExample::DebugPrimitiveRenderingExample(Eegeo::DebugRendering::DebugRenderer &debugRenderer,
-        Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController)
-	:m_debugRenderer(debugRenderer)
-    ,m_pCameraController(pCameraController)
-	,m_globeCameraStateRestorer(*pCameraController)
-    ,m_frustumDrawTimer(0.0)
+        Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
+                        Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController)
+: GlobeCameraExampleBase(pCameraController, cameraTouchController)
+, m_debugRenderer(debugRenderer)
+, m_frustumDrawTimer(0.0)
 {
 }
 
@@ -100,17 +100,8 @@ void DebugPrimitiveRenderingExample::Draw()
 
 void DebugPrimitiveRenderingExample::Suspend()
 {
-    delete m_pCameraController;
-    m_pCameraController = NULL;
-}
     
-const Eegeo::Camera::RenderCamera& DebugPrimitiveRenderingExample::GetRenderCamera() const
-{
-    return *m_pCameraController->GetCamera();
+    
 }
 
-    Eegeo::dv3 DebugPrimitiveRenderingExample::GetInterestPoint() const
-    {
-        return m_pCameraController->GetEcefInterestPoint();
-    }
 }

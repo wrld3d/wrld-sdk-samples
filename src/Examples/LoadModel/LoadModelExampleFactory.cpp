@@ -5,17 +5,20 @@
 #include "IInterestPointProvider.h"
 #include "LatLongAltitude.h"
 #include "LocalAsyncTextureLoader.h"
-
+#include "DefaultCameraControllerFactory.h"
 #include "IPlatformAbstractionModule.h"
 #include "AsyncLoadersModule.h"
 #include "LightingModule.h"
 
-using namespace Examples;
+namespace Examples
+{
 
 LoadModelExampleFactory::LoadModelExampleFactory(Eegeo::EegeoWorld& world,
-        DefaultCameraControllerFactory& defaultCameraControllerFactory)
+        DefaultCameraControllerFactory& defaultCameraControllerFactory,
+                                          Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController)
 	: m_world(world)
 	, m_defaultCameraControllerFactory(defaultCameraControllerFactory)
+    , m_globeCameraTouchController(globeCameraTouchController)
 {
 
 }
@@ -30,11 +33,14 @@ IExample* LoadModelExampleFactory::CreateExample() const
 	                                      platformAbstractionModule.GetFileIO(),
 	                                      asyncLoadersModule.GetLocalAsyncTextureLoader(),
 	                                      lightingModule.GetGlobalFogging(),
-	                                      m_defaultCameraControllerFactory.Create());
+	                                      m_defaultCameraControllerFactory.Create(),
+                                          m_globeCameraTouchController);
 }
 
 std::string LoadModelExampleFactory::ExampleName() const
 {
 	return Examples::LoadModelExample::GetName();
+}
+
 }
 

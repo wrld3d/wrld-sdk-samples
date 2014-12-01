@@ -3,7 +3,7 @@
 #ifndef __ExampleApp__ScreenUnprojectExample__
 #define __ExampleApp__ScreenUnprojectExample__
 
-#include "IExample.h"
+#include "GlobeCameraExampleBase.h"
 #include "Rendering.h"
 #include "Terrain.h"
 #include "Camera.h"
@@ -12,18 +12,18 @@
 namespace Examples
 {
     
-class ScreenUnprojectExample : public IExample
+class ScreenUnprojectExample : public GlobeCameraExampleBase
 {
 private:
     Eegeo::DebugRendering::DebugRenderer& m_debugRenderer;
 	Eegeo::Resources::Terrain::Heights::TerrainHeightProvider& m_terrainHeightProvider;
-	GlobeCameraStateRestorer m_globeCameraStateRestorer;
-    Eegeo::Camera::GlobeCamera::GlobeCameraController* m_pCameraController;
+    
 
 public:
 	ScreenUnprojectExample(Eegeo::DebugRendering::DebugRenderer& debugRenderer,
 	                       Eegeo::Resources::Terrain::Heights::TerrainHeightProvider& terrainHeightProvider,
-	                       Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController);
+	                       Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
+                        Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController);
 
 	static std::string GetName()
 	{
@@ -39,8 +39,8 @@ public:
 
 	void Draw(){}
 	void Suspend();
-    const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
-    Eegeo::dv3 GetInterestPoint() const;
+    
+    
 };
 }
 

@@ -2,15 +2,18 @@
 
 #include "ControlCityThemeExampleFactory.h"
 #include "ControlCityThemeExample.h"
-
+#include "DefaultCameraControllerFactory.h"
 #include "CityThemesModule.h"
 
-using namespace Examples;
+namespace Examples
+{
 
 ControlCityThemeExampleFactory::ControlCityThemeExampleFactory(Eegeo::EegeoWorld& world,
-        DefaultCameraControllerFactory& defaultCameraControllerFactory)
+        DefaultCameraControllerFactory& defaultCameraControllerFactory,
+                                          Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController)
 	: m_world(world)
 	, m_defaultCameraControllerFactory(defaultCameraControllerFactory)
+    , m_globeCameraTouchController(globeCameraTouchController)
 {
 
 }
@@ -23,11 +26,13 @@ IExample* ControlCityThemeExampleFactory::CreateExample() const
 	        cityThemesModule.GetCityThemesRepository(),
 	        cityThemesModule.GetCityThemesUpdater(),
 	        m_world,
-	        m_defaultCameraControllerFactory.Create());
+	        m_defaultCameraControllerFactory.Create(),
+            m_globeCameraTouchController);
 }
 
 std::string ControlCityThemeExampleFactory::ExampleName() const
 {
 	return Examples::ControlCityThemeExample::GetName();
+}
 }
 

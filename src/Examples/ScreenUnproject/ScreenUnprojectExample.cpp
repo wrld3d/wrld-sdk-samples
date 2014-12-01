@@ -63,11 +63,11 @@ namespace Examples
 {
     ScreenUnprojectExample::ScreenUnprojectExample(Eegeo::DebugRendering::DebugRenderer& debugRenderer,
                                                    Eegeo::Resources::Terrain::Heights::TerrainHeightProvider& terrainHeightProvider,
-                                                   Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController)
-    : m_debugRenderer(debugRenderer)
+                                                   Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
+                        Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController)
+    : GlobeCameraExampleBase(pCameraController, cameraTouchController)
+    , m_debugRenderer(debugRenderer)
 	, m_terrainHeightProvider(terrainHeightProvider)
-	, m_globeCameraStateRestorer(*pCameraController)
-    , m_pCameraController(pCameraController)
 {
 
 }
@@ -79,13 +79,13 @@ void ScreenUnprojectExample::Start()
 
 void ScreenUnprojectExample::Suspend()
 {
-    delete m_pCameraController;
-    m_pCameraController = NULL;
+    
+    
 }
 
 void ScreenUnprojectExample::Update(float dt)
 {
-    const Eegeo::Camera::RenderCamera& renderCamera = *m_pCameraController->GetCamera();
+    const Eegeo::Camera::RenderCamera& renderCamera = GetRenderCamera();
 	//select the middle of the client screen as the position of the sphere
 	double screenPointOfInterestX = (renderCamera.GetViewportWidth()/2.0f);
 	double screenPointOfInterestY = (renderCamera.GetViewportHeight()/2.0f);
@@ -129,13 +129,4 @@ void ScreenUnprojectExample::Update(float dt)
 	}
 }
 
-const Eegeo::Camera::RenderCamera& ScreenUnprojectExample::GetRenderCamera() const
-{
-    return *m_pCameraController->GetCamera();
-}
-
-Eegeo::dv3 ScreenUnprojectExample::GetInterestPoint() const
-{
-    return m_pCameraController->GetEcefInterestPoint();
-}
 }

@@ -14,12 +14,15 @@
 #include "IPlatformAbstractionModule.h"
 #include "AsyncLoadersModule.h"
 
-using namespace Examples;
+namespace Examples
+{
 
 RouteSimulationAnimationExampleFactory::RouteSimulationAnimationExampleFactory(Eegeo::EegeoWorld& world,
-        DefaultCameraControllerFactory& defaultCameraControllerFactory)
+                                                                               DefaultCameraControllerFactory& defaultCameraControllerFactory,
+                                                                               Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController)
 	: m_world(world)
 	, m_defaultCameraControllerFactory(defaultCameraControllerFactory)
+    , m_globeCameraTouchController(globeCameraTouchController)
 	, m_pRouteSimulationGlobeCameraControllerFactory(NULL)
 {
     Eegeo::Modules::Map::MapModule& mapModule = m_world.GetMapModule();
@@ -49,7 +52,6 @@ IExample* RouteSimulationAnimationExampleFactory::CreateExample() const
 	return new Examples::RouteSimulationAnimationExample(routesModule.GetRouteService(),
 	        routesModule.GetRouteSimulationService(),
 	        routesModule.GetRouteSimulationViewService(),
-	        m_defaultCameraControllerFactory.Create(),
 	        platformAbstractionModule.GetFileIO(),
 	        asyncLoadersModule.GetLocalAsyncTextureLoader(),
 	        *m_pRouteSimulationGlobeCameraControllerFactory,
@@ -59,4 +61,5 @@ IExample* RouteSimulationAnimationExampleFactory::CreateExample() const
 std::string RouteSimulationAnimationExampleFactory::ExampleName() const
 {
 	return Examples::RouteSimulationAnimationExample::GetName();
+}
 }

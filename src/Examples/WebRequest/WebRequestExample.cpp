@@ -63,10 +63,10 @@ ExternalGetHandlerType_NotPartOfPublicAPI externalGetHandler;
 namespace Examples
 {
 WebRequestExample::WebRequestExample(IWebLoadRequestFactory& webRequestFactory,
-                                     Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController)
-	:m_webRequestFactory(webRequestFactory)
-    ,m_pCameraController(pCameraController)
-	,m_globeCameraStateRestorer(*pCameraController)
+                                     Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
+                        Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController)
+    : GlobeCameraExampleBase(pCameraController, cameraTouchController)
+    , m_webRequestFactory(webRequestFactory)
 {
 }
 
@@ -87,14 +87,5 @@ void WebRequestExample::Start()
 	httpHeaders["X-MyCustom-Header"] = "Hello World";
 	m_webRequestFactory.CreateGet("http://wikipedia.org", externalGetHandler.GetRequestHandler(), new int(4), httpHeaders)->Load();
 }
-    
-const Eegeo::Camera::RenderCamera& WebRequestExample::GetRenderCamera() const
-{
-    return *m_pCameraController->GetCamera();
-}
 
-Eegeo::dv3 WebRequestExample::GetInterestPoint() const
-{
-    return m_pCameraController->GetEcefInterestPoint();
-}
 }

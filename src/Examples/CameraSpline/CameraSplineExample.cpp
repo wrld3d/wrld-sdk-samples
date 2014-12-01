@@ -10,14 +10,13 @@
 #include "GlobeCameraTouchController.h"
 #include "EegeoWorld.h"
 #include "EarthConstants.h"
+#include "ScreenProperties.h"
 
 namespace Examples
 {
     CameraSplineExample::CameraSplineExample(Eegeo::EegeoWorld& eegeoWorld,
-                                             Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
                                              Eegeo::Streaming::ResourceCeilingProvider& resourceCeilingProvider)
     : m_world(eegeoWorld)
-    , m_pCameraController(pCameraController)
     , m_resourceCeilingProvider(resourceCeilingProvider)
     {
         
@@ -67,14 +66,16 @@ namespace Examples
         delete m_pSplineCameraController;
         delete m_pPositionSpline;
         delete m_pTargetSpline;
-        delete m_pCameraController;
-        m_pCameraController = NULL;
     }
     
-    void CameraSplineExample::UpdateCamera(Eegeo::Camera::GlobeCamera::GlobeCameraController *pGlobeCameraController, Eegeo::Camera::GlobeCamera::GlobeCameraTouchController *pCameraTouchController, float dt)
+    void CameraSplineExample::EarlyUpdate(float dt)
     {
-        // Update the camera spline animation
         m_pSplineCameraController->Update(dt);
+    }
+    
+    void CameraSplineExample::NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties)
+    {
+        m_pSplineCameraController->GetCamera()->SetViewport(0.f, 0.f, screenProperties.GetScreenWidth(), screenProperties.GetScreenHeight());
     }
     
     const Eegeo::Camera::RenderCamera& CameraSplineExample::GetRenderCamera() const

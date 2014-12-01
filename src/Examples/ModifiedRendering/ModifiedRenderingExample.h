@@ -3,7 +3,7 @@
 #ifndef __ExampleApp__ModifiedRenderingExample__
 #define __ExampleApp__ModifiedRenderingExample__
 
-#include "IExample.h"
+#include "GlobeCameraExampleBase.h"
 
 #include <vector>
 #include "RenderContext.h"
@@ -51,7 +51,7 @@ private:
 
 typedef Eegeo::Rendering::Scene::ISceneElementObserver<Eegeo::Rendering::Renderables::PackedRenderable> TSceneElementObserver;
 
-class ModifiedRenderingExample : public IExample, TSceneElementObserver, Eegeo::Rendering::IRenderableFilter
+class ModifiedRenderingExample : public GlobeCameraExampleBase, TSceneElementObserver, Eegeo::Rendering::IRenderableFilter
 {
 private:
 
@@ -73,8 +73,7 @@ private:
 	Eegeo::Rendering::Shaders::ShaderIdGenerator& m_shaderIdGenerator;
 	Eegeo::Rendering::Materials::MaterialIdGenerator& m_materialIdGenerator;
 	const Eegeo::Helpers::GLHelpers::TextureInfo& m_placeHolderTexture;
-	GlobeCameraStateRestorer m_globeCameraStateRestorer;
-    Eegeo::Camera::GlobeCamera::GlobeCameraController* m_pCameraController;
+    
 
 	Eegeo::Lighting::GlobalLighting* m_pAlternativeLighting;
 	Eegeo::Rendering::Shaders::PackedDiffuseShader* m_pAlternativeShader;
@@ -97,7 +96,8 @@ public:
 	                         Eegeo::Rendering::Shaders::ShaderIdGenerator& shaderIdGenerator,
 	                         Eegeo::Rendering::Materials::MaterialIdGenerator& materialIdGenerator,
 	                         const Eegeo::Helpers::GLHelpers::TextureInfo& placeHolderTexture,
-	                         Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController
+	                         Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
+                        Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController
 	                        );
 
 	//ISceneElementObserver interface.
@@ -121,8 +121,8 @@ public:
 	void Update(float dt);
 	void Draw();
 	void Suspend();
-    const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
-    Eegeo::dv3 GetInterestPoint() const;
+    
+    
 };
 }
 

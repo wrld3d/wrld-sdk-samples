@@ -11,12 +11,12 @@ namespace Examples
 {
 //EnvironmentNotifierExample//
 EnvironmentNotifierExample::EnvironmentNotifierExample(Eegeo::DebugRendering::DebugRenderer& debugRenderer,
-        Eegeo::Resources::Terrain::TerrainStreaming& terrainStreaming,
-        Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController)
-	:m_terrainStreaming(terrainStreaming)
-	,m_pObserver(NULL)
-	,m_globeCameraStateRestorer(*pCameraController)
-    ,m_pCameraController(pCameraController)
+                                                       Eegeo::Resources::Terrain::TerrainStreaming& terrainStreaming,
+                                                       Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
+                        Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController)
+    : GlobeCameraExampleBase(pCameraController, cameraTouchController)
+	, m_terrainStreaming(terrainStreaming)
+	, m_pObserver(NULL)
     , m_debugRenderer(debugRenderer)
 {
 }
@@ -32,8 +32,8 @@ void EnvironmentNotifierExample::Suspend()
 	m_terrainStreaming.RemoveStreamingObserver(m_pObserver);
 	delete m_pObserver;
 	m_pObserver = NULL;
-    delete m_pCameraController;
-    m_pCameraController = NULL;
+    
+    
 }
 
 void EnvironmentNotifierExample::Update(float dt)
@@ -50,16 +50,6 @@ void EnvironmentNotifierExample::Draw()
         
         m_debugRenderer.DrawSphere(sphere.m_spherePosition, 100.f, sphere.m_sphereColor);
     }
-}
-    
-const Eegeo::Camera::RenderCamera& EnvironmentNotifierExample::GetRenderCamera() const
-{
-    return *m_pCameraController->GetCamera();
-}
-
-Eegeo::dv3 EnvironmentNotifierExample::GetInterestPoint() const
-{
-    return m_pCameraController->GetEcefInterestPoint();
 }
 
 //EnvironmentNotifierExampleTerrainStreamObserver///

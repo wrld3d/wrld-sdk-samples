@@ -3,17 +3,20 @@
 #include "DynamicText3DExampleFactory.h"
 #include "DynamicText3DExample.h"
 #include "RenderContext.h"
-
+#include "DefaultCameraControllerFactory.h"
 #include "PlacenamesStreamingModule.h"
 #include "MapModule.h"
 #include "RenderingModule.h"
 
-using namespace Examples;
+namespace Examples
+{
 
 DynamicText3DExampleFactory::DynamicText3DExampleFactory(Eegeo::EegeoWorld& world,
-        DefaultCameraControllerFactory& defaultCameraControllerFactory)
+        DefaultCameraControllerFactory& defaultCameraControllerFactory,
+                                          Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController)
 	: m_world(world)
 	, m_defaultCameraControllerFactory(defaultCameraControllerFactory)
+    , m_globeCameraTouchController(globeCameraTouchController)
 {
 
 }
@@ -29,6 +32,7 @@ IExample* DynamicText3DExampleFactory::CreateExample() const
                                               placenamesStreamingModule.GetPlaceNameViewBuilder(),
                                               m_world,
                                               m_defaultCameraControllerFactory.Create(),
+                                              m_globeCameraTouchController,
                                               renderableFilters);
 
 }
@@ -36,5 +40,7 @@ IExample* DynamicText3DExampleFactory::CreateExample() const
 std::string DynamicText3DExampleFactory::ExampleName() const
 {
 	return Examples::DynamicText3DExample::GetName();
+}
+
 }
 

@@ -155,13 +155,16 @@ void AppHost::RegisteriOSSpecificExamples()
     m_pApp->GetExampleController().RegisterExample(new Examples::RouteMatchingExampleFactory(
                                                                                              *m_pWorld,
                                                                                              *m_piOSRouteMatchingExampleViewFactory,
-                                                                                             m_pApp->GetDefaultCameraControllerFactory()));
+                                                                                             m_pApp->GetDefaultCameraControllerFactory(),
+                                                                                             m_pApp->GetTouchController()
+                                                                                             ));
 
 	m_piOSRouteSimulationExampleViewFactory = new Examples::iOSRouteSimulationExampleViewFactory([&m_viewController view]);
 
 	m_pApp->GetExampleController().RegisterExample(new Examples::RouteSimulationExampleFactory(
 	        *m_pWorld,
 	        m_pApp->GetDefaultCameraControllerFactory(),
+            m_pApp->GetTouchController(),
 	        *m_piOSRouteSimulationExampleViewFactory));
 }
 

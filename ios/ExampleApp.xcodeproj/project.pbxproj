@@ -219,12 +219,16 @@
 		7EE48256168477A80006E99B /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EE48255168477A80006E99B /* MobileCoreServices.framework */; };
 		7EE48258168477CB0006E99B /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EE48257168477CB0006E99B /* libz.dylib */; };
 		7EF5D8651737F9A40049D787 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EF5D8641737F9A40049D787 /* CoreLocation.framework */; };
+		E0287B371A2C802C00F44204 /* GlobeCameraExampleBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0287B351A2C802C00F44204 /* GlobeCameraExampleBase.cpp */; };
+		E0287B381A2C802C00F44204 /* GlobeCameraExampleBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0287B351A2C802C00F44204 /* GlobeCameraExampleBase.cpp */; };
 		E0645A961A27518E009C2349 /* DefaultCameraControllerFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0645A941A27518E009C2349 /* DefaultCameraControllerFactory.cpp */; };
 		E0645A971A27518E009C2349 /* DefaultCameraControllerFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0645A941A27518E009C2349 /* DefaultCameraControllerFactory.cpp */; };
 		E096AE1A19F670F100C3D04A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E096AE1919F670F100C3D04A /* Images.xcassets */; };
 		E096AE1C19F6713300C3D04A /* SplashScreen-1024x768.png in Resources */ = {isa = PBXBuildFile; fileRef = E096AE1B19F6713300C3D04A /* SplashScreen-1024x768.png */; };
 		E096AE1D19F6713300C3D04A /* SplashScreen-1024x768.png in Resources */ = {isa = PBXBuildFile; fileRef = E096AE1B19F6713300C3D04A /* SplashScreen-1024x768.png */; };
 		E0B9CF9319F697090012D0B4 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E096AE1919F670F100C3D04A /* Images.xcassets */; };
+		E0FE7B0F1A2C99CA008754A2 /* DefaultCameraTouchControllerFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0FE7B0D1A2C99CA008754A2 /* DefaultCameraTouchControllerFactory.cpp */; };
+		E0FE7B101A2C99CA008754A2 /* DefaultCameraTouchControllerFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0FE7B0D1A2C99CA008754A2 /* DefaultCameraTouchControllerFactory.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -234,8 +238,8 @@
 		1814384D192B6E4500BCDF2E /* ControlCityThemeExample.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = ControlCityThemeExample.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		1814384F192B6E4500BCDF2E /* DebugPrimitiveRenderingExample.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = DebugPrimitiveRenderingExample.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		18143850192B6E4500BCDF2E /* DebugPrimitiveRenderingExample.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = DebugPrimitiveRenderingExample.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		18143855192B6E4500BCDF2E /* DynamicText3DExample.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DynamicText3DExample.cpp; sourceTree = "<group>"; };
-		18143856192B6E4500BCDF2E /* DynamicText3DExample.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DynamicText3DExample.h; sourceTree = "<group>"; };
+		18143855192B6E4500BCDF2E /* DynamicText3DExample.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = DynamicText3DExample.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
+		18143856192B6E4500BCDF2E /* DynamicText3DExample.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = DynamicText3DExample.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		18143858192B6E4500BCDF2E /* EnvironmentFlatteningExample.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = EnvironmentFlatteningExample.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		18143859192B6E4500BCDF2E /* EnvironmentFlatteningExample.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = EnvironmentFlatteningExample.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		1814385B192B6E4500BCDF2E /* EnvironmentNotifierExample.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = EnvironmentNotifierExample.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
@@ -380,8 +384,8 @@
 		18E0BDDA196EA82700165453 /* iOSUIHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iOSUIHelpers.h; sourceTree = "<group>"; };
 		18E1845819891C990065F81D /* PostProcessVignetteRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PostProcessVignetteRenderer.cpp; sourceTree = "<group>"; };
 		18E1845919891C990065F81D /* PostProcessVignetteRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostProcessVignetteRenderer.h; sourceTree = "<group>"; };
-		18E1845A19891C990065F81D /* RenderToTextureExample.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RenderToTextureExample.cpp; sourceTree = "<group>"; };
-		18E1845B19891C990065F81D /* RenderToTextureExample.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RenderToTextureExample.h; sourceTree = "<group>"; };
+		18E1845A19891C990065F81D /* RenderToTextureExample.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = RenderToTextureExample.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
+		18E1845B19891C990065F81D /* RenderToTextureExample.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = RenderToTextureExample.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		18E1845C19891C990065F81D /* RenderToTextureExampleFactory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = RenderToTextureExampleFactory.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		18E1845D19891C990065F81D /* RenderToTextureExampleFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RenderToTextureExampleFactory.h; sourceTree = "<group>"; };
 		18E18E81198BE4C80065F81D /* PostProcessVignetteMaterial.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PostProcessVignetteMaterial.cpp; sourceTree = "<group>"; };
@@ -394,8 +398,8 @@
 		18E6277D192F833A00B31DCE /* iOSExampleControllerView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = iOSExampleControllerView.mm; sourceTree = "<group>"; };
 		18E6277E192F833A00B31DCE /* iOSExampleControllerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iOSExampleControllerView.h; sourceTree = "<group>"; };
 		18E62780192FAD6200B31DCE /* IExampleControllerView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IExampleControllerView.h; sourceTree = "<group>"; };
-		18F91C3119C70502000617D8 /* ReadHeadingExample.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ReadHeadingExample.cpp; sourceTree = "<group>"; };
-		18F91C3219C70502000617D8 /* ReadHeadingExample.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReadHeadingExample.h; sourceTree = "<group>"; };
+		18F91C3119C70502000617D8 /* ReadHeadingExample.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = ReadHeadingExample.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
+		18F91C3219C70502000617D8 /* ReadHeadingExample.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = ReadHeadingExample.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		18F91C3319C70502000617D8 /* ReadHeadingExampleFactory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = ReadHeadingExampleFactory.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		18F91C3419C70502000617D8 /* ReadHeadingExampleFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReadHeadingExampleFactory.h; sourceTree = "<group>"; };
 		222E06C91948B08B0004FFD9 /* ExampleAppCpp11.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ExampleAppCpp11.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -430,11 +434,15 @@
 		7EE48255168477A80006E99B /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		7EE48257168477CB0006E99B /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		7EF5D8641737F9A40049D787 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		E0287B351A2C802C00F44204 /* GlobeCameraExampleBase.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = GlobeCameraExampleBase.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
+		E0287B361A2C802C00F44204 /* GlobeCameraExampleBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = GlobeCameraExampleBase.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		E02BD0C71A24F79B00663A00 /* ScreenPropertiesProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScreenPropertiesProvider.h; sourceTree = "<group>"; };
 		E0645A941A27518E009C2349 /* DefaultCameraControllerFactory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DefaultCameraControllerFactory.cpp; sourceTree = "<group>"; };
 		E0645A951A27518E009C2349 /* DefaultCameraControllerFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DefaultCameraControllerFactory.h; sourceTree = "<group>"; };
 		E096AE1919F670F100C3D04A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		E096AE1B19F6713300C3D04A /* SplashScreen-1024x768.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SplashScreen-1024x768.png"; sourceTree = "<group>"; };
+		E0FE7B0D1A2C99CA008754A2 /* DefaultCameraTouchControllerFactory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DefaultCameraTouchControllerFactory.cpp; sourceTree = "<group>"; };
+		E0FE7B0E1A2C99CA008754A2 /* DefaultCameraTouchControllerFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DefaultCameraTouchControllerFactory.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -537,6 +545,10 @@
 				18E62780192FAD6200B31DCE /* IExampleControllerView.h */,
 				E0645A941A27518E009C2349 /* DefaultCameraControllerFactory.cpp */,
 				E0645A951A27518E009C2349 /* DefaultCameraControllerFactory.h */,
+				E0287B351A2C802C00F44204 /* GlobeCameraExampleBase.cpp */,
+				E0287B361A2C802C00F44204 /* GlobeCameraExampleBase.h */,
+				E0FE7B0D1A2C99CA008754A2 /* DefaultCameraTouchControllerFactory.cpp */,
+				E0FE7B0E1A2C99CA008754A2 /* DefaultCameraTouchControllerFactory.h */,
 			);
 			path = Examples;
 			sourceTree = "<group>";
@@ -1224,7 +1236,9 @@
 				222E067F1948B08B0004FFD9 /* ToggleTrafficExample.cpp in Sources */,
 				222E06801948B08B0004FFD9 /* CameraTransitionExampleFactory.cpp in Sources */,
 				18F91C3619C70502000617D8 /* ReadHeadingExample.cpp in Sources */,
+				E0287B381A2C802C00F44204 /* GlobeCameraExampleBase.cpp in Sources */,
 				222E06811948B08B0004FFD9 /* NavigationGraphExample.cpp in Sources */,
+				E0FE7B101A2C99CA008754A2 /* DefaultCameraTouchControllerFactory.cpp in Sources */,
 				222E06821948B08B0004FFD9 /* WebRequestExampleFactory.cpp in Sources */,
 				18E18E90198BE4C80065F81D /* PostProcessVignetteRenderable.cpp in Sources */,
 				18E18E92198BE4C80065F81D /* PostProcessVignetteShader.cpp in Sources */,
@@ -1311,7 +1325,9 @@
 				181438C1192B6E4500BCDF2E /* ToggleTrafficExample.cpp in Sources */,
 				1899716A192C947D00E0E9F1 /* CameraTransitionExampleFactory.cpp in Sources */,
 				18F91C3519C70502000617D8 /* ReadHeadingExample.cpp in Sources */,
+				E0287B371A2C802C00F44204 /* GlobeCameraExampleBase.cpp in Sources */,
 				181438B2192B6E4500BCDF2E /* NavigationGraphExample.cpp in Sources */,
+				E0FE7B0F1A2C99CA008754A2 /* DefaultCameraTouchControllerFactory.cpp in Sources */,
 				189971BF192CB93200E0E9F1 /* WebRequestExampleFactory.cpp in Sources */,
 				18E18E8F198BE4C80065F81D /* PostProcessVignetteRenderable.cpp in Sources */,
 				18E18E91198BE4C80065F81D /* PostProcessVignetteShader.cpp in Sources */,

@@ -26,9 +26,11 @@ PinOverModelExample::PinOverModelExample(
     Eegeo::Rendering::AsyncTexturing::IAsyncTextureRequestor& textureRequestor,
     Eegeo::Lighting::GlobalFogging& fogging,
     Eegeo::Rendering::Materials::NullMaterialFactory& nullMaterialFactory,
-    Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController
+    Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
+                        Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController
 )
-	:m_pin0UserData("Pin Zero(0) User Data")
+	: GlobeCameraExampleBase(pCameraController, cameraTouchController)
+    , m_pin0UserData("Pin Zero(0) User Data")
 	,m_pPin0(NULL)
 	,m_fileIO(fileIO)
 	,m_textureRequestor(textureRequestor)
@@ -37,8 +39,6 @@ PinOverModelExample::PinOverModelExample(
 	,m_renderableFilters(renderableFilters)
 	,m_nullMaterialFactory(nullMaterialFactory)
     ,m_pNullMaterial(NULL)
-	,m_globeCameraStateRestorer(*pCameraController)
-    ,m_pCameraController(pCameraController)
 {
 	textureLoader.LoadTexture(m_pinIconsTexture, "pin_over_model_example/PinIconTexturePage.png", true);
 	Eegeo_ASSERT(m_pinIconsTexture.textureId != 0);
@@ -125,8 +125,8 @@ void PinOverModelExample::Suspend()
 	delete m_pModel;
 	m_pModel = NULL;
     
-    delete m_pCameraController;
-    m_pCameraController = NULL;
+    
+    
 }
 
 void PinOverModelExample::Update(float dt)
@@ -139,17 +139,6 @@ void PinOverModelExample::Update(float dt)
 
 void PinOverModelExample::Draw()
 {
-}
-    
-const Eegeo::Camera::RenderCamera& PinOverModelExample::GetRenderCamera() const
-{
-    return *m_pCameraController->GetCamera();
-}
-
-
-Eegeo::dv3 PinOverModelExample::GetInterestPoint() const
-{
-    return m_pCameraController->GetEcefInterestPoint();
 }
 
 PinOverModelExample::MyModelRenderable::MyModelRenderable(Eegeo::Model& model,

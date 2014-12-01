@@ -9,14 +9,18 @@
 #include "Logger.h"
 #include "CameraHelpers.h"
 #include "RenderCamera.h"
+#include "ScreenProperties.h"
+#include "GlobeCameraTouchController.h"
 
-using namespace Examples;
+
 using namespace Eegeo;
 using namespace Eegeo::Routes;
 using namespace Eegeo::Routes::Simulation;
 using namespace Eegeo::Routes::Simulation::View;
 using namespace Eegeo::Routes::Simulation::Camera;
 
+namespace Examples
+{
 
 Eegeo::Node* RouteSimulationExampleObserver::GetRandomModelNode() const
 {
@@ -45,29 +49,36 @@ RouteSimulationExample::RouteSimulationExample(RouteService& routeService,
         Eegeo::Helpers::IFileIO& fileIO,
         Eegeo::Rendering::AsyncTexturing::IAsyncTextureRequestor& textureRequestor,
         Eegeo::Camera::GlobeCamera::GlobeCameraController* pDefaultCameraController,
+        Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& defaultCameraTouchController,
         RouteSimulationGlobeCameraControllerFactory& routeSimulationGlobeCameraControllerFactory,
         const IRouteSimulationExampleViewFactory& routeSimulationExampleViewFactory,
         EegeoWorld& world)
-	:m_routeService(routeService)
+	: GlobeCameraExampleBase(pDefaultCameraController, defaultCameraTouchController)
+    , m_routeService(routeService)
 	,m_routeSimulationService(routeSimulationService)
 	,m_routeSimulationViewService(routeSimulationViewService)
 	,m_fileIO(fileIO)
 	,m_textureRequestor(textureRequestor)
-	,m_pDefaultCameraController(pDefaultCameraController)
 	,m_routeSimulationGlobeCameraControllerFactory(routeSimulationGlobeCameraControllerFactory)
 	,m_world(world)
 	,m_initialised(false)
 	,m_pRoute(NULL)
 	,m_usingFollowCamera(false)
 	,m_routeSimulationExampleViewFactory(routeSimulationExampleViewFactory)
+    , m_pSessionCycle(NULL)
+    , m_pSessionAlternatingSpeedChanger(NULL)
+    , m_pSessionCamera(NULL)
+    , m_pViewBindingForCycleSession(NULL)
+    , m_pViewBindingForOscillatingSession(NULL)
+    , m_pViewBindingForCameraSession(NULL)
 	, m_linkSpeedMultiplier(1.f)
+    ,m_pRouteSessionFollowCameraController(NULL)
 	,m_decreaseSpeedToggleHandler(this, &RouteSimulationExample::DecreaseSpeedFollowed)
 	,m_increaseSpeedToggleHandler(this, &RouteSimulationExample::IncreaseSpeedFollowed)
 	,m_followCameraToggleHandler(this, &RouteSimulationExample::ToggleFollowCamera)
 	,m_rotateToFollowToggledHandler(this, &RouteSimulationExample::ToggleRotateToFollow)
 	,m_directionChangedHandler(this, &RouteSimulationExample::ChangeFollowDirection)
 	,m_roadSideChangedHandler(this, &RouteSimulationExample::ToggleSideOfRoadToDriveOn)
-	,m_globeCameraStateRestorer(*pDefaultCameraController)
 {
 	Eegeo::Space::EcefTangentBasis cameraInterestBasis;
 
@@ -76,7 +87,13 @@ RouteSimulationExample::RouteSimulationExample(RouteService& routeService,
 	    354.824249,
 	    cameraInterestBasis);
 
-	m_pDefaultCameraController->SetView(cameraInterestBasis, 1374.298706);
+	pDefaultCameraController->SetView(cameraInterestBasis, 1374.298706);
+    
+    Eegeo::Camera::GlobeCamera::GlobeCameraTouchControllerConfiguration touchConfiguration = Eegeo::Camera::GlobeCamera::GlobeCameraTouchControllerConfiguration::CreateDefault();
+    
+    RouteSimulationGlobeCameraControllerConfig routeSimCameraConfig = RouteSimulationGlobeCameraControllerConfig::CreateDefault();
+    
+    m_pRouteSessionFollowCameraController = m_routeSimulationGlobeCameraControllerFactory.Create(false, touchConfiguration, routeSimCameraConfig);
 }
 
 void RouteSimulationExample::Initialise()
@@ -135,11 +152,7 @@ void RouteSimulationExample::Initialise()
 	m_pViewBindingForOscillatingSession = m_routeSimulationViewService.CreateBinding(*m_pSessionAlternatingSpeedChanger, pVehicle2, transform);
 	m_pViewBindingForCameraSession = m_routeSimulationViewService.CreateBinding(*m_pSessionCamera, pVehicle3, transform);
 
-	Eegeo::Camera::GlobeCamera::GlobeCameraTouchControllerConfiguration touchConfiguration = Eegeo::Camera::GlobeCamera::GlobeCameraTouchControllerConfiguration::CreateDefault();
 
-	RouteSimulationGlobeCameraControllerConfig routeSimCameraConfig = RouteSimulationGlobeCameraControllerConfig::CreateDefault();
-
-	m_pRouteSessionFollowCameraController = m_routeSimulationGlobeCameraControllerFactory.Create(false, touchConfiguration, routeSimCameraConfig);
     m_pRouteSessionFollowCameraController->SetTiltEnabled(true);
     m_pRouteSessionFollowCameraController->SetView(37.7858, -122.401, 0, 1781.0f);
 	m_pRouteSessionFollowCameraController->StartFollowingSession(m_pSessionAlternatingSpeedChanger);
@@ -177,6 +190,10 @@ void RouteSimulationExample::EarlyUpdate(float dt)
 	{
 		m_pRouteSessionFollowCameraController->Update(dt);
 	}
+    else
+    {
+        GlobeCameraExampleBase::EarlyUpdate(dt);
+    }
 }
 
 void RouteSimulationExample::Update(float dt)
@@ -187,16 +204,15 @@ void RouteSimulationExample::Update(float dt)
 		return;
 	}
     
-    const Eegeo::Camera::RenderCamera* pCamera = m_usingFollowCamera ? m_pRouteSessionFollowCameraController->GetCamera()
-                                                                     : m_pDefaultCameraController->GetCamera();
+    const Eegeo::Camera::RenderCamera& renderCamera = GetRenderCamera();
     
-    m_pViewBindingForCycleSession->UpdateCameraLocation(pCamera->GetEcefLocation());
-    m_pViewBindingForOscillatingSession->UpdateCameraLocation(pCamera->GetEcefLocation());
-    m_pViewBindingForCameraSession->UpdateCameraLocation(pCamera->GetEcefLocation());
+    m_pViewBindingForCycleSession->UpdateCameraLocation(renderCamera.GetEcefLocation());
+    m_pViewBindingForOscillatingSession->UpdateCameraLocation(renderCamera.GetEcefLocation());
+    m_pViewBindingForCameraSession->UpdateCameraLocation(renderCamera.GetEcefLocation());
     
 	//The route session for which we want to project a position to (in this case, the ecef interest
 	//point) should be updated giving it the latest position.
-	Eegeo::dv3 ecefPositionToProjectToRoute = m_pDefaultCameraController->GetEcefInterestPoint();
+	const Eegeo::dv3& ecefPositionToProjectToRoute = GetInterestPoint();
 	m_pSessionCamera->SetCurrentPositionSnappedToRoute(ecefPositionToProjectToRoute);
 
 	//For the session which should just cycle the route forever, when it has completed simply end
@@ -261,11 +277,15 @@ void RouteSimulationExample::Suspend()
 	Eegeo_DELETE m_pRouteSimulationView;
 
 	m_pRouteSimulationView = NULL;
-    
-    delete m_pDefaultCameraController;
-    m_pDefaultCameraController = NULL;
 
 	m_initialised = false;
+}
+
+void RouteSimulationExample::NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties)
+{
+    GlobeCameraExampleBase::NotifyScreenPropertiesChanged(screenProperties);
+
+    m_pRouteSessionFollowCameraController->GetCamera()->SetViewport(0.f, 0.f, screenProperties.GetScreenWidth(), screenProperties.GetScreenHeight());
 }
 
 const Eegeo::Camera::RenderCamera& RouteSimulationExample::GetRenderCamera() const
@@ -276,7 +296,7 @@ const Eegeo::Camera::RenderCamera& RouteSimulationExample::GetRenderCamera() con
     }
     else
     {
-        return *m_pDefaultCameraController->GetCamera();
+        return GlobeCameraExampleBase::GetRenderCamera();
     }
 }
 
@@ -288,7 +308,7 @@ Eegeo::dv3 RouteSimulationExample::GetInterestPoint() const
     }
     else
     {
-        return m_pDefaultCameraController->GetEcefInterestPoint();
+        return GlobeCameraExampleBase::GetInterestPoint();
     }
 }
 
@@ -406,94 +426,113 @@ Eegeo::Model* RouteSimulationExample::LoadModelVehicleNodes(Eegeo::Node*& pVehic
 //and pass it to the follow camera if it is enabled. If the follow camera is enabled, we
 //should block this event from being passed up to the default camera by declaring the
 //event handled (by returning true from the even handler).
-bool RouteSimulationExample::Event_TouchRotate(const AppInterface::RotateData& data)
+void RouteSimulationExample::Event_TouchRotate(const AppInterface::RotateData& data)
 {
-	if(m_usingFollowCamera)
+	if (m_usingFollowCamera)
 	{
 		m_pRouteSessionFollowCameraController->GetTouchController().Event_TouchRotate(data);
 	}
-
-	return m_usingFollowCamera;
+    else
+    {
+        GlobeCameraExampleBase::Event_TouchRotate(data);
+    }
 }
 
-bool RouteSimulationExample::Event_TouchRotate_Start(const AppInterface::RotateData& data)
+void RouteSimulationExample::Event_TouchRotate_Start(const AppInterface::RotateData& data)
 {
-	if(m_usingFollowCamera)
+	if (m_usingFollowCamera)
 	{
 		m_pRouteSessionFollowCameraController->GetTouchController().Event_TouchRotate_Start(data);
 	}
+    else
+    {
+        GlobeCameraExampleBase::Event_TouchRotate_Start(data);
+    }
 
-	return m_usingFollowCamera;
 }
 
-bool RouteSimulationExample::Event_TouchRotate_End(const AppInterface::RotateData& data)
+void RouteSimulationExample::Event_TouchRotate_End(const AppInterface::RotateData& data)
 {
 	if(m_usingFollowCamera)
 	{
 		m_pRouteSessionFollowCameraController->GetTouchController().Event_TouchRotate_End(data);
 	}
-
-	return m_usingFollowCamera;
+    else
+    {
+        GlobeCameraExampleBase::Event_TouchRotate_End(data);
+    }
 }
 
-bool RouteSimulationExample::Event_TouchPinch(const AppInterface::PinchData& data)
+void RouteSimulationExample::Event_TouchPinch(const AppInterface::PinchData& data)
 {
 	if(m_usingFollowCamera)
 	{
 		m_pRouteSessionFollowCameraController->GetTouchController().Event_TouchPinch(data);
 	}
-
-	return m_usingFollowCamera;
+    else
+    {
+        GlobeCameraExampleBase::Event_TouchPinch(data);
+    }
 }
 
-bool RouteSimulationExample::Event_TouchPinch_Start(const AppInterface::PinchData& data)
+void RouteSimulationExample::Event_TouchPinch_Start(const AppInterface::PinchData& data)
 {
 	if(m_usingFollowCamera)
 	{
 		m_pRouteSessionFollowCameraController->GetTouchController().Event_TouchPinch_Start(data);
 	}
-
-	return m_usingFollowCamera;
+    else
+    {
+        GlobeCameraExampleBase::Event_TouchPinch_Start(data);
+    }
 }
 
-bool RouteSimulationExample::Event_TouchPinch_End(const AppInterface::PinchData& data)
+void RouteSimulationExample::Event_TouchPinch_End(const AppInterface::PinchData& data)
 {
 	if(m_usingFollowCamera)
 	{
 		m_pRouteSessionFollowCameraController->GetTouchController().Event_TouchPinch_End(data);
 	}
-
-	return m_usingFollowCamera;
+    else
+    {
+        GlobeCameraExampleBase::Event_TouchPinch_End(data);
+    }
 }
 
-bool RouteSimulationExample::Event_TouchPan(const AppInterface::PanData& data)
+void RouteSimulationExample::Event_TouchPan(const AppInterface::PanData& data)
 {
 	if(m_usingFollowCamera)
 	{
 		m_pRouteSessionFollowCameraController->GetTouchController().Event_TouchPan(data);
 	}
-
-	return m_usingFollowCamera;
+    else
+    {
+        GlobeCameraExampleBase::Event_TouchPan(data);
+    }
 }
 
-bool RouteSimulationExample::Event_TouchPan_Start(const AppInterface::PanData& data)
+void RouteSimulationExample::Event_TouchPan_Start(const AppInterface::PanData& data)
 {
 	if(m_usingFollowCamera)
 	{
 		m_pRouteSessionFollowCameraController->GetTouchController().Event_TouchPan_Start(data);
 	}
-
-	return m_usingFollowCamera;
+    else
+    {
+        GlobeCameraExampleBase::Event_TouchPan_Start(data);
+    }
 }
 
-bool RouteSimulationExample::Event_TouchPan_End(const AppInterface::PanData& data)
+void RouteSimulationExample::Event_TouchPan_End(const AppInterface::PanData& data)
 {
 	if(m_usingFollowCamera)
 	{
 		m_pRouteSessionFollowCameraController->GetTouchController().Event_TouchPan_End(data);
 	}
-
-	return m_usingFollowCamera;
+    else
+    {
+        GlobeCameraExampleBase::Event_TouchPan_End(data);
+    }
 }
 
 void RouteSimulationExample::CreateAndBindUI()
@@ -506,4 +545,6 @@ void RouteSimulationExample::CreateAndBindUI()
 	m_pRouteSimulationView->AddFollowCameraToggledHandler(m_followCameraToggleHandler);
 	m_pRouteSimulationView->AddRotateToFollowToggledHandler(m_rotateToFollowToggledHandler);
 	m_pRouteSimulationView->AddSideOfRoadToDriveOnToggledHandler(m_roadSideChangedHandler);
+}
+
 }

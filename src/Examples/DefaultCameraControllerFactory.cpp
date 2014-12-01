@@ -41,7 +41,6 @@ namespace Examples
         
         pController->SetView(cameraInterestBasis, m_cameraControllerDistanceFromInterestPointMeters);
         
-        
         return pController;
     }
 }

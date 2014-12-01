@@ -4,7 +4,7 @@
 #define __ExampleApp__RouteDrawingExampleFactory__
 
 #include "IExampleFactory.h"
-#include "IExample.h"
+#include "GlobeCameraExampleBase.h"
 #include "EegeoWorld.h"
 
 namespace Examples
@@ -12,11 +12,13 @@ namespace Examples
 class RouteDrawingExampleFactory : public IExampleFactory
 {
 	Eegeo::EegeoWorld& m_world;
-	DefaultCameraControllerFactory& m_defaultCameraControllerFactory;
+    DefaultCameraControllerFactory& m_defaultCameraControllerFactory;
+    Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& m_globeCameraTouchController;
 
 public:
 	RouteDrawingExampleFactory(Eegeo::EegeoWorld& world,
-	                           DefaultCameraControllerFactory& defaultCameraControllerFactory);
+	                           DefaultCameraControllerFactory& defaultCameraControllerFactory,
+                               Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController);
 
 	std::string ExampleName() const;
 

@@ -3,7 +3,7 @@
 #ifndef __ExampleApp__RenderToTextureExample__
 #define __ExampleApp__RenderToTextureExample__
 
-#include "IExample.h"
+#include "GlobeCameraExampleBase.h"
 #include "RenderTexture.h"
 #include "Rendering.h"
 #include "RenderToTextureExampleIncludes.h"
@@ -11,11 +11,9 @@
 
 namespace Examples
 {
-    class RenderToTextureExample : public IExample
+    class RenderToTextureExample : public GlobeCameraExampleBase
     {
     private:
-        GlobeCameraStateRestorer m_globeCameraStateRestorer;
-
         Eegeo::Rendering::VertexLayouts::VertexLayoutPool& m_vertexLayoutPool;
         Eegeo::Rendering::VertexLayouts::VertexBindingPool& m_vertexBindingPool;
         Eegeo::Rendering::Shaders::ShaderIdGenerator& m_shaderIdGenerator;
@@ -25,14 +23,11 @@ namespace Examples
         
         PostProcessVignetteShader* m_pVignetteShader;
         PostProcessVignetteMaterial* m_pVignetteMaterial;
-        Eegeo::Rendering::VertexLayouts::VertexLayout* m_pMeshVertexLayout;
-        //TexturedClipSpaceMeshFactory* m_pMeshFactory;
-        Eegeo::Rendering::Mesh* m_pRenderableMesh;
         PostProcessVignetteRenderable* m_pRenderable;
         PostProcessVignetteRenderer* m_pVignetteRenderer;
         Eegeo::Rendering::RenderTexture* m_pRenderTexture;
         
-        Eegeo::Camera::GlobeCamera::GlobeCameraController* m_pCameraController;
+        
         
         static const float SecondsBetweenEffectUpdates;
         float m_secondsSinceLastEffectUpate;
@@ -43,6 +38,7 @@ namespace Examples
         
     public:
         RenderToTextureExample(Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
+                               Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController,
                                const Eegeo::Rendering::ScreenProperties& screenProperties,
                                Eegeo::Rendering::VertexLayouts::VertexLayoutPool& vertexLayoutPool,
                                Eegeo::Rendering::VertexLayouts::VertexBindingPool& vertexBindingPool,
@@ -68,8 +64,8 @@ namespace Examples
         void Suspend();
         void NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties);
         
-        const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
-    Eegeo::dv3 GetInterestPoint() const;
+        
+    
     };
 }
 

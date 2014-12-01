@@ -2,9 +2,7 @@
 
 #include "ModifiedRenderingExampleFactory.h"
 #include "ModifiedRenderingExample.h"
-
-using namespace Examples;
-
+#include "DefaultCameraControllerFactory.h"
 #include "MapModule.h"
 #include "LightingModule.h"
 #include "BuildingModelModule.h"
@@ -12,10 +10,15 @@ using namespace Examples;
 #include "RenderingModule.h"
 #include "CameraFrustumStreamingVolume.h"
 
+namespace Examples
+{
+
 ModifiedRenderingExampleFactory::ModifiedRenderingExampleFactory(Eegeo::EegeoWorld& world,
-        DefaultCameraControllerFactory& defaultCameraControllerFactory)
+        DefaultCameraControllerFactory& defaultCameraControllerFactory,
+                                          Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController)
 	: m_world(world)
 	, m_defaultCameraControllerFactory(defaultCameraControllerFactory)
+    , m_globeCameraTouchController(globeCameraTouchController)
 {
 
 }
@@ -37,11 +40,13 @@ IExample* ModifiedRenderingExampleFactory::CreateExample() const
 	        renderingModule.GetShaderIdGenerator(),
 	        renderingModule.GetMaterialIdGenerator(),
 	        m_world.GetEnvironmentPlaceholderTexture(),
-	        m_defaultCameraControllerFactory.Create());
+	        m_defaultCameraControllerFactory.Create(),
+            m_globeCameraTouchController);
 }
 
 std::string ModifiedRenderingExampleFactory::ExampleName() const
 {
 	return Examples::ModifiedRenderingExample::GetName();
+}
 }
 

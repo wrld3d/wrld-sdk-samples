@@ -5,24 +5,29 @@
 #include "VectorMath.h"
 #include "RouteStyle.h"
 #include "CameraHelpers.h"
+#include "EcefTangentBasis.h"
+#include "GlobeCameraController.h"
 
-using namespace Examples;
 using namespace Eegeo;
 using namespace Eegeo::Routes;
+
+namespace Examples
+{
+    
 
 RouteMatchingExample::RouteMatchingExample(RouteService& routeService,
         EegeoWorld& world,
         const IRouteMatchingExampleViewFactory& routeMatchingViewFactory,
-        Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController)
-	:m_routeService(routeService)
+        Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
+                        Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController)
+    : GlobeCameraExampleBase(pCameraController, cameraTouchController)
+    , m_routeService(routeService)
 	,m_world(world)
 	,m_createdRoutes(false)
 	,m_routesMatchedToNavigationGraph(false)
 	,m_routeMatchingViewFactory(routeMatchingViewFactory)
 	,m_pRouteMatchingView(NULL)
 	,m_toggleRouteMatchingHandler(this, &RouteMatchingExample::ToggleMatching)
-    ,m_pCameraController(pCameraController)
-	,m_globeCameraStateRestorer(*pCameraController)
 {
 	Eegeo::Space::EcefTangentBasis cameraInterestBasis;
 
@@ -31,7 +36,7 @@ RouteMatchingExample::RouteMatchingExample(RouteService& routeService,
 	    9.429380,
 	    cameraInterestBasis);
 
-	m_pCameraController->SetView(cameraInterestBasis, 963.714111f);
+	pCameraController->SetView(cameraInterestBasis, 963.714111f);
 }
 
 void RouteMatchingExample::CreateRoutes(bool shouldMatchToNavigationGraph)
@@ -154,18 +159,8 @@ void RouteMatchingExample::Suspend()
 
 	m_pRouteMatchingView = NULL;
     
-    delete m_pCameraController;
-    m_pCameraController = NULL;
-}
-
-const Eegeo::Camera::RenderCamera& RouteMatchingExample::GetRenderCamera() const
-{
-    return *m_pCameraController->GetCamera();
-}
-
-Eegeo::dv3 RouteMatchingExample::GetInterestPoint() const
-{
-    return m_pCameraController->GetEcefInterestPoint();
+    
+    
 }
 
 void RouteMatchingExample::ToggleMatching()
@@ -180,4 +175,5 @@ void RouteMatchingExample::CreateAndBindUI()
 	m_pRouteMatchingView = m_routeMatchingViewFactory.CreateRouteMatchingExampleView();
 
 	m_pRouteMatchingView->AddMatchingToggledHandler(m_toggleRouteMatchingHandler);
+}
 }

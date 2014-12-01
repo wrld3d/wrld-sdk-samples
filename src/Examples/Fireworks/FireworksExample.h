@@ -3,7 +3,7 @@
 #pragma once
 
 #include <iostream>
-#include "IExample.h"
+#include "GlobeCameraExampleBase.h"
 #include "Fireworks.h"
 #include "Modules.h"
 #include "CityThemes.h"
@@ -13,15 +13,16 @@ namespace Examples
 /*!
  *  FireworksExample demonstrates how to add fireworks displays to the world, configured to appear at certain times of day.
  */
-class FireworksExample : public IExample
+class FireworksExample : public GlobeCameraExampleBase
 {
 private:
     Eegeo::Modules::FireworksModule* m_pFireworksModule;
-    Eegeo::Camera::GlobeCamera::GlobeCameraController* m_pCameraController;
+    
     Eegeo::Resources::CityThemes::ICityThemesService& m_cityThemesService;
 
 public:
     FireworksExample(Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
+                     Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController,
                      Eegeo::Modules::Core::RenderingModule& renderingModule,
                      Eegeo::Modules::IPlatformAbstractionModule& platformModule,
                      Eegeo::Modules::Map::StreamingModule& streamingModule,
@@ -41,12 +42,11 @@ public:
 	}
 
     void Start();
-	void EarlyUpdate(float dt) {}
     void Update(float dt);
 	void Draw() {}
     void Suspend();
 
-    const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
-    Eegeo::dv3 GetInterestPoint() const;
+    
+    
 };
 }

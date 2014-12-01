@@ -3,20 +3,21 @@
 #ifndef ExampleApp_IExampleFactory_h
 #define ExampleApp_IExampleFactory_h
 
-#include "IExample.h"
-#include "DefaultCameraControllerFactory.h" // todo move
 #include <string>
 
 namespace Examples
 {
-class IExampleFactory
-{
-public:
-	virtual ~IExampleFactory() { }
+    class IExample;
+    class DefaultCameraControllerFactory;
+    
+    class IExampleFactory
+    {
+    public:
+        virtual ~IExampleFactory() { }
 
-	virtual std::string ExampleName() const = 0;
-	virtual IExample* CreateExample() const = 0;
-};
+        virtual std::string ExampleName() const = 0;
+        virtual IExample* CreateExample() const = 0;
+    };
 }
 
 #endif

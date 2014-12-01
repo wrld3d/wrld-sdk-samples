@@ -2,13 +2,17 @@
 
 #include "FireworksExampleFactory.h"
 #include "FireworksExample.h"
+#include "DefaultCameraControllerFactory.h"
 
-using namespace Examples;
+namespace Examples
+{
 
 FireworksExampleFactory::FireworksExampleFactory(Eegeo::EegeoWorld& world,
-                                                 DefaultCameraControllerFactory& defaultCameraControllerFactory)
+                                                 DefaultCameraControllerFactory& defaultCameraControllerFactory,
+                                          Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController)
 	: m_world(world)
 	, m_defaultCameraControllerFactory(defaultCameraControllerFactory)
+    , m_globeCameraTouchController(globeCameraTouchController)
 {
 
 }
@@ -16,6 +20,7 @@ FireworksExampleFactory::FireworksExampleFactory(Eegeo::EegeoWorld& world,
 IExample* FireworksExampleFactory::CreateExample() const
 {
 	return new Examples::FireworksExample(m_defaultCameraControllerFactory.Create(),
+                                          m_globeCameraTouchController,
                                           m_world.GetRenderingModule(),
                                           m_world.GetPlatformAbstractionModule(),
                                           m_world.GetStreamingModule(),
@@ -27,5 +32,6 @@ IExample* FireworksExampleFactory::CreateExample() const
 std::string FireworksExampleFactory::ExampleName() const
 {
 	return Examples::FireworksExample::GetName();
+}
 }
 

@@ -20,12 +20,12 @@ DebugRenderable* CreateVisualisation(const Eegeo::v3& roadColor,
 namespace Examples
 {
 NavigationGraphExample::NavigationGraphExample(NavigationGraphRepository& navigationGraphRepository,
-        Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController)
-	:m_navigationGraphRepository(navigationGraphRepository)
+        Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
+                        Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController)
+    : GlobeCameraExampleBase(pCameraController, cameraTouchController)
+	, m_navigationGraphRepository(navigationGraphRepository)
 	,m_addedHandler(*this)
 	,m_removedHandler(*this)
-	,m_globeCameraStateRestorer(*pCameraController)
-    ,m_pCameraController(pCameraController)
 {
 }
 
@@ -41,8 +41,8 @@ void NavigationGraphExample::Suspend()
 	m_navigationGraphRepository.UnregisterAddedCallback(&m_addedHandler);
 	m_navigationGraphRepository.UnregisterRemovalCallback(&m_removedHandler);
     
-    delete m_pCameraController;
-    m_pCameraController = NULL;
+    
+    
 }
 
 void NavigationGraphExample::Draw()
@@ -57,7 +57,7 @@ void NavigationGraphExample::Draw()
 
 		Eegeo::dv3 ecefPosition = navGraph.GetCellInfo().GetFaceCentreECEF() + Eegeo::dv3::FromSingle(navGraph.GetUpECEF() * 2.0f);
         
-        const Eegeo::Camera::RenderCamera& renderCamera = *m_pCameraController->GetCamera();
+        const Eegeo::Camera::RenderCamera& renderCamera = GetRenderCamera();
 		Eegeo::v3 m_cameraRelativePosition = Eegeo::Camera::CameraHelpers::CameraRelativePoint(ecefPosition, renderCamera.GetEcefLocation());
 		renderable.Draw(m_cameraRelativePosition, renderCamera, glState);
 	}
@@ -74,16 +74,7 @@ void NavigationGraphExample::HandleRemovedGraph(const Eegeo::Resources::Roads::N
 	delete m_navGraphsToVisualisers[&navGraph];
 	m_navGraphsToVisualisers.erase(m_navGraphsToVisualisers.find(&navGraph));
 }
-    
-const Eegeo::Camera::RenderCamera& NavigationGraphExample::GetRenderCamera() const
-{
-    return *m_pCameraController->GetCamera();
-}
 
-Eegeo::dv3 NavigationGraphExample::GetInterestPoint() const
-{
-    return m_pCameraController->GetEcefInterestPoint();
-}
 }
 
 namespace

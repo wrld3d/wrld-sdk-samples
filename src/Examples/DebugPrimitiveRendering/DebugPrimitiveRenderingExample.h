@@ -4,21 +4,20 @@
 #define __ExampleApp__DebugPrimitiveRenderingExample__
 
 #include "DebugRenderer.h"
-#include "IExample.h"
+#include "GlobeCameraExampleBase.h"
 
 namespace Examples
 {
-class DebugPrimitiveRenderingExample : public Examples::IExample
+class DebugPrimitiveRenderingExample : public GlobeCameraExampleBase
 {
 private:
 	Eegeo::DebugRendering::DebugRenderer& m_debugRenderer;
-    Eegeo::Camera::GlobeCamera::GlobeCameraController* m_pCameraController;
-	GlobeCameraStateRestorer m_globeCameraStateRestorer;
     float m_frustumDrawTimer;
 
 public:
 	DebugPrimitiveRenderingExample(Eegeo::DebugRendering::DebugRenderer &debugRenderer,
-	                               Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController);
+	                               Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
+                                   Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController);
 
 	static std::string GetName()
 	{
@@ -33,8 +32,8 @@ public:
 	void Update(float dt);
 	void Draw();
 	void Suspend();
-    const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
-    Eegeo::dv3 GetInterestPoint() const;
+    
+    
 };
 }
 

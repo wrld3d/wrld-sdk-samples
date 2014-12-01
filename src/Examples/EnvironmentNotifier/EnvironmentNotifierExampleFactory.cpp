@@ -2,16 +2,19 @@
 
 #include "EnvironmentNotifierExampleFactory.h"
 #include "EnvironmentNotifierExample.h"
-
+#include "DefaultCameraControllerFactory.h"
 #include "DebugRenderingModule.h"
 #include "TerrainStreamingModule.h"
 
-using namespace Examples;
+namespace Examples
+{
 
 EnvironmentNotifierExampleFactory::EnvironmentNotifierExampleFactory(Eegeo::EegeoWorld& world,
-        DefaultCameraControllerFactory& defaultCameraControllerFactory)
+        DefaultCameraControllerFactory& defaultCameraControllerFactory,
+                                          Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController)
 	: m_world(world)
 	, m_defaultCameraControllerFactory(defaultCameraControllerFactory)
+    , m_globeCameraTouchController(globeCameraTouchController)
 {
 
 }
@@ -23,7 +26,8 @@ IExample* EnvironmentNotifierExampleFactory::CreateExample() const
     
 	return new Examples::EnvironmentNotifierExample(debugRenderingModule.GetDebugRenderer(),
 	        terrainStreamingModule.GetTerrainStream(),
-	        m_defaultCameraControllerFactory.Create());
+	        m_defaultCameraControllerFactory.Create(),
+            m_globeCameraTouchController);
 }
 
 std::string EnvironmentNotifierExampleFactory::ExampleName() const
@@ -31,3 +35,4 @@ std::string EnvironmentNotifierExampleFactory::ExampleName() const
 	return Examples::EnvironmentNotifierExample::GetName();
 }
 
+}

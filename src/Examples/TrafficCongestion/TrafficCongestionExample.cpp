@@ -14,13 +14,13 @@ const float NumSecondsEachCongestion = 5.f;
 namespace Examples
 {
 TrafficCongestionExample::TrafficCongestionExample(Eegeo::TrafficCongestion::ITrafficCongestionService& trafficCongestionService,
-        Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController)
-	: m_trafficCongestionService(trafficCongestionService)
+        Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
+                        Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController)
+    : GlobeCameraExampleBase(pCameraController, cameraTouchController)
+	, m_trafficCongestionService(trafficCongestionService)
 	, m_timeAccumulator(5.f)
 	, m_congestionValue(static_cast<int>(Eegeo::TrafficCongestion::CongestionLevel::Light))
 	, m_key(Eegeo::Streaming::MortonKey::CreateFromString("01131232132001"))
-    , m_pCameraController(pCameraController)
-	, m_globeCameraStateRestorer(*pCameraController)
 {
 
 }
@@ -32,8 +32,8 @@ void TrafficCongestionExample::Suspend()
 	        RoadId,
 	        Eegeo::TrafficCongestion::CongestionLevel::Normal);
     
-    delete m_pCameraController;
-    m_pCameraController = NULL;
+    
+    
 }
 
 void TrafficCongestionExample::Update(float dt)
@@ -65,13 +65,4 @@ void TrafficCongestionExample::Update(float dt)
 	m_timeAccumulator += dt;
 }
     
-const Eegeo::Camera::RenderCamera& TrafficCongestionExample::GetRenderCamera() const
-{
-    return *m_pCameraController->GetCamera();
-}
-
-Eegeo::dv3 TrafficCongestionExample::GetInterestPoint() const
-{
-    return m_pCameraController->GetEcefInterestPoint();
-}
 }

@@ -3,21 +3,24 @@
 #include "RouteSimulationAnimationExample.h"
 #include "VectorMath.h"
 #include "GlobeCameraTouchControllerConfiguration.h"
+#include "GlobeCameraTouchController.h"
 #include "TransformHelpers.h"
 #include "RenderCamera.h"
+#include "ScreenProperties.h"
 
-using namespace Examples;
+
 using namespace Eegeo;
 using namespace Eegeo::Routes;
 using namespace Eegeo::Routes::Simulation;
 using namespace Eegeo::Routes::Simulation::View;
 using namespace Eegeo::Routes::Simulation::Camera;
 
+namespace Examples
+{
 RouteSimulationAnimationExample::RouteSimulationAnimationExample(
     RouteService& routeService,
     RouteSimulationService& routeSimulationService,
     RouteSimulationViewService& routeSimulationViewService,
-    Eegeo::Camera::GlobeCamera::GlobeCameraController* pDefaultCameraController,
     Eegeo::Helpers::IFileIO& fileIO,
     Eegeo::Rendering::AsyncTexturing::IAsyncTextureRequestor& textureRequestor,
     RouteSimulationGlobeCameraControllerFactory& routeSimulationGlobeCameraControllerFactory,
@@ -25,7 +28,6 @@ RouteSimulationAnimationExample::RouteSimulationAnimationExample(
 	:m_routeService(routeService)
 	,m_routeSimulationService(routeSimulationService)
 	,m_routeSimulationViewService(routeSimulationViewService)
-	,m_pDefaultCameraController(pDefaultCameraController)
 	,m_fileIO(fileIO)
 	,m_textureRequestor(textureRequestor)
 	,m_routeSimulationGlobeCameraControllerFactory(routeSimulationGlobeCameraControllerFactory)
@@ -37,7 +39,10 @@ RouteSimulationAnimationExample::RouteSimulationAnimationExample(
 	,m_pRouteSimulationSession(NULL)
 	,m_pViewBindingForCameraSession(NULL)
 	,m_pRouteSessionFollowCameraController(NULL)
-	,m_globeCameraStateRestorer(*pDefaultCameraController)
+{
+}
+
+RouteSimulationAnimationExample::~RouteSimulationAnimationExample()
 {
 }
 
@@ -60,9 +65,10 @@ void RouteSimulationAnimationExample::Initialise()
 	m_pRouteSessionFollowCameraController = m_routeSimulationGlobeCameraControllerFactory.Create(false, touchConfiguration, routeSimCameraConfig);
     
     Eegeo::Camera::RenderCamera* pRenderCamera = m_pRouteSessionFollowCameraController->GetCamera();
-    const Eegeo::Camera::RenderCamera& currentCamera = *m_pDefaultCameraController->GetCamera();
-    pRenderCamera->SetViewport(0, 0, currentCamera.GetViewportWidth(), currentCamera.GetViewportHeight());
-    pRenderCamera->SetProjection(Eegeo::Math::Deg2Rad(currentCamera.GetFOV()), currentCamera.GetNearClip(), currentCamera.GetFarClip());
+    const float fovDegrees = 45.f;
+    const float nearClipDistance = 10.f;
+    const float farClipDistance = 10000.f;
+    pRenderCamera->SetProjection(Eegeo::Math::Deg2Rad(fovDegrees), nearClipDistance, farClipDistance);
 
 	Eegeo::m44 transform;
 	CalculateTransform(transform);
@@ -146,9 +152,6 @@ void RouteSimulationAnimationExample::Suspend()
 
 	delete m_pRouteSessionFollowCameraController;
 	m_pRouteSessionFollowCameraController = NULL;
-
-    delete m_pDefaultCameraController;
-    m_pDefaultCameraController = NULL;
     
 	m_initialised = false;
 }
@@ -216,6 +219,11 @@ void RouteSimulationAnimationExample::CalculateTransform(Eegeo::m44& transform)
 
 }
 
+void RouteSimulationAnimationExample::NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties)
+{
+    m_pRouteSessionFollowCameraController->GetCamera()->SetViewport(0.f, 0.f, screenProperties.GetScreenWidth(), screenProperties.GetScreenHeight());
+}
+
 const Eegeo::Camera::RenderCamera& RouteSimulationAnimationExample::GetRenderCamera() const
 {
     return *m_pRouteSessionFollowCameraController->GetCamera();
@@ -226,57 +234,49 @@ Eegeo::dv3 RouteSimulationAnimationExample::GetInterestPoint() const
     return m_pRouteSessionFollowCameraController->GetEcefInterestPoint();
 }
 
-bool RouteSimulationAnimationExample::Event_TouchRotate(const AppInterface::RotateData& data)
+void RouteSimulationAnimationExample::Event_TouchRotate(const AppInterface::RotateData& data)
 {
 	m_pRouteSessionFollowCameraController->GetTouchController().Event_TouchRotate(data);
-	return true;
 }
 
-bool RouteSimulationAnimationExample::Event_TouchRotate_Start(const AppInterface::RotateData& data)
+void RouteSimulationAnimationExample::Event_TouchRotate_Start(const AppInterface::RotateData& data)
 {
 	m_pRouteSessionFollowCameraController->GetTouchController().Event_TouchRotate_Start(data);
-	return true;
 }
 
-bool RouteSimulationAnimationExample::Event_TouchRotate_End(const AppInterface::RotateData& data)
+void RouteSimulationAnimationExample::Event_TouchRotate_End(const AppInterface::RotateData& data)
 {
 	m_pRouteSessionFollowCameraController->GetTouchController().Event_TouchRotate_End(data);
-	return true;
 }
 
-bool RouteSimulationAnimationExample::Event_TouchPinch(const AppInterface::PinchData& data)
+void RouteSimulationAnimationExample::Event_TouchPinch(const AppInterface::PinchData& data)
 {
 	m_pRouteSessionFollowCameraController->GetTouchController().Event_TouchPinch(data);
-	return true;
 }
 
-bool RouteSimulationAnimationExample::Event_TouchPinch_Start(const AppInterface::PinchData& data)
+void RouteSimulationAnimationExample::Event_TouchPinch_Start(const AppInterface::PinchData& data)
 {
 	m_pRouteSessionFollowCameraController->GetTouchController().Event_TouchPinch_Start(data);
-	return true;
 }
 
-bool RouteSimulationAnimationExample::Event_TouchPinch_End(const AppInterface::PinchData& data)
+void RouteSimulationAnimationExample::Event_TouchPinch_End(const AppInterface::PinchData& data)
 {
 	m_pRouteSessionFollowCameraController->GetTouchController().Event_TouchPinch_End(data);
-	return true;
 }
 
-bool RouteSimulationAnimationExample::Event_TouchPan(const AppInterface::PanData& data)
+void RouteSimulationAnimationExample::Event_TouchPan(const AppInterface::PanData& data)
 {
 	m_pRouteSessionFollowCameraController->GetTouchController().Event_TouchPan(data);
-	return true;
 }
 
-bool RouteSimulationAnimationExample::Event_TouchPan_Start(const AppInterface::PanData& data)
+void RouteSimulationAnimationExample::Event_TouchPan_Start(const AppInterface::PanData& data)
 {
 	m_pRouteSessionFollowCameraController->GetTouchController().Event_TouchPan_Start(data);
-	return true;
 }
 
-bool RouteSimulationAnimationExample::Event_TouchPan_End(const AppInterface::PanData& data)
+void RouteSimulationAnimationExample::Event_TouchPan_End(const AppInterface::PanData& data)
 {
-
 	m_pRouteSessionFollowCameraController->GetTouchController().Event_TouchPan_End(data);
-	return true;
+}
+
 }

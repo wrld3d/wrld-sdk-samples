@@ -43,19 +43,19 @@ void VectorLatLonToV2(const std::vector<Eegeo::Space::LatLong>& input, std::vect
 
 namespace Examples
 {
-ControlCityThemeExample::ControlCityThemeExample(Eegeo::Resources::CityThemes::ICityThemesService& themeService,
+    ControlCityThemeExample::ControlCityThemeExample(Eegeo::Resources::CityThemes::ICityThemesService& themeService,
         Eegeo::Resources::CityThemes::ICityThemeRepository& themeRepository,
         Eegeo::Resources::CityThemes::ICityThemesUpdater& themeUpdater,
         Eegeo::EegeoWorld& eegeoWorld,
-        Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController)
-	:m_themeService(themeService)
+        Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
+                        Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController)
+	: GlobeCameraExampleBase(pCameraController, cameraTouchController)
+    , m_themeService(themeService)
 	,m_themeRepository(themeRepository)
 	,m_themeUpdater(themeUpdater)
 	,m_eegeoWorld(eegeoWorld)
 	,m_themeChanged(false)
 	,m_initialCityTheme(themeService.GetCurrentTheme())
-	,m_globeCameraStateRestorer(*pCameraController)
-    ,m_pCameraController(pCameraController)
 {
 }
 
@@ -63,8 +63,8 @@ void ControlCityThemeExample::Suspend()
 {
 	m_themeService.SetSpecificTheme(m_initialCityTheme);
 	m_themeUpdater.SetEnabled(true);
-    delete m_pCameraController;
-    m_pCameraController = NULL;
+    
+    
 }
 
 // This method does the following:
@@ -125,16 +125,6 @@ void ControlCityThemeExample::Update(float dt)
 			m_themeChanged = true;
 		}
 	}
-}
-    
-const Eegeo::Camera::RenderCamera& ControlCityThemeExample::GetRenderCamera() const
-{
-    return *m_pCameraController->GetCamera();
-}
-
-Eegeo::dv3 ControlCityThemeExample::GetInterestPoint() const
-{
-    return m_pCameraController->GetEcefInterestPoint();
 }
 
 }

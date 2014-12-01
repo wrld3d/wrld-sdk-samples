@@ -3,13 +3,13 @@
 #ifndef ExampleApp_ControlCityThemeExample_h
 #define ExampleApp_ControlCityThemeExample_h
 
-#include "IExample.h"
+#include "GlobeCameraExampleBase.h"
 #include "CityThemes.h"
 #include "CityThemeData.h"
 
 namespace Examples
 {
-class ControlCityThemeExample : public IExample
+class ControlCityThemeExample : public GlobeCameraExampleBase
 {
 private:
 	Eegeo::Resources::CityThemes::ICityThemesService& m_themeService;
@@ -18,9 +18,6 @@ private:
 	Eegeo::EegeoWorld& m_eegeoWorld;
 	bool m_themeChanged;
 	Eegeo::Resources::CityThemes::CityThemeData m_initialCityTheme;
-    
-    Eegeo::Camera::GlobeCamera::GlobeCameraController* m_pCameraController;
-	GlobeCameraStateRestorer m_globeCameraStateRestorer;
 
 	void ChangeTheme();
 	void FindThemeByPointInPolygon();
@@ -29,7 +26,8 @@ public:
 	                        Eegeo::Resources::CityThemes::ICityThemeRepository& themeRepository,
 	                        Eegeo::Resources::CityThemes::ICityThemesUpdater& themeUpdater,
 	                        Eegeo::EegeoWorld& eegeoWorld,
-	                        Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController);
+	                        Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
+                        Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController);
 
 	static std::string GetName()
 	{
@@ -44,8 +42,8 @@ public:
 	void Update(float dt);
 	void Draw() {}
 	void Suspend();
-    const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
-    Eegeo::dv3 GetInterestPoint() const;
+    
+    
 };
 }
 

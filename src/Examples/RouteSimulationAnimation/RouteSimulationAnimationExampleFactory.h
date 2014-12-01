@@ -4,7 +4,7 @@
 #define __ExampleApp__RouteSimulationAnimationExampleFactory__
 
 #include "IExampleFactory.h"
-#include "IExample.h"
+#include "GlobeCameraExampleBase.h"
 #include "EegeoWorld.h"
 
 namespace Examples
@@ -12,12 +12,14 @@ namespace Examples
 class RouteSimulationAnimationExampleFactory : public IExampleFactory
 {
 	Eegeo::EegeoWorld& m_world;
-	DefaultCameraControllerFactory& m_defaultCameraControllerFactory;
+    DefaultCameraControllerFactory& m_defaultCameraControllerFactory;
+    Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& m_globeCameraTouchController;
 	Eegeo::Routes::Simulation::Camera::RouteSimulationGlobeCameraControllerFactory* m_pRouteSimulationGlobeCameraControllerFactory;
 
 public:
 	RouteSimulationAnimationExampleFactory(Eegeo::EegeoWorld& world,
-	                                       DefaultCameraControllerFactory& defaultCameraControllerFactory);
+	                                       DefaultCameraControllerFactory& defaultCameraControllerFactory,
+                                           Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController);
 
 	~RouteSimulationAnimationExampleFactory();
 

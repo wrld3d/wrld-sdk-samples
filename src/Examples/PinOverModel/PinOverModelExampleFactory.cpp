@@ -3,7 +3,7 @@
 #include "PinOverModelExampleFactory.h"
 #include "PinOverModelExample.h"
 #include "LocalAsyncTextureLoader.h"
-
+#include "DefaultCameraControllerFactory.h"
 #include "IPlatformAbstractionModule.h"
 #include "RenderingModule.h"
 #include "TerrainModelModule.h"
@@ -11,12 +11,15 @@
 #include "AsyncLoadersModule.h"
 #include "LightingModule.h"
 
-using namespace Examples;
+namespace Examples
+{
 
 PinOverModelExampleFactory::PinOverModelExampleFactory(Eegeo::EegeoWorld& world,
-        DefaultCameraControllerFactory& defaultCameraControllerFactory)
+        DefaultCameraControllerFactory& defaultCameraControllerFactory,
+                                          Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController)
 	: m_world(world)
 	, m_defaultCameraControllerFactory(defaultCameraControllerFactory)
+    , m_globeCameraTouchController(globeCameraTouchController)
 {
 
 }
@@ -43,7 +46,8 @@ IExample* PinOverModelExampleFactory::CreateExample() const
 	        asyncLoadersModule.GetLocalAsyncTextureLoader(),
 	        lightingModule.GetGlobalFogging(),
 	        renderingModule.GetNullMaterialFactory(),
-	        m_defaultCameraControllerFactory.Create());
+	        m_defaultCameraControllerFactory.Create(),
+            m_globeCameraTouchController);
 }
 
 std::string PinOverModelExampleFactory::ExampleName() const
@@ -51,4 +55,5 @@ std::string PinOverModelExampleFactory::ExampleName() const
 	return Examples::PinOverModelExample::GetName();
 }
 
+}
 

@@ -4,8 +4,6 @@
 #include "UIHelpers.h"
 #include "iOSUIHelpers.h"
 
-using namespace Examples;
-
 @implementation IRouteSimulationExampleBinding
 
 Examples::iOSRouteSimulationExampleView* m_pExample;
@@ -82,6 +80,10 @@ namespace
         return button;
     }
 }
+
+namespace Examples
+{
+    
 
 iOSRouteSimulationExampleView::iOSRouteSimulationExampleView(UIView* pView)
 	: m_pView(pView)
@@ -263,4 +265,6 @@ void iOSRouteSimulationExampleView::RemoveSideOfRoadToDriveOnToggledHandler(IUIA
 void iOSRouteSimulationExampleView::ChangeSideOfRoad()
 {
 	InvokeAllHandlers(m_roadSideChangedHandlers);
+}
+
 }

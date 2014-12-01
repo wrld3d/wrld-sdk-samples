@@ -3,7 +3,7 @@
 #ifndef __ExampleApp__NavigationGraphExample__
 #define __ExampleApp__NavigationGraphExample__
 
-#include "IExample.h"
+#include "GlobeCameraExampleBase.h"
 
 #include "NavigationGraphRepository.h"
 #include "NavigationGraphAddedCallback.h"
@@ -14,7 +14,7 @@
 
 namespace Examples
 {
-class NavigationGraphExample : public IExample
+class NavigationGraphExample : public GlobeCameraExampleBase
 {
 private:
 	typedef std::map<const Eegeo::Resources::Roads::Navigation::NavigationGraph*, Eegeo::DebugRendering::DebugRenderable*> MapType;
@@ -43,9 +43,8 @@ private:
 	void HandleAddedGraph(const Eegeo::Resources::Roads::Navigation::NavigationGraph& navGraph);
 	void HandleRemovedGraph(const Eegeo::Resources::Roads::Navigation::NavigationGraph& navGraph);
 
-    Eegeo::Camera::GlobeCamera::GlobeCameraController* m_pCameraController;
+    
 	Eegeo::Resources::Roads::Navigation::NavigationGraphRepository& m_navigationGraphRepository;
-	GlobeCameraStateRestorer m_globeCameraStateRestorer;
 
 	Added m_addedHandler;
 	Removed m_removedHandler;
@@ -53,7 +52,8 @@ private:
 
 public:
 	NavigationGraphExample(Eegeo::Resources::Roads::Navigation::NavigationGraphRepository& navigationGraphRepository,
-	                       Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController);
+	                       Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
+                        Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController);
 
 	static std::string GetName()
 	{
@@ -68,8 +68,8 @@ public:
 	void Update(float dt) {}
 	void Draw();
 	void Suspend();
-    const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
-    Eegeo::dv3 GetInterestPoint() const;
+    
+    
 };
 }
 

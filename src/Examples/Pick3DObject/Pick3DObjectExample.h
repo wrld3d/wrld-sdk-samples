@@ -5,7 +5,7 @@
 
 #include <iostream>
 
-#include "IExample.h"
+#include "GlobeCameraExampleBase.h"
 #include "RenderContext.h"
 #include "SphereMesh.h"
 #include "LatLongAltitude.h"
@@ -13,7 +13,7 @@
 
 namespace Examples
 {
-class Pick3DObjectExample : public IExample
+class Pick3DObjectExample : public GlobeCameraExampleBase
 {
 private:
 	struct Ray
@@ -30,13 +30,13 @@ private:
     Eegeo::Space::LatLongAltitude m_interestLocation;
     Eegeo::DebugRendering::DebugRenderer& m_debugRenderer;
 
-	GlobeCameraStateRestorer m_globeCameraStateRestorer;
-    Eegeo::Camera::GlobeCamera::GlobeCameraController* m_pCameraController;
+    
 
 public:
 	Pick3DObjectExample(
                         Eegeo::DebugRendering::DebugRenderer& debugRenderer,
-                        Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController);
+                        Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
+                        Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController);
 
 	static std::string GetName()
 	{
@@ -51,12 +51,12 @@ public:
 	void Update(float dt);
 	void Draw();
 	void Suspend();
-    const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
-    Eegeo::dv3 GetInterestPoint() const;
+    
+    
 
-	bool Event_TouchPan				(const AppInterface::PanData& data);
-	bool Event_TouchDown            (const AppInterface::TouchData& data);
-	bool Event_TouchUp              (const AppInterface::TouchData& data);
+	void Event_TouchPan				(const AppInterface::PanData& data);
+	void Event_TouchDown            (const AppInterface::TouchData& data);
+	void Event_TouchUp              (const AppInterface::TouchData& data);
 
 private:
 	void CreateSphereAtLocation(const Eegeo::dv3& location, const Eegeo::v3& colour);

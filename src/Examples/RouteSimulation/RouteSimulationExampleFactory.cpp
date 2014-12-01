@@ -5,20 +5,23 @@
 #include "RenderContext.h"
 #include "LocalAsyncTextureLoader.h"
 #include "CollisionMeshResourceRepository.h"
-
-using namespace Examples;
-
+#include "DefaultCameraControllerFactory.h"
 #include "TerrainModelModule.h"
 #include "MapModule.h"
 #include "RoutesModule.h"
 #include "IPlatformAbstractionModule.h"
 #include "AsyncLoadersModule.h"
 
+namespace Examples
+{
+
 RouteSimulationExampleFactory::RouteSimulationExampleFactory(Eegeo::EegeoWorld& world,
-        DefaultCameraControllerFactory& defaultCameraControllerFactory,
-        const IRouteSimulationExampleViewFactory& routeSimulationViewFactory)
+                                                             DefaultCameraControllerFactory& defaultCameraControllerFactory,
+                                                             Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController,
+                                                             const IRouteSimulationExampleViewFactory& routeSimulationViewFactory)
 	: m_world(world)
 	, m_defaultCameraControllerFactory(defaultCameraControllerFactory)
+    , m_globeCameraTouchController(globeCameraTouchController)
 	, m_routeSimulationViewFactory(routeSimulationViewFactory)
 {
     Eegeo::Modules::Map::Layers::TerrainModelModule& terrainModelModule = m_world.GetTerrainModelModule();
@@ -50,6 +53,7 @@ IExample* RouteSimulationExampleFactory::CreateExample() const
 	        platformAbstractionModule.GetFileIO(),
 	        asyncLoadersModule.GetLocalAsyncTextureLoader(),
 	        m_defaultCameraControllerFactory.Create(),
+            m_globeCameraTouchController,
 	        *m_pRouteSimulationGlobeCameraControllerFactory,
 	        m_routeSimulationViewFactory,
 	        m_world);
@@ -60,4 +64,4 @@ std::string RouteSimulationExampleFactory::ExampleName() const
 	return Examples::RouteSimulationExample::GetName();
 }
 
-
+}

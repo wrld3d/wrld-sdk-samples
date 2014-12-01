@@ -4,7 +4,8 @@
 #define __ExampleApp__ReadHeadingExampleFactory__
 
 #include "IExampleFactory.h"
-#include "Camera.h"
+#include "GlobeCamera.h"
+#include "EegeoRootDeclarations.h"
 
 namespace Examples
 {
@@ -12,11 +13,13 @@ namespace Examples
     {
         Eegeo::EegeoWorld& m_world;
         DefaultCameraControllerFactory& m_defaultCameraControllerFactory;
+        Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& m_globeCameraTouchController;
 
     public:
         ReadHeadingExampleFactory(
-        	Eegeo::EegeoWorld& world,
-            DefaultCameraControllerFactory& defaultCameraControllerFactory
+                                  Eegeo::EegeoWorld& world,
+                                  DefaultCameraControllerFactory& defaultCameraControllerFactory,
+                                  Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController
         );
 
         std::string ExampleName() const;

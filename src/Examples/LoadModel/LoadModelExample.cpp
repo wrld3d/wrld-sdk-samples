@@ -6,6 +6,10 @@
 #include "ModelMaterial.h"
 #include "Mesh.h"
 #include "Node.h"
+#include "GlobeCameraController.h"
+
+
+
 #include <sys/time.h>
 
 #include "GLState.h"
@@ -19,16 +23,16 @@ LoadModelExample::LoadModelExample(
                                    Eegeo::Helpers::IFileIO& fileIO,
                                    Eegeo::Rendering::AsyncTexturing::IAsyncTextureRequestor& textureRequestor,
                                    Eegeo::Lighting::GlobalFogging& fogging,
-                                   Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController)
-	:m_interestLocation(Eegeo::Space::LatLongAltitude::FromECEF(pCameraController->GetEcefInterestPoint()))
+                                   Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
+                        Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController)
+    : GlobeCameraExampleBase(pCameraController, cameraTouchController)
+	, m_interestLocation(Eegeo::Space::LatLongAltitude::FromECEF(pCameraController->GetEcefInterestPoint()))
 	,m_fileIO(fileIO)
 	,m_textureRequestor(textureRequestor)
 	,m_pModel(NULL)
 	,m_globalFogging(fogging)
 	,m_pDiscMaterial(NULL)
 	,m_elapsedTime(0.0f)
-	,m_globeCameraStateRestorer(*pCameraController)
-    ,m_pCameraController(pCameraController)
 {
 }
 
@@ -73,8 +77,8 @@ void LoadModelExample::Suspend()
 	delete m_pModel;
 	m_pModel = NULL;
     
-    delete m_pCameraController;
-    m_pCameraController = NULL;
+    
+    
 }
 
 void LoadModelExample::Update(float dt)
@@ -111,7 +115,7 @@ void LoadModelExample::Draw()
 	Eegeo::v3 right(Eegeo::v3::Cross(up, forward).Norm());
 	up = Eegeo::v3::Cross(forward, right);
 
-    const Eegeo::Camera::RenderCamera& renderCamera = *m_pCameraController->GetCamera();
+    const Eegeo::Camera::RenderCamera& renderCamera = GetRenderCamera();
 	//compute a camera local position
 	Eegeo::v3 cameraRelativePos = (m_mesh.m_positionEcef - renderCamera.GetEcefLocation()).ToSingle();
 
@@ -341,13 +345,4 @@ void BoundsVisualiser::Draw(const Eegeo::v3& minExtents, const Eegeo::v3& maxExt
 	DestroyGeometry();
 }
 
-const Eegeo::Camera::RenderCamera& LoadModelExample::GetRenderCamera() const
-{
-    return *m_pCameraController->GetCamera();
-}
-
-Eegeo::dv3 LoadModelExample::GetInterestPoint() const
-{
-    return m_pCameraController->GetEcefInterestPoint();
-}
 }

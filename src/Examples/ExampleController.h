@@ -3,7 +3,7 @@
 #ifndef __ExampleApp__ExampleController__
 #define __ExampleApp__ExampleController__
 
-#include "IExample.h"
+#include "GlobeCameraExampleBase.h"
 #include "IExampleFactory.h"
 #include "Types.h"
 #include "EegeoWorld.h"
@@ -25,7 +25,8 @@ class ExampleController : private Eegeo::NonCopyable
 	Eegeo::EegeoWorld& m_world;
 	std::vector<IExampleFactory*> m_factories;
 	bool m_uiVisible;
-    DefaultCameraControllerFactory& m_defaultCameraControllerFactory;
+  	DefaultCameraControllerFactory& m_defaultCameraControllerFactory;
+    Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& m_globeCameraTouchController;
 
 	IExampleControllerView& m_view;
 	UIActionHandler<ExampleController> m_nextExampleHandler;
@@ -39,7 +40,8 @@ class ExampleController : private Eegeo::NonCopyable
 public:
 	ExampleController(Eegeo::EegeoWorld& world,
 	                  IExampleControllerView& view,
-                      DefaultCameraControllerFactory& defaultCameraControllerFactory);
+                      DefaultCameraControllerFactory& defaultCameraControllerFactory,
+                      Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController);
 
 	~ExampleController();
 
@@ -76,33 +78,33 @@ public:
 	template <typename TExampleFactory>
 	void RegisterCameraExample()
 	{
-		m_factories.push_back(Eegeo_NEW((TExampleFactory)(m_world, m_defaultCameraControllerFactory)));
+		m_factories.push_back(Eegeo_NEW((TExampleFactory)(m_world, m_defaultCameraControllerFactory, m_globeCameraTouchController)));
 	}
     
     template <typename TExampleFactory>
     void RegisterCameraScreenPropertiesProviderExample(const ScreenPropertiesProvider& screenPropertiesProvider)
     {
-        m_factories.push_back(Eegeo_NEW((TExampleFactory)(m_world, m_defaultCameraControllerFactory, screenPropertiesProvider)));
+        m_factories.push_back(Eegeo_NEW((TExampleFactory)(m_world, m_defaultCameraControllerFactory, m_globeCameraTouchController, screenPropertiesProvider)));
     }
 
-	bool Event_TouchRotate(const AppInterface::RotateData& data);
-	bool Event_TouchRotate_Start(const AppInterface::RotateData& data);
-	bool Event_TouchRotate_End(const AppInterface::RotateData& data);
+	void Event_TouchRotate(const AppInterface::RotateData& data);
+	void Event_TouchRotate_Start(const AppInterface::RotateData& data);
+	void Event_TouchRotate_End(const AppInterface::RotateData& data);
 
-	bool Event_TouchPinch(const AppInterface::PinchData& data);
-	bool Event_TouchPinch_Start(const AppInterface::PinchData& data);
-	bool Event_TouchPinch_End(const AppInterface::PinchData& data);
+	void Event_TouchPinch(const AppInterface::PinchData& data);
+	void Event_TouchPinch_Start(const AppInterface::PinchData& data);
+	void Event_TouchPinch_End(const AppInterface::PinchData& data);
 
-	bool Event_TouchPan(const AppInterface::PanData& data);
-	bool Event_TouchPan_Start(const AppInterface::PanData& data);
-	bool Event_TouchPan_End(const AppInterface::PanData& data);
+	void Event_TouchPan(const AppInterface::PanData& data);
+	void Event_TouchPan_Start(const AppInterface::PanData& data);
+	void Event_TouchPan_End(const AppInterface::PanData& data);
 
-	bool Event_TouchTap(const AppInterface::TapData& data);
-	bool Event_TouchDoubleTap(const AppInterface::TapData& data);
+	void Event_TouchTap(const AppInterface::TapData& data);
+	void Event_TouchDoubleTap(const AppInterface::TapData& data);
 
-	bool Event_TouchDown(const AppInterface::TouchData& data);
-	bool Event_TouchMove(const AppInterface::TouchData& data);
-	bool Event_TouchUp(const AppInterface::TouchData& data);
+	void Event_TouchDown(const AppInterface::TouchData& data);
+	void Event_TouchMove(const AppInterface::TouchData& data);
+	void Event_TouchUp(const AppInterface::TouchData& data);
 };
 }
 

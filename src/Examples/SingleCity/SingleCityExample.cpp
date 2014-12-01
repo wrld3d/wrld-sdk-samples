@@ -5,7 +5,8 @@
 #include "LatLongAltitude.h"
 #include "CubeMapCellInfo.h"
 
-using namespace Examples;
+namespace Examples
+{
 
 namespace
 {
@@ -74,14 +75,14 @@ SingleCityExample::SingleCityExample(
                                      Eegeo::Web::PrecacheService& precacheService,
                                      Eegeo::Streaming::StreamingVolumeController& streamingVolumeController,
                                      Eegeo::EegeoWorld& world,
-                                     Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController)
-	: m_precacheService(precacheService)
+                                     Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
+                        Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController)
+    : GlobeCameraExampleBase(pCameraController, cameraTouchController)
+	, m_precacheService(precacheService)
 	, m_streamingVolumeController(streamingVolumeController)
-	, m_pCameraController(pCameraController)
 	, m_world(world)
 	, m_startedPrecaching(false)
 	, m_precacheComplete(false)
-	, m_globeCameraStateRestorer(*pCameraController)
 {
 
 }
@@ -95,8 +96,8 @@ void SingleCityExample::Suspend()
 
 	m_startedPrecaching = false;
     
-    delete m_pCameraController;
-    m_pCameraController = NULL;
+    
+    
 }
 
 void SingleCityExample::Update(float dt)
@@ -136,7 +137,7 @@ void SingleCityExample::AfterCameraUpdate()
 
 void SingleCityExample::ConstrainCamera()
 {
-    Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCamera = GlobeCamera();
+    Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCamera = GetGlobeCameraController();
 	Eegeo::dv3 interestPoint = globeCamera.GetInterestBasis().GetPointEcef();
 
 	const Eegeo::Space::LatLongAltitude constrainCenter = Eegeo::Space::LatLongAltitude::FromDegrees(37.7858, -122.401, 0);
@@ -173,13 +174,4 @@ void SingleCityExample::ConstrainCamera()
 		m_streamingVolumeController.update(0.f, *globeCamera.GetCamera());
 	}
 }
-
-const Eegeo::Camera::RenderCamera& SingleCityExample::GetRenderCamera() const
-{
-    return *m_pCameraController->GetCamera();
-}
-
-Eegeo::dv3 SingleCityExample::GetInterestPoint() const
-{
-    return m_pCameraController->GetEcefInterestPoint();
 }

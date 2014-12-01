@@ -4,7 +4,7 @@
 #define __ExampleApp__DebugPrimitiveRenderingExampleFactory__
 
 #include "IExampleFactory.h"
-#include "IExample.h"
+#include "GlobeCameraExampleBase.h"
 #include "EegeoWorld.h"
 
 namespace Examples
@@ -13,10 +13,12 @@ class DebugPrimitiveRenderingExampleFactory : public IExampleFactory
 {
 	Eegeo::EegeoWorld& m_world;
 	DefaultCameraControllerFactory& m_defaultCameraControllerFactory;
+    Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& m_globeCameraTouchController;
 
 public:
 	DebugPrimitiveRenderingExampleFactory(Eegeo::EegeoWorld& world,
-	                                      DefaultCameraControllerFactory& defaultCameraControllerFactory);
+	                                      DefaultCameraControllerFactory& defaultCameraControllerFactory,
+                                          Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController);
 
 	std::string ExampleName() const;
 

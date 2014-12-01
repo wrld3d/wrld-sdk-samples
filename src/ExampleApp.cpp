@@ -123,10 +123,10 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     
     m_pLoadingScreen = CreateLoadingScreen(screenProperties, eegeoWorld.GetRenderingModule(), eegeoWorld.GetPlatformAbstractionModule());
     
-    m_pExampleController = new Examples::ExampleController(*m_pWorld, view, *m_pCameraControllerFactory);
+    m_pExampleController = new Examples::ExampleController(*m_pWorld, view, *m_pCameraControllerFactory, *m_pCameraTouchController);
 
 	//register all generic examples
-    m_pExampleController->RegisterCameraExample<Examples::CameraSplineExampleFactory>();
+    m_pExampleController->RegisterExample<Examples::CameraSplineExampleFactory>();
 	m_pExampleController->RegisterCameraExample<Examples::CameraTransitionExampleFactory>();
 	m_pExampleController->RegisterCameraExample<Examples::ControlCityThemeExampleFactory>();
 	m_pExampleController->RegisterCameraExample<Examples::DebugPrimitiveRenderingExampleFactory>();
@@ -193,7 +193,6 @@ void ExampleApp::Update (float dt)
     const Eegeo::Camera::RenderCamera& currentRenderCamera = m_pExampleController->GetCurrentActiveCamera();
     const Eegeo::dv3& currentInterestPoint = m_pExampleController->GetCurrentInterestPoint();
 
-    // todo fix incorrect camera interest point
 	eegeoWorld.Update(dt, currentRenderCamera, currentInterestPoint);
     m_pExampleController->Update(dt);
     
@@ -227,8 +226,6 @@ void ExampleApp::NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenPro
         m_pLoadingScreen->NotifyScreenDimensionsChanged(m_screenProperties.GetScreenWidth(), m_screenProperties.GetScreenHeight());
     }
     
-    //m_pGlobeCameraController->GetCamera()->SetViewport(0.f, 0.f, m_screenProperties.GetScreenWidth(), m_screenProperties.GetScreenHeight());
-    
     m_pExampleController->NotifyScreenPropertiesChanged(screenProperties);
 }
 
@@ -242,6 +239,7 @@ void ExampleApp::UpdateLoadingScreen(float dt)
     if (!eegeoWorld.Initialising() && !m_pLoadingScreen->IsDismissed())
     {
         m_pLoadingScreen->Dismiss();
+        Eegeo::TtyHandler::TtyEnabled = true;
     }
     
     m_pLoadingScreen->SetProgress(eegeoWorld.GetInitialisationProgress());
@@ -261,10 +259,8 @@ void ExampleApp::Event_TouchRotate(const AppInterface::RotateData& data)
 		return;
 	}
 
-	if(!m_pExampleController->Event_TouchRotate(data))
-	{
-		m_pCameraTouchController->Event_TouchRotate(data);
-	}
+	m_pExampleController->Event_TouchRotate(data);
+
 }
 
 void ExampleApp::Event_TouchRotate_Start(const AppInterface::RotateData& data)
@@ -274,10 +270,7 @@ void ExampleApp::Event_TouchRotate_Start(const AppInterface::RotateData& data)
 		return;
 	}
     
-	if(!m_pExampleController->Event_TouchRotate_Start(data))
-	{
-		m_pCameraTouchController->Event_TouchRotate_Start(data);
-	}
+	m_pExampleController->Event_TouchRotate_Start(data);
 }
 
 void ExampleApp::Event_TouchRotate_End(const AppInterface::RotateData& data)
@@ -287,10 +280,7 @@ void ExampleApp::Event_TouchRotate_End(const AppInterface::RotateData& data)
 		return;
 	}
     
-	if(!m_pExampleController->Event_TouchRotate_End(data))
-	{
-		m_pCameraTouchController->Event_TouchRotate_End(data);
-	}
+	m_pExampleController->Event_TouchRotate_End(data);
 }
 
 void ExampleApp::Event_TouchPinch(const AppInterface::PinchData& data)
@@ -300,10 +290,7 @@ void ExampleApp::Event_TouchPinch(const AppInterface::PinchData& data)
 		return;
 	}
     
-	if(!m_pExampleController->Event_TouchPinch(data))
-	{
-		m_pCameraTouchController->Event_TouchPinch(data);
-	}
+	m_pExampleController->Event_TouchPinch(data);
 }
 
 void ExampleApp::Event_TouchPinch_Start(const AppInterface::PinchData& data)
@@ -313,10 +300,7 @@ void ExampleApp::Event_TouchPinch_Start(const AppInterface::PinchData& data)
 		return;
 	}
     
-	if(!m_pExampleController->Event_TouchPinch_Start(data))
-	{
-		m_pCameraTouchController->Event_TouchPinch_Start(data);
-	}
+	m_pExampleController->Event_TouchPinch_Start(data);
 }
 
 void ExampleApp::Event_TouchPinch_End(const AppInterface::PinchData& data)
@@ -326,10 +310,7 @@ void ExampleApp::Event_TouchPinch_End(const AppInterface::PinchData& data)
 		return;
 	}
     
-	if(!m_pExampleController->Event_TouchPinch_End(data))
-	{
-		m_pCameraTouchController->Event_TouchPinch_End(data);
-	}
+	m_pExampleController->Event_TouchPinch_End(data);
 }
 
 void ExampleApp::Event_TouchPan(const AppInterface::PanData& data)
@@ -339,10 +320,7 @@ void ExampleApp::Event_TouchPan(const AppInterface::PanData& data)
 		return;
 	}
     
-	if(!m_pExampleController->Event_TouchPan(data))
-	{
-		m_pCameraTouchController->Event_TouchPan(data);
-	}
+	m_pExampleController->Event_TouchPan(data);
 }
 
 void ExampleApp::Event_TouchPan_Start(const AppInterface::PanData& data)
@@ -352,10 +330,7 @@ void ExampleApp::Event_TouchPan_Start(const AppInterface::PanData& data)
 		return;
 	}
     
-	if(!m_pExampleController->Event_TouchPan_Start(data))
-	{
-		m_pCameraTouchController->Event_TouchPan_Start(data);
-	}
+	m_pExampleController->Event_TouchPan_Start(data);
 }
 
 void ExampleApp::Event_TouchPan_End(const AppInterface::PanData& data)
@@ -365,10 +340,7 @@ void ExampleApp::Event_TouchPan_End(const AppInterface::PanData& data)
 		return;
 	}
     
-	if(!m_pExampleController->Event_TouchPan_End(data))
-	{
-		m_pCameraTouchController->Event_TouchPan_End(data);
-	}
+	m_pExampleController->Event_TouchPan_End(data);
 }
 
 void ExampleApp::Event_TouchTap(const AppInterface::TapData& data)
@@ -378,10 +350,7 @@ void ExampleApp::Event_TouchTap(const AppInterface::TapData& data)
 		return;
 	}
     
-	if(!m_pExampleController->Event_TouchTap(data))
-	{
-		m_pCameraTouchController->Event_TouchTap(data);
-	}
+	m_pExampleController->Event_TouchTap(data);
 }
 
 void ExampleApp::Event_TouchDoubleTap(const AppInterface::TapData& data)
@@ -391,10 +360,7 @@ void ExampleApp::Event_TouchDoubleTap(const AppInterface::TapData& data)
 		return;
 	}
     
-	if(!m_pExampleController->Event_TouchDoubleTap(data))
-	{
-		m_pCameraTouchController->Event_TouchDoubleTap(data);
-	}
+	m_pExampleController->Event_TouchDoubleTap(data);
 }
 
 void ExampleApp::Event_TouchDown(const AppInterface::TouchData& data)
@@ -404,10 +370,7 @@ void ExampleApp::Event_TouchDown(const AppInterface::TouchData& data)
 		return;
 	}
     
-	if(!m_pExampleController->Event_TouchDown(data))
-	{
-		m_pCameraTouchController->Event_TouchDown(data);
-	}
+	m_pExampleController->Event_TouchDown(data);
 }
 
 void ExampleApp::Event_TouchMove(const AppInterface::TouchData& data)
@@ -417,10 +380,7 @@ void ExampleApp::Event_TouchMove(const AppInterface::TouchData& data)
 		return;
 	}
     
-	if(!m_pExampleController->Event_TouchMove(data))
-	{
-		m_pCameraTouchController->Event_TouchMove(data);
-	}
+	m_pExampleController->Event_TouchMove(data);
 }
 
 void ExampleApp::Event_TouchUp(const AppInterface::TouchData& data)
@@ -430,9 +390,6 @@ void ExampleApp::Event_TouchUp(const AppInterface::TouchData& data)
 		return;
 	}
     
-	if(!m_pExampleController->Event_TouchUp(data))
-	{
-		m_pCameraTouchController->Event_TouchUp(data);
-	}
+	m_pExampleController->Event_TouchUp(data);
 }
 

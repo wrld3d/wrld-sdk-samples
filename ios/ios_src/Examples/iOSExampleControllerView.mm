@@ -4,7 +4,6 @@
 #include "UIHelpers.h"
 #include "iOSUIHelpers.h"
 
-using namespace Examples;
 
 @interface AvailableExamplesView : UIScrollView
 
@@ -12,7 +11,7 @@ using namespace Examples;
 
 @implementation IExampleControllerViewBinding
 
-iOSExampleControllerView* m_pInstance;
+Examples::iOSExampleControllerView* m_pInstance;
 UIView* m_pView;
 std::vector<std::string> m_exampleNames;
 UIControl* m_pSelectionScreen;
@@ -23,7 +22,7 @@ int m_exampleSelectorWidth;
 	m_exampleNames = exampleNames;
 }
 
--(void) setBinding:(iOSExampleControllerView*)pInstance :(UIView*)pView :(int)exampleSelectorWidth
+-(void) setBinding:(Examples::iOSExampleControllerView*)pInstance :(UIView*)pView :(int)exampleSelectorWidth
 {
 	m_pInstance = pInstance;
 	m_pView = pView;

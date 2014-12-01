@@ -4,18 +4,16 @@
 #define __ExampleApp__CameraSplineExampleFactory__
 
 #include "IExampleFactory.h"
-#include "Camera.h"
+#include "EegeoRootDeclarations.h"
 
 namespace Examples
 {
     class CameraSplineExampleFactory : public IExampleFactory
     {
         Eegeo::EegeoWorld& m_world;
-        DefaultCameraControllerFactory& m_defaultCameraControllerFactory;
         
     public:
-        CameraSplineExampleFactory(Eegeo::EegeoWorld& world,
-                                   DefaultCameraControllerFactory& defaultCameraControllerFactory);
+        CameraSplineExampleFactory(Eegeo::EegeoWorld& world);
         
         std::string ExampleName() const;
         

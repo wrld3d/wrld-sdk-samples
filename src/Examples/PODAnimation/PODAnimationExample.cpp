@@ -13,6 +13,9 @@
 #include "NullMaterial.h"
 #include "NullMaterialFactory.h"
 #include "EffectHandler.h"
+#include "GlobeCameraController.h"
+#include "EcefTangentBasis.h"
+
 #include <sys/time.h>
 
 namespace Examples
@@ -22,8 +25,10 @@ namespace Examples
                                              Eegeo::Lighting::GlobalFogging& fogging,
                                              Eegeo::Rendering::RenderableFilters& renderableFilters,
                                              Eegeo::Rendering::Materials::NullMaterialFactory& nullMaterialFactory,
-                                             Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController)
-	:m_fileIO(fileIO)
+                                             Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
+                        Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController)
+	: GlobeCameraExampleBase(pCameraController, cameraTouchController)
+    , m_fileIO(fileIO)
 	,m_textureRequestor(textureRequestor)
 	,m_pModel(NULL)
     ,m_pMyModelRenderable(NULL)
@@ -32,8 +37,6 @@ namespace Examples
     ,m_renderableFilters(renderableFilters)
     ,m_nullMaterialFactory(nullMaterialFactory)
     ,m_pNullMaterial(NULL)
-	,m_globeCameraStateRestorer(*pCameraController)
-    ,m_pCameraController(pCameraController)
 {
 	Eegeo::Space::EcefTangentBasis cameraInterestBasis;
 
@@ -42,7 +45,7 @@ namespace Examples
 	    16.472872,
 	    cameraInterestBasis);
 
-	m_pCameraController->SetView(cameraInterestBasis, 1209.007812);
+	pCameraController->SetView(cameraInterestBasis, 1209.007812);
 }
     
 PODAnimationExample::~PODAnimationExample()
@@ -61,7 +64,7 @@ void PODAnimationExample::Start()
     
     m_pNullMaterial = m_nullMaterialFactory.Create("PODAnimationExampleNullMaterial");
     
-    m_pMyModelRenderable = Eegeo_NEW (MyModelRenderable)(*m_pModel, m_globalFogging, *m_pNullMaterial, *m_pCameraController->GetCamera());
+    m_pMyModelRenderable = Eegeo_NEW (MyModelRenderable)(*m_pModel, m_globalFogging, *m_pNullMaterial, GetRenderCamera());
 	m_pMyRenderableFilter = Eegeo_NEW (MyRenderableFilter)(*m_pMyModelRenderable);
 	m_renderableFilters.AddRenderableFilter(*m_pMyRenderableFilter);
 }
@@ -71,8 +74,8 @@ void PODAnimationExample::Suspend()
 	delete m_pModel;
 	m_pModel = NULL;
     
-    delete m_pCameraController;
-    m_pCameraController = NULL;
+    
+    
 }
 
 void PODAnimationExample::Update(float dt)
@@ -144,14 +147,5 @@ void PODAnimationExample::MyModelRenderable::Render(Eegeo::Rendering::GLState &g
     
     Eegeo::EffectHandler::Reset();
 }
-    
-const Eegeo::Camera::RenderCamera& PODAnimationExample::GetRenderCamera() const
-{
-    return *m_pCameraController->GetCamera();
-}
 
-Eegeo::dv3 PODAnimationExample::GetInterestPoint() const
-{
-    return m_pCameraController->GetEcefInterestPoint();
-}
 }

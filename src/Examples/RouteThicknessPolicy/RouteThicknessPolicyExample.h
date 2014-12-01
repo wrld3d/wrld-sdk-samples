@@ -4,7 +4,7 @@
 #define __ExampleApp__RouteThicknessPolicyExample__
 
 #include <vector>
-#include "IExample.h"
+#include "GlobeCameraExampleBase.h"
 #include "RouteService.h"
 #include "Route.h"
 #include "EegeoWorld.h"
@@ -14,7 +14,7 @@
 
 namespace Examples
 {
-class RouteThicknessPolicyExample : public IExample
+class RouteThicknessPolicyExample : public GlobeCameraExampleBase
 {
 private:
 	class MyScalingRouteThicknessPolicy : public Eegeo::Routes::Style::Thickness::IRouteThicknessPolicy
@@ -35,13 +35,13 @@ private:
 	Eegeo::Routes::Style::Thickness::IdentityRouteThicknessPolicy m_identityRouteThicknessPolicy;
 	Eegeo::Routes::Style::Thickness::LinearAltitudeBasedRouteThicknessPolicy m_linearAltitudeBasedRouteThicknessPolicy;
 	MyScalingRouteThicknessPolicy m_myScalingRouteThicknessPolicy;
-    Eegeo::Camera::GlobeCamera::GlobeCameraController* m_pCameraController;
-	GlobeCameraStateRestorer m_globeCameraStateRestorer;
+    
 
 public:
 	RouteThicknessPolicyExample(Eegeo::Routes::RouteService& routeService,
 	                            Eegeo::EegeoWorld& eegeoWorld,
-	                            Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController);
+	                            Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
+                        Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController);
 
 	static std::string GetName()
 	{
@@ -56,8 +56,8 @@ public:
 	void Update(float dt);
 	void Draw() {}
 	void Suspend();
-    const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
-    Eegeo::dv3 GetInterestPoint() const;
+    
+    
 };
 }
 

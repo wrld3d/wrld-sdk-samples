@@ -4,14 +4,13 @@
 #include "UIHelpers.h"
 #include "iOSUIHelpers.h"
 
-using namespace Examples;
 
 @implementation IRouteMatchingExampleBinding
 
 Examples::iOSRouteMatchingExampleView* m_pRouteMatchingExample;
 UIButton* m_pToggleMatching;
 
--(void) setExampleInstance:(iOSRouteMatchingExampleView*)pExample :(UIButton*)pToggleMatching
+-(void) setExampleInstance:(Examples::iOSRouteMatchingExampleView*)pExample :(UIButton*)pToggleMatching
 {
 	m_pRouteMatchingExample = pExample;
 	m_pToggleMatching = pToggleMatching;

@@ -31,9 +31,11 @@ ModifiedRenderingExample::ModifiedRenderingExample(Eegeo::Streaming::IStreamingV
         Eegeo::Rendering::Shaders::ShaderIdGenerator& shaderIdGenerator,
         Eegeo::Rendering::Materials::MaterialIdGenerator& materialIdGenerator,
         const Eegeo::Helpers::GLHelpers::TextureInfo& placeHolderTexture,
-        Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController
+        Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
+                        Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController
                                                   )
-	:m_visibleVolume(visibleVolume)
+	: GlobeCameraExampleBase(pCameraController, cameraTouchController)
+    , m_visibleVolume(visibleVolume)
 	,m_buildingRepository(buildingRepository)
 	,m_buildingFilter(buildingFilter)
 	,m_lighting(lighting)
@@ -42,8 +44,6 @@ ModifiedRenderingExample::ModifiedRenderingExample(Eegeo::Streaming::IStreamingV
 	,m_shaderIdGenerator(shaderIdGenerator)
 	,m_materialIdGenerator(materialIdGenerator)
 	,m_placeHolderTexture(placeHolderTexture)
-	,m_globeCameraStateRestorer(*pCameraController)
-    ,m_pCameraController(pCameraController)
 {
 }
 
@@ -97,8 +97,8 @@ void ModifiedRenderingExample::Suspend()
 	delete m_pCriteria;
 	m_pCriteria = NULL;
     
-    delete m_pCameraController;
-    m_pCameraController = NULL;
+    
+    
 }
 
 void ModifiedRenderingExample::Update(float dt)
@@ -162,7 +162,7 @@ bool ModifiedRenderingExample::IsToBeReplacedWithAlternative(const TSceneElement
 		const double filterRadius = 400.0f;
 		const double filterRadiusSq = filterRadius*filterRadius;
 
-		Eegeo::v3 cameraRelativePos = Eegeo::Camera::CameraHelpers::CameraRelativePoint(renderable.GetEcefPosition(), m_pCameraController->GetEcefInterestPoint());
+		Eegeo::v3 cameraRelativePos = Eegeo::Camera::CameraHelpers::CameraRelativePoint(renderable.GetEcefPosition(), GetInterestPoint());
 
 		double delta = cameraRelativePos.LengthSq();
 		bool closeToInterest = delta < filterRadiusSq;
@@ -188,16 +188,6 @@ void ModifiedRenderingExample::EnqueueRenderables(const Eegeo::Rendering::Render
 			renderQueue.EnqueueRenderable(pRenderable);
 		}
 	}
-}
-    
-const Eegeo::Camera::RenderCamera& ModifiedRenderingExample::GetRenderCamera() const
-{
-    return  *m_pCameraController->GetCamera();
-}
-
-Eegeo::dv3 ModifiedRenderingExample::GetInterestPoint() const
-{
-    return m_pCameraController->GetEcefInterestPoint();
 }
 
 bool ModifiedRenderingExample::MyPoolFilterCriteria::FiltersOut(const TSceneElement& sceneElement) const

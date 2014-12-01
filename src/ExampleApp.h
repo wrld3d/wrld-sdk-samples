@@ -14,7 +14,6 @@
 class ExampleApp : private Eegeo::NonCopyable
 {
 private:
-	//Eegeo::Camera::GlobeCamera::GlobeCameraController* m_pGlobeCameraController;
     Examples::DefaultCameraControllerFactory* m_pCameraControllerFactory;
 	Eegeo::Camera::GlobeCamera::GlobeCameraTouchController* m_pCameraTouchController;
 	Eegeo::EegeoWorld* m_pWorld;

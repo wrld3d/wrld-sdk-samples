@@ -4,7 +4,7 @@
 #define __ExampleApp__RouteDrawingExample__
 
 #include <vector>
-#include "IExample.h"
+#include "GlobeCameraExampleBase.h"
 #include "RouteService.h"
 #include "Route.h"
 #include "EegeoWorld.h"
@@ -12,7 +12,7 @@
 
 namespace Examples
 {
-class RouteDrawingExample : public IExample
+class RouteDrawingExample : public GlobeCameraExampleBase
 {
 private:
 	Eegeo::Routes::RouteService& m_routeService;
@@ -21,13 +21,13 @@ private:
 	bool m_createdRoutes;
 	std::vector<Eegeo::Routes::Route*> m_routes;
 	Eegeo::Routes::Style::Thickness::IdentityRouteThicknessPolicy m_routeThicknessPolicy;
-    Eegeo::Camera::GlobeCamera::GlobeCameraController* m_pCameraController;
-	GlobeCameraStateRestorer m_globeCameraStateRestorer;
+    
 
 public:
 	RouteDrawingExample(Eegeo::Routes::RouteService& routeService,
 	                    Eegeo::EegeoWorld& eegeoWorld,
-	                    Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController);
+	                    Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
+                        Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController);
 
 	static std::string GetName()
 	{
@@ -42,8 +42,8 @@ public:
 	void Update(float dt);
 	void Draw() {}
 	void Suspend();
-    const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
-    Eegeo::dv3 GetInterestPoint() const;
+    
+    
 };
 }
 
