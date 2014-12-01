@@ -11,7 +11,7 @@ namespace Examples
 class FireworksExampleFactory : public IExampleFactory
 {
 	Eegeo::EegeoWorld& m_world;
-		DefaultCameraControllerFactory& m_defaultCameraControllerFactory;
+	DefaultCameraControllerFactory& m_defaultCameraControllerFactory;
     Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& m_globeCameraTouchController;
 
 public:

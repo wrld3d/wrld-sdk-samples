@@ -5,7 +5,6 @@
 #include "IMessage.h"
 #include "AndroidRouteMatchingProxy.h"
 
-using namespace Examples;
 
 namespace Examples
 {

@@ -2,16 +2,23 @@
 
 #include "PositionJavaPinButtonExampleFactory.h"
 #include "PositionJavaPinButtonExample.h"
+#include "DefaultCameraControllerFactory.h"
+#include "ScreenPropertiesProvider.h"
 
-using namespace Examples;
+namespace Examples
+{
 
 PositionJavaPinButtonExampleFactory::PositionJavaPinButtonExampleFactory(
     Eegeo::EegeoWorld& world,
     AndroidNativeState& nativeState,
-    Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCameraController)
+    DefaultCameraControllerFactory& defaultCameraControllerFactory,
+    Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController,
+    const IScreenPropertiesProvider& screenPropertiesProvider)
 	: m_world(world)
 	, m_nativeState(nativeState)
-	, m_globeCameraController(globeCameraController)
+	, m_defaultCameraControllerFactory(defaultCameraControllerFactory)
+	, m_globeCameraTouchController(globeCameraTouchController)
+	, m_screenPropertiesProvider(screenPropertiesProvider)
 {
 
 }
@@ -21,11 +28,14 @@ IExample* PositionJavaPinButtonExampleFactory::CreateExample() const
 	return new Examples::PositionJavaPinButtonExample(
 	           m_world,
 	           m_nativeState,
-	           m_world.GetScreenProperties(),
-	           m_globeCameraController);
+	           m_screenPropertiesProvider.GetScreenProperties(),
+	           m_defaultCameraControllerFactory.Create(),
+	           m_globeCameraTouchController);
 }
 
 std::string PositionJavaPinButtonExampleFactory::ExampleName() const
 {
 	return Examples::PositionJavaPinButtonExample::GetName();
+}
+
 }

@@ -3,7 +3,7 @@
 #ifndef SHOWJAVAPLACEJUMPUIEXAMPLE_H_
 #define SHOWJAVAPLACEJUMPUIEXAMPLE_H_
 
-#include "IExample.h"
+#include "GlobeCameraExampleBase.h"
 #include "AndroidNativeState.h"
 #include "LatLongAltitude.h"
 #include "Camera.h"
@@ -22,7 +22,7 @@ extern "C"
 
 namespace Examples
 {
-class ShowJavaPlaceJumpUIExample : public IExample
+class ShowJavaPlaceJumpUIExample : public GlobeCameraExampleBase
 {
 	struct ViewLocation
 	{
@@ -46,8 +46,6 @@ class ShowJavaPlaceJumpUIExample : public IExample
 	std::map<std::string, ViewLocation> m_locations;
 	AndroidNativeState& m_nativeState;
 	Eegeo::Camera::ICameraJumpController& m_cameraJumpController;
-	Eegeo::Camera::GlobeCamera::GlobeCameraController& m_cameraController;
-	GlobeCameraStateRestorer m_globeCameraStateRestorer;
 
 	jclass m_placeJumpMenuClass;
 	jobject m_placeJumpMenu;
@@ -58,7 +56,8 @@ class ShowJavaPlaceJumpUIExample : public IExample
 public:
 	ShowJavaPlaceJumpUIExample(
 	    AndroidNativeState& pNativeState,
-	    Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController,
+	    Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
+	    Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController,
 	    Eegeo::Camera::ICameraJumpController& cameraJumpController);
 
 	void JumpToLocation(const std::string& location);
@@ -76,7 +75,6 @@ public:
 	void Update(float dt);
 	void Draw() {}
 	void Suspend();
-	const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
 };
 }
 

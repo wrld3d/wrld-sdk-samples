@@ -2,21 +2,24 @@
 
 #include "PinsWithAttachedJavaUIExampleFactory.h"
 #include "PinsWithAttachedJavaUIExample.h"
-
+#include "DefaultCameraControllerFactory.h"
 #include "IPlatformAbstractionModule.h"
 #include "RenderingModule.h"
 #include "TerrainModelModule.h"
 #include "MapModule.h"
 
-using namespace Examples;
+namespace Examples
+{
 
 PinsWithAttachedJavaUIExampleFactory::PinsWithAttachedJavaUIExampleFactory(
     Eegeo::EegeoWorld& world,
     AndroidNativeState& nativeState,
-    Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCameraController)
+    DefaultCameraControllerFactory& defaultCameraControllerFactory,
+    Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController)
 	: m_world(world)
 	, m_nativeState(nativeState)
-	, m_globeCameraController(globeCameraController)
+	, m_defaultCameraControllerFactory(defaultCameraControllerFactory)
+	, m_globeCameraTouchController(globeCameraTouchController)
 {
 
 }
@@ -40,10 +43,12 @@ IExample* PinsWithAttachedJavaUIExampleFactory::CreateExample() const
 	           renderingModule.GetRenderableFilters(),
 	           terrainModelModule.GetTerrainHeightProvider(),
 	           mapModule.GetEnvironmentFlatteningService(),
-	           m_globeCameraController);
+	           m_defaultCameraControllerFactory.Create(),
+	           m_globeCameraTouchController);
 }
 
 std::string PinsWithAttachedJavaUIExampleFactory::ExampleName() const
 {
 	return Examples::PinsWithAttachedJavaUIExample::GetName();
+}
 }

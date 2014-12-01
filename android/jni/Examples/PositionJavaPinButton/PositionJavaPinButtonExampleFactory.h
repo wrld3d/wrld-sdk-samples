@@ -10,22 +10,28 @@
 
 namespace Examples
 {
-class PositionJavaPinButtonExampleFactory : public IExampleFactory
-{
-	Eegeo::EegeoWorld& m_world;
-	AndroidNativeState& m_nativeState;
-	Eegeo::Camera::GlobeCamera::GlobeCameraController& m_globeCameraController;
+	class IScreenPropertiesProvider;
 
-public:
-	PositionJavaPinButtonExampleFactory(
-	    Eegeo::EegeoWorld& world,
-	    AndroidNativeState& nativeState,
-	    Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCameraController);
+	class PositionJavaPinButtonExampleFactory : public IExampleFactory
+	{
+		Eegeo::EegeoWorld& m_world;
+		AndroidNativeState& m_nativeState;
+		DefaultCameraControllerFactory& m_defaultCameraControllerFactory;
+		Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& m_globeCameraTouchController;
+		const IScreenPropertiesProvider& m_screenPropertiesProvider;
 
-	std::string ExampleName() const;
+	public:
+		PositionJavaPinButtonExampleFactory(
+			Eegeo::EegeoWorld& world,
+			AndroidNativeState& nativeState,
+			DefaultCameraControllerFactory& defaultCameraControllerFactory,
+			Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController,
+			const IScreenPropertiesProvider& screenPropertiesProvider);
 
-	IExample* CreateExample() const;
-};
+		std::string ExampleName() const;
+
+		IExample* CreateExample() const;
+	};
 }
 
 

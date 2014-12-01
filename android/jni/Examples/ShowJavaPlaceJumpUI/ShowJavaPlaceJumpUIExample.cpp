@@ -10,14 +10,14 @@ namespace Examples
 //
 ShowJavaPlaceJumpUIExample::ShowJavaPlaceJumpUIExample(
     AndroidNativeState& nativeState,
-    Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController,
+    Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
+    Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController,
     Eegeo::Camera::ICameraJumpController& cameraJumpController
 )
-	: m_nativeState(nativeState)
+	: GlobeCameraExampleBase(pCameraController, cameraTouchController)
+	, m_nativeState(nativeState)
 	, m_cameraJumpController(cameraJumpController)
 	, m_pTargetLocation(NULL)
-	, m_cameraController(cameraController)
-	, m_globeCameraStateRestorer(cameraController)
 {
 	m_locations["NYC"] = ViewLocation(40.703762, -74.013733, 0, 240.0f, 1800.0f);
 	m_locations["London"] = ViewLocation(51.506172,-0.118915, 0, 351.0f, 2731.0f);
@@ -79,11 +79,6 @@ void ShowJavaPlaceJumpUIExample::Suspend()
 	env->DeleteGlobalRef(m_placeJumpMenu);
 
 	pthread_mutex_destroy(&m_mutex);
-}
-
-const Eegeo::Camera::RenderCamera& ShowJavaPlaceJumpUIExample::GetRenderCamera() const
-{
-	return *m_cameraController.GetCamera();
 }
 
 void ShowJavaPlaceJumpUIExample::Update(float dt)

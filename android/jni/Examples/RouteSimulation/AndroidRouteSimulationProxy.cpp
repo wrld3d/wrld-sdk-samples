@@ -3,7 +3,6 @@
 #include "AndroidRouteSimulationProxy.h"
 #include "AndroidRouteSimulationExampleView.h"
 
-using namespace Examples;
 
 JNIEXPORT void JNICALL Java_com_eegeo_examples_routesimulation_RouteSimulationJniMethods_ToggleFollowCamera(
     JNIEnv* jenv, jobject obj,

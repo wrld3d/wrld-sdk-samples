@@ -6,6 +6,7 @@
 #include "PositionJavaPinButtonExample.h"
 #include "RenderCamera.h"
 #include "ScreenProperties.h"
+#include "EegeoWorld.h"
 
 namespace Examples
 {
@@ -15,13 +16,13 @@ PositionJavaPinButtonExample::PositionJavaPinButtonExample(
     Eegeo::EegeoWorld& world,
     AndroidNativeState& nativeState,
     const Eegeo::Rendering::ScreenProperties& screenProperties,
-    Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCameraController)
-	:m_nativeState(nativeState)
+    Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
+    Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController)
+	: GlobeCameraExampleBase(pCameraController, cameraTouchController)
+	,m_nativeState(nativeState)
 	,m_world(world)
 	,m_buttonID(0)
 	,m_screenProperties(screenProperties)
-	,m_cameraController(globeCameraController)
-	,m_globeCameraStateRestorer(globeCameraController)
 {
 }
 
@@ -121,17 +122,13 @@ void PositionJavaPinButtonExample::Draw()
 	);
 }
 
-const Eegeo::Camera::RenderCamera& PositionJavaPinButtonExample::GetRenderCamera() const
-{
-	return *m_cameraController.GetCamera();
-}
 
 void PositionJavaPinButtonExample::Project (const Eegeo::Space::LatLongAltitude& location, Eegeo::v3& screenPosition)
 {
 	//project a 3D Ecef location to the screen
 	Eegeo::m44 finalMatrix;
 
-	const Eegeo::Camera::RenderCamera& renderCamera = *m_cameraController.GetCamera();
+	const Eegeo::Camera::RenderCamera& renderCamera = GetRenderCamera();
 
 	Eegeo::m44::Mul (finalMatrix,
 	                 renderCamera.GetProjectionMatrix(),

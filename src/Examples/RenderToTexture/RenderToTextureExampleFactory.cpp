@@ -9,7 +9,7 @@ namespace Examples
 {
     RenderToTextureExampleFactory::RenderToTextureExampleFactory(Eegeo::EegeoWorld& world,
                                                                  DefaultCameraControllerFactory& defaultCameraControllerFactory,
-                                          Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController,
+                                                                 Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController,
                                                                  const IScreenPropertiesProvider& screenPropertiesProvider)
     : m_world(world)
     , m_defaultCameraControllerFactory(defaultCameraControllerFactory)

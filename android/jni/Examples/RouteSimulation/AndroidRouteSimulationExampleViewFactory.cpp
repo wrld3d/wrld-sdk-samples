@@ -3,7 +3,8 @@
 #include "AndroidRouteSimulationExampleViewFactory.h"
 #include "AndroidRouteSimulationExampleView.h"
 
-using namespace Examples;
+namespace Examples
+{
 
 AndroidRouteSimulationExampleViewFactory::AndroidRouteSimulationExampleViewFactory(
     AndroidNativeState& nativeState)
@@ -20,4 +21,6 @@ AndroidRouteSimulationExampleViewFactory::~AndroidRouteSimulationExampleViewFact
 IRouteSimulationExampleView* AndroidRouteSimulationExampleViewFactory::CreateRouteSimulationExampleView() const
 {
 	return Eegeo_NEW(AndroidRouteSimulationExampleView)(m_nativeState, false);
+}
+
 }

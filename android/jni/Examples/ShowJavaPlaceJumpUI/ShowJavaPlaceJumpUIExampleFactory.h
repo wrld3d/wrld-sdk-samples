@@ -14,13 +14,15 @@ namespace Examples
 class ShowJavaPlaceJumpUIExampleFactory : public IExampleFactory
 {
 	ExampleCameraJumpController& m_exampleCameraJumpController;
-	Eegeo::Camera::GlobeCamera::GlobeCameraController& m_cameraController;
+	DefaultCameraControllerFactory& m_defaultCameraControllerFactory;
+    Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& m_globeCameraTouchController;
 	AndroidNativeState& m_nativeState;
 
 public:
 	ShowJavaPlaceJumpUIExampleFactory(
 	    ExampleCameraJumpController& exampleCameraJumpController,
-	    Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController,
+        DefaultCameraControllerFactory& defaultCameraControllerFactory,
+        Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController,
 	    AndroidNativeState& nativeState);
 
 	std::string ExampleName() const;

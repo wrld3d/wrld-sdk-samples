@@ -2,15 +2,19 @@
 
 #include "ShowJavaPlaceJumpUIExampleFactory.h"
 #include "ShowJavaPlaceJumpUIExample.h"
+#include "DefaultCameraControllerFactory.h"
 
-using namespace Examples;
+namespace Examples
+{
 
 ShowJavaPlaceJumpUIExampleFactory::ShowJavaPlaceJumpUIExampleFactory(
     ExampleCameraJumpController& exampleCameraJumpController,
-    Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController,
+    DefaultCameraControllerFactory& defaultCameraControllerFactory,
+    Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController,
     AndroidNativeState& nativeState)
 	: m_exampleCameraJumpController(exampleCameraJumpController)
-	, m_cameraController(cameraController)
+	, m_defaultCameraControllerFactory(defaultCameraControllerFactory)
+	, m_globeCameraTouchController(globeCameraTouchController)
 	, m_nativeState(nativeState)
 {
 
@@ -20,11 +24,14 @@ IExample* ShowJavaPlaceJumpUIExampleFactory::CreateExample() const
 {
 	return new Examples::ShowJavaPlaceJumpUIExample(
 	           m_nativeState,
-	           m_cameraController,
+	           m_defaultCameraControllerFactory.Create(),
+	           m_globeCameraTouchController,
 	           m_exampleCameraJumpController);
 }
 
 std::string ShowJavaPlaceJumpUIExampleFactory::ExampleName() const
 {
 	return Examples::ShowJavaPlaceJumpUIExample::GetName();
+}
+
 }

@@ -4,21 +4,19 @@
 #define POSITIONJAVAPINBUTTON_H_
 
 #include <jni.h>
-#include "EegeoWorld.h"
-#include "IExample.h"
+
+#include "GlobeCameraExampleBase.h"
 #include "AndroidNativeState.h"
 #include "RenderContext.h"
 
 
 namespace Examples
 {
-class PositionJavaPinButtonExample : public IExample
+class PositionJavaPinButtonExample : public GlobeCameraExampleBase
 {
 	AndroidNativeState& m_nativeState;
 	Eegeo::EegeoWorld& m_world;
 	const Eegeo::Rendering::ScreenProperties& m_screenProperties;
-	Eegeo::Camera::GlobeCamera::GlobeCameraController& m_cameraController;
-	GlobeCameraStateRestorer m_globeCameraStateRestorer;
 
 	int m_buttonID;
 	jclass m_hudPinControllerClass;
@@ -30,7 +28,8 @@ public:
 	    Eegeo::EegeoWorld& world,
 	    AndroidNativeState& pNativeState,
 	    const Eegeo::Rendering::ScreenProperties& screenProperties,
-	    Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCameraController);
+	    Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
+	    Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController);
 
 	static std::string GetName()
 	{
@@ -45,7 +44,6 @@ public:
 	void Update(float dt) {}
 	void Draw();
 	void Suspend();
-	const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
 
 private:
 	void CreateButton();

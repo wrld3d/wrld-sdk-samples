@@ -38,19 +38,22 @@ AppHost::AppHost(
     EGLSurface shareSurface,
     EGLContext resourceBuildShareContext
 )
-	:m_pBlitter(NULL)
-    ,m_pJpegLoader(NULL)
-	,m_pScreenProperties(NULL)
+	: m_isPaused(false)
+	,m_pBlitter(NULL)
+	,m_pJpegLoader(NULL)
 	,m_pAndroidLocationService(NULL)
 	,m_pWorld(NULL)
+	,m_nativeState(nativeState)
 	,m_androidInputBoxFactory(&nativeState)
 	,m_androidKeyboardInputFactory(&nativeState, m_inputHandler)
 	,m_androidAlertBoxFactory(&nativeState)
 	,m_androidNativeUIFactories(m_androidAlertBoxFactory, m_androidInputBoxFactory, m_androidKeyboardInputFactory)
 	,m_pApp(NULL)
-	,m_pExampleController(NULL)
+	,m_pAndroidExampleControllerView(NULL)
+	,m_pAndroidRouteMatchingExampleViewFactory(NULL)
+	,m_pAndroidRouteSimulationExampleViewFactory(NULL)
+	,m_pExampleCameraJumpController(NULL)
 	,m_pInputProcessor(NULL)
-	,m_nativeState(nativeState)
 	,m_pAndroidPlatformAbstractionModule(NULL)
 {
 	Eegeo::TtyHandler::TtyEnabled = false;
@@ -60,7 +63,7 @@ AppHost::AppHost(
 
 	m_pAndroidLocationService = new AndroidLocationService(&nativeState);
 
-	m_pScreenProperties = new Eegeo::Rendering::ScreenProperties(displayWidth, displayHeight, 1.f, nativeState.deviceDpi);
+	Eegeo::Rendering::ScreenProperties screenProperties(Eegeo::Rendering::ScreenProperties::Make(displayWidth, displayHeight, 1.f, nativeState.deviceDpi));
 
 	std::set<std::string> customApplicationAssetDirectories;
 	customApplicationAssetDirectories.insert("load_model_example");
@@ -81,7 +84,7 @@ AppHost::AppHost(
 																							   customApplicationAssetDirectories);
 
 	Eegeo::EffectHandler::Initialise();
-	m_pBlitter = new Eegeo::Blitter(1024 * 128, 1024 * 64, 1024 * 32, m_pScreenProperties->GetScreenWidth(), m_pScreenProperties->GetScreenHeight());
+	m_pBlitter = new Eegeo::Blitter(1024 * 128, 1024 * 64, 1024 * 32);
 	m_pBlitter->Initialise();;
 
 	const Eegeo::EnvironmentCharacterSet::Type environmentCharacterSet = Eegeo::EnvironmentCharacterSet::Latin;
@@ -92,7 +95,7 @@ AppHost::AppHost(
 	    apiKey,
 	    *m_pAndroidPlatformAbstractionModule,
 	    *m_pJpegLoader,
-	    *m_pScreenProperties,
+	    screenProperties,
 	    *m_pAndroidLocationService,
 	    *m_pBlitter,
 	    m_androidNativeUIFactories,
@@ -101,9 +104,9 @@ AppHost::AppHost(
 	    NULL);
 
 	m_pAndroidPlatformAbstractionModule->SetWebRequestServiceWorkPool(m_pWorld->GetWorkPool());
-	m_pInputProcessor = new Eegeo::Android::Input::AndroidInputProcessor(&m_inputHandler, m_pScreenProperties->GetScreenWidth(), m_pScreenProperties->GetScreenHeight());
+	m_pInputProcessor = new Eegeo::Android::Input::AndroidInputProcessor(&m_inputHandler, screenProperties.GetScreenWidth(), screenProperties.GetScreenHeight());
 
-	ConfigureExamples();
+	ConfigureExamples(screenProperties);
 
 	m_pAppInputDelegate = new AppInputDelegate(*m_pApp);
 	m_inputHandler.AddDelegateInputHandler(m_pAppInputDelegate);
@@ -136,9 +139,6 @@ AppHost::~AppHost()
 	delete m_pJpegLoader;
 	m_pJpegLoader = NULL;
 
-	delete m_pScreenProperties;
-	m_pScreenProperties = NULL;
-
 	delete m_pAndroidPlatformAbstractionModule;
 	m_pAndroidPlatformAbstractionModule = NULL;
 }
@@ -152,6 +152,11 @@ void AppHost::OnPause()
 {
 	m_pApp->OnPause();
 	m_pAndroidLocationService->StopListening();
+}
+
+void AppHost::NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties)
+{
+    m_pApp->NotifyScreenPropertiesChanged(screenProperties);
 }
 
 void AppHost::SetSharedSurface(EGLSurface sharedSurface)
@@ -180,18 +185,17 @@ void AppHost::Draw(float dt)
 	m_pApp->Draw(dt);
 }
 
-void AppHost::ConfigureExamples()
+void AppHost::ConfigureExamples(const Eegeo::Rendering::ScreenProperties& screenProperties)
 {
 	m_pAndroidExampleControllerView = new Examples::AndroidExampleControllerView(m_nativeState);
 
-	m_pExampleController = new Examples::ExampleController(*m_pWorld, *m_pAndroidExampleControllerView);
-	m_pApp = new ExampleApp(m_pWorld, *m_pExampleController);
+	m_pApp = new ExampleApp(m_pWorld, *m_pAndroidExampleControllerView, screenProperties);
 
 	RegisterAndroidSpecificExamples();
 
-	m_pAndroidExampleControllerView->PopulateExampleList(m_pExampleController->GetExampleNames());
+	m_pAndroidExampleControllerView->PopulateExampleList(m_pApp->GetExampleController().GetExampleNames());
 
-	m_pExampleController->ActivatePrevious();
+	m_pApp->GetExampleController().ActivatePrevious();
 }
 
 void AppHost::RegisterAndroidSpecificExamples()
@@ -199,25 +203,28 @@ void AppHost::RegisterAndroidSpecificExamples()
 	m_pAndroidRouteMatchingExampleViewFactory = new Examples::AndroidRouteMatchingExampleViewFactory(
 	    m_nativeState);
 
-	m_pExampleController->RegisterExample(new Examples::RouteMatchingExampleFactory(
+	m_pApp->GetExampleController().RegisterExample(new Examples::RouteMatchingExampleFactory(
 	        *m_pWorld,
 	        *m_pAndroidRouteMatchingExampleViewFactory,
-	        m_pApp->GetCameraController()));
+	        m_pApp->GetDefaultCameraControllerFactory(),
+	        m_pApp->GetTouchController()));
 
 	m_pAndroidRouteSimulationExampleViewFactory = new Examples::AndroidRouteSimulationExampleViewFactory(
 	    m_nativeState);
 
-	m_pExampleController->RegisterExample(new Examples::RouteSimulationExampleFactory(
+	m_pApp->GetExampleController().RegisterExample(new Examples::RouteSimulationExampleFactory(
 	        *m_pWorld,
-	        m_pApp->GetCameraController(),
+	        m_pApp->GetDefaultCameraControllerFactory(),
+	        m_pApp->GetTouchController(),
 	        *m_pAndroidRouteSimulationExampleViewFactory));
-
+/* todo!
 	m_pExampleController->RegisterExample(new Examples::JavaHudCrossThreadCommunicationExampleFactory(*m_pWorld, m_nativeState, m_pApp->GetCameraController()));
 	m_pExampleController->RegisterExample(new Examples::PinsWithAttachedJavaUIExampleFactory(*m_pWorld, m_nativeState, m_pApp->GetCameraController()));
 	m_pExampleController->RegisterExample(new Examples::PositionJavaPinButtonExampleFactory(*m_pWorld, m_nativeState, m_pApp->GetCameraController()));
 
 	m_pExampleCameraJumpController = new ExampleCameraJumpController(m_pApp->GetCameraController(), m_pApp->GetTouchController());
 	m_pExampleController->RegisterExample(new Examples::ShowJavaPlaceJumpUIExampleFactory(*m_pExampleCameraJumpController, m_pApp->GetCameraController(), m_nativeState));
+*/
 }
 
 void AppHost::DestroyExamples()
@@ -226,7 +233,6 @@ void AppHost::DestroyExamples()
 	delete m_pAndroidRouteMatchingExampleViewFactory;
 	delete m_pAndroidRouteSimulationExampleViewFactory;
 
-	delete m_pExampleController;
 	delete m_pAndroidExampleControllerView;
 }
 
