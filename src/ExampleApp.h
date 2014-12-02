@@ -19,7 +19,6 @@ private:
 	Eegeo::EegeoWorld* m_pWorld;
     Eegeo::Rendering::LoadingScreen* m_pLoadingScreen;
 	Examples::ExampleController* m_pExampleController;
-    Eegeo::Rendering::ScreenProperties m_screenProperties;
     Examples::ScreenPropertiesProvider m_screenPropertiesProvider;
     
 

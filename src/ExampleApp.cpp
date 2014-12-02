@@ -85,8 +85,7 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
 	, m_pWorld(pWorld)
     , m_pLoadingScreen(NULL)
 	, m_pExampleController(NULL)
-    , m_screenProperties(screenProperties)
-    , m_screenPropertiesProvider(m_screenProperties)
+    , m_screenPropertiesProvider(screenProperties)
 {
 	Eegeo::EegeoWorld& eegeoWorld = *pWorld;
 
@@ -207,7 +206,7 @@ void ExampleApp::Draw (float dt)
     
     const Eegeo::Camera::RenderCamera& currentRenderCamera = m_pExampleController->GetCurrentActiveCamera();
     
-    eegeoWorld.Draw(currentRenderCamera, m_screenProperties);
+    eegeoWorld.Draw(currentRenderCamera, m_screenPropertiesProvider.GetScreenProperties());
     
     m_pExampleController->Draw();
     
@@ -219,11 +218,11 @@ void ExampleApp::Draw (float dt)
 
 void ExampleApp::NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties)
 {
-    m_screenProperties = screenProperties;
+    m_screenPropertiesProvider.NotifyScreenPropertiesChanged(screenProperties);
     
     if (m_pLoadingScreen != NULL)
     {
-        m_pLoadingScreen->NotifyScreenDimensionsChanged(m_screenProperties.GetScreenWidth(), m_screenProperties.GetScreenHeight());
+        m_pLoadingScreen->NotifyScreenDimensionsChanged(screenProperties.GetScreenWidth(), screenProperties.GetScreenHeight());
     }
     
     m_pExampleController->NotifyScreenPropertiesChanged(screenProperties);
