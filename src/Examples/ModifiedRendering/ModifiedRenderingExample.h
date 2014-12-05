@@ -57,10 +57,10 @@ private:
 
 	struct MyPoolFilterCriteria : Eegeo::Rendering::Scene::ISceneElementFilterCriteria<TRenderable>
 	{
-		ModifiedRenderingExample* m_pOwner;
-	public:
 		MyPoolFilterCriteria(ModifiedRenderingExample* owner):m_pOwner(owner) {}
 		virtual bool FiltersOut(const TSceneElement& item) const;
+    private:
+        ModifiedRenderingExample* m_pOwner;
 	};
 
 	MyPoolFilterCriteria* m_pCriteria;

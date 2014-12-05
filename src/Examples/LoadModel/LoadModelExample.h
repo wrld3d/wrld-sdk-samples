@@ -15,14 +15,14 @@ class BoundsVisualiser
 {
 	struct Shader
 	{
-		int m_positionSlot;
-		int m_mvpUniform;
-		u32 m_programHandle;
+		int positionSlot;
+		int mvpUniform;
+		u32 programHandle;
 	};
 
 	struct Vertex
 	{
-		float m_x, m_y, m_z;
+		float x, y, z;
 	};
 
 	static const size_t NumVerts;
@@ -51,11 +51,11 @@ class LoadModelExample : public IExample
 private:
 	struct MeshInstance
 	{
-		float m_scale;
-		Eegeo::dv3 m_positionEcef;
-		Eegeo::v3 m_forward;
-		Eegeo::v3 m_up;
-		Eegeo::Node* m_pNode;
+		float scale;
+		Eegeo::dv3 positionEcef;
+		Eegeo::v3 forward;
+		Eegeo::v3 up;
+		Eegeo::Node* pNode;
 	};
 
 	Eegeo::Helpers::IFileIO& m_fileIO;

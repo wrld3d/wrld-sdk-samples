@@ -18,8 +18,8 @@ class Pick3DObjectExample : public IExample
 private:
 	struct Ray
 	{
-		Eegeo::dv3 m_origin;
-		Eegeo::v3 m_direction;
+		Eegeo::dv3 origin;
+		Eegeo::v3 direction;
 	};
 
 	bool m_movingObject;
