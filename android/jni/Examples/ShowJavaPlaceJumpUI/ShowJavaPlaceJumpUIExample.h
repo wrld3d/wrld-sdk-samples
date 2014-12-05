@@ -26,20 +26,20 @@ class ShowJavaPlaceJumpUIExample : public IExample
 {
 	struct ViewLocation
 	{
-		Eegeo::Space::LatLongAltitude m_location;
-		float m_heading;
-		float m_distance;
+		Eegeo::Space::LatLongAltitude location;
+		float heading;
+		float distance;
 
-		ViewLocation(): m_location(0,0,0), m_distance(0), m_heading(0)
+		ViewLocation(): location(0,0,0), distance(0), heading(0)
 		{
-			m_location = Eegeo::Space::LatLongAltitude::FromDegrees(0, 0, 0);
+			location = Eegeo::Space::LatLongAltitude::FromDegrees(0, 0, 0);
 		}
 
-		ViewLocation(float lat, float lon, float alt, float heading, float distance) : m_location(0,0,0)
+		ViewLocation(float lat, float lon, float alt, float heading, float distance)
+		: location(Eegeo::Space::LatLongAltitude::FromDegrees(lat, lon, alt))
+		, heading(heading)
+		, distance(distance)
 		{
-			m_location = Eegeo::Space::LatLongAltitude::FromDegrees(lat, lon, alt);
-			m_heading = heading;
-			m_distance = distance;
 		}
 	};
 
