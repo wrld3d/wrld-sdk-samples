@@ -43,6 +43,7 @@
 #include "CameraSplineExampleFactory.h"
 #include "ReadHeadingExampleFactory.h"
 #include "FireworksExampleFactory.h"
+#include "MeshExampleFactory.h"
 
 
 namespace
@@ -132,6 +133,7 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     
 
 	//register all generic examples
+    m_exampleController.RegisterCameraExample<Examples::MeshExampleFactory>(*m_pGlobeCameraController);
     m_exampleController.RegisterCameraExample<Examples::CameraSplineExampleFactory>(*m_pGlobeCameraController);
 	m_exampleController.RegisterCameraExample<Examples::CameraTransitionExampleFactory>(*m_pGlobeCameraController);
 	m_exampleController.RegisterCameraExample<Examples::ControlCityThemeExampleFactory>(*m_pGlobeCameraController);
