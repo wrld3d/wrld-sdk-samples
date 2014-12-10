@@ -17,8 +17,8 @@ class CameraTransitioner
 public:
 	CameraTransitioner(Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController);
 
-	void StartTransitionTo(Eegeo::dv3 newInterestPoint, double distanceFromInterest, bool jumpIfFarAway);
-	void StartTransitionTo(Eegeo::dv3 newInterestPoint, double distanceFromInterest, float newHeading, bool jumpIfFarAway);
+	void StartTransitionTo(Eegeo::dv3 newInterestPoint, float distanceFromInterest, bool jumpIfFarAway);
+	void StartTransitionTo(Eegeo::dv3 newInterestPoint, float distanceFromInterest, float newHeading, bool jumpIfFarAway);
 	void StopCurrentTransition();
 	void Update(float dt);
 
@@ -33,8 +33,8 @@ private:
 	Eegeo::Camera::GlobeCamera::GlobeCameraController& m_cameraController;
 	Eegeo::dv3 m_startTransitionInterestPoint;
 	Eegeo::dv3 m_endTransitionInterestPoint;
-	double m_startInterestDistance;
-	double m_endInterestDistance;
+	float m_startInterestDistance;
+	float m_endInterestDistance;
 	float m_startTransitionHeading;
 	float m_endTransitionHeading;
 	float m_transitionTime;

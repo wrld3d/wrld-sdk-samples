@@ -70,10 +70,10 @@ namespace Examples
             using namespace Eegeo::Rendering::VertexLayouts;
             VertexLayout* pLayout = new (VertexLayout)(sizeof(PositionUvVertex));
             
-            ptrdiff_t positionOffset = offsetof(PositionUvVertex, x);
+            int positionOffset = offsetof(PositionUvVertex, x);
             pLayout->AddElement(VertexLayoutElement(Eegeo::Rendering::VertexSemanticId::Position, 3, GL_FLOAT,  positionOffset));
             
-            ptrdiff_t uvOffset = offsetof(PositionUvVertex, u);
+            int uvOffset = offsetof(PositionUvVertex, u);
             pLayout->AddElement(VertexLayoutElement(Eegeo::Rendering::VertexSemanticId::UV, 2, GL_FLOAT, uvOffset));
             
             return pLayout;
@@ -101,7 +101,7 @@ namespace Examples
                                                 vertexBufferSizeBytes,
                                                 triangleIndices.data(),
                                                 indexBufferSizeBytes,
-                                                triangleIndices.size(),
+                                                static_cast<u32>(triangleIndices.size()),
                                                 "UnlitBoxMesh"
                                                 );
         }

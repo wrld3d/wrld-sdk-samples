@@ -15,7 +15,7 @@ bool PointInPolygon(std::vector<Eegeo::v2>& polygon, Eegeo::v2& point)
 	int i = 0;
 	int j = 0;
 	bool result = false;
-	int numVerts = polygon.size();
+	int numVerts = static_cast<int>(polygon.size());
 	for (i = 0, j = numVerts-1; i < numVerts; j = i++)
 	{
 		if (((polygon[i].GetY()>point.GetY()) != (polygon[j].GetY()>point.GetY())) &&
@@ -36,7 +36,7 @@ void VectorLatLonToV2(const std::vector<Eegeo::Space::LatLong>& input, std::vect
 	        iter++)
 	{
 		const Eegeo::Space::LatLong& latLong = (*iter);
-		output.push_back(Eegeo::v2(latLong.GetLatitudeInDegrees(), latLong.GetLongitudeInDegrees()));
+		output.push_back(Eegeo::v2(static_cast<float>(latLong.GetLatitudeInDegrees()), static_cast<float>(latLong.GetLongitudeInDegrees())));
 	}
 }
 }
@@ -90,7 +90,7 @@ void ControlCityThemeExample::ChangeTheme()
 void ControlCityThemeExample::FindThemeByPointInPolygon()
 {
 	Eegeo::Space::LatLong osaka = Eegeo::Space::LatLong::FromDegrees(34.700131,135.478884);
-	Eegeo::v2 osakav2(osaka.GetLatitudeInDegrees(), osaka.GetLongitudeInDegrees());
+	Eegeo::v2 osakav2(static_cast<float>(osaka.GetLatitudeInDegrees()), static_cast<float>(osaka.GetLongitudeInDegrees()));
 
 	// enumerate all of the themes in the theme repository
 	int numberOfThemes = m_themeRepository.GetNumberOfThemes();

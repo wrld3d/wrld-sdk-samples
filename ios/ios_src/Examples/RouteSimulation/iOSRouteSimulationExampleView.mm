@@ -94,7 +94,7 @@ iOSRouteSimulationExampleView::iOSRouteSimulationExampleView(UIView* pView)
 	CGRect originalFrame = [[UIScreen mainScreen] bounds];
 	CGRect adjustedFrame = [rootView convertRect:originalFrame fromView:nil];
 
-	float screenHeight = adjustedFrame.size.height - 80.f;
+	float screenHeight = static_cast<float>(adjustedFrame.size.height) - 80.f;
     
     m_pToggleFollowButton = CreateVerticalMenuButton(screenHeight, @"Toggle Follow!");
 	[m_pToggleFollowButton addTarget:m_pBinding action:@selector(toggleFollowCamera) forControlEvents:UIControlEventTouchDown];

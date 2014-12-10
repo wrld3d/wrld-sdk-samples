@@ -73,10 +73,10 @@ RouteSimulationExample::RouteSimulationExample(RouteService& routeService,
 
 	Eegeo::Camera::CameraHelpers::EcefTangentBasisFromPointAndHeading(
 	    Eegeo::Space::LatLong::FromDegrees(37.793348, -122.399035).ToECEF(),
-	    354.824249,
+	    354.824249f,
 	    cameraInterestBasis);
 
-	defaultCamera.SetView(cameraInterestBasis, 1374.298706);
+	defaultCamera.SetView(cameraInterestBasis, 1374.298706f);
 }
 
 void RouteSimulationExample::Initialise()
@@ -124,7 +124,7 @@ void RouteSimulationExample::Initialise()
 	//forwards.
 	Eegeo::m44 scale, rotation, transform;
 	scale.Scale(15.f);
-	rotation.RotateY(M_PI);
+	rotation.RotateY(Eegeo::Math::kPI);
 	m44::Mul(transform, scale, rotation);
 
 	//Bind a view to each of the three sessions using a different vehicle node from the model.

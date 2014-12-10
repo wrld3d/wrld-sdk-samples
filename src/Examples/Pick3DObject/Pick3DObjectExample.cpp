@@ -86,12 +86,12 @@ void Pick3DObjectExample::CreateWorldSpaceRayFromScreen(const Eegeo::v2& screenP
 	const Eegeo::Camera::RenderCamera& renderCamera = *m_cameraController.GetCamera();
 
 	//normalize the point
-	double nx = 2.0 * screenPoint.GetX() / m_screenProperties.GetScreenWidth() - 1;
-	double ny = - 2.0 * screenPoint.GetY() / m_screenProperties.GetScreenHeight() + 1;
+	float nx = 2.0f * screenPoint.GetX() / m_screenProperties.GetScreenWidth() - 1.f;
+	float ny = - 2.0f * screenPoint.GetY() / m_screenProperties.GetScreenHeight() + 1.f;
 
 	//prepare near and far points
-	Eegeo::v4 near(nx, ny, 0.0f, 1.0);
-	Eegeo::v4 far(nx, ny, 1.0f, 1.0);
+	Eegeo::v4 near(nx, ny, 0.0f, 1.0f);
+	Eegeo::v4 far(nx, ny, 1.0f, 1.0f);
 
 	Eegeo::m44 invVP;
 	Eegeo::m44::Inverse(invVP, renderCamera.GetViewProjectionMatrix());
@@ -118,17 +118,17 @@ bool Pick3DObjectExample::IsScreenPointInsideModel(const Eegeo::v2& screenPoint)
 	//the following is a standard ray sphere intersection - for other shapes, an appropriate intersection method
 	//should be used
 
-	float a =
+	double a =
 	    ray.direction.GetX() * ray.direction.GetX()
 	    + ray.direction.GetY() * ray.direction.GetY()
 	    + ray.direction.GetZ() * ray.direction.GetZ();
 
-	float b =
+	double b =
 	    ray.direction.GetX() * (2.0 * ray.origin.GetX())
 	    + ray.direction.GetY() * (2.0 * ray.origin.GetY())
 	    + ray.direction.GetZ() * (2.0 * ray.origin.GetZ());
 
-	float c =
+	double c =
 	    (ray.origin.GetX() * ray.origin.GetX()
 	     + ray.origin.GetY() * ray.origin.GetY()
 	     + ray.origin.GetZ() * ray.origin.GetZ());

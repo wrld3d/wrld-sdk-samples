@@ -37,7 +37,7 @@ iOSRouteMatchingExampleView::iOSRouteMatchingExampleView(UIView* pView)
 	CGRect originalFrame = [[UIScreen mainScreen] bounds];
 	CGRect adjustedFrame = [rootView convertRect:originalFrame fromView:nil];
 
-	float screenHeight = adjustedFrame.size.height - 80.f;
+	float screenHeight = static_cast<float>(adjustedFrame.size.height) - 80.f;
     const float deviceSizeScale = IS_IPAD ? 1.f : 0.5f;
 
 	m_pToggleMatchingButton = [UIButton buttonWithType:BUTTON_TYPE];

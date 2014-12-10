@@ -67,7 +67,7 @@ void ExampleController::UpdateSelectedExample()
 {
 	std::string selectedExampleName = m_view.GetSelectedExample();
 
-	for(size_t i = 0; i < m_factories.size(); ++ i)
+	for(int i = 0; i < m_factories.size(); ++ i)
 	{
 		if(m_factories[i]->ExampleName() == selectedExampleName && i != m_currentExampleFactoryIndex)
 		{
@@ -87,7 +87,7 @@ void ExampleController::ActivatePrevious()
 
 	if(--m_currentExampleFactoryIndex < 0)
 	{
-		m_currentExampleFactoryIndex = m_factories.size() - 1;
+		m_currentExampleFactoryIndex = static_cast<int>(m_factories.size()) - 1;
 	}
 
 	RefreshExample();

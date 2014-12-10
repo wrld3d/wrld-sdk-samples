@@ -28,7 +28,7 @@ RouteMatchingExample::RouteMatchingExample(RouteService& routeService,
 
 	Eegeo::Camera::CameraHelpers::EcefTangentBasisFromPointAndHeading(
 	    Eegeo::Space::LatLong::FromDegrees(37.806497, -122.411849).ToECEF(),
-	    9.429380,
+	    9.429380f,
 	    cameraInterestBasis);
 
 	cameraController.SetView(cameraInterestBasis, 963.714111f);

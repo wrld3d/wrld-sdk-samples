@@ -7,6 +7,8 @@
 #include "RenderCamera.h"
 #include "GLState.h"
 
+#include <limits>
+
 using namespace Eegeo::Rendering;
 using namespace Eegeo::DebugRendering;
 using namespace Eegeo::Resources::Roads::Navigation;
@@ -31,7 +33,7 @@ NavigationGraphExample::NavigationGraphExample(NavigationGraphRepository& naviga
 
 void NavigationGraphExample::Start()
 {
-	srand(time(0)); //for colors
+	srand(static_cast<unsigned>(time(0))); //for colors
 	m_navigationGraphRepository.RegisterAddedCallback(&m_addedHandler);
 	m_navigationGraphRepository.RegisterRemovalCallback(&m_removedHandler);
 }
@@ -113,7 +115,8 @@ DebugRenderable* CreateVisualisation(const Eegeo::v3& roadColor,
 			Eegeo::v3 segmentColorStart = Eegeo::v3::Lerp(roadColorStart, roadColorEnd, (i-1)*paramScale);
 			Eegeo::v3 segmentColorEnd = Eegeo::v3::Lerp(roadColorStart, roadColorEnd, i*paramScale);
 
-			const int indexBase = verts.size();
+            Eegeo_ASSERT(verts.size() + 3 <= std::numeric_limits<u16>::max());
+			const u16 indexBase = static_cast<u16>(verts.size());
 			Eegeo::v3 dir = (v1 - v0).Norm();
 			Eegeo::v3 right = Eegeo::v3::Cross(up, dir).Norm();
 

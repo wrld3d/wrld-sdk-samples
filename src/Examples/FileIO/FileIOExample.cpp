@@ -18,7 +18,7 @@ FileIOExample::FileIOExample(IFileIO& fileIO,
 
 void FileIOExample::Start()
 {
-	srand(time(0));
+	srand(static_cast<unsigned>(time(0)));
 	Byte data[] = { 1, 2, 3, 4, 5 };
 
 	std::stringstream ss;

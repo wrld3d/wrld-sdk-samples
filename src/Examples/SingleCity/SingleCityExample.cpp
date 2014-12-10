@@ -35,7 +35,7 @@ public:
 		const Eegeo::dv3 keyEcef = cellInfo.GetFaceCentreECEF();
 		const double distanceBetweenCellBoundingSphereAndVolumeSphere = (m_ecefCentre - keyEcef).Length();
 		const double cellWidth = key.WidthInMetres();
-		const double cellBoundingSphereRadius = sqrtf((cellWidth*cellWidth) + (cellWidth*cellWidth));
+		const double cellBoundingSphereRadius = std::sqrt((cellWidth*cellWidth) + (cellWidth*cellWidth));
 
 		if(distanceBetweenCellBoundingSphereAndVolumeSphere < (m_sphereVolumeRadius + cellBoundingSphereRadius))
 		{
@@ -116,7 +116,7 @@ void SingleCityExample::Update(float dt)
 		float loaded = m_precacheService.UrlsLoaded();
 
 		float percent = loaded/toLoad;
-		int displayPercent = floor(percent * 100.f);
+		int displayPercent = static_cast<int>(percent * 100.f);
 		printf("Precache %d%% complete!\n", displayPercent);
 	}
 	else if(m_startedPrecaching && !m_precacheComplete)
@@ -153,7 +153,7 @@ void SingleCityExample::ConstrainCamera()
 
 	if(tooFar)
 	{
-		float interestAltitude = interestPoint.Length() - Eegeo::Space::EarthConstants::Radius;
+		double interestAltitude = interestPoint.Length() - Eegeo::Space::EarthConstants::Radius;
 		Eegeo::dv3 newInterestPoint = constrainCenterEcef + (offsetFromCenter.Norm() * radiusMeters);
 		Eegeo::Space::LatLongAltitude newInterestPointLatLong = Eegeo::Space::LatLongAltitude::FromECEF(newInterestPoint);
 		newInterestPointLatLong.SetAltitude(interestAltitude);

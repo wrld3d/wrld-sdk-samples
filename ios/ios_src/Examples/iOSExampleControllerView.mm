@@ -101,7 +101,7 @@ iOSExampleControllerView::iOSExampleControllerView(UIView* pView)
 {
 	m_pBinding = [[IExampleControllerViewBinding alloc] init];
 
-	float screenWidth = SCREEN_WIDTH;
+	float screenWidth = static_cast<float>(SCREEN_WIDTH);
 
     if(IS_IPAD)
     {

@@ -115,7 +115,7 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
 
 	float interestPointLatitudeDegrees = 37.7858f;
 	float interestPointLongitudeDegrees = -122.401f;
-	float interestPointAltitudeMeters = 2.7;
+	float interestPointAltitudeMeters = 2.7f;
 
 	Eegeo::Space::LatLongAltitude location = Eegeo::Space::LatLongAltitude::FromDegrees(interestPointLatitudeDegrees,
 	        interestPointLongitudeDegrees,

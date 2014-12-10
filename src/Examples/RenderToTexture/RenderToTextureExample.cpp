@@ -58,8 +58,8 @@ namespace Examples
         //
         
         const bool needsDepthStencilBuffers = true;
-        m_pRenderTexture = Eegeo_NEW(Eegeo::Rendering::RenderTexture)(m_screenProperties.GetScreenWidth() * m_screenProperties.GetPixelScale(),
-                                                                      m_screenProperties.GetScreenHeight() * m_screenProperties.GetPixelScale(),
+        m_pRenderTexture = Eegeo_NEW(Eegeo::Rendering::RenderTexture)(static_cast<u32>(m_screenProperties.GetScreenWidth() * m_screenProperties.GetPixelScale()),
+                                                                      static_cast<u32>(m_screenProperties.GetScreenHeight() * m_screenProperties.GetPixelScale()),
                                                                       needsDepthStencilBuffers);
 
         m_pVignetteShader = PostProcessVignetteShader::Create(m_shaderIdGenerator.GetNextId());
