@@ -21,22 +21,24 @@ private:
 
 	struct Added : public Eegeo::Resources::Roads::Navigation::INavigationGraphAddedCallback
 	{
-		NavigationGraphExample& m_example;
 		Added(NavigationGraphExample& example):m_example(example) {}
 		void operator()(const Eegeo::Resources::Roads::Navigation::NavigationGraph& navGraph)
 		{
 			m_example.HandleAddedGraph(navGraph);
 		}
+    private:
+        NavigationGraphExample& m_example;
 	};
 
 	struct Removed : public Eegeo::Resources::Roads::Navigation::INavigationGraphRemovalCallback
 	{
-		NavigationGraphExample& m_example;
 		Removed(NavigationGraphExample& example):m_example(example) {}
 		void operator()(const Eegeo::Resources::Roads::Navigation::NavigationGraph& navGraph)
 		{
 			m_example.HandleRemovedGraph(navGraph);
 		}
+    private:
+        NavigationGraphExample& m_example;
 	};
 
 

@@ -43,6 +43,7 @@
 #include "CameraSplineExampleFactory.h"
 #include "ReadHeadingExampleFactory.h"
 #include "FireworksExampleFactory.h"
+#include "MeshExampleFactory.h"
 
 
 namespace
@@ -129,10 +130,12 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
                                                            m_screenPropertiesProvider);
 
 	//register all generic examples
+
+    m_pExampleController->RegisterCameraExample<Examples::MeshExampleFactory>();
     m_pExampleController->RegisterExample<Examples::CameraSplineExampleFactory>();
-	m_pExampleController->RegisterCameraExample<Examples::CameraTransitionExampleFactory>();
-	m_pExampleController->RegisterCameraExample<Examples::ControlCityThemeExampleFactory>();
-	m_pExampleController->RegisterCameraExample<Examples::DebugPrimitiveRenderingExampleFactory>();
+    m_pExampleController->RegisterCameraExample<Examples::CameraTransitionExampleFactory>();
+    m_pExampleController->RegisterCameraExample<Examples::ControlCityThemeExampleFactory>();
+    m_pExampleController->RegisterCameraExample<Examples::DebugPrimitiveRenderingExampleFactory>();
     // TODO: Completely remove DebugSphere example as we should be using DebugRenderer now
 	//m_pExampleController->RegisterCameraExample<Examples::DebugSphereExampleFactory>();
 	m_pExampleController->RegisterCameraExample<Examples::DynamicText3DExampleFactory>();

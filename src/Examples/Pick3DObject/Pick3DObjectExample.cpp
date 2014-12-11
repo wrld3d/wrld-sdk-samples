@@ -113,33 +113,33 @@ void Pick3DObjectExample::CreateWorldSpaceRayFromScreen(const Eegeo::v2& screenP
 	Eegeo::v3 unprojectedFarWorld = unprojectedFar / unprojectedFar.GetW();
 
 	//check intersection with a ray cast from camera position
-	ray.m_origin = renderCamera.GetEcefLocation();
-	ray.m_direction = (unprojectedNearWorld - unprojectedFarWorld).Norm();
+	ray.origin = renderCamera.GetEcefLocation();
+	ray.direction = (unprojectedNearWorld - unprojectedFarWorld).Norm();
 }
 
 bool Pick3DObjectExample::IsScreenPointInsideModel(const Eegeo::v2& screenPoint)
 {
 	Ray ray;
 	CreateWorldSpaceRayFromScreen(screenPoint, ray);
-	ray.m_origin -= m_objectLocationEcef; //make object space
+	ray.origin -= m_objectLocationEcef; //make object space
 
 	//the following is a standard ray sphere intersection - for other shapes, an appropriate intersection method
 	//should be used
 
 	float a =
-	    ray.m_direction.GetX() * ray.m_direction.GetX()
-	    + ray.m_direction.GetY() * ray.m_direction.GetY()
-	    + ray.m_direction.GetZ() * ray.m_direction.GetZ();
+	    ray.direction.GetX() * ray.direction.GetX()
+	    + ray.direction.GetY() * ray.direction.GetY()
+	    + ray.direction.GetZ() * ray.direction.GetZ();
 
 	float b =
-	    ray.m_direction.GetX() * (2.0 * ray.m_origin.GetX())
-	    + ray.m_direction.GetY() * (2.0 * ray.m_origin.GetY())
-	    + ray.m_direction.GetZ() * (2.0 * ray.m_origin.GetZ());
+	    ray.direction.GetX() * (2.0 * ray.origin.GetX())
+	    + ray.direction.GetY() * (2.0 * ray.origin.GetY())
+	    + ray.direction.GetZ() * (2.0 * ray.origin.GetZ());
 
 	float c =
-	    (ray.m_origin.GetX() * ray.m_origin.GetX()
-	     + ray.m_origin.GetY() * ray.m_origin.GetY()
-	     + ray.m_origin.GetZ() * ray.m_origin.GetZ());
+	    (ray.origin.GetX() * ray.origin.GetX()
+	     + ray.origin.GetY() * ray.origin.GetY()
+	     + ray.origin.GetZ() * ray.origin.GetZ());
 
 	c -= (SPHERE_RADIUS * SPHERE_RADIUS);
 

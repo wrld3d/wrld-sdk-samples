@@ -229,6 +229,18 @@
 		E0B9CF9319F697090012D0B4 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E096AE1919F670F100C3D04A /* Images.xcassets */; };
 		E0FE7B0F1A2C99CA008754A2 /* DefaultCameraTouchControllerFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0FE7B0D1A2C99CA008754A2 /* DefaultCameraTouchControllerFactory.cpp */; };
 		E0FE7B101A2C99CA008754A2 /* DefaultCameraTouchControllerFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0FE7B0D1A2C99CA008754A2 /* DefaultCameraTouchControllerFactory.cpp */; };
+		E0F9926C1A3090C900CBFA18 /* mesh_example in Resources */ = {isa = PBXBuildFile; fileRef = E0F9926B1A3090C900CBFA18 /* mesh_example */; };
+		E0F9926D1A3090C900CBFA18 /* mesh_example in Resources */ = {isa = PBXBuildFile; fileRef = E0F9926B1A3090C900CBFA18 /* mesh_example */; };
+		E0F9927B1A30911800CBFA18 /* ExampleMeshRenderable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0F992711A30911800CBFA18 /* ExampleMeshRenderable.cpp */; };
+		E0F9927C1A30911800CBFA18 /* ExampleMeshRenderable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0F992711A30911800CBFA18 /* ExampleMeshRenderable.cpp */; };
+		E0F9927D1A30911800CBFA18 /* ExampleMeshUnlitTexturedMaterial.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0F992731A30911800CBFA18 /* ExampleMeshUnlitTexturedMaterial.cpp */; };
+		E0F9927E1A30911800CBFA18 /* ExampleMeshUnlitTexturedMaterial.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0F992731A30911800CBFA18 /* ExampleMeshUnlitTexturedMaterial.cpp */; };
+		E0F9927F1A30911800CBFA18 /* GeometryHelpers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0F992751A30911800CBFA18 /* GeometryHelpers.cpp */; };
+		E0F992801A30911800CBFA18 /* GeometryHelpers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0F992751A30911800CBFA18 /* GeometryHelpers.cpp */; };
+		E0F992811A30911800CBFA18 /* MeshExample.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0F992771A30911800CBFA18 /* MeshExample.cpp */; };
+		E0F992821A30911800CBFA18 /* MeshExample.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0F992771A30911800CBFA18 /* MeshExample.cpp */; };
+		E0F992831A30911800CBFA18 /* MeshExampleFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0F992791A30911800CBFA18 /* MeshExampleFactory.cpp */; };
+		E0F992841A30911800CBFA18 /* MeshExampleFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0F992791A30911800CBFA18 /* MeshExampleFactory.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -439,10 +451,22 @@
 		E02BD0C71A24F79B00663A00 /* ScreenPropertiesProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScreenPropertiesProvider.h; sourceTree = "<group>"; };
 		E0645A941A27518E009C2349 /* DefaultCameraControllerFactory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DefaultCameraControllerFactory.cpp; sourceTree = "<group>"; };
 		E0645A951A27518E009C2349 /* DefaultCameraControllerFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DefaultCameraControllerFactory.h; sourceTree = "<group>"; };
-		E096AE1919F670F100C3D04A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		E096AE1B19F6713300C3D04A /* SplashScreen-1024x768.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SplashScreen-1024x768.png"; sourceTree = "<group>"; };
 		E0FE7B0D1A2C99CA008754A2 /* DefaultCameraTouchControllerFactory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DefaultCameraTouchControllerFactory.cpp; sourceTree = "<group>"; };
 		E0FE7B0E1A2C99CA008754A2 /* DefaultCameraTouchControllerFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DefaultCameraTouchControllerFactory.h; sourceTree = "<group>"; };
+		E06A8F131A30C08B00A492F2 /* MeshExampleConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MeshExampleConfig.h; path = Mesh/MeshExampleConfig.h; sourceTree = "<group>"; };
+		E096AE1919F670F100C3D04A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		E096AE1B19F6713300C3D04A /* SplashScreen-1024x768.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SplashScreen-1024x768.png"; sourceTree = "<group>"; };
+		E0F9926B1A3090C900CBFA18 /* mesh_example */ = {isa = PBXFileReference; lastKnownFileType = folder; path = mesh_example; sourceTree = "<group>"; };
+		E0F992711A30911800CBFA18 /* ExampleMeshRenderable.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ExampleMeshRenderable.cpp; path = Mesh/ExampleMeshRenderable.cpp; sourceTree = "<group>"; };
+		E0F992721A30911800CBFA18 /* ExampleMeshRenderable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ExampleMeshRenderable.h; path = Mesh/ExampleMeshRenderable.h; sourceTree = "<group>"; };
+		E0F992731A30911800CBFA18 /* ExampleMeshUnlitTexturedMaterial.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ExampleMeshUnlitTexturedMaterial.cpp; path = Mesh/ExampleMeshUnlitTexturedMaterial.cpp; sourceTree = "<group>"; };
+		E0F992741A30911800CBFA18 /* ExampleMeshUnlitTexturedMaterial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ExampleMeshUnlitTexturedMaterial.h; path = Mesh/ExampleMeshUnlitTexturedMaterial.h; sourceTree = "<group>"; };
+		E0F992751A30911800CBFA18 /* GeometryHelpers.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GeometryHelpers.cpp; path = Mesh/GeometryHelpers.cpp; sourceTree = "<group>"; };
+		E0F992761A30911800CBFA18 /* GeometryHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GeometryHelpers.h; path = Mesh/GeometryHelpers.h; sourceTree = "<group>"; };
+		E0F992771A30911800CBFA18 /* MeshExample.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MeshExample.cpp; path = Mesh/MeshExample.cpp; sourceTree = "<group>"; };
+		E0F992781A30911800CBFA18 /* MeshExample.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MeshExample.h; path = Mesh/MeshExample.h; sourceTree = "<group>"; };
+		E0F992791A30911800CBFA18 /* MeshExampleFactory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MeshExampleFactory.cpp; path = Mesh/MeshExampleFactory.cpp; sourceTree = "<group>"; };
+		E0F9927A1A30911800CBFA18 /* MeshExampleFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MeshExampleFactory.h; path = Mesh/MeshExampleFactory.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -507,6 +531,7 @@
 			isa = PBXGroup;
 			children = (
 				E02BD0C71A24F79B00663A00 /* ScreenPropertiesProvider.h */,
+				E0F992521A2F7F8E00CBFA18 /* Mesh */,
 				189971C6192CCB7700E0E9F1 /* ExampleController.cpp */,
 				189971C7192CCB7700E0E9F1 /* ExampleController.h */,
 				18143848192B6E4500BCDF2E /* CameraTransition */,
@@ -1042,15 +1067,34 @@
 		7EE4825B16847E7C0006E99B /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				18D1D363194A0EA000FAA1B9 /* platform_assets */,
+				E0F9926B1A3090C900CBFA18 /* mesh_example */,
 				18D1D346194A057200FAA1B9 /* load_model_example */,
 				18D1D347194A057200FAA1B9 /* pin_over_model_example */,
 				18D1D348194A057200FAA1B9 /* pins_example */,
 				18D1D34B194A057200FAA1B9 /* pod_animation_example */,
 				18D1D34C194A057200FAA1B9 /* route_simulation_animation_example */,
 				18D1D34D194A057200FAA1B9 /* route_simulation_example */,
+				18D1D363194A0EA000FAA1B9 /* platform_assets */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		E0F992521A2F7F8E00CBFA18 /* Mesh */ = {
+			isa = PBXGroup;
+			children = (
+				E0F992711A30911800CBFA18 /* ExampleMeshRenderable.cpp */,
+				E0F992721A30911800CBFA18 /* ExampleMeshRenderable.h */,
+				E0F992731A30911800CBFA18 /* ExampleMeshUnlitTexturedMaterial.cpp */,
+				E0F992741A30911800CBFA18 /* ExampleMeshUnlitTexturedMaterial.h */,
+				E0F992751A30911800CBFA18 /* GeometryHelpers.cpp */,
+				E0F992761A30911800CBFA18 /* GeometryHelpers.h */,
+				E0F992771A30911800CBFA18 /* MeshExample.cpp */,
+				E0F992781A30911800CBFA18 /* MeshExample.h */,
+				E0F992791A30911800CBFA18 /* MeshExampleFactory.cpp */,
+				E0F9927A1A30911800CBFA18 /* MeshExampleFactory.h */,
+				E06A8F131A30C08B00A492F2 /* MeshExampleConfig.h */,
+			);
+			name = Mesh;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1126,6 +1170,7 @@
 				186D2937196D9E4B00E004E0 /* FrankBold50_A8_icons_0.png in Resources */,
 				186D2938196D9E4B00E004E0 /* FrankBold50_A8_icons.fnt in Resources */,
 				186D2939196D9E4B00E004E0 /* load_model_example in Resources */,
+				E0F9926D1A3090C900CBFA18 /* mesh_example in Resources */,
 				186D293A196D9E4B00E004E0 /* pin_over_model_example in Resources */,
 				186D293B196D9E4B00E004E0 /* pins_example in Resources */,
 				186D293C196D9E4B00E004E0 /* pod_animation_example in Resources */,
@@ -1148,6 +1193,7 @@
 				7EE4820E1683713B0006E99B /* MainStoryboard_iPhone.storyboard in Resources */,
 				7EE48211168371460006E99B /* MainStoryboard_iPad.storyboard in Resources */,
 				18D1D35D194A057200FAA1B9 /* route_simulation_animation_example in Resources */,
+				E0F9926C1A3090C900CBFA18 /* mesh_example in Resources */,
 				18D1D35E194A057200FAA1B9 /* route_simulation_example in Resources */,
 				E096AE1A19F670F100C3D04A /* Images.xcassets in Resources */,
 				18D1D35C194A057200FAA1B9 /* pod_animation_example in Resources */,
@@ -1177,11 +1223,13 @@
 				222E06491948B08B0004FFD9 /* ScreenUnprojectExampleFactory.cpp in Sources */,
 				222E064A1948B08B0004FFD9 /* ControlCityThemeExample.cpp in Sources */,
 				222E064B1948B08B0004FFD9 /* SingleCityExampleFactory.cpp in Sources */,
+				E0F992821A30911800CBFA18 /* MeshExample.cpp in Sources */,
 				222E064C1948B08B0004FFD9 /* ExampleApp.cpp in Sources */,
 				7E1A2494197FF84E000ED126 /* CameraSplineExampleFactory.cpp in Sources */,
 				222E064E1948B08B0004FFD9 /* Pick3DObjectExample.cpp in Sources */,
 				222E064F1948B08B0004FFD9 /* EnvironmentNotifierExampleFactory.cpp in Sources */,
 				222E06501948B08B0004FFD9 /* DebugPrimitiveRenderingExampleFactory.cpp in Sources */,
+				E0F992841A30911800CBFA18 /* MeshExampleFactory.cpp in Sources */,
 				222E06511948B08B0004FFD9 /* EnvironmentFlatteningExample.cpp in Sources */,
 				18E18E8E198BE4C80065F81D /* PostProcessVignetteMaterial.cpp in Sources */,
 				222E06521948B08B0004FFD9 /* EnvironmentNotifierExample.cpp in Sources */,
@@ -1216,6 +1264,8 @@
 				222E066E1948B08B0004FFD9 /* EnvironmentFlatteningExampleFactory.cpp in Sources */,
 				222E066F1948B08B0004FFD9 /* ScreenPickExample.cpp in Sources */,
 				222E06701948B08B0004FFD9 /* UIHelpers.cpp in Sources */,
+				E0F992801A30911800CBFA18 /* GeometryHelpers.cpp in Sources */,
+				E0F9927E1A30911800CBFA18 /* ExampleMeshUnlitTexturedMaterial.cpp in Sources */,
 				222E06711948B08B0004FFD9 /* WebRequestExample.cpp in Sources */,
 				222E06721948B08B0004FFD9 /* PinsExampleFactory.cpp in Sources */,
 				222E06731948B08B0004FFD9 /* ModifiedRenderingExample.cpp in Sources */,
@@ -1235,6 +1285,7 @@
 				222E067E1948B08B0004FFD9 /* RouteSimulationExample.cpp in Sources */,
 				222E067F1948B08B0004FFD9 /* ToggleTrafficExample.cpp in Sources */,
 				222E06801948B08B0004FFD9 /* CameraTransitionExampleFactory.cpp in Sources */,
+				E0F9927C1A30911800CBFA18 /* ExampleMeshRenderable.cpp in Sources */,
 				18F91C3619C70502000617D8 /* ReadHeadingExample.cpp in Sources */,
 				E0287B381A2C802C00F44204 /* GlobeCameraExampleBase.cpp in Sources */,
 				222E06811948B08B0004FFD9 /* NavigationGraphExample.cpp in Sources */,
@@ -1266,11 +1317,13 @@
 				18997183192CABBE00E0E9F1 /* EnvironmentNotifierExampleFactory.cpp in Sources */,
 				18997177192CA6FE00E0E9F1 /* DebugPrimitiveRenderingExampleFactory.cpp in Sources */,
 				181438AC192B6E4500BCDF2E /* EnvironmentFlatteningExample.cpp in Sources */,
+				E0F992811A30911800CBFA18 /* MeshExample.cpp in Sources */,
 				181438AD192B6E4500BCDF2E /* EnvironmentNotifierExample.cpp in Sources */,
 				7E1A2493197FF84E000ED126 /* CameraSplineExampleFactory.cpp in Sources */,
 				1899718F192CAE7E00E0E9F1 /* ModifiedRenderingExampleFactory.cpp in Sources */,
 				18AB38FA192B729F00F15546 /* iOSRouteMatchingExampleViewFactory.mm in Sources */,
 				181438BB192B6E4500BCDF2E /* RouteSimulationAnimationExample.cpp in Sources */,
+				E0F992831A30911800CBFA18 /* MeshExampleFactory.cpp in Sources */,
 				18AB38FE192B729F00F15546 /* ViewController.mm in Sources */,
 				18E18E8D198BE4C80065F81D /* PostProcessVignetteMaterial.cpp in Sources */,
 				181438BC192B6E4500BCDF2E /* RouteThicknessPolicyExample.cpp in Sources */,
@@ -1305,6 +1358,8 @@
 				18C45A7119658A5C009B18A8 /* AppInputDelegate.mm in Sources */,
 				181438C3192B6E4500BCDF2E /* WebRequestExample.cpp in Sources */,
 				1899719B192CB17100E0E9F1 /* PinsExampleFactory.cpp in Sources */,
+				E0F9927F1A30911800CBFA18 /* GeometryHelpers.cpp in Sources */,
+				E0F9927D1A30911800CBFA18 /* ExampleMeshUnlitTexturedMaterial.cpp in Sources */,
 				181438B1192B6E4500BCDF2E /* ModifiedRenderingExample.cpp in Sources */,
 				18997186192CAC5400E0E9F1 /* FileIOExampleFactory.cpp in Sources */,
 				189971A4192CB35600E0E9F1 /* RouteDrawingExampleFactory.cpp in Sources */,
@@ -1324,6 +1379,7 @@
 				181438BA192B6E4500BCDF2E /* RouteSimulationExample.cpp in Sources */,
 				181438C1192B6E4500BCDF2E /* ToggleTrafficExample.cpp in Sources */,
 				1899716A192C947D00E0E9F1 /* CameraTransitionExampleFactory.cpp in Sources */,
+				E0F9927B1A30911800CBFA18 /* ExampleMeshRenderable.cpp in Sources */,
 				18F91C3519C70502000617D8 /* ReadHeadingExample.cpp in Sources */,
 				E0287B371A2C802C00F44204 /* GlobeCameraExampleBase.cpp in Sources */,
 				181438B2192B6E4500BCDF2E /* NavigationGraphExample.cpp in Sources */,
