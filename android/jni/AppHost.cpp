@@ -67,6 +67,7 @@ AppHost::AppHost(
 
 	std::set<std::string> customApplicationAssetDirectories;
 	customApplicationAssetDirectories.insert("load_model_example");
+	customApplicationAssetDirectories.insert("mesh_example");
 	customApplicationAssetDirectories.insert("pin_over_model_example");
 	customApplicationAssetDirectories.insert("pins_example");
 	customApplicationAssetDirectories.insert("pins_with_attached_java_ui_example");

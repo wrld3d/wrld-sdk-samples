@@ -66,13 +66,13 @@ void LoadModelExample::Start()
 	Eegeo_ASSERT(parentNode->GetNumChildNodes() > 0);
 
 	//select a vehicle.
-	m_mesh.m_pNode = parentNode->GetChildNode(0);
+	m_mesh.pNode = parentNode->GetChildNode(0);
 }
 
 void LoadModelExample::Suspend()
 {
 	//destroy the example...
-	m_mesh.m_pNode = NULL;
+	m_mesh.pNode = NULL;
 
 	delete m_pModel;
 	m_pModel = NULL;
@@ -87,16 +87,16 @@ void LoadModelExample::Update(float dt)
 	m_interestLocation.SetAltitude(100.0f);
 
 	//put the vehicle at interest point
-	m_mesh.m_positionEcef = m_interestLocation.ToECEF();
+	m_mesh.positionEcef = m_interestLocation.ToECEF();
 
 	//up is relative to earth location, normal to tangent plane formed at surface below model
-	m_mesh.m_up = m_mesh.m_positionEcef.Norm().ToSingle();
+	m_mesh.up = m_mesh.positionEcef.Norm().ToSingle();
 
 	//cross with north pole (0,1,0) for a forward vector
-	m_mesh.m_forward = Eegeo::v3::Cross(m_mesh.m_up, Eegeo::v3(0.0f, 1.0f, 0.0f));
+	m_mesh.forward = Eegeo::v3::Cross(m_mesh.up, Eegeo::v3(0.0f, 1.0f, 0.0f));
 
 	//set some big scale value so we can see the vehicle - vary between x20 and x70
-	m_mesh.m_scale = 20.0f + ((sin(m_elapsedTime)/ 2.0f + 0.5) * 50.0f);
+	m_mesh.scale = 20.0f + ((sin(m_elapsedTime)/ 2.0f + 0.5) * 50.0f);
 
 	// pulse the opacity of the disk material up and down over time.
 	if(m_pDiscMaterial != NULL)
@@ -110,21 +110,21 @@ void LoadModelExample::Update(float dt)
 void LoadModelExample::Draw()
 {
 	//form basis
-	Eegeo::v3 up(m_mesh.m_up);
-	Eegeo::v3 forward = -m_mesh.m_forward; //model is facing reverse (-ve z)
+	Eegeo::v3 up(m_mesh.up);
+	Eegeo::v3 forward = -m_mesh.forward; //model is facing reverse (-ve z)
 	Eegeo::v3 right(Eegeo::v3::Cross(up, forward).Norm());
 	up = Eegeo::v3::Cross(forward, right);
 
     const Eegeo::Camera::RenderCamera& renderCamera = GetRenderCamera();
 	//compute a camera local position
-	Eegeo::v3 cameraRelativePos = (m_mesh.m_positionEcef - renderCamera.GetEcefLocation()).ToSingle();
+	Eegeo::v3 cameraRelativePos = (m_mesh.positionEcef - renderCamera.GetEcefLocation()).ToSingle();
 
 	//generate a transform from this basis and position...
 	Eegeo::m44 cameraRelativeTransform;
 	cameraRelativeTransform.SetFromBasis(right, up, forward, cameraRelativePos);
 
 	Eegeo::m44 scaleMatrix;
-	scaleMatrix.Scale(m_mesh.m_scale);
+	scaleMatrix.Scale(m_mesh.scale);
 
 	//...and scale
 	Eegeo::m44 transform;
@@ -132,10 +132,10 @@ void LoadModelExample::Draw()
 	transform.SetRow(3, Eegeo::v4(cameraRelativePos, 1.0f));
 
 	//update the mesh instance with the transform
-	m_mesh.m_pNode->SetLocalMatrix(transform);
-	m_mesh.m_pNode->UpdateRecursive();
-	m_mesh.m_pNode->UpdateSphereRecursive();
-	m_mesh.m_pNode->UpdateBBRecursive();
+	m_mesh.pNode->SetLocalMatrix(transform);
+	m_mesh.pNode->UpdateRecursive();
+	m_mesh.pNode->UpdateSphereRecursive();
+	m_mesh.pNode->UpdateBBRecursive();
 
 	// Enable z buffering.
 	Eegeo::Rendering::GLState glState;
@@ -145,11 +145,11 @@ void LoadModelExample::Draw()
 	glState.DepthMask(GL_TRUE);
     
 	//draw the mesh
-	m_mesh.m_pNode->DrawRecursive(glState, m_globalFogging, NULL, true, true);
+	m_mesh.pNode->DrawRecursive(glState, m_globalFogging, NULL, true, true);
 
 	Eegeo::v3 min, max;
-	m_mesh.m_pNode->GetMinExtent(min);
-	m_mesh.m_pNode->GetMaxExtent(max);
+	m_mesh.pNode->GetMinExtent(min);
+	m_mesh.pNode->GetMaxExtent(max);
 	m_boundsVisualiser.Draw(min, max, renderCamera);
 }
 
@@ -191,25 +191,25 @@ void BoundsVisualiser::CompileShaders()
 	GLuint fragmentShader = Eegeo::Helpers::ShaderCompiler::CompileShader(fragmentShaderCode, GL_FRAGMENT_SHADER);
 
 	m_pShader = new Shader;
-	m_pShader->m_programHandle = glCreateProgram();
-	glAttachShader(m_pShader->m_programHandle, vertexShader);
-	glAttachShader(m_pShader->m_programHandle, fragmentShader);
-	glLinkProgram(m_pShader->m_programHandle);
+	m_pShader->programHandle = glCreateProgram();
+	glAttachShader(m_pShader->programHandle, vertexShader);
+	glAttachShader(m_pShader->programHandle, fragmentShader);
+	glLinkProgram(m_pShader->programHandle);
 
 	GLint linkSuccess;
-	glGetProgramiv(m_pShader->m_programHandle, GL_LINK_STATUS, &linkSuccess);
+	glGetProgramiv(m_pShader->programHandle, GL_LINK_STATUS, &linkSuccess);
 	if (linkSuccess == GL_FALSE)
 	{
 		GLchar messages[256];
-		glGetProgramInfoLog(m_pShader->m_programHandle, sizeof(messages), 0, &messages[0]);
+		glGetProgramInfoLog(m_pShader->programHandle, sizeof(messages), 0, &messages[0]);
 		Eegeo_TTY("%s\n", &messages[0]);
 		return;
 	}
 
-	Eegeo_GL(glUseProgram(m_pShader->m_programHandle));
+	Eegeo_GL(glUseProgram(m_pShader->programHandle));
 
-	m_pShader->m_positionSlot = glGetAttribLocation(m_pShader->m_programHandle, "pos");
-	m_pShader->m_mvpUniform = glGetUniformLocation(m_pShader->m_programHandle, "mvp");
+	m_pShader->positionSlot = glGetAttribLocation(m_pShader->programHandle, "pos");
+	m_pShader->mvpUniform = glGetUniformLocation(m_pShader->programHandle, "mvp");
 }
 
 void BoundsVisualiser::InitMeshGLBuffers(Vertex* verts, u16* indices)
@@ -249,9 +249,9 @@ void BoundsVisualiser::Build(const Eegeo::v3& minExtents, const Eegeo::v3& maxEx
 
 	for(size_t i = 0; i < NumVerts; ++ i)
 	{
-		vertexBuffer[i].m_x = verts[i].GetX();
-		vertexBuffer[i].m_y = verts[i].GetY();
-		vertexBuffer[i].m_z = verts[i].GetZ();
+		vertexBuffer[i].x = verts[i].GetX();
+		vertexBuffer[i].y = verts[i].GetY();
+		vertexBuffer[i].z = verts[i].GetZ();
 	}
 
 	indexBuffer[0] = 0;
@@ -318,21 +318,21 @@ void BoundsVisualiser::Draw(const Eegeo::v3& minExtents, const Eegeo::v3& maxExt
 {
 	Build(minExtents, maxExtents);
 
-	Eegeo_GL(glUseProgram(m_pShader->m_programHandle));
+	Eegeo_GL(glUseProgram(m_pShader->programHandle));
 
 	Eegeo::m44 mvp;
 	Eegeo::m44 w;
 	w.Identity();
 	Eegeo::m44::Mul(mvp, renderCamera.GetViewProjectionMatrix(), w);
 
-	Eegeo_GL(glUniformMatrix4fv(m_pShader->m_mvpUniform, 1, 0, (const GLfloat*)&mvp));
+	Eegeo_GL(glUniformMatrix4fv(m_pShader->mvpUniform, 1, 0, (const GLfloat*)&mvp));
 
-	Eegeo_GL(glEnableVertexAttribArray(m_pShader->m_positionSlot));
+	Eegeo_GL(glEnableVertexAttribArray(m_pShader->positionSlot));
 
 	Eegeo_GL(glBindBuffer(GL_ARRAY_BUFFER, m_glVertexBuffer));
 	Eegeo_GL(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_glIndexBuffer));
 
-	Eegeo_GL(glVertexAttribPointer(m_pShader->m_positionSlot, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0));
+	Eegeo_GL(glVertexAttribPointer(m_pShader->positionSlot, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0));
 
 	for(u32 j = 0; j < NumIndices; j+=3)
 	{
