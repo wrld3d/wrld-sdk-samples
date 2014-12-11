@@ -4,6 +4,7 @@
 #include "ScreenProperties.h"
 #include "GlobeCameraController.h"
 #include "GlobeCameraTouchController.h"
+#include "ScreenProperties.h"
 
 namespace Examples
 {
@@ -19,26 +20,15 @@ namespace Examples
         delete m_pGlobeCameraController;
     }
 
-    void GlobeCameraExampleBase::EarlyUpdate(float dt)
+    void GlobeCameraExampleBase::EarlyUpdate(float dt, const Eegeo::Rendering::ScreenProperties& screenProperties)
     {
-        m_pGlobeCameraController->Update(dt);
+        m_pGlobeCameraController->Update(dt, screenProperties);
     }
     
-    void GlobeCameraExampleBase::NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties)
+    Eegeo::Camera::CameraState GlobeCameraExampleBase::GetCurrentCameraState() const
     {
-        m_pGlobeCameraController->GetCamera()->SetViewport(0.f, 0.f, screenProperties.GetScreenWidth(), screenProperties.GetScreenHeight());
+        return m_pGlobeCameraController->GetCameraState();
     }
- 
-    const Eegeo::Camera::RenderCamera& GlobeCameraExampleBase::GetRenderCamera() const
-    {
-        return *m_pGlobeCameraController->GetCamera();
-    }
-    
-    Eegeo::dv3 GlobeCameraExampleBase::GetInterestPoint() const
-    {
-        return m_pGlobeCameraController->GetEcefInterestPoint();
-    }
-    
     
     void GlobeCameraExampleBase::Event_TouchRotate(const AppInterface::RotateData& data)
     {

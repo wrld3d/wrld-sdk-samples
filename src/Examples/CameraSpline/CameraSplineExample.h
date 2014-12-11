@@ -38,15 +38,13 @@ public:
 	}
     
 	void Start();
-	void EarlyUpdate(float dt);
+	void EarlyUpdate(float dt, const Eegeo::Rendering::ScreenProperties& screenProperties);
 	void Update(float dt) { }
     void PreWorldDraw() { }
 	void Draw() {}
 	void Suspend();
     
-    void NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties);
-    const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
-    Eegeo::dv3 GetInterestPoint() const;
+    virtual Eegeo::Camera::CameraState GetCurrentCameraState() const;
     
     void Event_TouchRotate 			(const AppInterface::RotateData& data) { }
     void Event_TouchRotate_Start	(const AppInterface::RotateData& data) { }

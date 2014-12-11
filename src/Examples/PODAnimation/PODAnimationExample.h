@@ -21,13 +21,14 @@ private:
 	{
 		Eegeo::Model& m_model;
 		Eegeo::Lighting::GlobalFogging& m_globalFogging;
-        const Eegeo::Camera::RenderCamera& m_renderCamera;
+        Eegeo::dv3 m_observerLocationEcef;
         
 	public:
 		MyModelRenderable(Eegeo::Model& model,
 		                  Eegeo::Lighting::GlobalFogging& globalFogging,
-		                  Eegeo::Rendering::Materials::NullMaterial& nullMaterial,
-                          const Eegeo::Camera::RenderCamera& renderCamera);
+		                  Eegeo::Rendering::Materials::NullMaterial& nullMaterial);
+        
+        void UpdateObserverLocation(const Eegeo::dv3& observerLocationEcef);
         
 		void Render(Eegeo::Rendering::GLState& glState) const;
 	};

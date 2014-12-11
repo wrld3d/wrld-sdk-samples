@@ -25,9 +25,9 @@ namespace Examples
         pController->SetTouchSettings(touchSettings);
         
         
-        Eegeo::Camera::RenderCamera* renderCamera = pController->GetCamera();
+        Eegeo::Camera::RenderCamera renderCamera = pController->GetCamera();
         const Eegeo::Rendering::ScreenProperties& screenProperties = m_screenPropertiesProvider.GetScreenProperties();
-        renderCamera->SetViewport(0.f, 0.f, screenProperties.GetScreenWidth(), screenProperties.GetScreenHeight());
+        renderCamera.SetViewport(0.f, 0.f, screenProperties.GetScreenWidth(), screenProperties.GetScreenHeight());
         
         
         Eegeo::Space::LatLongAltitude location = Eegeo::Space::LatLongAltitude::FromDegrees(m_interestPointLatitudeDegrees,

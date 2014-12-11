@@ -82,7 +82,8 @@ void FireworksExample::Suspend()
 
 void FireworksExample::Update(float dt)
 {
-    m_pFireworksModule->Update(dt, GetRenderCamera());
+    Eegeo::Camera::RenderCamera renderCamera(GetGlobeCameraController().GetCamera());
+    m_pFireworksModule->Update(dt, renderCamera);
 }
 
 }

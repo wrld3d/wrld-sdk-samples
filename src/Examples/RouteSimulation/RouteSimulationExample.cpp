@@ -11,7 +11,7 @@
 #include "RenderCamera.h"
 #include "ScreenProperties.h"
 #include "GlobeCameraTouchController.h"
-
+#include "GlobeCameraController.h"
 
 using namespace Eegeo;
 using namespace Eegeo::Routes;
@@ -166,7 +166,7 @@ void RouteSimulationExample::Initialise()
 	CreateAndBindUI();
 }
 
-void RouteSimulationExample::EarlyUpdate(float dt)
+void RouteSimulationExample::EarlyUpdate(float dt, const Eegeo::Rendering::ScreenProperties& screenProperties)
 {
 	//Defer initialisation until the loading state is over.
 	if(m_world.Initialising())
@@ -188,11 +188,11 @@ void RouteSimulationExample::EarlyUpdate(float dt)
 	//Otherwise, the default camera should be used.
 	if(m_usingFollowCamera)
 	{
-		m_pRouteSessionFollowCameraController->Update(dt);
+		m_pRouteSessionFollowCameraController->Update(dt, screenProperties);
 	}
     else
     {
-        GlobeCameraExampleBase::EarlyUpdate(dt);
+        GlobeCameraExampleBase::EarlyUpdate(dt, screenProperties);
     }
 }
 
@@ -204,7 +204,9 @@ void RouteSimulationExample::Update(float dt)
 		return;
 	}
     
-    const Eegeo::Camera::RenderCamera& renderCamera = GetRenderCamera();
+    Eegeo::Camera::RenderCamera renderCamera(m_usingFollowCamera
+                                             ? m_pRouteSessionFollowCameraController->GetCamera()
+                                             : GetGlobeCameraController().GetCamera());
     
     m_pViewBindingForCycleSession->UpdateCameraLocation(renderCamera.GetEcefLocation());
     m_pViewBindingForOscillatingSession->UpdateCameraLocation(renderCamera.GetEcefLocation());
@@ -212,7 +214,8 @@ void RouteSimulationExample::Update(float dt)
     
 	//The route session for which we want to project a position to (in this case, the ecef interest
 	//point) should be updated giving it the latest position.
-	const Eegeo::dv3& ecefPositionToProjectToRoute = GetInterestPoint();
+    Eegeo::Camera::CameraState cameraState(GetCurrentCameraState());
+    const Eegeo::dv3& ecefPositionToProjectToRoute = cameraState.InterestPointEcef();
 	m_pSessionCamera->SetCurrentPositionSnappedToRoute(ecefPositionToProjectToRoute);
 
 	//For the session which should just cycle the route forever, when it has completed simply end
@@ -281,38 +284,6 @@ void RouteSimulationExample::Suspend()
 	m_initialised = false;
 }
 
-void RouteSimulationExample::NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties)
-{
-    GlobeCameraExampleBase::NotifyScreenPropertiesChanged(screenProperties);
-
-    m_pRouteSessionFollowCameraController->GetCamera()->SetViewport(0.f, 0.f, screenProperties.GetScreenWidth(), screenProperties.GetScreenHeight());
-}
-
-const Eegeo::Camera::RenderCamera& RouteSimulationExample::GetRenderCamera() const
-{
-    if (m_usingFollowCamera)
-    {
-        return *m_pRouteSessionFollowCameraController->GetCamera();
-    }
-    else
-    {
-        return GlobeCameraExampleBase::GetRenderCamera();
-    }
-}
-
-Eegeo::dv3 RouteSimulationExample::GetInterestPoint() const
-{
-    if (m_usingFollowCamera)
-    {
-        return m_pRouteSessionFollowCameraController->GetEcefInterestPoint();
-    }
-    else
-    {
-        return GlobeCameraExampleBase::GetInterestPoint();
-    }
-}
-
-
 void RouteSimulationExample::ToggleFollowCamera()
 {
 	m_usingFollowCamera = !m_usingFollowCamera;
@@ -329,7 +300,18 @@ void RouteSimulationExample::ChangeFollowDirection()
 
 	m_pSessionAlternatingSpeedChanger->TogglePlaybackDirection();
 }
-
+    
+Eegeo::Camera::CameraState RouteSimulationExample::GetCurrentCameraState() const
+{
+    if(m_usingFollowCamera)
+    {
+        return m_pRouteSessionFollowCameraController->GetCameraState();
+    }
+    else
+    {
+        return GetGlobeCameraController().GetCameraState();
+    }
+}
 
 float ClampedLinkSpeed(float linkSpeed)
 {

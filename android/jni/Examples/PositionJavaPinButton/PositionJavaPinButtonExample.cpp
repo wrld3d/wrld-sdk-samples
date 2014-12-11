@@ -7,6 +7,7 @@
 #include "RenderCamera.h"
 #include "ScreenProperties.h"
 #include "EegeoWorld.h"
+#include "GlobeCameraController.h"
 
 namespace Examples
 {
@@ -128,7 +129,7 @@ void PositionJavaPinButtonExample::Project (const Eegeo::Space::LatLongAltitude&
 	//project a 3D Ecef location to the screen
 	Eegeo::m44 finalMatrix;
 
-	const Eegeo::Camera::RenderCamera& renderCamera = GetRenderCamera();
+	Eegeo::Camera::RenderCamera renderCamera(GetGlobeCameraController().GetCamera());
 
 	Eegeo::m44::Mul (finalMatrix,
 	                 renderCamera.GetProjectionMatrix(),

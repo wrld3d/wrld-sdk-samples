@@ -6,6 +6,7 @@
 #include "Pin.h"
 #include "Logger.h"
 #include "Geometry.h"
+#include "GlobeCameraController.h"
 
 namespace Examples
 {
@@ -119,7 +120,7 @@ void PinsWithAttachedJavaUIExample::Suspend()
 void PinsWithAttachedJavaUIExample::Update(float dt)
 {
 	// Update the PinsModule to query terrain heights and update screen space coordinates for the Pins.
-	m_pPinsModule->Update(dt, GetRenderCamera());
+	m_pPinsModule->Update(dt, GetGlobeCameraController().GetCamera());
 }
 
 void PinsWithAttachedJavaUIExample::Draw()

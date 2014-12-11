@@ -169,12 +169,12 @@ void CameraTransitionExample::Transition()
 	m_firstPoint = !m_firstPoint;
 }
 
-void CameraTransitionExample::EarlyUpdate(float dt)
+void CameraTransitionExample::EarlyUpdate(float dt, const Eegeo::Rendering::ScreenProperties& screenProperties)
 {
 	if (!m_transitioner.IsTransitioning())
 	{
         // Do not update touch events or the globe controller if the transition controller is working
-        GetGlobeCameraController().Update(dt);
+        GetGlobeCameraController().Update(dt, screenProperties);
         
 		Transition();
 	}

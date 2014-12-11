@@ -8,6 +8,7 @@
 #include "RenderCamera.h"
 #include "TerrainRayPicker.h"
 #include "DebugRenderer.h"
+#include "GlobeCameraController.h"
 
 namespace Examples
 {
@@ -51,7 +52,7 @@ void ScreenPickExample::Draw()
    
 void ScreenPickExample::Event_TouchTap(const AppInterface::TapData& data)
 {
-	const Eegeo::Camera::RenderCamera& renderCamera = GetRenderCamera();
+    Eegeo::Camera::RenderCamera renderCamera(GetGlobeCameraController().GetCamera());
 
 	float screenPixelX = data.point.GetX();
 	float screenPixelY = data.point.GetY();

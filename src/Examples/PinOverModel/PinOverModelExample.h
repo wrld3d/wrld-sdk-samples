@@ -28,15 +28,16 @@ private:
 	class MyModelRenderable : public Eegeo::Rendering::RenderableBase
 	{
 		Eegeo::Model& m_model;
-		Eegeo::Lighting::GlobalFogging& m_globalFogging;
-        const Eegeo::Camera::RenderCamera& m_renderCamera;
+        Eegeo::Lighting::GlobalFogging& m_globalFogging;
+        Eegeo::dv3 m_observerLocationEcef;
 
 	public:
 		MyModelRenderable(Eegeo::Model& model,
 		                  Eegeo::Lighting::GlobalFogging& globalFogging,
-		                  Eegeo::Rendering::Materials::NullMaterial& nullMat,
-                          const Eegeo::Camera::RenderCamera& renderCamera);
-
+		                  Eegeo::Rendering::Materials::NullMaterial& nullMat);
+        
+        void UpdateObserverLocation(const Eegeo::dv3& observerLocationEcef);
+        
 		void Render(Eegeo::Rendering::GLState& glState) const;
 	};
 

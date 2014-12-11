@@ -64,7 +64,7 @@ void PODAnimationExample::Start()
     
     m_pNullMaterial = m_nullMaterialFactory.Create("PODAnimationExampleNullMaterial");
     
-    m_pMyModelRenderable = Eegeo_NEW (MyModelRenderable)(*m_pModel, m_globalFogging, *m_pNullMaterial, GetRenderCamera());
+    m_pMyModelRenderable = Eegeo_NEW (MyModelRenderable)(*m_pModel, m_globalFogging, *m_pNullMaterial);
 	m_pMyRenderableFilter = Eegeo_NEW (MyRenderableFilter)(*m_pMyModelRenderable);
 	m_renderableFilters.AddRenderableFilter(*m_pMyRenderableFilter);
 }
@@ -73,14 +73,14 @@ void PODAnimationExample::Suspend()
 {
 	delete m_pModel;
 	m_pModel = NULL;
-    
-    
-    
 }
 
 void PODAnimationExample::Update(float dt)
 {
-	m_pModel->UpdateAnimator(1.0f/30.0f);
+    m_pModel->UpdateAnimator(1.0f/30.0f);
+    
+    Eegeo::Camera::RenderCamera renderCamera(GetGlobeCameraController().GetCamera());
+    m_pMyModelRenderable->UpdateObserverLocation(renderCamera.GetEcefLocation());
 }
 
 void PODAnimationExample::Draw()
@@ -90,14 +90,13 @@ void PODAnimationExample::Draw()
 
 PODAnimationExample::MyModelRenderable::MyModelRenderable(Eegeo::Model& model,
                                                           Eegeo::Lighting::GlobalFogging& globalFogging,
-                                                          Eegeo::Rendering::Materials::NullMaterial& nullMat,
-                                                          const Eegeo::Camera::RenderCamera& renderCamera)
+                                                          Eegeo::Rendering::Materials::NullMaterial& nullMat)
 : Eegeo::Rendering::RenderableBase(Eegeo::Rendering::LayerIds::Buildings,
                                    Eegeo::dv3(4256955.9749164,3907407.6184668,-2700108.75541722),
                                    &nullMat)
 , m_model(model)
 , m_globalFogging(globalFogging)
-, m_renderCamera(renderCamera)
+, m_observerLocationEcef()
 {
     
 }
@@ -113,6 +112,11 @@ void PODAnimationExample::MyRenderableFilter::EnqueueRenderables(const Eegeo::Re
     renderQueue.EnqueueRenderable(m_renderable);
 }
     
+void PODAnimationExample::MyModelRenderable::UpdateObserverLocation(const Eegeo::dv3& observerLocationEcef)
+{
+    m_observerLocationEcef = observerLocationEcef;
+}
+    
 void PODAnimationExample::MyModelRenderable::Render(Eegeo::Rendering::GLState &glState) const
 {
     //create basis around a known location off coast of SF
@@ -122,7 +126,7 @@ void PODAnimationExample::MyModelRenderable::Render(Eegeo::Rendering::GLState &g
 	Eegeo::v3 forward = (location  - Eegeo::v3(0.f, 1.f, 0.f)).Norm().ToSingle();
 	Eegeo::v3 right(Eegeo::v3::Cross(up, forward).Norm());
 	forward = Eegeo::v3::Cross(up, right);
-	Eegeo::v3 cameraRelativePos = (location - m_renderCamera.GetEcefLocation()).ToSingle();
+	Eegeo::v3 cameraRelativePos = (location - m_observerLocationEcef).ToSingle();
     
 	Eegeo::m44 scaleMatrix;
 	scaleMatrix.Scale(1.f);

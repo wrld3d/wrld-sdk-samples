@@ -161,8 +161,11 @@ bool ModifiedRenderingExample::IsToBeReplacedWithAlternative(const TSceneElement
 	{
 		const double filterRadius = 400.0f;
 		const double filterRadiusSq = filterRadius*filterRadius;
-
-		Eegeo::v3 cameraRelativePos = Eegeo::Camera::CameraHelpers::CameraRelativePoint(renderable.GetEcefPosition(), GetInterestPoint());
+        
+        Eegeo::Camera::CameraState cameraState(GetCurrentCameraState());
+        
+		Eegeo::v3 cameraRelativePos = Eegeo::Camera::CameraHelpers::CameraRelativePoint(renderable.GetEcefPosition(),
+                                                                                        cameraState.InterestPointEcef());
 
 		double delta = cameraRelativePos.LengthSq();
 		bool closeToInterest = delta < filterRadiusSq;

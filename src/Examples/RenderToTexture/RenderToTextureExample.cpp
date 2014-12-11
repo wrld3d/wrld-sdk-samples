@@ -107,17 +107,23 @@ namespace Examples
         m_pRenderTexture = NULL;
     }
     
-    void RenderToTextureExample::NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties)
+    void RenderToTextureExample::EarlyUpdate(float dt, const Eegeo::Rendering::ScreenProperties& screenProperties)
+    {
+        HandleScreenPropertiesChanged(screenProperties);
+        GlobeCameraExampleBase::EarlyUpdate(dt, screenProperties);
+    }
+    
+    void RenderToTextureExample::HandleScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties)
     {
         if (m_screenProperties.GetScreenWidth() != screenProperties.GetScreenWidth() ||
             m_screenProperties.GetScreenHeight() != screenProperties.GetScreenHeight())
         {
-            m_screenProperties = screenProperties;
             // recreate resources
             Suspend();
             Start();
         }
-        GlobeCameraExampleBase::NotifyScreenPropertiesChanged(screenProperties);
+        
+        m_screenProperties = screenProperties;
     }
     
     void RenderToTextureExample::PreWorldDraw()

@@ -68,24 +68,19 @@ namespace Examples
         delete m_pTargetSpline;
     }
     
-    void CameraSplineExample::EarlyUpdate(float dt)
+    void CameraSplineExample::EarlyUpdate(float dt, const Eegeo::Rendering::ScreenProperties& screenProperties)
     {
         m_pSplineCameraController->Update(dt);
     }
     
-    void CameraSplineExample::NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties)
+    Eegeo::Camera::CameraState CameraSplineExample::GetCurrentCameraState() const
     {
-        m_pSplineCameraController->GetCamera()->SetViewport(0.f, 0.f, screenProperties.GetScreenWidth(), screenProperties.GetScreenHeight());
-    }
-    
-    const Eegeo::Camera::RenderCamera& CameraSplineExample::GetRenderCamera() const
-    {
-        return *m_pSplineCameraController->GetCamera();
-    }
-    
-    Eegeo::dv3 CameraSplineExample::GetInterestPoint() const
-    {
-        // todo - spline camera controller does not model streaming interest point
-        return m_pSplineCameraController->GetCamera()->GetEcefLocation().Norm() * Eegeo::Space::EarthConstants::Radius;
+        Eegeo::dv3 interestPoint(m_pSplineCameraController->GetCamera().GetEcefLocation().Norm() * Eegeo::Space::EarthConstants::Radius);
+        Eegeo::Camera::RenderCamera renderCamera(m_pSplineCameraController->GetCamera());
+        
+        return Eegeo::Camera::CameraState(renderCamera.GetEcefLocation(),
+                                          interestPoint,
+                                          renderCamera.GetViewMatrix(),
+                                          renderCamera.GetProjectionMatrix());
     }
 }

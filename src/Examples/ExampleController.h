@@ -12,7 +12,7 @@
 #include "Camera.h"
 #include "ScreenPropertiesProvider.h"
 #include "DefaultCameraControllerFactory.h"
-
+#include "CameraState.h"
 #include <vector>
 #include <string>
 
@@ -31,7 +31,8 @@ class ExampleController : private Eegeo::NonCopyable
 	IExampleControllerView& m_view;
 	UIActionHandler<ExampleController> m_nextExampleHandler;
 	UIActionHandler<ExampleController> m_previousExampleHandler;
-	UIActionHandler<ExampleController> m_selectedExampleChangedHandler;
+    UIActionHandler<ExampleController> m_selectedExampleChangedHandler;
+    Examples::ScreenPropertiesProvider& m_screenPropertiesProvider;
 
 	void DestroyCurrentExample();
 
@@ -41,7 +42,8 @@ public:
 	ExampleController(Eegeo::EegeoWorld& world,
 	                  IExampleControllerView& view,
                       DefaultCameraControllerFactory& defaultCameraControllerFactory,
-                      Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController);
+                      Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController,
+                      Examples::ScreenPropertiesProvider& screenPropertiesProvider);
 
 	~ExampleController();
 
@@ -63,11 +65,9 @@ public:
 
 	void RegisterExample(IExampleFactory* pFactory);
     
-    const Eegeo::Camera::RenderCamera& GetCurrentActiveCamera() const;
+    Eegeo::Camera::CameraState GetCurrentCameraState() const;
     
-    Eegeo::dv3 GetCurrentInterestPoint() const;
-    
-    void NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties);
+    Eegeo::Streaming::IStreamingVolume& GetCurrentStreamingVolume() const;
 
 	template <typename TExampleFactory>
 	void RegisterExample()
