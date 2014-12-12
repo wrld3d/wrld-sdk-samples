@@ -66,7 +66,7 @@ public:
 	}
 
 	void Start() {}
-	void EarlyUpdate(float dt, const Eegeo::Rendering::ScreenProperties& screenProperties);
+	void EarlyUpdate(float dt);
 	void Update(float dt) { }
 	void Draw() {}
 	void Suspend() {}

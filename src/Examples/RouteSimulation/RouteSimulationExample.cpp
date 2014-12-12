@@ -52,7 +52,8 @@ RouteSimulationExample::RouteSimulationExample(RouteService& routeService,
         Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& defaultCameraTouchController,
         RouteSimulationGlobeCameraControllerFactory& routeSimulationGlobeCameraControllerFactory,
         const IRouteSimulationExampleViewFactory& routeSimulationExampleViewFactory,
-        EegeoWorld& world)
+        EegeoWorld& world,
+        const Eegeo::Rendering::ScreenProperties& screenProperties)
 	: GlobeCameraExampleBase(pDefaultCameraController, defaultCameraTouchController)
     , m_routeService(routeService)
 	,m_routeSimulationService(routeSimulationService)
@@ -93,7 +94,10 @@ RouteSimulationExample::RouteSimulationExample(RouteService& routeService,
     
     RouteSimulationGlobeCameraControllerConfig routeSimCameraConfig = RouteSimulationGlobeCameraControllerConfig::CreateDefault();
     
-    m_pRouteSessionFollowCameraController = m_routeSimulationGlobeCameraControllerFactory.Create(false, touchConfiguration, routeSimCameraConfig);
+    m_pRouteSessionFollowCameraController = m_routeSimulationGlobeCameraControllerFactory.Create(false,
+                                                                                                 touchConfiguration,
+                                                                                                 routeSimCameraConfig,
+                                                                                                 screenProperties);
 }
 
 void RouteSimulationExample::Initialise()
@@ -166,7 +170,7 @@ void RouteSimulationExample::Initialise()
 	CreateAndBindUI();
 }
 
-void RouteSimulationExample::EarlyUpdate(float dt, const Eegeo::Rendering::ScreenProperties& screenProperties)
+void RouteSimulationExample::EarlyUpdate(float dt)
 {
 	//Defer initialisation until the loading state is over.
 	if(m_world.Initialising())
@@ -188,11 +192,11 @@ void RouteSimulationExample::EarlyUpdate(float dt, const Eegeo::Rendering::Scree
 	//Otherwise, the default camera should be used.
 	if(m_usingFollowCamera)
 	{
-		m_pRouteSessionFollowCameraController->Update(dt, screenProperties);
+		m_pRouteSessionFollowCameraController->Update(dt);
 	}
     else
     {
-        GlobeCameraExampleBase::EarlyUpdate(dt, screenProperties);
+        GlobeCameraExampleBase::EarlyUpdate(dt);
     }
 }
 
@@ -312,7 +316,13 @@ Eegeo::Camera::CameraState RouteSimulationExample::GetCurrentCameraState() const
         return GetGlobeCameraController().GetCameraState();
     }
 }
-
+    
+void RouteSimulationExample::NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties)
+{
+    m_pRouteSessionFollowCameraController->UpdateScreenProperties(screenProperties);
+    GetGlobeCameraController().UpdateScreenProperties(screenProperties);
+}
+    
 float ClampedLinkSpeed(float linkSpeed)
 {
 	return Math::Clamp(linkSpeed, 0.5f, 32.f);

@@ -68,9 +68,14 @@ namespace Examples
         delete m_pTargetSpline;
     }
     
-    void CameraSplineExample::EarlyUpdate(float dt, const Eegeo::Rendering::ScreenProperties& screenProperties)
+    void CameraSplineExample::EarlyUpdate(float dt)
     {
         m_pSplineCameraController->Update(dt);
+    }
+    
+    void CameraSplineExample::NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties)
+    {
+        m_pSplineCameraController->UpdateScreenProperties(screenProperties);
     }
     
     Eegeo::Camera::CameraState CameraSplineExample::GetCurrentCameraState() const

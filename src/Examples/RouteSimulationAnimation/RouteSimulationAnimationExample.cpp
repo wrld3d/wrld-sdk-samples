@@ -17,16 +17,16 @@ using namespace Eegeo::Routes::Simulation::Camera;
 
 namespace Examples
 {
-RouteSimulationAnimationExample::RouteSimulationAnimationExample(
-    RouteService& routeService,
-    RouteSimulationService& routeSimulationService,
-    RouteSimulationViewService& routeSimulationViewService,
-    Eegeo::Helpers::IFileIO& fileIO,
-    Eegeo::Rendering::AsyncTexturing::IAsyncTextureRequestor& textureRequestor,
-    RouteSimulationGlobeCameraControllerFactory& routeSimulationGlobeCameraControllerFactory,
-    EegeoWorld& world)
-	:m_routeService(routeService)
-	,m_routeSimulationService(routeSimulationService)
+    RouteSimulationAnimationExample::RouteSimulationAnimationExample(RouteService& routeService,
+                                                                     RouteSimulationService& routeSimulationService,
+                                                                     RouteSimulationViewService& routeSimulationViewService,
+                                                                     Eegeo::Helpers::IFileIO& fileIO,
+                                                                     Eegeo::Rendering::AsyncTexturing::IAsyncTextureRequestor& textureRequestor,
+                                                                     RouteSimulationGlobeCameraControllerFactory& routeSimulationGlobeCameraControllerFactory,
+                                                                     EegeoWorld& world,
+                                                                     const Eegeo::Rendering::ScreenProperties& screenProperties)
+    :m_routeService(routeService)
+    ,m_routeSimulationService(routeSimulationService)
 	,m_routeSimulationViewService(routeSimulationViewService)
 	,m_fileIO(fileIO)
 	,m_textureRequestor(textureRequestor)
@@ -39,6 +39,7 @@ RouteSimulationAnimationExample::RouteSimulationAnimationExample(
 	,m_pRouteSimulationSession(NULL)
 	,m_pViewBindingForCameraSession(NULL)
 	,m_pRouteSessionFollowCameraController(NULL)
+    ,m_screenProperties(screenProperties)
 {
 }
 
@@ -46,7 +47,7 @@ RouteSimulationAnimationExample::~RouteSimulationAnimationExample()
 {
 }
 
-void RouteSimulationAnimationExample::Initialise(const Eegeo::Rendering::ScreenProperties& screenProperties)
+void RouteSimulationAnimationExample::Initialise()
 {
 	//Load a model containing the node that will be bound to our route simulation session. For
 	//a detailed explation see http://sdk.eegeo.com/developers/mobiledocs/loading_rendering_models
@@ -62,9 +63,10 @@ void RouteSimulationAnimationExample::Initialise(const Eegeo::Rendering::ScreenP
     
     RouteSimulationGlobeCameraControllerConfig routeSimCameraConfig = RouteSimulationGlobeCameraControllerConfig::CreateDefault();
     Eegeo::Camera::GlobeCamera::GlobeCameraTouchControllerConfiguration touchConfiguration = Eegeo::Camera::GlobeCamera::GlobeCameraTouchControllerConfiguration::CreateDefault();
-    m_pRouteSessionFollowCameraController = m_routeSimulationGlobeCameraControllerFactory.Create(false, touchConfiguration, routeSimCameraConfig);
-    m_pRouteSessionFollowCameraController->Update(0.f, screenProperties);
-    
+    m_pRouteSessionFollowCameraController = m_routeSimulationGlobeCameraControllerFactory.Create(false,
+                                                                                                 touchConfiguration,
+                                                                                                 routeSimCameraConfig,
+                                                                                                 m_screenProperties);
     const float fovRadians = Eegeo::Math::Deg2Rad(45.f);
     const float nearClipDistance = 10.f;
     const float farClipDistance = 10000.f;
@@ -83,7 +85,7 @@ void RouteSimulationAnimationExample::Initialise(const Eegeo::Rendering::ScreenP
 
 }
 
-void RouteSimulationAnimationExample::EarlyUpdate(float dt, const Eegeo::Rendering::ScreenProperties& screenProperties)
+void RouteSimulationAnimationExample::EarlyUpdate(float dt)
 {
 	//Defer initialisation until the loading state is over.
 	if(m_world.Initialising())
@@ -95,13 +97,13 @@ void RouteSimulationAnimationExample::EarlyUpdate(float dt, const Eegeo::Renderi
 	if(!m_initialised)
 	{
 		//Load the model, build the route, create and configure the simulation settings.
-		Initialise(screenProperties);
+		Initialise();
 
 		//We have initialised so don't need to do so again.
 		m_initialised = true;
 	}
 
-	m_pRouteSessionFollowCameraController->Update(dt, screenProperties);
+	m_pRouteSessionFollowCameraController->Update(dt);
     
     Eegeo::Camera::RenderCamera renderCamera(m_pRouteSessionFollowCameraController->GetCamera());
     m_pViewBindingForCameraSession->UpdateCameraLocation(renderCamera.GetEcefLocation());
@@ -154,6 +156,12 @@ void RouteSimulationAnimationExample::Suspend()
 	m_pRouteSessionFollowCameraController = NULL;
     
 	m_initialised = false;
+}
+    
+void RouteSimulationAnimationExample::NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties)
+{
+    m_screenProperties = screenProperties;
+    m_pRouteSessionFollowCameraController->UpdateScreenProperties(screenProperties);
 }
 
 Route* RouteSimulationAnimationExample::BuildRoute()

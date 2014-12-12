@@ -20,12 +20,14 @@ namespace Examples
         virtual std::string Name() const = 0;
 
         virtual void Start() = 0;
-        virtual void EarlyUpdate(float dt, const Eegeo::Rendering::ScreenProperties& screenProperties) = 0;
+        virtual void EarlyUpdate(float dt) = 0;
         virtual void Update(float dt) = 0;
         virtual void PreWorldDraw() = 0;
         virtual void Draw() = 0;
         virtual void Suspend()= 0;
         virtual void AfterCameraUpdate() { }
+        
+        virtual void NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties) = 0;
         
         virtual Eegeo::Camera::CameraState GetCurrentCameraState() const = 0;
         

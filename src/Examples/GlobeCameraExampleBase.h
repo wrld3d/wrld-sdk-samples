@@ -17,9 +17,11 @@ namespace Examples
         
         virtual ~GlobeCameraExampleBase();
         
-        virtual void EarlyUpdate(float dt, const Eegeo::Rendering::ScreenProperties& screenProperties);
+        virtual void EarlyUpdate(float dt);
         
         virtual void PreWorldDraw() {}
+        
+        virtual void NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties);
         
         virtual Eegeo::Camera::CameraState GetCurrentCameraState() const;
         

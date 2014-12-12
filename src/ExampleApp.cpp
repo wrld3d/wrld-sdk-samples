@@ -153,7 +153,7 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
 	m_pExampleController->RegisterCameraExample<Examples::ReadHeadingExampleFactory>();
 	m_pExampleController->RegisterCameraExample<Examples::ResourceSpatialQueryExampleFactory>();
 	m_pExampleController->RegisterCameraExample<Examples::RouteDrawingExampleFactory>();
-	m_pExampleController->RegisterCameraExample<Examples::RouteSimulationAnimationExampleFactory>();
+	m_pExampleController->RegisterCameraScreenPropertiesProviderExample<Examples::RouteSimulationAnimationExampleFactory>(m_screenPropertiesProvider);
 	m_pExampleController->RegisterCameraExample<Examples::RouteThicknessPolicyExampleFactory>();
 	m_pExampleController->RegisterCameraExample<Examples::ScreenPickExampleFactory>();
 	m_pExampleController->RegisterCameraExample<Examples::ScreenUnprojectExampleFactory>();
@@ -244,6 +244,8 @@ void ExampleApp::NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenPro
     {
         m_pLoadingScreen->NotifyScreenDimensionsChanged(screenProperties.GetScreenWidth(), screenProperties.GetScreenHeight());
     }
+    
+    m_pExampleController->NotifyScreenPropertiesChanged(screenProperties);
 }
 
 void ExampleApp::UpdateLoadingScreen(float dt)

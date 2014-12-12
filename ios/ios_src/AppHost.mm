@@ -165,7 +165,8 @@ void AppHost::RegisteriOSSpecificExamples()
 	        *m_pWorld,
 	        m_pApp->GetDefaultCameraControllerFactory(),
             m_pApp->GetTouchController(),
-	        *m_piOSRouteSimulationExampleViewFactory));
+	        *m_piOSRouteSimulationExampleViewFactory,
+            m_pApp->GetScreenPropertiesProvider()));
 }
 
 void AppHost::DestroyExamples()

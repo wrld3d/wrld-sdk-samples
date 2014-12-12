@@ -17,18 +17,13 @@ namespace Examples
                                                                      m_mapModule.GetEnvironmentFlatteningService(),
                                                                      m_mapModule.GetResourceCeilingProvider(),
                                                                      m_touchController,
-                                                                     m_config);
+                                                                     m_config,
+                                                                     m_screenPropertiesProvider.GetScreenProperties());
         
         // override default configuration to enable two-finger pan gesture to control additional camera pitch
         Eegeo::Camera::GlobeCamera::GlobeCameraTouchSettings touchSettings = pController->GetTouchSettings();
         touchSettings.TiltEnabled = m_tiltEnabled;
         pController->SetTouchSettings(touchSettings);
-        
-        
-        Eegeo::Camera::RenderCamera renderCamera = pController->GetCamera();
-        const Eegeo::Rendering::ScreenProperties& screenProperties = m_screenPropertiesProvider.GetScreenProperties();
-        renderCamera.SetViewport(0.f, 0.f, screenProperties.GetScreenWidth(), screenProperties.GetScreenHeight());
-        
         
         Eegeo::Space::LatLongAltitude location = Eegeo::Space::LatLongAltitude::FromDegrees(m_interestPointLatitudeDegrees,
                                                                                             m_interestPointLongitudeDegrees,

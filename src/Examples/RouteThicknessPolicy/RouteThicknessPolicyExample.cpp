@@ -24,7 +24,6 @@ RouteThicknessPolicyExample::RouteThicknessPolicyExample(RouteService& routeServ
 	, m_routeService(routeService)
 	,m_world(world)
 	,m_createdRoutes(false)
-    ,m_linearAltitudeBasedRouteThicknessPolicy(pCameraController->GetCamera())
 {
 	Eegeo::Space::EcefTangentBasis cameraInterestBasis;
 

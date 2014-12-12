@@ -68,6 +68,8 @@ public:
     Eegeo::Camera::CameraState GetCurrentCameraState() const;
     
     Eegeo::Streaming::IStreamingVolume& GetCurrentStreamingVolume() const;
+    
+    void NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties);
 
 	template <typename TExampleFactory>
 	void RegisterExample()

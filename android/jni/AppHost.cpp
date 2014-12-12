@@ -217,7 +217,8 @@ void AppHost::RegisterAndroidSpecificExamples()
 	        *m_pWorld,
 	        m_pApp->GetDefaultCameraControllerFactory(),
 	        m_pApp->GetTouchController(),
-	        *m_pAndroidRouteSimulationExampleViewFactory));
+	        *m_pAndroidRouteSimulationExampleViewFactory,
+	        m_pApp->GetScreenPropertiesProvider()));
 /* todo!
 	m_pExampleController->RegisterExample(new Examples::JavaHudCrossThreadCommunicationExampleFactory(*m_pWorld, m_nativeState, m_pApp->GetCameraController()));
 	m_pExampleController->RegisterExample(new Examples::PinsWithAttachedJavaUIExampleFactory(*m_pWorld, m_nativeState, m_pApp->GetCameraController()));

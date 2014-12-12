@@ -54,6 +54,8 @@ public:
 	{
 		return *m_pCameraTouchController;
 	}
+    
+    const Examples::IScreenPropertiesProvider& GetScreenPropertiesProvider() const { return m_screenPropertiesProvider; }
 
 	void Event_TouchRotate 			(const AppInterface::RotateData& data);
 	void Event_TouchRotate_Start	(const AppInterface::RotateData& data);

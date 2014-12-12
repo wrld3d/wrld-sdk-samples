@@ -64,7 +64,7 @@ void ExampleController::RefreshExample()
 	if(m_pCurrentExample != NULL)
 	{
 		m_pCurrentExample->Start();
-		m_pCurrentExample->EarlyUpdate(0.f, m_screenPropertiesProvider.GetScreenProperties());
+		m_pCurrentExample->EarlyUpdate(0.f);
 		m_pCurrentExample->Update(0.f);
 		m_view.SetCurrentExampleName(m_pCurrentExample->Name());
 	}
@@ -119,7 +119,7 @@ void ExampleController::EarlyUpdate(float dt)
 {
 	if(m_pCurrentExample != NULL)
 	{
-		m_pCurrentExample->EarlyUpdate(dt, m_screenPropertiesProvider.GetScreenProperties());
+		m_pCurrentExample->EarlyUpdate(dt);
         m_pCurrentExample->AfterCameraUpdate();
 	}
 }
@@ -178,6 +178,11 @@ Eegeo::Camera::CameraState ExampleController::GetCurrentCameraState() const
 Eegeo::Streaming::IStreamingVolume& ExampleController::GetCurrentStreamingVolume() const
 {
     return m_world.GetMapModule().GetStreamingVolume();
+}
+    
+void ExampleController::NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties)
+{
+    m_pCurrentExample->NotifyScreenPropertiesChanged(screenProperties);
 }
     
 void ExampleController::Event_TouchRotate(const AppInterface::RotateData& data)

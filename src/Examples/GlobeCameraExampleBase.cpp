@@ -20,9 +20,14 @@ namespace Examples
         delete m_pGlobeCameraController;
     }
 
-    void GlobeCameraExampleBase::EarlyUpdate(float dt, const Eegeo::Rendering::ScreenProperties& screenProperties)
+    void GlobeCameraExampleBase::EarlyUpdate(float dt)
     {
-        m_pGlobeCameraController->Update(dt, screenProperties);
+        m_pGlobeCameraController->Update(dt);
+    }
+    
+    void GlobeCameraExampleBase::NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties)
+    {
+        m_pGlobeCameraController->UpdateScreenProperties(screenProperties);
     }
     
     Eegeo::Camera::CameraState GlobeCameraExampleBase::GetCurrentCameraState() const

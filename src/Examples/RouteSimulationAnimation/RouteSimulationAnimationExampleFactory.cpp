@@ -19,11 +19,13 @@ namespace Examples
 
 RouteSimulationAnimationExampleFactory::RouteSimulationAnimationExampleFactory(Eegeo::EegeoWorld& world,
                                                                                DefaultCameraControllerFactory& defaultCameraControllerFactory,
-                                                                               Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController)
+                                                                               Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController,
+                                                                               const IScreenPropertiesProvider& screenPropertiesProvider)
 	: m_world(world)
 	, m_defaultCameraControllerFactory(defaultCameraControllerFactory)
     , m_globeCameraTouchController(globeCameraTouchController)
 	, m_pRouteSimulationGlobeCameraControllerFactory(NULL)
+    , m_screenProperties(screenPropertiesProvider)
 {
     Eegeo::Modules::Map::MapModule& mapModule = m_world.GetMapModule();
     Eegeo::Modules::Map::Layers::TerrainModelModule& terrainModelModule = m_world.GetTerrainModelModule();
@@ -49,13 +51,14 @@ IExample* RouteSimulationAnimationExampleFactory::CreateExample() const
     Eegeo::Modules::IPlatformAbstractionModule& platformAbstractionModule = m_world.GetPlatformAbstractionModule();
     Eegeo::Modules::Core::AsyncLoadersModule& asyncLoadersModule = m_world.GetAsyncLoadersModule();
     
-	return new Examples::RouteSimulationAnimationExample(routesModule.GetRouteService(),
-	        routesModule.GetRouteSimulationService(),
-	        routesModule.GetRouteSimulationViewService(),
-	        platformAbstractionModule.GetFileIO(),
-	        asyncLoadersModule.GetLocalAsyncTextureLoader(),
-	        *m_pRouteSimulationGlobeCameraControllerFactory,
-	        m_world);
+    return new Examples::RouteSimulationAnimationExample(routesModule.GetRouteService(),
+                                                         routesModule.GetRouteSimulationService(),
+                                                         routesModule.GetRouteSimulationViewService(),
+                                                         platformAbstractionModule.GetFileIO(),
+                                                         asyncLoadersModule.GetLocalAsyncTextureLoader(),
+                                                         *m_pRouteSimulationGlobeCameraControllerFactory,
+                                                         m_world,
+                                                         m_screenProperties.GetScreenProperties());
 }
 
 std::string RouteSimulationAnimationExampleFactory::ExampleName() const

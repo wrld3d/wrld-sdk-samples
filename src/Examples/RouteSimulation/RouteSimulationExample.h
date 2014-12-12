@@ -100,7 +100,8 @@ public:
                            Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& defaultCameraTouchController,
 	                       Eegeo::Routes::Simulation::Camera::RouteSimulationGlobeCameraControllerFactory& routeSimulationGlobeCameraControllerFactory,
 	                       const IRouteSimulationExampleViewFactory& routeSimulationExampleViewFactory,
-	                       Eegeo::EegeoWorld& eegeoWorld);
+                           Eegeo::EegeoWorld& eegeoWorld,
+                           const Eegeo::Rendering::ScreenProperties& screenProperties);
 
 	static std::string GetName()
 	{
@@ -112,13 +113,15 @@ public:
 	}
 
 	void Start() {}
-	void EarlyUpdate(float dt, const Eegeo::Rendering::ScreenProperties& screenProperties);
+	void EarlyUpdate(float dt);
 	void Update(float dt);
 	void Draw() {}
 	void Suspend();
     
     Eegeo::Camera::CameraState GetCurrentCameraState() const;
-
+    
+    virtual void NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties);
+    
 	void Event_TouchRotate 			(const AppInterface::RotateData& data);
 	void Event_TouchRotate_Start	(const AppInterface::RotateData& data);
 	void Event_TouchRotate_End 		(const AppInterface::RotateData& data);
