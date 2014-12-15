@@ -30,6 +30,8 @@ public:
 	virtual void RemoveExampleSelectedHandler(IUIActionHandler& handler)=0;
 
 	virtual std::string GetSelectedExample()=0;
+    
+    virtual void NotifyNeedsLayout() = 0;
 };
 }
 

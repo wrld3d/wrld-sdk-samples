@@ -18,10 +18,12 @@ class iOSExampleControllerView;
 @interface IExampleControllerViewBinding : NSObject
 
 -(void) setExampleNames:(const std::vector<std::string>&)exampleNames;
--(void) setBinding:(Examples::iOSExampleControllerView*)pInstance :(UIView*)pView :(int)exampleSelectorWidth;
+-(instancetype) initWith:(Examples::iOSExampleControllerView*)pInstance :(UIView*)pView :(int)exampleSelectorWidth;
+-(void) show;
 -(void) activateNext;
 -(void) activatePrevious;
 -(void) openExampleSelectionMenu;
+-(void) layoutViews;
 
 @end
 
@@ -33,9 +35,6 @@ class iOSExampleControllerView : public IExampleControllerView, private Eegeo::N
 	std::vector<IUIActionHandler*> m_nextHandlers;
 	std::vector<IUIActionHandler*> m_previousHandlers;
 	UIView* m_pView;
-	UIButton * m_pNextButton;
-	UIButton * m_pPreviousButton;
-	UIButton* m_pSelectNewExampleButton;
 	IExampleControllerViewBinding* m_pBinding;
 	std::string m_selectedExample;
 
@@ -61,6 +60,8 @@ public:
 	void RemoveExampleSelectedHandler(IUIActionHandler& handler);
 
 	std::string GetSelectedExample();
+    
+    void NotifyNeedsLayout();
 
 	void UpdateSelectedExample();
 
