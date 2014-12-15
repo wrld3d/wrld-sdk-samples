@@ -49,7 +49,7 @@ AppHost::AppHost(
     
     m_pJpegLoader = new Eegeo::Helpers::Jpeg::JpegLoader();
     
-    m_piOSPlatformAbstractionModule = new Eegeo::iOS::iOSPlatformAbstractionModule(*m_pJpegLoader);
+    m_piOSPlatformAbstractionModule = new Eegeo::iOS::iOSPlatformAbstractionModule(*m_pJpegLoader, apiKey);
 
 	Eegeo::EffectHandler::Initialise();
 	m_pBlitter = new Eegeo::Blitter(1024 * 128, 1024 * 64, 1024 * 32, m_pScreenProperties->GetScreenWidth(), m_pScreenProperties->GetScreenHeight());
