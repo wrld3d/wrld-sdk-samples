@@ -209,8 +209,8 @@ void RouteSimulationExample::Update(float dt)
 	}
     
     Eegeo::Camera::RenderCamera renderCamera(m_usingFollowCamera
-                                             ? m_pRouteSessionFollowCameraController->GetCamera()
-                                             : GetGlobeCameraController().GetCamera());
+                                             ? m_pRouteSessionFollowCameraController->GetRenderCamera()
+                                             : GetGlobeCameraController().GetRenderCamera());
     
     m_pViewBindingForCycleSession->UpdateCameraLocation(renderCamera.GetEcefLocation());
     m_pViewBindingForOscillatingSession->UpdateCameraLocation(renderCamera.GetEcefLocation());

@@ -120,7 +120,7 @@ void PinsWithAttachedJavaUIExample::Suspend()
 void PinsWithAttachedJavaUIExample::Update(float dt)
 {
 	// Update the PinsModule to query terrain heights and update screen space coordinates for the Pins.
-	m_pPinsModule->Update(dt, GetGlobeCameraController().GetCamera());
+	m_pPinsModule->Update(dt, GetGlobeCameraController().GetRenderCamera());
 }
 
 void PinsWithAttachedJavaUIExample::Draw()

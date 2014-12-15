@@ -105,7 +105,7 @@ void RouteSimulationAnimationExample::EarlyUpdate(float dt)
 
 	m_pRouteSessionFollowCameraController->Update(dt);
     
-    Eegeo::Camera::RenderCamera renderCamera(m_pRouteSessionFollowCameraController->GetCamera());
+    Eegeo::Camera::RenderCamera renderCamera(m_pRouteSessionFollowCameraController->GetRenderCamera());
     m_pViewBindingForCameraSession->UpdateCameraLocation(renderCamera.GetEcefLocation());
 }
 
@@ -215,7 +215,7 @@ void RouteSimulationAnimationExample::CalculateTransform(Eegeo::m44& transform)
     
     const Eegeo::dv3& position = m_pRouteSimulationSession->GetCurrentPositionEcef();
     float scaleAsFunctionOfAltitude =
-    Eegeo::Helpers::TransformHelpers::ComputeModelScaleForConstantScreenSize(m_pRouteSessionFollowCameraController->GetCamera(),
+    Eegeo::Helpers::TransformHelpers::ComputeModelScaleForConstantScreenSize(m_pRouteSessionFollowCameraController->GetRenderCamera(),
                                                                              position) / scaleModifier;
     
     

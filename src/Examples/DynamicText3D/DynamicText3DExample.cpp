@@ -103,7 +103,7 @@ void DynamicText3DExample::CreateDynamic3DText(const std::string& str,
 
 void DynamicText3DExample::EnqueueRenderables(const Eegeo::Rendering::RenderContext& renderContext, Eegeo::Rendering::RenderQueue& renderQueue)
 {
-    Eegeo::Camera::RenderCamera renderCamera(GetGlobeCameraController().GetCamera());
+    Eegeo::Camera::RenderCamera renderCamera(GetGlobeCameraController().GetRenderCamera());
 	const dv3& ecefCameraPosition = renderCamera.GetEcefLocation();
 	v3 camSurfaceNormal = ecefCameraPosition.Norm().ToSingle();
 	float environmentScale = m_environmentFlatteningService.GetCurrentScale();

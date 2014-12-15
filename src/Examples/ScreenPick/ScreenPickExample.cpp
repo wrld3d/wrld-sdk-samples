@@ -52,7 +52,7 @@ void ScreenPickExample::Draw()
    
 void ScreenPickExample::Event_TouchTap(const AppInterface::TapData& data)
 {
-    Eegeo::Camera::RenderCamera renderCamera(GetGlobeCameraController().GetCamera());
+    Eegeo::Camera::RenderCamera renderCamera(GetGlobeCameraController().GetRenderCamera());
 
 	float screenPixelX = data.point.GetX();
 	float screenPixelY = data.point.GetY();

@@ -129,7 +129,7 @@ void PositionJavaPinButtonExample::Project (const Eegeo::Space::LatLongAltitude&
 	//project a 3D Ecef location to the screen
 	Eegeo::m44 finalMatrix;
 
-	Eegeo::Camera::RenderCamera renderCamera(GetGlobeCameraController().GetCamera());
+	Eegeo::Camera::RenderCamera renderCamera(GetGlobeCameraController().GetRenderCamera());
 
 	Eegeo::m44::Mul (finalMatrix,
 	                 renderCamera.GetProjectionMatrix(),

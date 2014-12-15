@@ -86,7 +86,7 @@ void ScreenUnprojectExample::Suspend()
 
 void ScreenUnprojectExample::Update(float dt)
 {
-    Eegeo::Camera::RenderCamera renderCamera(GetGlobeCameraController().GetCamera());
+    Eegeo::Camera::RenderCamera renderCamera(GetGlobeCameraController().GetRenderCamera());
     
     //select the middle of the client screen as the position of the sphere
 	double screenPointOfInterestX = (renderCamera.GetViewportWidth()/2.0f);

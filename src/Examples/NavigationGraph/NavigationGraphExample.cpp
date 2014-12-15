@@ -58,7 +58,7 @@ void NavigationGraphExample::Draw()
 
 		Eegeo::dv3 ecefPosition = navGraph.GetCellInfo().GetFaceCentreECEF() + Eegeo::dv3::FromSingle(navGraph.GetUpECEF() * 2.0f);
         
-        Eegeo::Camera::RenderCamera renderCamera(GetGlobeCameraController().GetCamera());
+        Eegeo::Camera::RenderCamera renderCamera(GetGlobeCameraController().GetRenderCamera());
 		Eegeo::v3 m_cameraRelativePosition = Eegeo::Camera::CameraHelpers::CameraRelativePoint(ecefPosition, renderCamera.GetEcefLocation());
 		renderable.Draw(m_cameraRelativePosition, renderCamera, glState);
 	}

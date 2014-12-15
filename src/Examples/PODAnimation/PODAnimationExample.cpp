@@ -79,7 +79,7 @@ void PODAnimationExample::Update(float dt)
 {
     m_pModel->UpdateAnimator(1.0f/30.0f);
     
-    Eegeo::Camera::RenderCamera renderCamera(GetGlobeCameraController().GetCamera());
+    Eegeo::Camera::RenderCamera renderCamera(GetGlobeCameraController().GetRenderCamera());
     m_pMyModelRenderable->UpdateObserverLocation(renderCamera.GetEcefLocation());
 }
 

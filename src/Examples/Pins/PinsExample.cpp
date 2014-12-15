@@ -129,7 +129,7 @@ void PinsExample::Update(float dt)
 	}
 
     // Update the PinsModule to query terrain heights and update screen space coordinats for the Pins.
-    Eegeo::Camera::RenderCamera renderCamera(GetGlobeCameraController().GetCamera());
+    Eegeo::Camera::RenderCamera renderCamera(GetGlobeCameraController().GetRenderCamera());
 	m_pPinsModule->Update(dt, renderCamera);
 }
 

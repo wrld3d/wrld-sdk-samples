@@ -74,7 +74,7 @@ void DebugPrimitiveRenderingExample::Update(float dt)
     {
         m_frustumDrawTimer = 0.0;
         
-        Eegeo::Camera::RenderCamera renderCamera(GetGlobeCameraController().GetCamera());
+        Eegeo::Camera::RenderCamera renderCamera(GetGlobeCameraController().GetRenderCamera());
         
         // Construct a frustum representation from the current render camera's ViewProjection matrix
         std::vector<Eegeo::Geometry::Plane> frustumPlanes;

@@ -129,7 +129,7 @@ void PinOverModelExample::Suspend()
 void PinOverModelExample::Update(float dt)
 {
     // Update the PinsModule to query terrain heights and update screen space coordinats for the Pins.
-    Eegeo::Camera::RenderCamera renderCamera(GetGlobeCameraController().GetCamera());
+    Eegeo::Camera::RenderCamera renderCamera(GetGlobeCameraController().GetRenderCamera());
 	m_pPinsModule->Update(dt, renderCamera);
     
 	m_pModel->UpdateAnimator(1.0f/30.0f);

@@ -171,7 +171,7 @@ void SingleCityExample::ConstrainCamera()
 	if (tooHigh || tooFar)
 	{
 		// Also update the Streaming Volume as we'll have changed the position of the frustum.
-		m_streamingVolumeController.Update(globeCamera.GetCamera());
+		m_streamingVolumeController.Update(globeCamera.GetRenderCamera());
 	}
 }
 }

@@ -115,7 +115,7 @@ void LoadModelExample::Draw()
 	Eegeo::v3 right(Eegeo::v3::Cross(up, forward).Norm());
 	up = Eegeo::v3::Cross(forward, right);
 
-    Eegeo::Camera::RenderCamera renderCamera(GetGlobeCameraController().GetCamera());
+    Eegeo::Camera::RenderCamera renderCamera(GetGlobeCameraController().GetRenderCamera());
 	//compute a camera local position
 	Eegeo::v3 cameraRelativePos = (m_mesh.positionEcef - renderCamera.GetEcefLocation()).ToSingle();
 
