@@ -58,6 +58,7 @@ namespace
         loadingScreenConfig.screenWidth = screenProperties.GetScreenWidth();
         loadingScreenConfig.screenHeight = screenProperties.GetScreenHeight();
         loadingScreenConfig.backgroundColor = Eegeo::v4(132.f/255.f, 203.f/255.f, 235.f/255.f, 1.f);
+        loadingScreenConfig.loadingBarOffset = Eegeo::v2(0.5f, 0.1f);
         loadingScreenConfig.layout = Eegeo::Rendering::LoadingScreenLayout::Centred;
        
         
