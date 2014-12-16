@@ -29,7 +29,7 @@ UIButton* m_pToggleMatchingButton;
         }
         
         [m_pToggleMatchingButton setTitle:@"Toggle Match!" forState:UIControlStateNormal];
-        [m_pToggleMatchingButton setBackgroundColor:[UIColor colorWithRed:0.0/255.0f green:0.0/255.0f blue:128.0/255.0f alpha:0.6]];
+        [m_pToggleMatchingButton setBackgroundColor:[UIColor colorWithRed:0.0/255.0f green:0.0/255.0f blue:128.0f/255.0f alpha:0.6f]];
         [m_pToggleMatchingButton addTarget:self action:@selector(toggleMatching) forControlEvents:UIControlEventTouchDown];
         [m_pRouteMatchingExampleView addSubview:m_pToggleMatchingButton];
         

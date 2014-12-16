@@ -66,7 +66,7 @@ namespace Examples
                 
                 const Eegeo::Geometry::Bounds2D& uvRect = uvRects[i];
                 
-                int offset = i*pointsPerFace;
+                u16 offset = static_cast<u16>(i*pointsPerFace);
                 out_vertices.push_back(Vertex(points[pointIndices[offset + 0]], faceNormal, Eegeo::v2(uvRect.min.x, uvRect.max.y)));
                 out_vertices.push_back(Vertex(points[pointIndices[offset + 1]], faceNormal, Eegeo::v2(uvRect.max.x, uvRect.max.y)));
                 out_vertices.push_back(Vertex(points[pointIndices[offset + 2]], faceNormal, Eegeo::v2(uvRect.min.x, uvRect.min.y)));

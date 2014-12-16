@@ -96,12 +96,12 @@ void LoadModelExample::Update(float dt)
 	m_mesh.forward = Eegeo::v3::Cross(m_mesh.up, Eegeo::v3(0.0f, 1.0f, 0.0f));
 
 	//set some big scale value so we can see the vehicle - vary between x20 and x70
-	m_mesh.scale = 20.0f + ((sin(m_elapsedTime)/ 2.0f + 0.5) * 50.0f);
+	m_mesh.scale = 20.0f + ((Eegeo::Math::Sin(m_elapsedTime)/ 2.0f + 0.5f) * 50.0f);
 
 	// pulse the opacity of the disk material up and down over time.
 	if(m_pDiscMaterial != NULL)
 	{
-		m_pDiscMaterial->SetAlpha(fabs(sin(m_elapsedTime * 2)));
+		m_pDiscMaterial->SetAlpha(std::abs(Eegeo::Math::Sin(m_elapsedTime * 2)));
 	}
 
 	m_elapsedTime += dt;
@@ -336,7 +336,7 @@ void BoundsVisualiser::Draw(const Eegeo::v3& minExtents, const Eegeo::v3& maxExt
 
 	for(u32 j = 0; j < NumIndices; j+=3)
 	{
-		Eegeo_GL(glDrawElements(GL_LINE_LOOP, 3, GL_UNSIGNED_SHORT, (void*)(j * 2)));
+		Eegeo_GL(glDrawElements(GL_LINE_LOOP, 3, GL_UNSIGNED_SHORT, reinterpret_cast<const GLvoid*>(j * 2)));
 	}
 
 	Eegeo_GL(glBindBuffer (GL_ARRAY_BUFFER, 0));

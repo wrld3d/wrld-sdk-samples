@@ -87,16 +87,16 @@ void ScreenUnprojectExample::Update(float dt)
 {
     const Eegeo::Camera::RenderCamera& renderCamera = GetRenderCamera();
 	//select the middle of the client screen as the position of the sphere
-	double screenPointOfInterestX = (renderCamera.GetViewportWidth()/2.0f);
-	double screenPointOfInterestY = (renderCamera.GetViewportHeight()/2.0f);
+	float screenPointOfInterestX = (renderCamera.GetViewportWidth()/2.0f);
+	float screenPointOfInterestY = (renderCamera.GetViewportHeight()/2.0f);
 
 	//normalize this
-	double nx = 2.0 * screenPointOfInterestX / renderCamera.GetViewportWidth() - 1;
-	double ny = - 2.0 * screenPointOfInterestY / renderCamera.GetViewportHeight() + 1;
+	float nx = 2.0f * screenPointOfInterestX / renderCamera.GetViewportWidth() - 1.f;
+	float ny = - 2.0f * screenPointOfInterestY / renderCamera.GetViewportHeight() + 1.f;
 
 	//prepare near and far points
-	Eegeo::v4 near(nx, ny, 0.0f, 1.0);
-	Eegeo::v4 far(nx, ny, 1.0f, 1.0);
+	Eegeo::v4 near(nx, ny, 0.0f, 1.0f);
+	Eegeo::v4 far(nx, ny, 1.0f, 1.0f);
 
 	Eegeo::m44 invVP;
 	Eegeo::m44::Inverse(invVP, renderCamera.GetViewProjectionMatrix());

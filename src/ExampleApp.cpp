@@ -104,7 +104,7 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     const bool twoFingerPanTiltEnabled = true;
     const float interestPointLatitudeDegrees = 37.7858f;
     const float interestPointLongitudeDegrees = -122.401f;
-    const float interestPointAltitudeMeters = 2.7;
+    const float interestPointAltitudeMeters = 2.7f;
     const float cameraControllerOrientationDegrees = 0.0f;
     const float cameraControllerDistanceFromInterestPointMeters = 1781.0f;
     
@@ -120,7 +120,6 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
                                                                     interestPointAltitudeMeters,
                                                                     cameraControllerOrientationDegrees,
                                                                     cameraControllerDistanceFromInterestPointMeters);
-    
     
     m_pLoadingScreen = CreateLoadingScreen(screenProperties, eegeoWorld.GetRenderingModule(), eegeoWorld.GetPlatformAbstractionModule());
     

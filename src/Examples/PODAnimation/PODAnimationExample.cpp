@@ -42,10 +42,10 @@ namespace Examples
 
 	Eegeo::Camera::CameraHelpers::EcefTangentBasisFromPointAndHeading(
 	    Eegeo::Space::LatLong::FromDegrees(37.780642, -122.385876).ToECEF(),
-	    16.472872,
+	    16.472872f,
 	    cameraInterestBasis);
 
-	pCameraController->SetView(cameraInterestBasis, 1209.007812);
+	pCameraController->SetView(cameraInterestBasis, 1209.007812f);
 }
     
 PODAnimationExample::~PODAnimationExample()

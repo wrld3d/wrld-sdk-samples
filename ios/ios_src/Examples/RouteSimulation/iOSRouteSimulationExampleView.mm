@@ -22,7 +22,7 @@ UIButton* CreateMenuButton(NSString * title)
 {
     UIButton* button = [UIButton buttonWithType:BUTTON_TYPE];
     button.frame = CGRectZero;
-    [button setBackgroundColor:[UIColor colorWithRed:0.0/255.0f green:0.0/255.0f blue:128.0/255.0f alpha:0.6]];
+    [button setBackgroundColor:[UIColor colorWithRed:0.0/255.0f green:0.0/255.0f blue:128.0f/255.0f alpha:0.6f]];
     [button setTitle:title forState:UIControlStateNormal];
     
     if(!IS_IPAD) {
@@ -64,7 +64,7 @@ UIButton* CreateMenuButton(NSString * title)
         m_pToggleSideOfRoadToDriveOnButton = [UIButton buttonWithType:BUTTON_TYPE];
         m_pToggleSideOfRoadToDriveOnButton.frame = CGRectZero;
 
-        [m_pToggleSideOfRoadToDriveOnButton setBackgroundColor:[UIColor colorWithRed:0.0/255.0f green:0.0/255.0f blue:128.0/255.0f alpha:0.6]];
+        [m_pToggleSideOfRoadToDriveOnButton setBackgroundColor:[UIColor colorWithRed:0.0/255.0f green:0.0/255.0f blue:128.0f/255.0f alpha:0.6f]];
         [m_pToggleSideOfRoadToDriveOnButton setTitle:@"Toggle Road Side!" forState:UIControlStateNormal];
         [m_pToggleSideOfRoadToDriveOnButton addTarget:self action:@selector(toggleSideOfRoadToDriveOn) forControlEvents:UIControlEventTouchDown];
         [m_pRouteSimulationExampleView addSubview:m_pToggleSideOfRoadToDriveOnButton];
@@ -132,13 +132,14 @@ UIButton* CreateMenuButton(NSString * title)
                         rootViewController].view;
     CGRect originalFrame = [[UIScreen mainScreen] bounds];
     CGRect adjustedFrame = [rootView convertRect:originalFrame fromView:nil];
+
     
     const float buttonHeight = 30.f;
     const float buttonGridHeight = 40.f;
     const float buttonWidth = 200.f;
     const float margin = 20.f;
     
-    float buttonY = adjustedFrame.size.height - margin - buttonHeight;
+    float buttonY = static_cast<float>(adjustedFrame.size.height) - margin - buttonHeight;
     
     m_pToggleSideOfRoadToDriveOnButton.frame = CGRectMake(margin, buttonY, buttonWidth, buttonHeight);
     buttonY -= buttonGridHeight;

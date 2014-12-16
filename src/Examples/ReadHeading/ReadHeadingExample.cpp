@@ -34,7 +34,7 @@ namespace Examples
             
             Eegeo::dv3 ecefCenter = ConvertLatLongAltitudeToEcef(Eegeo::Space::LatLongAltitude::FromDegrees(37.78469,-122.40143, 200));
             Eegeo::Space::EcefTangentBasis tangentBasis;
-            Eegeo::Camera::CameraHelpers::EcefTangentBasisFromPointAndHeading(ecefCenter, degrees, tangentBasis);
+            Eegeo::Camera::CameraHelpers::EcefTangentBasisFromPointAndHeading(ecefCenter, static_cast<float>(degrees), tangentBasis);
             const float axesSize = 150.0f;
             m_debugRenderer.DrawAxes(ecefCenter, tangentBasis.GetRight()*axesSize, tangentBasis.GetUp()*axesSize, tangentBasis.GetForward()*axesSize);
     	}

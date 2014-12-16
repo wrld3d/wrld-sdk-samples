@@ -19,7 +19,7 @@ Eegeo::v3 ComputeHeadingVector(Eegeo::dv3 interestPosition, float heading)
 {
 	Eegeo::v3 m_heading(0,1,0);
 	Eegeo::dv3 interestEcefUp = interestPosition.Norm();
-	Eegeo::v3 m_interestUp = Eegeo::v3(interestEcefUp.GetX(), interestEcefUp.GetY(), interestEcefUp.GetZ());
+	Eegeo::v3 m_interestUp = interestEcefUp.ToSingle();
 
 	Eegeo::v3 m_interestRight = Eegeo::v3::Cross(m_interestUp, m_heading);
 	m_interestRight = m_interestRight.Norm();
@@ -45,7 +45,7 @@ CameraTransitioner::CameraTransitioner(
 
 }
 
-void CameraTransitioner::StartTransitionTo(Eegeo::dv3 newInterestPoint, double distanceFromInterest, bool jumpIfFarAway)
+void CameraTransitioner::StartTransitionTo(Eegeo::dv3 newInterestPoint, float distanceFromInterest, bool jumpIfFarAway)
 {
 	const Eegeo::Space::EcefTangentBasis& cameraInterestBasis = m_cameraController.GetInterestBasis();
 
@@ -62,7 +62,7 @@ bool CameraTransitioner::ShouldJumpTo(Eegeo::dv3 newInterestPoint)
 	return distance > MAX_CAMERA_TRANSITION_DISTANCE;
 }
 
-void CameraTransitioner::StartTransitionTo(Eegeo::dv3 newInterestPoint, double distanceFromInterest, float newHeading, bool jumpIfFarAway)
+void CameraTransitioner::StartTransitionTo(Eegeo::dv3 newInterestPoint, float distanceFromInterest, float newHeading, bool jumpIfFarAway)
 {
 	if(IsTransitioning())
 	{
@@ -92,18 +92,18 @@ void CameraTransitioner::StartTransitionTo(Eegeo::dv3 newInterestPoint, double d
 	const float CAMERA_TRANSITION_SPEED_IN_METERS_PER_SECOND = 100.0f;
 	const float MIN_TRANSITION_TIME = 2.0f;
 	const float MAX_TRANSITION_TIME = 10.0f;
-	float distance = (m_endTransitionInterestPoint - m_startTransitionInterestPoint).Length();
+	float distance = (m_endTransitionInterestPoint - m_startTransitionInterestPoint).ToSingle().Length();
 
 	m_transitionDuration = Eegeo::Clamp(distance/CAMERA_TRANSITION_SPEED_IN_METERS_PER_SECOND, MIN_TRANSITION_TIME, MAX_TRANSITION_TIME);
 
 	m_isTransitioning = true;
 
-	if(abs(m_endTransitionHeading - m_startTransitionHeading) > M_PI)
+	if(std::abs(m_endTransitionHeading - m_startTransitionHeading) > Eegeo::Math::kPI)
 	{
 		if(m_endTransitionHeading > m_startTransitionHeading)
-			m_endTransitionHeading -= 2 * M_PI;
+			m_endTransitionHeading -= 2.f * Eegeo::Math::kPI;
 		else
-			m_startTransitionHeading -= 2 * M_PI;
+			m_startTransitionHeading -= 2.f * Eegeo::Math::kPI;
 	}
 
 }
@@ -116,7 +116,7 @@ void CameraTransitioner::Update(float dt)
 	}
 
 	m_transitionTime += dt;
-	double transitionParam = Eegeo::Math::SmoothStep(0.0, 1.0, m_transitionTime / m_transitionDuration);
+	float transitionParam = Eegeo::Math::SmoothStep(0.0f, 1.0f, m_transitionTime / m_transitionDuration);
 
 	float interpolatedDistance = Eegeo::Math::Lerp(m_startInterestDistance, m_endInterestDistance, transitionParam);
 	Eegeo::dv3 interpolatedInterestPosition = Eegeo::dv3::Lerp(m_startTransitionInterestPoint, m_endTransitionInterestPoint, transitionParam);
@@ -125,7 +125,7 @@ void CameraTransitioner::Update(float dt)
 		interpolatedInterestPosition = interpolatedInterestPosition.Norm() * Eegeo::Space::EarthConstants::Radius;
 	}
 
-	float interpolatedHeading = ((1-transitionParam) * m_startTransitionHeading) + (transitionParam * m_endTransitionHeading);
+	float interpolatedHeading = ((1.f-transitionParam) * m_startTransitionHeading) + (transitionParam * m_endTransitionHeading);
 
 	Eegeo::v3 interpolatedHeadingVector = ComputeHeadingVector(interpolatedInterestPosition, interpolatedHeading);
 

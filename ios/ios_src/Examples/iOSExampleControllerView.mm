@@ -34,7 +34,7 @@ const float buttonHeight = 30.f;
 }
 
 
--(instancetype) initWith:(Examples::iOSExampleControllerView*)pInstance :(UIView*)pView :(int)exampleSelectorWidth
+-(instancetype) initWith:(Examples::iOSExampleControllerView*)pInstance :(UIView*)pView :(float)exampleSelectorWidth
 {
     if (self = [super init])
     {
@@ -48,14 +48,14 @@ const float buttonHeight = 30.f;
             m_pPreviousButton = [UIButton buttonWithType:BUTTON_TYPE];
             [m_pPreviousButton retain];
             m_pPreviousButton.frame = CGRectZero;
-            [m_pPreviousButton setBackgroundColor:[UIColor colorWithRed:0.0/255.0f green:0.0/255.0f blue:128.0/255.0f alpha:0.6]];
+            [m_pPreviousButton setBackgroundColor:[UIColor colorWithRed:0.0/255.0f green:0.0/255.0f blue:128.0f/255.0f alpha:0.6f]];
             [m_pPreviousButton setTitle:@"Previous" forState:UIControlStateNormal];
             [m_pPreviousButton addTarget:self action:@selector(activatePrevious) forControlEvents:UIControlEventTouchDown];
             
             m_pNextButton = [UIButton buttonWithType:BUTTON_TYPE];
             [m_pNextButton retain];
             m_pNextButton.frame = CGRectZero;
-            [m_pNextButton setBackgroundColor:[UIColor colorWithRed:0.0/255.0f green:0.0/255.0f blue:128.0/255.0f alpha:0.6]];
+            [m_pNextButton setBackgroundColor:[UIColor colorWithRed:0.0/255.0f green:0.0/255.0f blue:128.0f/255.0f alpha:0.6f]];
             [m_pNextButton setTitle:@"Next" forState:UIControlStateNormal];
             [m_pNextButton addTarget:self action:@selector(activateNext) forControlEvents:UIControlEventTouchDown];
         }
@@ -64,7 +64,7 @@ const float buttonHeight = 30.f;
         [m_pSelectNewExampleButton retain];
         m_pSelectNewExampleButton.frame = CGRectZero;
         
-        [m_pSelectNewExampleButton setBackgroundColor:[UIColor colorWithRed:0.0/255.0f green:0.0/255.0f blue:128.0/255.0f alpha:0.6]];
+        [m_pSelectNewExampleButton setBackgroundColor:[UIColor colorWithRed:0.0/255.0f green:0.0/255.0f blue:128.0f/255.0f alpha:0.6f]];
         [m_pSelectNewExampleButton setTitle:@"" forState:UIControlStateNormal];
         [m_pSelectNewExampleButton addTarget:self action:@selector(openExampleSelectionMenu) forControlEvents:UIControlEventTouchDown];
         
@@ -217,7 +217,7 @@ const float buttonHeight = 30.f;
 -(void) openExampleSelectionMenu
 {
 	m_pSelectionScreen = [[UIControl alloc] initWithFrame:CGRectZero];
-	m_pSelectionScreen.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.3];
+	m_pSelectionScreen.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.3f];
 
 	m_pScroller = [[UIScrollView alloc] initWithFrame:CGRectZero];
     
@@ -252,11 +252,8 @@ namespace Examples
 iOSExampleControllerView::iOSExampleControllerView(UIView* pView)
 	: m_pView(pView)
 {
-    const float selectionMenuWidth = 500;
+    const float selectionMenuWidth = 500.f;
 	m_pBinding = [[IExampleControllerViewBinding alloc] initWith:this :m_pView :selectionMenuWidth];
-
-
-
 }
 
 iOSExampleControllerView::~iOSExampleControllerView()
