@@ -78,19 +78,16 @@ const float buttonHeight = 30.f;
     if (m_pNextButton != nil)
     {
         [m_pNextButton removeFromSuperview];
-        [m_pNextButton release];
         m_pNextButton = nil;
     }
     
     if (m_pPreviousButton != nil)
     {
         [m_pPreviousButton removeFromSuperview];
-        [m_pPreviousButton release];
         m_pPreviousButton = nil;
     }
     
     [m_pSelectNewExampleButton removeFromSuperview];
-    [m_pSelectNewExampleButton release];
     m_pSelectNewExampleButton = nil;
     
     [super dealloc];

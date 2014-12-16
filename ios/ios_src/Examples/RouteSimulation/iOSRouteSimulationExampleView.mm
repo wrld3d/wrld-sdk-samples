@@ -83,42 +83,36 @@ UIButton* CreateMenuButton(NSString * title)
     if (m_pToggleFollowButton != nil)
     {
         [m_pToggleFollowButton removeFromSuperview];
-        [m_pToggleFollowButton release];
         m_pToggleFollowButton = nil;
     }
     
     if (m_pIncreaseSpeedButton != nil)
     {
         [m_pIncreaseSpeedButton removeFromSuperview];
-        [m_pIncreaseSpeedButton release];
         m_pIncreaseSpeedButton = nil;
     }
     
     if (m_pDecreaseSpeedButton != nil)
     {
         [m_pDecreaseSpeedButton removeFromSuperview];
-        [m_pDecreaseSpeedButton release];
         m_pDecreaseSpeedButton = nil;
     }
     
     if (m_pRotateToFollowButton != nil)
     {
         [m_pRotateToFollowButton removeFromSuperview];
-        [m_pRotateToFollowButton release];
         m_pRotateToFollowButton = nil;
     }
     
     if (m_pChangeDirectionButton != nil)
     {
         [m_pChangeDirectionButton removeFromSuperview];
-        [m_pChangeDirectionButton release];
         m_pChangeDirectionButton = nil;
     }
     
     if (m_pToggleSideOfRoadToDriveOnButton != nil)
     {
         [m_pToggleSideOfRoadToDriveOnButton removeFromSuperview];
-        [m_pToggleSideOfRoadToDriveOnButton release];
         m_pToggleSideOfRoadToDriveOnButton = nil;
     }
     

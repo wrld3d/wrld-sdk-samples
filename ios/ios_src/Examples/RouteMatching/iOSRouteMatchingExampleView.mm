@@ -43,7 +43,6 @@ UIButton* m_pToggleMatchingButton;
     if (m_pToggleMatchingButton != nil)
     {
         [m_pToggleMatchingButton removeFromSuperview];
-        [m_pToggleMatchingButton release];
         m_pToggleMatchingButton = nil;
     }
     
