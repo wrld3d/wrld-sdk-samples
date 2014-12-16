@@ -27,10 +27,10 @@ RouteDrawingExample::RouteDrawingExample(Eegeo::Routes::RouteService& routeServi
 
 	Eegeo::Camera::CameraHelpers::EcefTangentBasisFromPointAndHeading(
 	    Eegeo::Space::LatLong::FromDegrees(37.793348, -122.399035).ToECEF(),
-	    354.824249,
+	    354.824249f,
 	    cameraInterestBasis);
 
-	pCameraController->SetView(cameraInterestBasis, 1374.298706);
+	pCameraController->SetView(cameraInterestBasis, 1374.298706f);
 }
 
 void RouteDrawingExample::Update(float dt)
@@ -81,11 +81,11 @@ void RouteDrawingExample::Update(float dt)
 		                                  .AddPoint(37.793109,-122.401108, altitudeMeters)
 		                                  .AddPoint(37.792143,-122.400990, altitudeMeters)
 		                                  .AddPoint(37.790303,-122.400603, altitudeMeters)
-                                          .ChangeSpeed(44.32)
+                                          .ChangeSpeed(44.32f)
                                           .AddPoint(37.790303,-122.400603, altitudeMeters)
 		                                  .AddPoint(37.790324,-122.400126, altitudeMeters)
 		                                  .AddPoint(37.794449,-122.394906, altitudeMeters)
-                                          .ChangeSpeed(900.2)
+                                          .ChangeSpeed(900.2f)
 		                                  .ChangeColor(routeBlue)
                                           .AddPoint(37.794449,-122.394906, altitudeMeters)
 		                                  .AddPoint(37.793253,-122.393238, altitudeMeters)

@@ -18,7 +18,7 @@ class iOSExampleControllerView;
 @interface IExampleControllerViewBinding : NSObject
 
 -(void) setExampleNames:(const std::vector<std::string>&)exampleNames;
--(instancetype) initWith:(Examples::iOSExampleControllerView*)pInstance :(UIView*)pView :(int)exampleSelectorWidth;
+-(instancetype) initWith:(Examples::iOSExampleControllerView*)pInstance :(UIView*)pView :(float)exampleSelectorWidth;
 -(void) show;
 -(void) activateNext;
 -(void) activatePrevious;

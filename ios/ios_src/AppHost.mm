@@ -44,7 +44,7 @@ AppHost::AppHost(
 	   
     m_pJpegLoader = new Eegeo::Helpers::Jpeg::JpegLoader();
     
-    m_piOSPlatformAbstractionModule = new Eegeo::iOS::iOSPlatformAbstractionModule(*m_pJpegLoader);
+    m_piOSPlatformAbstractionModule = new Eegeo::iOS::iOSPlatformAbstractionModule(*m_pJpegLoader, apiKey);
 
 	Eegeo::EffectHandler::Initialise();
 

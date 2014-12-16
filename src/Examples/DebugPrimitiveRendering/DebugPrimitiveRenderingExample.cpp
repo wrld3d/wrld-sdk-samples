@@ -53,7 +53,7 @@ void DebugPrimitiveRenderingExample::Update(float dt)
     for(int i = 0; i < 64; i++)
     {
         const double amplitude = 30.0;
-        Eegeo::dv3 pos = ecefCenter + (tangentBasis.GetRight() * i) + (tangentBasis.GetUp() * amplitude * sin(m_frustumDrawTimer + i*0.1));
+        Eegeo::dv3 pos = ecefCenter + (tangentBasis.GetRight() * i) + (tangentBasis.GetUp() * amplitude * Eegeo::Math::Sin(m_frustumDrawTimer + i*0.1f));
         ecefWavePoints.push_back(pos);
     }
     m_debugRenderer.DrawPolyLine(ecefWavePoints, Eegeo::Rendering::Colors::WHITE);

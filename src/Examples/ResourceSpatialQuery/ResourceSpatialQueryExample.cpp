@@ -30,7 +30,7 @@ void ResourceSpatialQueryExample::Update(float dt)
 
 	if(!(lastKey == m_key) || buildings.size() != m_numBuildings)
 	{
-		m_numBuildings = buildings.size();
+		m_numBuildings = static_cast<int>(buildings.size());
 
 		if(m_numBuildings == 0)
 		{
