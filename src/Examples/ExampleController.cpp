@@ -183,7 +183,12 @@ Eegeo::Streaming::IStreamingVolume& ExampleController::GetCurrentStreamingVolume
     
 void ExampleController::NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties)
 {
-    m_pCurrentExample->NotifyScreenPropertiesChanged(screenProperties);
+    if (m_pCurrentExample != NULL)
+    {
+        m_pCurrentExample->NotifyScreenPropertiesChanged(screenProperties);
+    }
+    
+    m_view.NotifyNeedsLayout();
 }
     
 void ExampleController::Event_TouchRotate(const AppInterface::RotateData& data)
