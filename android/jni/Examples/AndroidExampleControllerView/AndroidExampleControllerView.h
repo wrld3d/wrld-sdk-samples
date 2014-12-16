@@ -51,6 +51,8 @@ public:
 	void SelectNext();
 
 	void PopulateExampleList(const std::vector<std::string>& exampleNames);
+
+	void NotifyNeedsLayout() {;}
 };
 }
 

@@ -176,4 +176,12 @@ void RouteMatchingExample::CreateAndBindUI()
 
 	m_pRouteMatchingView->AddMatchingToggledHandler(m_toggleRouteMatchingHandler);
 }
+
+void RouteMatchingExample::NotifyViewNeedsLayout()
+{
+    if (m_pRouteMatchingView != NULL)
+    {
+        m_pRouteMatchingView->NotifyNeedsLayout();
+    }
+}
 }

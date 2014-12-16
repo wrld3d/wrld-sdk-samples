@@ -24,6 +24,8 @@ namespace Examples
         virtual void NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties);
         
         virtual Eegeo::Camera::CameraState GetCurrentCameraState() const;
+
+        virtual void NotifyViewNeedsLayout() {}
         
         virtual void Event_TouchRotate 			(const AppInterface::RotateData& data);
         virtual void Event_TouchRotate_Start	(const AppInterface::RotateData& data);

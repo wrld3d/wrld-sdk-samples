@@ -15,8 +15,9 @@ class iOSRouteMatchingExampleView;
 
 @interface IRouteMatchingExampleBinding : NSObject
 
--(void) setExampleInstance:(Examples::iOSRouteMatchingExampleView*)pExample :(UIButton*)pToggleMatching;
+-(instancetype) initWith:(Examples::iOSRouteMatchingExampleView*)pExample :(UIView*)pView;
 -(void) toggleMatching;
+-(void) layoutViews;
 
 @end
 
@@ -25,8 +26,6 @@ namespace Examples
 class iOSRouteMatchingExampleView : public IRouteMatchingExampleView, private Eegeo::NonCopyable
 {
 	std::vector<IUIActionHandler*> m_matchingToggledHandlers;
-	UIView* m_pView;
-	UIButton * m_pToggleMatchingButton;
 	IRouteMatchingExampleBinding* m_pBinding;
 
 public:
@@ -39,6 +38,8 @@ public:
 	void RemoveMatchingToggledHandler(IUIActionHandler& handler);
 
 	void ToggleMatching();
+    
+    void NotifyNeedsLayout();
 };
 }
 

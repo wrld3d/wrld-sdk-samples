@@ -74,6 +74,7 @@ RouteSimulationExample::RouteSimulationExample(RouteService& routeService,
     , m_pViewBindingForCameraSession(NULL)
 	, m_linkSpeedMultiplier(1.f)
     ,m_pRouteSessionFollowCameraController(NULL)
+    , m_pRouteSimulationView(NULL)
 	,m_decreaseSpeedToggleHandler(this, &RouteSimulationExample::DecreaseSpeedFollowed)
 	,m_increaseSpeedToggleHandler(this, &RouteSimulationExample::IncreaseSpeedFollowed)
 	,m_followCameraToggleHandler(this, &RouteSimulationExample::ToggleFollowCamera)
@@ -412,6 +413,14 @@ Eegeo::Model* RouteSimulationExample::LoadModelVehicleNodes(Eegeo::Node*& pVehic
 	pVehicle3 = parentNode->GetChildNode(2);
 
 	return pModel;
+}
+
+void RouteSimulationExample::NotifyViewNeedsLayout()
+{
+    if (m_pRouteSimulationView != NULL)
+    {
+        m_pRouteSimulationView->NotifyNeedsLayout();
+    }
 }
 
 //For each of the events our follow camera should intercept, we should handle this event

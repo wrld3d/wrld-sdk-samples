@@ -78,19 +78,16 @@ const float buttonHeight = 30.f;
     if (m_pNextButton != nil)
     {
         [m_pNextButton removeFromSuperview];
-        [m_pNextButton release];
         m_pNextButton = nil;
     }
     
     if (m_pPreviousButton != nil)
     {
         [m_pPreviousButton removeFromSuperview];
-        [m_pPreviousButton release];
         m_pPreviousButton = nil;
     }
     
     [m_pSelectNewExampleButton removeFromSuperview];
-    [m_pSelectNewExampleButton release];
     m_pSelectNewExampleButton = nil;
     
     [super dealloc];
@@ -155,28 +152,18 @@ const float buttonHeight = 30.f;
 
 -(void) layoutViews
 {
-    UIScreen* screen = [UIScreen mainScreen];
-    CGSize screenSize;
-    if ([screen respondsToSelector:@selector(fixedCoordinateSpace)])
-    {
-        screenSize = [screen.coordinateSpace convertRect:screen.bounds toCoordinateSpace:screen.fixedCoordinateSpace].size;
-    }
-    else
-    {
-        screenSize = screen.bounds.size;
-    }
+    UIView *rootView = [[[UIApplication sharedApplication] keyWindow]
+                        rootViewController].view;
+    CGRect originalFrame = [[UIScreen mainScreen] bounds];
+    CGRect screenRect = [rootView convertRect:originalFrame fromView:nil];
     
-    if (App::DetermineOrientationMode() == ORIENTATION_MODE_LANDSCAPE)
-    {
-        std::swap(screenSize.width, screenSize.height);
-    }
 
     if (m_pSelectionScreen != nil)
     {
-        [self layoutSelectionScreen:screenSize];
+        [self layoutSelectionScreen:screenRect.size];
     }
 
-    [self layoutSelectionButtons:screenSize];
+    [self layoutSelectionButtons:screenRect.size];
     
     [m_pView layoutIfNeeded];
 }

@@ -186,6 +186,8 @@ void ExampleController::NotifyScreenPropertiesChanged(const Eegeo::Rendering::Sc
     if (m_pCurrentExample != NULL)
     {
         m_pCurrentExample->NotifyScreenPropertiesChanged(screenProperties);
+        
+        m_pCurrentExample->NotifyViewNeedsLayout();
     }
     
     m_view.NotifyNeedsLayout();

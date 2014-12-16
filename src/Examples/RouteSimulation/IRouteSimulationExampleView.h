@@ -36,6 +36,8 @@ public:
 	virtual void AddSideOfRoadToDriveOnToggledHandler(IUIActionHandler& handler)=0;
 
 	virtual void RemoveSideOfRoadToDriveOnToggledHandler(IUIActionHandler& handler)=0;
+    
+    virtual void NotifyNeedsLayout() = 0;
 };
 }
 

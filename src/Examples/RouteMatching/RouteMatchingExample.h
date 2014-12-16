@@ -56,7 +56,7 @@ public:
 	void Update(float dt);
 	void Draw() {}
 	void Suspend();
-    
+    void NotifyViewNeedsLayout();
     
 
 	void ToggleMatching();

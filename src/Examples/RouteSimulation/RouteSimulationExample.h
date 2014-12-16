@@ -122,6 +122,8 @@ public:
     
     virtual void NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties);
     
+    void NotifyViewNeedsLayout();
+    
 	void Event_TouchRotate 			(const AppInterface::RotateData& data);
 	void Event_TouchRotate_Start	(const AppInterface::RotateData& data);
 	void Event_TouchRotate_End 		(const AppInterface::RotateData& data);
