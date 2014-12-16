@@ -227,8 +227,6 @@
 		E096AE1C19F6713300C3D04A /* SplashScreen-1024x768.png in Resources */ = {isa = PBXBuildFile; fileRef = E096AE1B19F6713300C3D04A /* SplashScreen-1024x768.png */; };
 		E096AE1D19F6713300C3D04A /* SplashScreen-1024x768.png in Resources */ = {isa = PBXBuildFile; fileRef = E096AE1B19F6713300C3D04A /* SplashScreen-1024x768.png */; };
 		E0B9CF9319F697090012D0B4 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E096AE1919F670F100C3D04A /* Images.xcassets */; };
-		E0FE7B0F1A2C99CA008754A2 /* DefaultCameraTouchControllerFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0FE7B0D1A2C99CA008754A2 /* DefaultCameraTouchControllerFactory.cpp */; };
-		E0FE7B101A2C99CA008754A2 /* DefaultCameraTouchControllerFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0FE7B0D1A2C99CA008754A2 /* DefaultCameraTouchControllerFactory.cpp */; };
 		E0F9926C1A3090C900CBFA18 /* mesh_example in Resources */ = {isa = PBXBuildFile; fileRef = E0F9926B1A3090C900CBFA18 /* mesh_example */; };
 		E0F9926D1A3090C900CBFA18 /* mesh_example in Resources */ = {isa = PBXBuildFile; fileRef = E0F9926B1A3090C900CBFA18 /* mesh_example */; };
 		E0F9927B1A30911800CBFA18 /* ExampleMeshRenderable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0F992711A30911800CBFA18 /* ExampleMeshRenderable.cpp */; };
@@ -241,6 +239,8 @@
 		E0F992821A30911800CBFA18 /* MeshExample.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0F992771A30911800CBFA18 /* MeshExample.cpp */; };
 		E0F992831A30911800CBFA18 /* MeshExampleFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0F992791A30911800CBFA18 /* MeshExampleFactory.cpp */; };
 		E0F992841A30911800CBFA18 /* MeshExampleFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0F992791A30911800CBFA18 /* MeshExampleFactory.cpp */; };
+		E0FE7B0F1A2C99CA008754A2 /* DefaultCameraTouchControllerFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0FE7B0D1A2C99CA008754A2 /* DefaultCameraTouchControllerFactory.cpp */; };
+		E0FE7B101A2C99CA008754A2 /* DefaultCameraTouchControllerFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0FE7B0D1A2C99CA008754A2 /* DefaultCameraTouchControllerFactory.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -451,8 +451,6 @@
 		E02BD0C71A24F79B00663A00 /* ScreenPropertiesProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScreenPropertiesProvider.h; sourceTree = "<group>"; };
 		E0645A941A27518E009C2349 /* DefaultCameraControllerFactory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DefaultCameraControllerFactory.cpp; sourceTree = "<group>"; };
 		E0645A951A27518E009C2349 /* DefaultCameraControllerFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DefaultCameraControllerFactory.h; sourceTree = "<group>"; };
-		E0FE7B0D1A2C99CA008754A2 /* DefaultCameraTouchControllerFactory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DefaultCameraTouchControllerFactory.cpp; sourceTree = "<group>"; };
-		E0FE7B0E1A2C99CA008754A2 /* DefaultCameraTouchControllerFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DefaultCameraTouchControllerFactory.h; sourceTree = "<group>"; };
 		E06A8F131A30C08B00A492F2 /* MeshExampleConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MeshExampleConfig.h; path = Mesh/MeshExampleConfig.h; sourceTree = "<group>"; };
 		E096AE1919F670F100C3D04A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		E096AE1B19F6713300C3D04A /* SplashScreen-1024x768.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SplashScreen-1024x768.png"; sourceTree = "<group>"; };
@@ -467,6 +465,8 @@
 		E0F992781A30911800CBFA18 /* MeshExample.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MeshExample.h; path = Mesh/MeshExample.h; sourceTree = "<group>"; };
 		E0F992791A30911800CBFA18 /* MeshExampleFactory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MeshExampleFactory.cpp; path = Mesh/MeshExampleFactory.cpp; sourceTree = "<group>"; };
 		E0F9927A1A30911800CBFA18 /* MeshExampleFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MeshExampleFactory.h; path = Mesh/MeshExampleFactory.h; sourceTree = "<group>"; };
+		E0FE7B0D1A2C99CA008754A2 /* DefaultCameraTouchControllerFactory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DefaultCameraTouchControllerFactory.cpp; sourceTree = "<group>"; };
+		E0FE7B0E1A2C99CA008754A2 /* DefaultCameraTouchControllerFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DefaultCameraTouchControllerFactory.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */

@@ -67,6 +67,7 @@ public:
 
 	void ChangeSideOfRoad();
 
+	void NotifyNeedsLayout() {;}
 };
 }
 

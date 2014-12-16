@@ -44,6 +44,8 @@ public:
 	void Draw() {}
 	void Suspend();
     
+    void NotifyViewNeedsLayout() {}
+    
     void NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties);
     const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
     Eegeo::dv3 GetInterestPoint() const;

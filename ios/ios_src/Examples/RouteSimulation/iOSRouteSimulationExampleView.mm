@@ -7,28 +7,174 @@
 @implementation IRouteSimulationExampleBinding
 
 Examples::iOSRouteSimulationExampleView* m_pExample;
-UIButton* m_pDirection;
-UIButton* m_pIncreaseSpeed;
-UIButton* m_pDecreaseSpeed;
-UIButton* m_pRotateToFollow;
 
--(void) setExampleInstance:(Examples::iOSRouteSimulationExampleView*)pExample :(UIButton*)direction :(UIButton*)increaseSpeed :(UIButton*)decreaseSpeed :(UIButton*)rotateToFollow
+
+UIView* m_pRouteSimulationExampleView;
+UIButton* m_pToggleFollowButton;
+UIButton* m_pIncreaseSpeedButton;
+UIButton* m_pDecreaseSpeedButton;
+UIButton* m_pRotateToFollowButton;
+UIButton* m_pChangeDirectionButton;
+UIButton* m_pToggleSideOfRoadToDriveOnButton;
+
+
+UIButton* CreateMenuButton(NSString * title)
 {
-	m_pExample = pExample;
-	m_pDirection = direction;
-	m_pIncreaseSpeed = increaseSpeed;
-	m_pDecreaseSpeed = decreaseSpeed;
-	m_pRotateToFollow = rotateToFollow;
+    UIButton* button = [UIButton buttonWithType:BUTTON_TYPE];
+    button.frame = CGRectZero;
+    [button setBackgroundColor:[UIColor colorWithRed:0.0/255.0f green:0.0/255.0f blue:128.0/255.0f alpha:0.6]];
+    [button setTitle:title forState:UIControlStateNormal];
+    
+    if(!IS_IPAD) {
+        button.titleLabel.font = [UIFont systemFontOfSize:10];
+    }
+    
+    return button;
+}
+
+-(instancetype) initWith:(Examples::iOSRouteSimulationExampleView*)pExample :(UIView*)pView
+{
+    if (self = [super init])
+    {
+        m_pExample = pExample;
+        m_pRouteSimulationExampleView = pView;
+       
+        m_pToggleFollowButton = CreateMenuButton(@"Toggle Follow!");
+        [m_pToggleFollowButton addTarget:self action:@selector(toggleFollowCamera) forControlEvents:UIControlEventTouchDown];
+        [m_pRouteSimulationExampleView addSubview:m_pToggleFollowButton];
+        
+        m_pIncreaseSpeedButton = CreateMenuButton(@"Increase Speed!");
+        [m_pIncreaseSpeedButton addTarget:self action:@selector(increaseSpeedFollowed) forControlEvents:UIControlEventTouchDown];
+        [m_pRouteSimulationExampleView addSubview:m_pIncreaseSpeedButton];
+       
+        m_pDecreaseSpeedButton = CreateMenuButton(@"Decrease Speed!");
+        [m_pDecreaseSpeedButton addTarget:self action:@selector(decreaseSpeedFollowed) forControlEvents:UIControlEventTouchDown];
+        [m_pRouteSimulationExampleView addSubview:m_pDecreaseSpeedButton];
+        
+        m_pChangeDirectionButton = CreateMenuButton(@"Change Direction!");
+        [m_pChangeDirectionButton addTarget:self action:@selector(changeFollowDirection) forControlEvents:UIControlEventTouchDown];
+        [m_pRouteSimulationExampleView addSubview:m_pChangeDirectionButton];
+        
+        m_pRotateToFollowButton = CreateMenuButton(@"Rotate to Follow!");
+        [m_pRotateToFollowButton addTarget:self action:@selector(rotateToFollow) forControlEvents:UIControlEventTouchDown];
+        [m_pRouteSimulationExampleView addSubview:m_pRotateToFollowButton];
+        
+        
+        //this one goes beside toggle follow as we can do it any time
+        m_pToggleSideOfRoadToDriveOnButton = [UIButton buttonWithType:BUTTON_TYPE];
+        m_pToggleSideOfRoadToDriveOnButton.frame = CGRectZero;
+
+        [m_pToggleSideOfRoadToDriveOnButton setBackgroundColor:[UIColor colorWithRed:0.0/255.0f green:0.0/255.0f blue:128.0/255.0f alpha:0.6]];
+        [m_pToggleSideOfRoadToDriveOnButton setTitle:@"Toggle Road Side!" forState:UIControlStateNormal];
+        [m_pToggleSideOfRoadToDriveOnButton addTarget:self action:@selector(toggleSideOfRoadToDriveOn) forControlEvents:UIControlEventTouchDown];
+        [m_pRouteSimulationExampleView addSubview:m_pToggleSideOfRoadToDriveOnButton];
+        
+        if (!IS_IPAD) {
+            m_pToggleSideOfRoadToDriveOnButton.titleLabel.font = [UIFont systemFontOfSize:10];
+        }
+
+        [self layoutViews];
+    }
+    return self;
+}
+
+- (void)dealloc
+{
+    if (m_pToggleFollowButton != nil)
+    {
+        [m_pToggleFollowButton removeFromSuperview];
+        [m_pToggleFollowButton release];
+        m_pToggleFollowButton = nil;
+    }
+    
+    if (m_pIncreaseSpeedButton != nil)
+    {
+        [m_pIncreaseSpeedButton removeFromSuperview];
+        [m_pIncreaseSpeedButton release];
+        m_pIncreaseSpeedButton = nil;
+    }
+    
+    if (m_pDecreaseSpeedButton != nil)
+    {
+        [m_pDecreaseSpeedButton removeFromSuperview];
+        [m_pDecreaseSpeedButton release];
+        m_pDecreaseSpeedButton = nil;
+    }
+    
+    if (m_pRotateToFollowButton != nil)
+    {
+        [m_pRotateToFollowButton removeFromSuperview];
+        [m_pRotateToFollowButton release];
+        m_pRotateToFollowButton = nil;
+    }
+    
+    if (m_pChangeDirectionButton != nil)
+    {
+        [m_pChangeDirectionButton removeFromSuperview];
+        [m_pChangeDirectionButton release];
+        m_pChangeDirectionButton = nil;
+    }
+    
+    if (m_pToggleSideOfRoadToDriveOnButton != nil)
+    {
+        [m_pToggleSideOfRoadToDriveOnButton removeFromSuperview];
+        [m_pToggleSideOfRoadToDriveOnButton release];
+        m_pToggleSideOfRoadToDriveOnButton = nil;
+    }
+    
+    [super dealloc];
+}
+
+-(void) layoutViews
+{
+    // Grab the window frame and adjust it for orientation
+    UIView *rootView = [[[UIApplication sharedApplication] keyWindow]
+                        rootViewController].view;
+    CGRect originalFrame = [[UIScreen mainScreen] bounds];
+    CGRect adjustedFrame = [rootView convertRect:originalFrame fromView:nil];
+    
+    const float buttonHeight = 30.f;
+    const float buttonGridHeight = 40.f;
+    const float buttonWidth = 200.f;
+    const float margin = 20.f;
+    
+    float buttonY = adjustedFrame.size.height - margin - buttonHeight;
+    
+    m_pToggleSideOfRoadToDriveOnButton.frame = CGRectMake(margin, buttonY, buttonWidth, buttonHeight);
+    buttonY -= buttonGridHeight;
+    
+    m_pChangeDirectionButton.frame = CGRectMake(margin, buttonY, buttonWidth, buttonHeight);
+    buttonY -= buttonGridHeight;
+    
+    m_pRotateToFollowButton.frame = CGRectMake(margin, buttonY, buttonWidth, buttonHeight);
+    buttonY -= buttonGridHeight;
+    
+    m_pDecreaseSpeedButton.frame = CGRectMake(margin, buttonY, buttonWidth, buttonHeight);
+    buttonY -= buttonGridHeight;
+    
+    m_pIncreaseSpeedButton.frame = CGRectMake(margin, buttonY, buttonWidth, buttonHeight);
+    buttonY -= buttonGridHeight;
+    
+    m_pToggleFollowButton.frame = CGRectMake(margin, buttonY, buttonWidth, buttonHeight);
+    buttonY -= buttonGridHeight;
 }
 
 -(void) toggleFollowCamera
 {
 	m_pExample->ToggleFollowCamera();
 
-	[m_pDirection setHidden: ![m_pDirection isHidden]];
-	[m_pIncreaseSpeed setHidden: ![m_pIncreaseSpeed isHidden]];
-	[m_pDecreaseSpeed setHidden: ![m_pDecreaseSpeed isHidden]];
-	[m_pRotateToFollow setHidden: ![m_pRotateToFollow isHidden]];
+	[m_pChangeDirectionButton setHidden: ![m_pChangeDirectionButton isHidden]];
+	[m_pIncreaseSpeedButton setHidden: ![m_pIncreaseSpeedButton isHidden]];
+	[m_pDecreaseSpeedButton setHidden: ![m_pDecreaseSpeedButton isHidden]];
+	[m_pRotateToFollowButton setHidden: ![m_pRotateToFollowButton isHidden]];
+}
+
+-(void) toggleFollowMode:(bool) followEnabled
+{
+    [m_pChangeDirectionButton setHidden: !followEnabled];
+    [m_pIncreaseSpeedButton setHidden: !followEnabled];
+    [m_pDecreaseSpeedButton setHidden: !followEnabled];
+    [m_pRotateToFollowButton setHidden: !followEnabled];
 }
 
 -(void) changeFollowDirection
@@ -58,213 +204,119 @@ UIButton* m_pRotateToFollow;
 
 @end
 
-namespace
-{
-    float ApplyPlatformScale(int position)
-    {
-        const float deviceSizeScale = IS_IPAD ? 1.f : 0.5f;
-        return position*deviceSizeScale;
-    }
-    
-    UIButton* CreateVerticalMenuButton(float screenY, NSString * title)
-    {
-        UIButton* button = [UIButton buttonWithType:BUTTON_TYPE];
-        button.frame = CGRectMake(ApplyPlatformScale(10), screenY, ApplyPlatformScale(200), ApplyPlatformScale(50));
-        [button setBackgroundColor:[UIColor colorWithRed:0.0/255.0f green:0.0/255.0f blue:128.0/255.0f alpha:0.6]];
-        [button setTitle:title forState:UIControlStateNormal];
-        
-        if(!IS_IPAD) {
-            button.titleLabel.font = [UIFont systemFontOfSize:10];
-        }
-        
-        return button;
-    }
-}
-
 namespace Examples
 {
-    
+    iOSRouteSimulationExampleView::iOSRouteSimulationExampleView(UIView* pView)
+    {
+        m_pBinding = [[IRouteSimulationExampleBinding alloc] initWith:this :pView];
 
-iOSRouteSimulationExampleView::iOSRouteSimulationExampleView(UIView* pView)
-	: m_pView(pView)
-{
-	m_pBinding = [[IRouteSimulationExampleBinding alloc] init];
-
-	// Grab the window frame and adjust it for orientation
-	UIView *rootView = [[[UIApplication sharedApplication] keyWindow]
-	                    rootViewController].view;
-	CGRect originalFrame = [[UIScreen mainScreen] bounds];
-	CGRect adjustedFrame = [rootView convertRect:originalFrame fromView:nil];
-
-	float screenHeight = adjustedFrame.size.height - 80.f;
-    
-    m_pToggleFollowButton = CreateVerticalMenuButton(screenHeight, @"Toggle Follow!");
-	[m_pToggleFollowButton addTarget:m_pBinding action:@selector(toggleFollowCamera) forControlEvents:UIControlEventTouchDown];
-	[m_pView addSubview:m_pToggleFollowButton];
-
-	screenHeight -= ApplyPlatformScale(60.f);
-
-    m_pIncreaseSpeedButton = CreateVerticalMenuButton(screenHeight, @"Increase Speed!");
-	[m_pIncreaseSpeedButton addTarget:m_pBinding action:@selector(increaseSpeedFollowed) forControlEvents:UIControlEventTouchDown];
-	[m_pView addSubview:m_pIncreaseSpeedButton];
-
-	screenHeight -= ApplyPlatformScale(60.f);
-    
-    m_pDecreaseSpeedButton = CreateVerticalMenuButton(screenHeight, @"Decrease Speed!");
-	[m_pDecreaseSpeedButton addTarget:m_pBinding action:@selector(decreaseSpeedFollowed) forControlEvents:UIControlEventTouchDown];
-	[m_pView addSubview:m_pDecreaseSpeedButton];
-    
-	screenHeight -= ApplyPlatformScale(60.f);
-    
-    m_pChangeDirectionButton = CreateVerticalMenuButton(screenHeight, @"Change Direction!");
-	[m_pChangeDirectionButton addTarget:m_pBinding action:@selector(changeFollowDirection) forControlEvents:UIControlEventTouchDown];
-	[m_pView addSubview:m_pChangeDirectionButton];
-    
-	screenHeight -= ApplyPlatformScale(60.f);
-
-    m_pRotateToFollowButton = CreateVerticalMenuButton(screenHeight, @"Rotate to Follow!");
-	[m_pRotateToFollowButton addTarget:m_pBinding action:@selector(rotateToFollow) forControlEvents:UIControlEventTouchDown];
-	[m_pView addSubview:m_pRotateToFollowButton];
-    
-
-	//this one goes beside toggle follow as we can do it any time
-	m_pToggleSideOfRoadToDriveOnButton = [UIButton buttonWithType:BUTTON_TYPE];
-	m_pToggleSideOfRoadToDriveOnButton.frame = CGRectMake(m_pToggleFollowButton.frame.origin.x + m_pToggleFollowButton.frame.size.width + ApplyPlatformScale(10),
-                                                          m_pToggleFollowButton.frame.origin.y, ApplyPlatformScale(200), ApplyPlatformScale(50));
-    [m_pToggleSideOfRoadToDriveOnButton setBackgroundColor:[UIColor colorWithRed:0.0/255.0f green:0.0/255.0f blue:128.0/255.0f alpha:0.6]];
-	[m_pToggleSideOfRoadToDriveOnButton setTitle:@"Toggle Road Side!" forState:UIControlStateNormal];
-	[m_pToggleSideOfRoadToDriveOnButton addTarget:m_pBinding action:@selector(toggleSideOfRoadToDriveOn) forControlEvents:UIControlEventTouchDown];
-	[m_pView addSubview:m_pToggleSideOfRoadToDriveOnButton];
-    
-    if (!IS_IPAD) {
-        m_pToggleSideOfRoadToDriveOnButton.titleLabel.font = [UIFont systemFontOfSize:10];
+        ToggleFollowMode(false);
     }
 
-	[m_pBinding setExampleInstance:this :m_pChangeDirectionButton :m_pIncreaseSpeedButton :m_pDecreaseSpeedButton :m_pRotateToFollowButton];
+    iOSRouteSimulationExampleView::~iOSRouteSimulationExampleView()
+    {
+        [m_pBinding release];
+        m_pBinding = nil;
+    }
 
-	ToggleFollowMode(false);
-}
+    void iOSRouteSimulationExampleView::ToggleFollowMode(bool followEnabled)
+    {
+        [m_pBinding toggleFollowMode:followEnabled];
+    }
 
-iOSRouteSimulationExampleView::~iOSRouteSimulationExampleView()
-{
-	[m_pToggleFollowButton removeFromSuperview];
-	m_pToggleFollowButton = nil;
+    void iOSRouteSimulationExampleView::AddFollowCameraToggledHandler(IUIActionHandler& handler)
+    {
+        m_followCameraToggledHandlers.push_back(&handler);
+    }
 
-	[m_pIncreaseSpeedButton removeFromSuperview];
-	m_pIncreaseSpeedButton = nil;
+    void iOSRouteSimulationExampleView::RemoveFollowCameraToggledHandler(IUIActionHandler& handler)
+    {
+        RemoveFrom(m_followCameraToggledHandlers, &handler);
+    }
 
-	[m_pDecreaseSpeedButton removeFromSuperview];
-	m_pDecreaseSpeedButton = nil;
+    void iOSRouteSimulationExampleView::ToggleFollowCamera()
+    {
+        InvokeAllHandlers(m_followCameraToggledHandlers);
+    }
 
-	[m_pRotateToFollowButton removeFromSuperview];
-	m_pRotateToFollowButton = nil;
+    void iOSRouteSimulationExampleView::AddFollowCameraDirectionChangedHandler(IUIActionHandler& handler)
+    {
+        m_directionChangedHandlers.push_back(&handler);
+    }
 
-	[m_pChangeDirectionButton removeFromSuperview];
-	m_pChangeDirectionButton = nil;
+    void iOSRouteSimulationExampleView::RemoveFollowCameraDirectionChangedHandler(IUIActionHandler& handler)
+    {
+        RemoveFrom(m_directionChangedHandlers, &handler);
+    }
 
-	[m_pToggleSideOfRoadToDriveOnButton removeFromSuperview];
-	m_pToggleSideOfRoadToDriveOnButton = nil;
+    void iOSRouteSimulationExampleView::ToggleCameraDirection()
+    {
+        InvokeAllHandlers(m_directionChangedHandlers);
+    }
 
-	[m_pBinding release];
-	m_pBinding = nil;
-}
+    void iOSRouteSimulationExampleView::AddIncreaseSpeedHandler(IUIActionHandler& handler)
+    {
+        m_increaseSpeedHandlers.push_back(&handler);
+    }
 
-void iOSRouteSimulationExampleView::ToggleFollowMode(bool followEnabled)
-{
-	[m_pChangeDirectionButton setHidden: !followEnabled];
-	[m_pIncreaseSpeedButton setHidden: !followEnabled];
-	[m_pDecreaseSpeedButton setHidden: !followEnabled];
-	[m_pRotateToFollow setHidden: !followEnabled];
-}
+    void iOSRouteSimulationExampleView::RemoveIncreaseSpeedHandler(IUIActionHandler& handler)
+    {
+        RemoveFrom(m_increaseSpeedHandlers, &handler);
+    }
 
-void iOSRouteSimulationExampleView::AddFollowCameraToggledHandler(IUIActionHandler& handler)
-{
-	m_followCameraToggledHandlers.push_back(&handler);
-}
+    void iOSRouteSimulationExampleView::IncreaseSpeed()
+    {
+        InvokeAllHandlers(m_increaseSpeedHandlers);
+    }
 
-void iOSRouteSimulationExampleView::RemoveFollowCameraToggledHandler(IUIActionHandler& handler)
-{
-	RemoveFrom(m_followCameraToggledHandlers, &handler);
-}
+    void iOSRouteSimulationExampleView::AddDecreaseSpeedHandler(IUIActionHandler& handler)
+    {
+        m_decreaseSpeedHandlers.push_back(&handler);
+    }
 
-void iOSRouteSimulationExampleView::ToggleFollowCamera()
-{
-	InvokeAllHandlers(m_followCameraToggledHandlers);
-}
+    void iOSRouteSimulationExampleView::RemoveDecreaseSpeedHandler(IUIActionHandler& handler)
+    {
+        RemoveFrom(m_decreaseSpeedHandlers, &handler);
+    }
 
-void iOSRouteSimulationExampleView::AddFollowCameraDirectionChangedHandler(IUIActionHandler& handler)
-{
-	m_directionChangedHandlers.push_back(&handler);
-}
+    void iOSRouteSimulationExampleView::DecreaseSpeed()
+    {
+        InvokeAllHandlers(m_decreaseSpeedHandlers);
+    }
 
-void iOSRouteSimulationExampleView::RemoveFollowCameraDirectionChangedHandler(IUIActionHandler& handler)
-{
-	RemoveFrom(m_directionChangedHandlers, &handler);
-}
+    void iOSRouteSimulationExampleView::AddRotateToFollowToggledHandler(IUIActionHandler& handler)
+    {
+        m_rotateToFollowToggledHandlers.push_back(&handler);
+    }
 
-void iOSRouteSimulationExampleView::ToggleCameraDirection()
-{
-	InvokeAllHandlers(m_directionChangedHandlers);
-}
+    void iOSRouteSimulationExampleView::RemoveRotateToFollowToggledHandler(IUIActionHandler& handler)
+    {
+        RemoveFrom(m_rotateToFollowToggledHandlers, &handler);
+    }
 
-void iOSRouteSimulationExampleView::AddIncreaseSpeedHandler(IUIActionHandler& handler)
-{
-	m_increaseSpeedHandlers.push_back(&handler);
-}
+    void iOSRouteSimulationExampleView::ToggleRotateToFollow()
+    {
+        InvokeAllHandlers(m_rotateToFollowToggledHandlers);
+    }
 
-void iOSRouteSimulationExampleView::RemoveIncreaseSpeedHandler(IUIActionHandler& handler)
-{
-	RemoveFrom(m_increaseSpeedHandlers, &handler);
-}
+    void iOSRouteSimulationExampleView::AddSideOfRoadToDriveOnToggledHandler(IUIActionHandler& handler)
+    {
+        m_roadSideChangedHandlers.push_back(&handler);
+    }
 
-void iOSRouteSimulationExampleView::IncreaseSpeed()
-{
-	InvokeAllHandlers(m_increaseSpeedHandlers);
-}
+    void iOSRouteSimulationExampleView::RemoveSideOfRoadToDriveOnToggledHandler(IUIActionHandler& handler)
+    {
+        RemoveFrom(m_roadSideChangedHandlers, &handler);
+    }
 
-void iOSRouteSimulationExampleView::AddDecreaseSpeedHandler(IUIActionHandler& handler)
-{
-	m_decreaseSpeedHandlers.push_back(&handler);
-}
+    void iOSRouteSimulationExampleView::ChangeSideOfRoad()
+    {
+        InvokeAllHandlers(m_roadSideChangedHandlers);
+    }
 
-void iOSRouteSimulationExampleView::RemoveDecreaseSpeedHandler(IUIActionHandler& handler)
-{
-	RemoveFrom(m_decreaseSpeedHandlers, &handler);
-}
-
-void iOSRouteSimulationExampleView::DecreaseSpeed()
-{
-	InvokeAllHandlers(m_decreaseSpeedHandlers);
-}
-
-void iOSRouteSimulationExampleView::AddRotateToFollowToggledHandler(IUIActionHandler& handler)
-{
-	m_rotateToFollowToggledHandlers.push_back(&handler);
-}
-
-void iOSRouteSimulationExampleView::RemoveRotateToFollowToggledHandler(IUIActionHandler& handler)
-{
-	RemoveFrom(m_rotateToFollowToggledHandlers, &handler);
-}
-
-void iOSRouteSimulationExampleView::ToggleRotateToFollow()
-{
-	InvokeAllHandlers(m_rotateToFollowToggledHandlers);
-}
-
-void iOSRouteSimulationExampleView::AddSideOfRoadToDriveOnToggledHandler(IUIActionHandler& handler)
-{
-	m_roadSideChangedHandlers.push_back(&handler);
-}
-
-void iOSRouteSimulationExampleView::RemoveSideOfRoadToDriveOnToggledHandler(IUIActionHandler& handler)
-{
-	RemoveFrom(m_roadSideChangedHandlers, &handler);
-}
-
-void iOSRouteSimulationExampleView::ChangeSideOfRoad()
-{
-	InvokeAllHandlers(m_roadSideChangedHandlers);
-}
-
+    void iOSRouteSimulationExampleView::NotifyNeedsLayout()
+    {
+        [m_pBinding layoutViews];
+    }
+    
 }

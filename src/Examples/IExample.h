@@ -27,6 +27,8 @@ namespace Examples
         
         virtual void NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties) = 0;
         
+        virtual void NotifyViewNeedsLayout() = 0;
+        
         virtual const Eegeo::Camera::RenderCamera& GetRenderCamera() const = 0;
         
         virtual Eegeo::dv3 GetInterestPoint() const = 0;

@@ -27,6 +27,8 @@ public:
 	void RemoveMatchingToggledHandler(IUIActionHandler& handler);
 
 	void ToggleMatching();
+
+	void NotifyNeedsLayout() {;}
 };
 }
 
