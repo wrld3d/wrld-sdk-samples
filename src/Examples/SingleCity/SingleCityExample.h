@@ -42,8 +42,8 @@ public:
 	}
 
 	void Start() {}
+    void EarlyUpdate(float dt);
 	void Update(float dt);
-	void AfterCameraUpdate();
 	void Draw() {}
 	void Suspend();
     

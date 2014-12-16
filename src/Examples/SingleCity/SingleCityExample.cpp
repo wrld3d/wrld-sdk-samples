@@ -130,8 +130,9 @@ void SingleCityExample::Update(float dt)
 	}
 }
 
-void SingleCityExample::AfterCameraUpdate()
+void SingleCityExample::EarlyUpdate(float dt)
 {
+    GlobeCameraExampleBase::EarlyUpdate(dt);
 	ConstrainCamera();
 }
 
