@@ -54,13 +54,13 @@ namespace Examples
         m_pSplineCameraController->SetLooped(true);
         
         // Start the animation
-        m_pSplineCameraController->Begin();
+        m_pSplineCameraController->Play();
     }
     
     void CameraSplineExample::Suspend()
     {
         // Stop the animation
-        m_pSplineCameraController->Reset();
+        m_pSplineCameraController->Stop();
         
         // Cleanup
         delete m_pSplineCameraController;
