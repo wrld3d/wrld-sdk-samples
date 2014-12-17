@@ -64,10 +64,18 @@ void AppRunner::Resume()
 
 void AppRunner::ActivateSurface()
 {
-	ReleaseDisplay();
+	bool pauseResume = (m_pAppHost != NULL);
+	if (pauseResume)
+	{
+		Pause();
+	}
 	bool displayBound = TryBindDisplay();
 	Eegeo_ASSERT(displayBound);
 	CreateAppHost();
+	if (pauseResume)
+	{
+		Resume();
+	}
 }
 
 void AppRunner::HandleTouchEvent(const Eegeo::Android::Input::TouchInputEvent& event)
