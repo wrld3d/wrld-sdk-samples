@@ -121,10 +121,10 @@ AppHost::~AppHost()
 	delete m_pAppInputDelegate;
 	m_pAppInputDelegate = NULL;
 
-	DestroyExamples();
-
 	delete m_pApp;
 	m_pApp = NULL;
+
+	DestroyExamples();
 
 	delete m_pWorld;
 	m_pWorld = NULL;
