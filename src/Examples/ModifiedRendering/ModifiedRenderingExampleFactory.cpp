@@ -37,7 +37,8 @@ IExample* ModifiedRenderingExampleFactory::CreateExample() const
 	        renderingModule.GetShaderIdGenerator(),
 	        renderingModule.GetMaterialIdGenerator(),
 	        m_world.GetEnvironmentPlaceholderTexture(),
-	        m_globeCameraController);
+	        m_globeCameraController,
+            renderingModule.GetVertexBindingPool());
 }
 
 std::string ModifiedRenderingExampleFactory::ExampleName() const
