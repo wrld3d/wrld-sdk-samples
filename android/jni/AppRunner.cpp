@@ -12,6 +12,7 @@ AppRunner::AppRunner
 	: m_apiKey(apiKey)
 	, m_pNativeState(pNativeState)
 	, m_pAppHost(NULL)
+	, m_isPaused(false)
 {
 	Eegeo::Helpers::ThreadHelpers::SetThisThreadAsMainThread();
 }
@@ -46,9 +47,10 @@ void AppRunner::CreateAppHost()
 
 void AppRunner::Pause()
 {
-	if(m_pAppHost != NULL)
+	if(m_pAppHost != NULL && !m_isPaused)
 	{
 		m_pAppHost->OnPause();
+		m_isPaused = true;
 	}
 
 	ReleaseDisplay();
@@ -56,27 +58,23 @@ void AppRunner::Pause()
 
 void AppRunner::Resume()
 {
-	if(m_pAppHost != NULL)
+	if(m_pAppHost != NULL && m_isPaused)
 	{
 		m_pAppHost->OnResume();
 	}
+
+	m_isPaused = false;
 }
 
 void AppRunner::ActivateSurface()
 {
-	bool pauseResume = (m_pAppHost != NULL);
-	if (pauseResume)
-	{
-		Pause();
-	}
+	Pause();
 	bool displayBound = TryBindDisplay();
 	Eegeo_ASSERT(displayBound);
 	CreateAppHost();
-	if (pauseResume)
-	{
-		Resume();
-	}
+	Resume();
 }
+
 
 void AppRunner::HandleTouchEvent(const Eegeo::Android::Input::TouchInputEvent& event)
 {

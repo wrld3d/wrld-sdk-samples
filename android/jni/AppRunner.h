@@ -33,6 +33,7 @@ private:
 	bool TryBindDisplay();
 
 	AppHost* m_pAppHost;
+	bool m_isPaused;
 	void CreateAppHost();
 };
 

@@ -104,6 +104,13 @@ JNIEXPORT void JNICALL Java_com_eegeo_mobilesdkharness_NativeJniCalls_updateNati
 
 JNIEXPORT void JNICALL Java_com_eegeo_mobilesdkharness_NativeJniCalls_setNativeSurface(JNIEnv* jenv, jobject obj, jobject surface)
 {
+	ANativeWindow* newWindow = ANativeWindow_fromSurface(jenv, surface);
+	if (g_nativeState.window == newWindow)
+	{
+		// we can get same surface after resume from screen lock
+		return;
+	}
+
 	if(g_nativeState.window != NULL)
 	{
 		ANativeWindow_release(g_nativeState.window);
@@ -112,7 +119,7 @@ JNIEXPORT void JNICALL Java_com_eegeo_mobilesdkharness_NativeJniCalls_setNativeS
 
 	if (surface != NULL)
 	{
-		g_nativeState.window = ANativeWindow_fromSurface(jenv, surface);
+		g_nativeState.window = newWindow;
 
 		if (g_nativeState.window != NULL)
 		{
