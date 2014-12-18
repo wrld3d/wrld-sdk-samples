@@ -16,6 +16,9 @@
 #include "GlState.h"
 #include "PackedRenderable.h"
 #include "GlHelpers.h"
+#include "IMaterial.h"
+#include "Mesh.h"
+#include "IndexBufferRange.h"
 
 namespace Examples
 {
@@ -24,13 +27,32 @@ typedef TRenderable* TRenderablePtr;
 typedef Eegeo::Rendering::Scene::SceneElement<TRenderable> TSceneElement;
 typedef TSceneElement* TSceneElementPtr;
 typedef std::vector<TSceneElementPtr> TSceneElementPtrVec;
-
+    
+inline void RenderPackedRenderableWithMaterial(Eegeo::Rendering::Renderables::PackedRenderable& renderable,
+                                               const Eegeo::Rendering::Materials::IMaterial* pMaterial,
+                                               const Eegeo::Rendering::VertexLayouts::VertexBinding& vertexBinding,
+                                               Eegeo::Rendering::GLState& glState)
+{
+    pMaterial->SetStatePerRenderable(&renderable, glState);
+    
+    renderable.GetMesh().BindVertexBuffers(&vertexBinding, glState);
+    
+    const std::vector<Eegeo::Culling::IndexBufferRange>& visibleRanges = renderable.GetVisibleIndexRanges();
+    for(std::vector<Eegeo::Culling::IndexBufferRange>::const_iterator range = visibleRanges.begin(); range != visibleRanges.end(); ++range)
+    {
+        Eegeo_GL(glDrawElements(GL_TRIANGLES, range->NumOfIndices(), GL_UNSIGNED_SHORT, reinterpret_cast<void*>(range->StartIndex() * 2)));
+    }
+    
+    renderable.GetMesh().UnbindVertexBuffers(glState);
+}
+    
 class MyRenderable : public Eegeo::Rendering::RenderableBase
 {
 public:
-	MyRenderable(TRenderable& originalRenderable, const Eegeo::Rendering::Materials::IMaterial* pMaterial)
-		: Eegeo::Rendering::RenderableBase(Eegeo::Rendering::LayerIds::Buildings, originalRenderable.GetEcefPosition(), pMaterial)
+    MyRenderable(TRenderable& originalRenderable, Eegeo::Rendering::Materials::IMaterial* pMaterial, Eegeo::Rendering::VertexLayouts::VertexBindingPool& vertexBindingPool)
+    : Eegeo::Rendering::RenderableBase(Eegeo::Rendering::LayerIds::Buildings, originalRenderable.GetEcefPosition(), pMaterial)
 		, m_originalRenderable(originalRenderable)
+        , m_vertexBinding(vertexBindingPool.GetVertexBinding(originalRenderable.GetMesh().GetVertexLayout(), pMaterial->GetShader().GetVertexAttributes()))
 	{
 	}
 
@@ -39,14 +61,15 @@ public:
 		m_originalRenderable.CalcUnpackMVP(renderContext, 1.0f);
 		m_originalRenderable.SetVisible();
 	}
-
-	void Render(Eegeo::Rendering::GLState& glState) const
-	{
-		m_originalRenderable.Render(glState);
-	}
+                                       
+    void Render(Eegeo::Rendering::GLState& glState) const
+    {
+        Examples::RenderPackedRenderableWithMaterial(m_originalRenderable, m_material, m_vertexBinding, glState);
+    }
 
 private:
 	TRenderable& m_originalRenderable;
+    const Eegeo::Rendering::VertexLayouts::VertexBinding& m_vertexBinding;
 };
 
 typedef Eegeo::Rendering::Scene::ISceneElementObserver<Eegeo::Rendering::Renderables::PackedRenderable> TSceneElementObserver;
@@ -72,8 +95,8 @@ private:
 	Eegeo::Rendering::RenderableFilters& m_renderableFilters;
 	Eegeo::Rendering::Shaders::ShaderIdGenerator& m_shaderIdGenerator;
 	Eegeo::Rendering::Materials::MaterialIdGenerator& m_materialIdGenerator;
+    Eegeo::Rendering::VertexLayouts::VertexBindingPool& m_vertexBindingPool;
 	const Eegeo::Helpers::GLHelpers::TextureInfo& m_placeHolderTexture;
-    
 
 	Eegeo::Lighting::GlobalLighting* m_pAlternativeLighting;
 	Eegeo::Rendering::Shaders::PackedDiffuseShader* m_pAlternativeShader;
@@ -95,9 +118,10 @@ public:
 	                         Eegeo::Rendering::RenderableFilters& renderableFilters,
 	                         Eegeo::Rendering::Shaders::ShaderIdGenerator& shaderIdGenerator,
 	                         Eegeo::Rendering::Materials::MaterialIdGenerator& materialIdGenerator,
+                             Eegeo::Rendering::VertexLayouts::VertexBindingPool& vertexBindingPool,
 	                         const Eegeo::Helpers::GLHelpers::TextureInfo& placeHolderTexture,
 	                         Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
-                        Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController
+	                         Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController
 	                        );
 
 	//ISceneElementObserver interface.
