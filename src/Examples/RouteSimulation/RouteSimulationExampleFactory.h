@@ -7,6 +7,7 @@
 #include "GlobeCameraExampleBase.h"
 #include "EegeoWorld.h"
 #include "IRouteSimulationExampleViewFactory.h"
+#include "ScreenPropertiesProvider.h"
 
 namespace Examples
 {
@@ -16,12 +17,14 @@ class RouteSimulationExampleFactory : public IExampleFactory
 	const IRouteSimulationExampleViewFactory& m_routeSimulationViewFactory;
     DefaultCameraControllerFactory& m_defaultCameraControllerFactory;
     Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& m_globeCameraTouchController;
+    const IScreenPropertiesProvider& m_screenPropertiesProvider;
 	Eegeo::Routes::Simulation::Camera::RouteSimulationGlobeCameraControllerFactory* m_pRouteSimulationGlobeCameraControllerFactory;
 
 public:
 	RouteSimulationExampleFactory(Eegeo::EegeoWorld& world,
 	                              DefaultCameraControllerFactory& defaultCameraControllerFactory,
                                   Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController,
+                                  const IScreenPropertiesProvider& screenPropertiesProvider,
 	                              const IRouteSimulationExampleViewFactory& routeSimulationViewFactory);
 
 	~RouteSimulationExampleFactory();

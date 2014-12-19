@@ -26,7 +26,8 @@ private:
     
 public:
 	CameraSplineExample(Eegeo::EegeoWorld& eegeoWorld,
-                        Eegeo::Streaming::ResourceCeilingProvider& resourceCeilingProvider);
+                        Eegeo::Streaming::ResourceCeilingProvider& resourceCeilingProvider,
+                        const Eegeo::Rendering::ScreenProperties& initialScreenProperties);
     
 	static std::string GetName()
 	{

@@ -15,11 +15,13 @@
 namespace Examples
 {
     CameraSplineExample::CameraSplineExample(Eegeo::EegeoWorld& eegeoWorld,
-                                             Eegeo::Streaming::ResourceCeilingProvider& resourceCeilingProvider)
+                                             Eegeo::Streaming::ResourceCeilingProvider& resourceCeilingProvider,
+                                             const Eegeo::Rendering::ScreenProperties& initialScreenProperties)
     : m_world(eegeoWorld)
     , m_resourceCeilingProvider(resourceCeilingProvider)
     {
-        
+        m_pSplineCameraController = new Eegeo::Camera::SplinePlayback::CameraSplinePlaybackController(m_resourceCeilingProvider);
+        NotifyScreenPropertiesChanged(initialScreenProperties);
     }
     
     void CameraSplineExample::Start()
@@ -44,7 +46,7 @@ namespace Examples
         m_pTargetSpline->AddPoint(Eegeo::Space::LatLongAltitude::FromDegrees(37.803461, -122.447843, 0).ToECEF());
         
         // Initialise the camera controller and assign which splines we want to use for the animation
-        m_pSplineCameraController = new Eegeo::Camera::SplinePlayback::CameraSplinePlaybackController(m_resourceCeilingProvider);
+        
         m_pSplineCameraController->SetSplines(m_pPositionSpline, m_pTargetSpline);
         
         // Select a playback speed

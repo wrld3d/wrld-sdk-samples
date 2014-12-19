@@ -18,10 +18,12 @@ namespace Examples
 RouteSimulationExampleFactory::RouteSimulationExampleFactory(Eegeo::EegeoWorld& world,
                                                              DefaultCameraControllerFactory& defaultCameraControllerFactory,
                                                              Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController,
+                                                             const IScreenPropertiesProvider& screenPropertiesProvider,
                                                              const IRouteSimulationExampleViewFactory& routeSimulationViewFactory)
 	: m_world(world)
 	, m_defaultCameraControllerFactory(defaultCameraControllerFactory)
     , m_globeCameraTouchController(globeCameraTouchController)
+    , m_screenPropertiesProvider(screenPropertiesProvider)
 	, m_routeSimulationViewFactory(routeSimulationViewFactory)
 {
     Eegeo::Modules::Map::Layers::TerrainModelModule& terrainModelModule = m_world.GetTerrainModelModule();
@@ -55,6 +57,7 @@ IExample* RouteSimulationExampleFactory::CreateExample() const
 	        m_defaultCameraControllerFactory.Create(),
             m_globeCameraTouchController,
 	        *m_pRouteSimulationGlobeCameraControllerFactory,
+            m_screenPropertiesProvider,
 	        m_routeSimulationViewFactory,
 	        m_world);
 }

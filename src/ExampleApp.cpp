@@ -128,7 +128,7 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
 	//register all generic examples
 
     m_pExampleController->RegisterCameraExample<Examples::MeshExampleFactory>();
-    m_pExampleController->RegisterExample<Examples::CameraSplineExampleFactory>();
+    m_pExampleController->RegisterScreenPropertiesProviderExample<Examples::CameraSplineExampleFactory>(m_screenPropertiesProvider);
     m_pExampleController->RegisterCameraExample<Examples::CameraTransitionExampleFactory>();
     m_pExampleController->RegisterCameraExample<Examples::ControlCityThemeExampleFactory>();
     m_pExampleController->RegisterCameraExample<Examples::DebugPrimitiveRenderingExampleFactory>();
@@ -149,7 +149,7 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
 	m_pExampleController->RegisterCameraExample<Examples::ReadHeadingExampleFactory>();
 	m_pExampleController->RegisterCameraExample<Examples::ResourceSpatialQueryExampleFactory>();
 	m_pExampleController->RegisterCameraExample<Examples::RouteDrawingExampleFactory>();
-	m_pExampleController->RegisterCameraExample<Examples::RouteSimulationAnimationExampleFactory>();
+	m_pExampleController->RegisterCameraControllerScreenPropertiesProviderExample<Examples::RouteSimulationAnimationExampleFactory>(m_screenPropertiesProvider);
 	m_pExampleController->RegisterCameraExample<Examples::RouteThicknessPolicyExampleFactory>();
 	m_pExampleController->RegisterCameraExample<Examples::ScreenPickExampleFactory>();
 	m_pExampleController->RegisterCameraExample<Examples::ScreenUnprojectExampleFactory>();
@@ -158,7 +158,7 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
 	m_pExampleController->RegisterCameraExample<Examples::TrafficCongestionExampleFactory>();
 	m_pExampleController->RegisterCameraExample<Examples::WebRequestExampleFactory>();
     
-    m_pExampleController->RegisterCameraScreenPropertiesProviderExample<Examples::RenderToTextureExampleFactory>(m_screenPropertiesProvider);
+    m_pExampleController->RegisterCameraControllerScreenPropertiesProviderExample<Examples::RenderToTextureExampleFactory>(m_screenPropertiesProvider);
 }
 
 ExampleApp::~ExampleApp()

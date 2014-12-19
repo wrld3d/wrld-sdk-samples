@@ -24,6 +24,7 @@ RouteSimulationAnimationExample::RouteSimulationAnimationExample(
     Eegeo::Helpers::IFileIO& fileIO,
     Eegeo::Rendering::AsyncTexturing::IAsyncTextureRequestor& textureRequestor,
     RouteSimulationGlobeCameraControllerFactory& routeSimulationGlobeCameraControllerFactory,
+    const IScreenPropertiesProvider& screenPropertiesProvider,
     EegeoWorld& world)
 	:m_routeService(routeService)
 	,m_routeSimulationService(routeSimulationService)
@@ -31,6 +32,7 @@ RouteSimulationAnimationExample::RouteSimulationAnimationExample(
 	,m_fileIO(fileIO)
 	,m_textureRequestor(textureRequestor)
 	,m_routeSimulationGlobeCameraControllerFactory(routeSimulationGlobeCameraControllerFactory)
+    ,m_screenPropertiesProvider(screenPropertiesProvider)
 	,m_world(world)
 	,m_initialised(false)
 	,m_pRoute(NULL)
@@ -40,6 +42,11 @@ RouteSimulationAnimationExample::RouteSimulationAnimationExample(
 	,m_pViewBindingForCameraSession(NULL)
 	,m_pRouteSessionFollowCameraController(NULL)
 {
+    RouteSimulationGlobeCameraControllerConfig routeSimCameraConfig = RouteSimulationGlobeCameraControllerConfig::CreateDefault();
+    Eegeo::Camera::GlobeCamera::GlobeCameraTouchControllerConfiguration touchConfiguration = Eegeo::Camera::GlobeCamera::GlobeCameraTouchControllerConfiguration::CreateDefault();
+    m_pRouteSessionFollowCameraController = m_routeSimulationGlobeCameraControllerFactory.Create(false, touchConfiguration, routeSimCameraConfig);
+    const Eegeo::Rendering::ScreenProperties& screenProperties = m_screenPropertiesProvider.GetScreenProperties();
+    m_pRouteSessionFollowCameraController->GetCamera()->SetViewport(0.f, 0.f, screenProperties.GetScreenWidth(), screenProperties.GetScreenHeight());
 }
 
 RouteSimulationAnimationExample::~RouteSimulationAnimationExample()
@@ -60,9 +67,7 @@ void RouteSimulationAnimationExample::Initialise()
 
 	m_pRouteSimulationSession = m_routeSimulationService.BeginRouteSimulationSession(*m_pRoute);
     
-    RouteSimulationGlobeCameraControllerConfig routeSimCameraConfig = RouteSimulationGlobeCameraControllerConfig::CreateDefault();
-    Eegeo::Camera::GlobeCamera::GlobeCameraTouchControllerConfiguration touchConfiguration = Eegeo::Camera::GlobeCamera::GlobeCameraTouchControllerConfiguration::CreateDefault();
-	m_pRouteSessionFollowCameraController = m_routeSimulationGlobeCameraControllerFactory.Create(false, touchConfiguration, routeSimCameraConfig);
+
     
     Eegeo::Camera::RenderCamera* pRenderCamera = m_pRouteSessionFollowCameraController->GetCamera();
     const float fovDegrees = 45.f;

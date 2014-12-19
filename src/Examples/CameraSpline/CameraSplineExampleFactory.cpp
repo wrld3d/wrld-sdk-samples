@@ -11,8 +11,10 @@
 namespace Examples
 {
 
-CameraSplineExampleFactory::CameraSplineExampleFactory(Eegeo::EegeoWorld& world)
+CameraSplineExampleFactory::CameraSplineExampleFactory(Eegeo::EegeoWorld& world,
+                                                       const IScreenPropertiesProvider& screenPropertiesProvider)
 : m_world(world)
+, m_screenPropertiesProvider(screenPropertiesProvider)
 {
     
 }
@@ -21,8 +23,11 @@ IExample* CameraSplineExampleFactory::CreateExample() const
 {
     Eegeo::Modules::Map::MapModule& mapModule = m_world.GetMapModule();
     
+    const Eegeo::Rendering::ScreenProperties& initialScreenProperties = m_screenPropertiesProvider.GetScreenProperties();
+    
 	return new Examples::CameraSplineExample(m_world,
-                                             mapModule.GetResourceCeilingProvider());
+                                             mapModule.GetResourceCeilingProvider(),
+                                             initialScreenProperties);
 }
 
 std::string CameraSplineExampleFactory::ExampleName() const

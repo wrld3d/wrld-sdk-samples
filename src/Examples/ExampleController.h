@@ -82,9 +82,15 @@ public:
 	}
     
     template <typename TExampleFactory>
-    void RegisterCameraScreenPropertiesProviderExample(const ScreenPropertiesProvider& screenPropertiesProvider)
+    void RegisterCameraControllerScreenPropertiesProviderExample(const ScreenPropertiesProvider& screenPropertiesProvider)
     {
         m_factories.push_back(Eegeo_NEW((TExampleFactory)(m_world, m_defaultCameraControllerFactory, m_globeCameraTouchController, screenPropertiesProvider)));
+    }
+    
+    template <typename TExampleFactory>
+    void RegisterScreenPropertiesProviderExample(const ScreenPropertiesProvider& screenPropertiesProvider)
+    {
+        m_factories.push_back(Eegeo_NEW((TExampleFactory)(m_world, screenPropertiesProvider)));
     }
 
 	void Event_TouchRotate(const AppInterface::RotateData& data);

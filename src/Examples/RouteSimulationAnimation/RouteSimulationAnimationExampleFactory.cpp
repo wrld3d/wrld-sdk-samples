@@ -19,10 +19,12 @@ namespace Examples
 
 RouteSimulationAnimationExampleFactory::RouteSimulationAnimationExampleFactory(Eegeo::EegeoWorld& world,
                                                                                DefaultCameraControllerFactory& defaultCameraControllerFactory,
-                                                                               Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController)
+                                                                               Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController,
+                                                                               const IScreenPropertiesProvider& screenPropertiesProvider)
 	: m_world(world)
 	, m_defaultCameraControllerFactory(defaultCameraControllerFactory)
     , m_globeCameraTouchController(globeCameraTouchController)
+    , m_screenPropertiesProvider(screenPropertiesProvider)
 	, m_pRouteSimulationGlobeCameraControllerFactory(NULL)
 {
     Eegeo::Modules::Map::MapModule& mapModule = m_world.GetMapModule();
@@ -55,6 +57,7 @@ IExample* RouteSimulationAnimationExampleFactory::CreateExample() const
 	        platformAbstractionModule.GetFileIO(),
 	        asyncLoadersModule.GetLocalAsyncTextureLoader(),
 	        *m_pRouteSimulationGlobeCameraControllerFactory,
+            m_screenPropertiesProvider,
 	        m_world);
 }
 

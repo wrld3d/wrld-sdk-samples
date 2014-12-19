@@ -24,6 +24,7 @@
 #include "EegeoWorld.h"
 #include "IdentityRouteThicknessPolicy.h"
 #include "GlobeCameraController.h"
+#include "ScreenPropertiesProvider.h"
 
 namespace Examples
 {
@@ -36,6 +37,7 @@ private:
 	Eegeo::Helpers::IFileIO& m_fileIO;
 	Eegeo::Rendering::AsyncTexturing::IAsyncTextureRequestor& m_textureRequestor;
 	Eegeo::Routes::Simulation::Camera::RouteSimulationGlobeCameraControllerFactory& m_routeSimulationGlobeCameraControllerFactory;
+    const IScreenPropertiesProvider& m_screenPropertiesProvider;
 	Eegeo::EegeoWorld& m_world;
 	float m_modelAnimationSpeed;
 
@@ -60,6 +62,7 @@ public:
 	                                Eegeo::Helpers::IFileIO& fileIO,
 	                                Eegeo::Rendering::AsyncTexturing::IAsyncTextureRequestor& textureRequestor,
 	                                Eegeo::Routes::Simulation::Camera::RouteSimulationGlobeCameraControllerFactory& routeSimulationGlobeCameraControllerFactory,
+                                    const IScreenPropertiesProvider& screenPropertiesProvider,
 	                                Eegeo::EegeoWorld& eegeoWorld);
     virtual ~RouteSimulationAnimationExample();
 

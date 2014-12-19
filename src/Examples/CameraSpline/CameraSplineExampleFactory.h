@@ -5,15 +5,18 @@
 
 #include "IExampleFactory.h"
 #include "EegeoRootDeclarations.h"
+#include "ScreenPropertiesProvider.h"
 
 namespace Examples
 {
     class CameraSplineExampleFactory : public IExampleFactory
     {
         Eegeo::EegeoWorld& m_world;
+        const IScreenPropertiesProvider& m_screenPropertiesProvider;
         
     public:
-        CameraSplineExampleFactory(Eegeo::EegeoWorld& world);
+        CameraSplineExampleFactory(Eegeo::EegeoWorld& world,
+                                   const IScreenPropertiesProvider& screenPropertiesProvider);
         
         std::string ExampleName() const;
         

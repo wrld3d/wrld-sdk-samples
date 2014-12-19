@@ -29,6 +29,7 @@
 #include "IRouteSimulationExampleViewFactory.h"
 #include "IRouteSimulationExampleView.h"
 #include "UIActionHandler.h"
+#include "ScreenPropertiesProvider.h"
 
 namespace Examples
 {
@@ -61,6 +62,7 @@ private:
 	Eegeo::Rendering::AsyncTexturing::IAsyncTextureRequestor& m_textureRequestor;
 	Eegeo::Routes::Simulation::Camera::RouteSimulationGlobeCameraControllerFactory& m_routeSimulationGlobeCameraControllerFactory;
 	Eegeo::EegeoWorld& m_world;
+    const IScreenPropertiesProvider& m_screenPropertiesProvider;
 	const IRouteSimulationExampleViewFactory& m_routeSimulationExampleViewFactory;
 	IRouteSimulationExampleView* m_pRouteSimulationView;
 	Examples::UIActionHandler<RouteSimulationExample> m_decreaseSpeedToggleHandler;
@@ -99,6 +101,7 @@ public:
 	                       Eegeo::Camera::GlobeCamera::GlobeCameraController* pDefaultCameraController,
                            Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& defaultCameraTouchController,
 	                       Eegeo::Routes::Simulation::Camera::RouteSimulationGlobeCameraControllerFactory& routeSimulationGlobeCameraControllerFactory,
+                           const IScreenPropertiesProvider& screenPropertiesProvider,
 	                       const IRouteSimulationExampleViewFactory& routeSimulationExampleViewFactory,
 	                       Eegeo::EegeoWorld& eegeoWorld);
 

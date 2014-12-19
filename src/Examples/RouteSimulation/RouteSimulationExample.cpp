@@ -51,6 +51,7 @@ RouteSimulationExample::RouteSimulationExample(RouteService& routeService,
         Eegeo::Camera::GlobeCamera::GlobeCameraController* pDefaultCameraController,
         Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& defaultCameraTouchController,
         RouteSimulationGlobeCameraControllerFactory& routeSimulationGlobeCameraControllerFactory,
+        const IScreenPropertiesProvider& screenPropertiesProvider,
         const IRouteSimulationExampleViewFactory& routeSimulationExampleViewFactory,
         EegeoWorld& world)
 	: GlobeCameraExampleBase(pDefaultCameraController, defaultCameraTouchController)
@@ -64,6 +65,7 @@ RouteSimulationExample::RouteSimulationExample(RouteService& routeService,
 	,m_initialised(false)
 	,m_pRoute(NULL)
 	,m_usingFollowCamera(false)
+    , m_screenPropertiesProvider(screenPropertiesProvider)
 	,m_routeSimulationExampleViewFactory(routeSimulationExampleViewFactory)
     , m_pSessionCycle(NULL)
     , m_pSessionAlternatingSpeedChanger(NULL)
@@ -95,6 +97,9 @@ RouteSimulationExample::RouteSimulationExample(RouteService& routeService,
     RouteSimulationGlobeCameraControllerConfig routeSimCameraConfig = RouteSimulationGlobeCameraControllerConfig::CreateDefault();
     
     m_pRouteSessionFollowCameraController = m_routeSimulationGlobeCameraControllerFactory.Create(false, touchConfiguration, routeSimCameraConfig);
+    
+    const Eegeo::Rendering::ScreenProperties& screenProperties = m_screenPropertiesProvider.GetScreenProperties();
+    m_pRouteSessionFollowCameraController->GetCamera()->SetViewport(0.f, 0.f, screenProperties.GetScreenWidth(), screenProperties.GetScreenHeight());
 }
 
 void RouteSimulationExample::Initialise()
