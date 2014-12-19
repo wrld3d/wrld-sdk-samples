@@ -12,13 +12,11 @@ PositionJavaPinButtonExampleFactory::PositionJavaPinButtonExampleFactory(
     Eegeo::EegeoWorld& world,
     AndroidNativeState& nativeState,
     DefaultCameraControllerFactory& defaultCameraControllerFactory,
-    Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController,
-    const IScreenPropertiesProvider& screenPropertiesProvider)
+    Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController)
 	: m_world(world)
 	, m_nativeState(nativeState)
 	, m_defaultCameraControllerFactory(defaultCameraControllerFactory)
 	, m_globeCameraTouchController(globeCameraTouchController)
-	, m_screenPropertiesProvider(screenPropertiesProvider)
 {
 
 }
@@ -28,7 +26,6 @@ IExample* PositionJavaPinButtonExampleFactory::CreateExample() const
 	return new Examples::PositionJavaPinButtonExample(
 	           m_world,
 	           m_nativeState,
-	           m_screenPropertiesProvider.GetScreenProperties(),
 	           m_defaultCameraControllerFactory.Create(),
 	           m_globeCameraTouchController);
 }
