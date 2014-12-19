@@ -42,15 +42,24 @@ using namespace Eegeo::iOS;
 - (void)onPause
 {
     m_pAppRunner->Pause();
+    
+    GLKView* glkView = static_cast<GLKView*>(self.view);
+    glkView.context = nil;
 }
 
 - (void)onResume
 {
+    GLKView* glkView = static_cast<GLKView*>(self.view);
+    glkView.context = [EAGLContext currentContext];
+    
     m_pAppRunner->Resume();
 }
+    
 
 - (void)glkView:(GLKView *)view drawInRect:(CGRect)rect
 {
+    Eegeo_ASSERT([[UIApplication sharedApplication] applicationState] == UIApplicationStateActive, "applicationState must be UIApplicationStateActive");
+
 	CFTimeInterval timeNow = CFAbsoluteTimeGetCurrent();
 	CFTimeInterval frameDuration = timeNow - m_previousTimestamp;
     m_pAppRunner->Update(static_cast<float>(frameDuration));
