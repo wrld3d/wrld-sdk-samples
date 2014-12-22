@@ -17,15 +17,15 @@ class RouteSimulationExampleFactory : public IExampleFactory
 	const IRouteSimulationExampleViewFactory& m_routeSimulationViewFactory;
     DefaultCameraControllerFactory& m_defaultCameraControllerFactory;
     Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& m_globeCameraTouchController;
-    Eegeo::Routes::Simulation::Camera::RouteSimulationGlobeCameraControllerFactory* m_pRouteSimulationGlobeCameraControllerFactory;
-    const IScreenPropertiesProvider& m_screenProperties;
+    const IScreenPropertiesProvider& m_screenPropertiesProvider;
+	Eegeo::Routes::Simulation::Camera::RouteSimulationGlobeCameraControllerFactory* m_pRouteSimulationGlobeCameraControllerFactory;
 
 public:
 	RouteSimulationExampleFactory(Eegeo::EegeoWorld& world,
 	                              DefaultCameraControllerFactory& defaultCameraControllerFactory,
                                   Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController,
-                                  const IRouteSimulationExampleViewFactory& routeSimulationViewFactory,
-                                  const IScreenPropertiesProvider& screenProperties);
+                                  const IScreenPropertiesProvider& screenPropertiesProvider,
+	                              const IRouteSimulationExampleViewFactory& routeSimulationViewFactory);
 
 	~RouteSimulationExampleFactory();
 

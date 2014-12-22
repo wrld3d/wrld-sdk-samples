@@ -16,14 +16,12 @@ namespace Examples
 PositionJavaPinButtonExample::PositionJavaPinButtonExample(
     Eegeo::EegeoWorld& world,
     AndroidNativeState& nativeState,
-    const Eegeo::Rendering::ScreenProperties& screenProperties,
     Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
     Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController)
 	: GlobeCameraExampleBase(pCameraController, cameraTouchController)
 	,m_nativeState(nativeState)
 	,m_world(world)
 	,m_buttonID(0)
-	,m_screenProperties(screenProperties)
 {
 }
 
@@ -150,7 +148,7 @@ void PositionJavaPinButtonExample::Project (const Eegeo::Space::LatLongAltitude&
 	screenPosition.SetX((screenPosition.GetX() + 1.0f) * 0.5f);
 	screenPosition.SetY(1.0f - ((screenPosition.GetY() + 1.0f) * 0.5f));
 
-	float viewport[] = {0, 0, m_screenProperties.GetScreenWidth(), m_screenProperties.GetScreenHeight()};
+	float viewport[] = {0, 0, renderCamera.GetViewportWidth(), renderCamera.GetViewportHeight()};
 
 	// transform from [0, 1] to screen coords.
 	screenPosition.SetX((screenPosition.GetX()*(viewport[2]-viewport[0])) + viewport[0]);

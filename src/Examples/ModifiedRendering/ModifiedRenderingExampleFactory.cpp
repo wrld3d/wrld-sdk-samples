@@ -39,6 +39,7 @@ IExample* ModifiedRenderingExampleFactory::CreateExample() const
 	        renderingModule.GetRenderableFilters(),
 	        renderingModule.GetShaderIdGenerator(),
 	        renderingModule.GetMaterialIdGenerator(),
+            renderingModule.GetVertexBindingPool(),
 	        m_world.GetEnvironmentPlaceholderTexture(),
 	        m_defaultCameraControllerFactory.Create(),
             m_globeCameraTouchController);

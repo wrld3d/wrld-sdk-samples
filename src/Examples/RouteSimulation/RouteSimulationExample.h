@@ -29,6 +29,7 @@
 #include "IRouteSimulationExampleViewFactory.h"
 #include "IRouteSimulationExampleView.h"
 #include "UIActionHandler.h"
+#include "ScreenPropertiesProvider.h"
 
 namespace Examples
 {

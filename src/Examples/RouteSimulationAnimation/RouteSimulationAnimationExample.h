@@ -24,6 +24,7 @@
 #include "EegeoWorld.h"
 #include "IdentityRouteThicknessPolicy.h"
 #include "GlobeCameraController.h"
+#include "ScreenPropertiesProvider.h"
 
 namespace Examples
 {
@@ -45,7 +46,6 @@ private:
 	Eegeo::Routes::Simulation::RouteSimulationSession* m_pRouteSimulationSession;
     Eegeo::Routes::Simulation::View::RouteSimulationModelBinding* m_pViewBindingForCameraSession;
     Eegeo::Routes::Simulation::Camera::RouteSimulationGlobeCameraController* m_pRouteSessionFollowCameraController;
-    Eegeo::Rendering::ScreenProperties m_screenProperties;
 
 	void CalculateTransform(Eegeo::m44& transform);
 
@@ -56,8 +56,8 @@ public:
 	                                Eegeo::Helpers::IFileIO& fileIO,
 	                                Eegeo::Rendering::AsyncTexturing::IAsyncTextureRequestor& textureRequestor,
 	                                Eegeo::Routes::Simulation::Camera::RouteSimulationGlobeCameraControllerFactory& routeSimulationGlobeCameraControllerFactory,
-                                    Eegeo::EegeoWorld& eegeoWorld,
-                                    const Eegeo::Rendering::ScreenProperties& screenProperties);
+                                    const IScreenPropertiesProvider& screenPropertiesProvider,
+	                                Eegeo::EegeoWorld& eegeoWorld);
     virtual ~RouteSimulationAnimationExample();
 
 	static std::string GetName()

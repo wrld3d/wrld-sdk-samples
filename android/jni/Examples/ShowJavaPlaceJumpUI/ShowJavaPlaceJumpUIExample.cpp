@@ -12,7 +12,7 @@ ShowJavaPlaceJumpUIExample::ShowJavaPlaceJumpUIExample(
     AndroidNativeState& nativeState,
     Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
     Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController,
-    Eegeo::Camera::ICameraJumpController& cameraJumpController
+    Eegeo::Camera::ICameraJumpController* cameraJumpController
 )
 	: GlobeCameraExampleBase(pCameraController, cameraTouchController)
 	, m_nativeState(nativeState)
@@ -24,6 +24,11 @@ ShowJavaPlaceJumpUIExample::ShowJavaPlaceJumpUIExample(
 	m_locations["SF"] = ViewLocation(37.7858,-122.401, 0.0, 0.0, 1781.0);
 	m_locations["Kyoto"] = ViewLocation(34.9977166,135.755402, 0, 0.0f, 1500.0f);
 	m_locations["Melbourne"] = ViewLocation(-37.815005, 144.964415, 0, 0.0f, 1500.0f);
+}
+
+ShowJavaPlaceJumpUIExample::~ShowJavaPlaceJumpUIExample()
+{
+	delete m_cameraJumpController;
 }
 
 void ShowJavaPlaceJumpUIExample::Start()
@@ -86,7 +91,7 @@ void ShowJavaPlaceJumpUIExample::Update(float dt)
 	pthread_mutex_lock(&m_mutex);
 	if(m_pTargetLocation != NULL)
 	{
-		m_cameraJumpController.JumpTo(m_pTargetLocation->location, m_pTargetLocation->heading, m_pTargetLocation->distance);
+		m_cameraJumpController->JumpTo(m_pTargetLocation->location, m_pTargetLocation->heading, m_pTargetLocation->distance);
 		m_pTargetLocation = NULL;
 	}
 	pthread_mutex_unlock(&m_mutex);

@@ -95,10 +95,7 @@ RouteSimulationExample::RouteSimulationExample(RouteService& routeService,
     
     RouteSimulationGlobeCameraControllerConfig routeSimCameraConfig = RouteSimulationGlobeCameraControllerConfig::CreateDefault();
     
-    m_pRouteSessionFollowCameraController = m_routeSimulationGlobeCameraControllerFactory.Create(false,
-                                                                                                 touchConfiguration,
-                                                                                                 routeSimCameraConfig,
-                                                                                                 screenProperties);
+    m_pRouteSessionFollowCameraController = m_routeSimulationGlobeCameraControllerFactory.Create(false, touchConfiguration, routeSimCameraConfig, screenProperties);
 }
 
 void RouteSimulationExample::Initialise()

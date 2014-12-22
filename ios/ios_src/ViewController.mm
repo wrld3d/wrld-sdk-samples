@@ -42,12 +42,19 @@ using namespace Eegeo::iOS;
 - (void)onPause
 {
     m_pAppRunner->Pause();
+    
+    GLKView* glkView = static_cast<GLKView*>(self.view);
+    glkView.context = nil;
 }
 
 - (void)onResume
 {
+    GLKView* glkView = static_cast<GLKView*>(self.view);
+    glkView.context = [EAGLContext currentContext];
+    
     m_pAppRunner->Resume();
 }
+    
 
 - (void)glkView:(GLKView *)view drawInRect:(CGRect)rect
 {

@@ -30,10 +30,10 @@ ModifiedRenderingExample::ModifiedRenderingExample(Eegeo::Streaming::IStreamingV
         Eegeo::Rendering::RenderableFilters& renderableFilters,
         Eegeo::Rendering::Shaders::ShaderIdGenerator& shaderIdGenerator,
         Eegeo::Rendering::Materials::MaterialIdGenerator& materialIdGenerator,
+        Eegeo::Rendering::VertexLayouts::VertexBindingPool& vertexBindingPool,
         const Eegeo::Helpers::GLHelpers::TextureInfo& placeHolderTexture,
         Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
-                        Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController
-                                                  )
+        Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController)
 	: GlobeCameraExampleBase(pCameraController, cameraTouchController)
     , m_visibleVolume(visibleVolume)
 	,m_buildingRepository(buildingRepository)
@@ -43,6 +43,7 @@ ModifiedRenderingExample::ModifiedRenderingExample(Eegeo::Streaming::IStreamingV
 	,m_renderableFilters(renderableFilters)
 	,m_shaderIdGenerator(shaderIdGenerator)
 	,m_materialIdGenerator(materialIdGenerator)
+    ,m_vertexBindingPool(vertexBindingPool)
 	,m_placeHolderTexture(placeHolderTexture)
 {
 }
@@ -125,7 +126,7 @@ void ModifiedRenderingExample::AddAlternativeRenderable(TMySceneElement& sceneEl
     const TRenderablePtr pOriginalRenderable = &(sceneElement.GetResource());
     
     //create an alternative renderable with a our own alternative material.
-    MyRenderable* pAlternativeRenderable = Eegeo_NEW(MyRenderable)(*pOriginalRenderable, m_pAlternativeMaterial);
+    MyRenderable* pAlternativeRenderable = Eegeo_NEW(MyRenderable)(*pOriginalRenderable, m_pAlternativeMaterial, m_vertexBindingPool);
     
     //add the alternative to our list of renderables.
     m_alternativeRenderables.insert(std::pair<TSceneElementPtr, MyRenderable*>(&sceneElement, pAlternativeRenderable));

@@ -15,8 +15,8 @@ class RouteSimulationAnimationExampleFactory : public IExampleFactory
 	Eegeo::EegeoWorld& m_world;
     DefaultCameraControllerFactory& m_defaultCameraControllerFactory;
     Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& m_globeCameraTouchController;
-    Eegeo::Routes::Simulation::Camera::RouteSimulationGlobeCameraControllerFactory* m_pRouteSimulationGlobeCameraControllerFactory;
-    const IScreenPropertiesProvider& m_screenProperties;
+    const IScreenPropertiesProvider& m_screenPropertiesProvider;
+	Eegeo::Routes::Simulation::Camera::RouteSimulationGlobeCameraControllerFactory* m_pRouteSimulationGlobeCameraControllerFactory;
 
 public:
 	RouteSimulationAnimationExampleFactory(Eegeo::EegeoWorld& world,

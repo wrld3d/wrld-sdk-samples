@@ -18,13 +18,13 @@ namespace Examples
 RouteSimulationExampleFactory::RouteSimulationExampleFactory(Eegeo::EegeoWorld& world,
                                                              DefaultCameraControllerFactory& defaultCameraControllerFactory,
                                                              Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController,
-                                                             const IRouteSimulationExampleViewFactory& routeSimulationViewFactory,
-                                                             const IScreenPropertiesProvider& screenProperties)
+                                                             const IScreenPropertiesProvider& screenPropertiesProvider,
+                                                             const IRouteSimulationExampleViewFactory& routeSimulationViewFactory)
 	: m_world(world)
 	, m_defaultCameraControllerFactory(defaultCameraControllerFactory)
     , m_globeCameraTouchController(globeCameraTouchController)
+    , m_screenPropertiesProvider(screenPropertiesProvider)
 	, m_routeSimulationViewFactory(routeSimulationViewFactory)
-    , m_screenProperties(screenProperties)
 {
     Eegeo::Modules::Map::Layers::TerrainModelModule& terrainModelModule = m_world.GetTerrainModelModule();
     Eegeo::Modules::Map::MapModule& mapModule = m_world.GetMapModule();
@@ -59,7 +59,7 @@ IExample* RouteSimulationExampleFactory::CreateExample() const
 	        *m_pRouteSimulationGlobeCameraControllerFactory,
 	        m_routeSimulationViewFactory,
 	        m_world,
-            m_screenProperties.GetScreenProperties());
+            m_screenPropertiesProvider.GetScreenProperties());
 }
 
 std::string RouteSimulationExampleFactory::ExampleName() const

@@ -90,7 +90,6 @@ private:
 	Examples::AndroidExampleControllerView* m_pAndroidExampleControllerView;
 	Examples::AndroidRouteMatchingExampleViewFactory* m_pAndroidRouteMatchingExampleViewFactory;
 	Examples::AndroidRouteSimulationExampleViewFactory* m_pAndroidRouteSimulationExampleViewFactory;
-	Examples::ExampleCameraJumpController* m_pExampleCameraJumpController;
 
 	Eegeo::Android::Input::AndroidInputProcessor* m_pInputProcessor;
 

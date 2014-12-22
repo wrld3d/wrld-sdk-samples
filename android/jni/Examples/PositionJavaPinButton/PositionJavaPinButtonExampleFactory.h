@@ -18,15 +18,13 @@ namespace Examples
 		AndroidNativeState& m_nativeState;
 		DefaultCameraControllerFactory& m_defaultCameraControllerFactory;
 		Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& m_globeCameraTouchController;
-		const IScreenPropertiesProvider& m_screenPropertiesProvider;
 
 	public:
 		PositionJavaPinButtonExampleFactory(
 			Eegeo::EegeoWorld& world,
 			AndroidNativeState& nativeState,
 			DefaultCameraControllerFactory& defaultCameraControllerFactory,
-			Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController,
-			const IScreenPropertiesProvider& screenPropertiesProvider);
+			Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController);
 
 		std::string ExampleName() const;
 

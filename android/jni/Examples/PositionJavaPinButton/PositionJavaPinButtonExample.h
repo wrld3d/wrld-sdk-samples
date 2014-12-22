@@ -16,7 +16,6 @@ class PositionJavaPinButtonExample : public GlobeCameraExampleBase
 {
 	AndroidNativeState& m_nativeState;
 	Eegeo::EegeoWorld& m_world;
-	const Eegeo::Rendering::ScreenProperties& m_screenProperties;
 
 	int m_buttonID;
 	jclass m_hudPinControllerClass;
@@ -27,7 +26,6 @@ public:
 	PositionJavaPinButtonExample(
 	    Eegeo::EegeoWorld& world,
 	    AndroidNativeState& pNativeState,
-	    const Eegeo::Rendering::ScreenProperties& screenProperties,
 	    Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
 	    Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController);
 
