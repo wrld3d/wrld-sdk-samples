@@ -58,8 +58,6 @@ using namespace Eegeo::iOS;
 
 - (void)glkView:(GLKView *)view drawInRect:(CGRect)rect
 {
-    Eegeo_ASSERT([[UIApplication sharedApplication] applicationState] == UIApplicationStateActive, "applicationState must be UIApplicationStateActive");
-
 	CFTimeInterval timeNow = CFAbsoluteTimeGetCurrent();
 	CFTimeInterval frameDuration = timeNow - m_previousTimestamp;
     m_pAppRunner->Update(static_cast<float>(frameDuration));
