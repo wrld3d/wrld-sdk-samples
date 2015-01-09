@@ -45,7 +45,7 @@ class ShowJavaPlaceJumpUIExample : public GlobeCameraExampleBase
 
 	std::map<std::string, ViewLocation> m_locations;
 	AndroidNativeState& m_nativeState;
-	Eegeo::Camera::ICameraJumpController* m_cameraJumpController;
+	Eegeo::Camera::ICameraJumpController* m_pCameraJumpController;
 
 	jclass m_placeJumpMenuClass;
 	jobject m_placeJumpMenu;
