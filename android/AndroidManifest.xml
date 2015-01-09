@@ -17,7 +17,6 @@
         <activity android:name=".BackgroundThreadActivity"
                   android:label="EegeoMobileSdkHarness"
                   android:configChanges="orientation|keyboardHidden|screenSize"
-                  android:screenOrientation="landscape"
               	  android:launchMode="singleInstance"
               	  android:hardwareAccelerated="false">
             <intent-filter>

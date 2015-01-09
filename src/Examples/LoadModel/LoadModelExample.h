@@ -3,7 +3,7 @@
 #ifndef __ExampleApp__LoadModelExample__
 #define __ExampleApp__LoadModelExample__
 
-#include "IExample.h"
+#include "GlobeCameraExampleBase.h"
 #include "RenderCamera.h"
 #include "LatLongAltitude.h"
 #include "IAsyncTextureRequestor.h"
@@ -46,7 +46,7 @@ public:
 };
 
 
-class LoadModelExample : public IExample
+class LoadModelExample : public GlobeCameraExampleBase
 {
 private:
 	struct MeshInstance
@@ -62,8 +62,7 @@ private:
 	Eegeo::Rendering::AsyncTexturing::IAsyncTextureRequestor& m_textureRequestor;
 	Eegeo::Space::LatLongAltitude m_interestLocation;
 	Eegeo::Lighting::GlobalFogging& m_globalFogging;
-	GlobeCameraStateRestorer m_globeCameraStateRestorer;
-    Eegeo::Camera::GlobeCamera::GlobeCameraController& m_cameraController;
+    
 
 	Eegeo::Model* m_pModel;
 	BoundsVisualiser m_boundsVisualiser;
@@ -72,11 +71,12 @@ private:
 	float m_elapsedTime;
 
 public:
-	LoadModelExample(Eegeo::Space::LatLongAltitude interestLocation,
+	LoadModelExample(
 	                 Eegeo::Helpers::IFileIO& fileIO,
 	                 Eegeo::Rendering::AsyncTexturing::IAsyncTextureRequestor& textureRequestor,
 	                 Eegeo::Lighting::GlobalFogging& fogging,
-	                 Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController);
+	                 Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
+                        Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController);
 
 	static std::string GetName()
 	{
@@ -91,7 +91,8 @@ public:
 	void Update(float dt);
 	void Draw();
 	void Suspend();
-    const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
+    
+    
 };
 }
 

@@ -30,11 +30,12 @@ ModifiedRenderingExample::ModifiedRenderingExample(Eegeo::Streaming::IStreamingV
         Eegeo::Rendering::RenderableFilters& renderableFilters,
         Eegeo::Rendering::Shaders::ShaderIdGenerator& shaderIdGenerator,
         Eegeo::Rendering::Materials::MaterialIdGenerator& materialIdGenerator,
+        Eegeo::Rendering::VertexLayouts::VertexBindingPool& vertexBindingPool,
         const Eegeo::Helpers::GLHelpers::TextureInfo& placeHolderTexture,
-        Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController,
-        Eegeo::Rendering::VertexLayouts::VertexBindingPool& vertexBindingPool
-                                                  )
-	:m_visibleVolume(visibleVolume)
+        Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
+        Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController)
+	: GlobeCameraExampleBase(pCameraController, cameraTouchController)
+    , m_visibleVolume(visibleVolume)
 	,m_buildingRepository(buildingRepository)
 	,m_buildingFilter(buildingFilter)
 	,m_lighting(lighting)
@@ -42,10 +43,8 @@ ModifiedRenderingExample::ModifiedRenderingExample(Eegeo::Streaming::IStreamingV
 	,m_renderableFilters(renderableFilters)
 	,m_shaderIdGenerator(shaderIdGenerator)
 	,m_materialIdGenerator(materialIdGenerator)
-	,m_placeHolderTexture(placeHolderTexture)
-	,m_globeCameraStateRestorer(cameraController)
-    ,m_cameraController(cameraController)
     ,m_vertexBindingPool(vertexBindingPool)
+	,m_placeHolderTexture(placeHolderTexture)
 {
 }
 
@@ -98,6 +97,9 @@ void ModifiedRenderingExample::Suspend()
 
 	delete m_pCriteria;
 	m_pCriteria = NULL;
+    
+    
+    
 }
 
 void ModifiedRenderingExample::Update(float dt)
@@ -161,7 +163,7 @@ bool ModifiedRenderingExample::IsToBeReplacedWithAlternative(const TSceneElement
 		const double filterRadius = 400.0f;
 		const double filterRadiusSq = filterRadius*filterRadius;
 
-		Eegeo::v3 cameraRelativePos = Eegeo::Camera::CameraHelpers::CameraRelativePoint(renderable.GetEcefPosition(), m_cameraController.GetEcefInterestPoint());
+		Eegeo::v3 cameraRelativePos = Eegeo::Camera::CameraHelpers::CameraRelativePoint(renderable.GetEcefPosition(), GetInterestPoint());
 
 		double delta = cameraRelativePos.LengthSq();
 		bool closeToInterest = delta < filterRadiusSq;
@@ -188,11 +190,6 @@ void ModifiedRenderingExample::EnqueueRenderables(const Eegeo::Rendering::Render
 		}
 	}
 }
-    
-    const Eegeo::Camera::RenderCamera& ModifiedRenderingExample::GetRenderCamera() const
-    {
-        return  *m_cameraController.GetCamera();
-    }
 
 bool ModifiedRenderingExample::MyPoolFilterCriteria::FiltersOut(const TSceneElement& sceneElement) const
 {

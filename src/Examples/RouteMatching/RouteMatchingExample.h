@@ -4,7 +4,7 @@
 #define __ExampleApp__RouteMatchingExample__
 
 #include <vector>
-#include "IExample.h"
+#include "GlobeCameraExampleBase.h"
 #include "RouteService.h"
 #include "Route.h"
 #include "EegeoWorld.h"
@@ -15,7 +15,7 @@
 
 namespace Examples
 {
-class RouteMatchingExample : public IExample
+class RouteMatchingExample : public GlobeCameraExampleBase
 {
 private:
 	Eegeo::Routes::RouteService& m_routeService;
@@ -25,8 +25,7 @@ private:
 	UIActionHandler<RouteMatchingExample> m_toggleRouteMatchingHandler;
 	IRouteMatchingExampleView* m_pRouteMatchingView;
     
-    Eegeo::Camera::GlobeCamera::GlobeCameraController& m_cameraController;
-	GlobeCameraStateRestorer m_globeCameraStateRestorer;
+    
 
 	bool m_createdRoutes;
 	bool m_routesMatchedToNavigationGraph;
@@ -41,7 +40,8 @@ public:
 	RouteMatchingExample(Eegeo::Routes::RouteService& routeService,
 	                     Eegeo::EegeoWorld& eegeoWorld,
 	                     const IRouteMatchingExampleViewFactory& routeMatchingViewFactory,
-	                     Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController);
+	                     Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
+                         Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController);
 
 	static std::string GetName()
 	{
@@ -56,7 +56,8 @@ public:
 	void Update(float dt);
 	void Draw() {}
 	void Suspend();
-    const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
+    void NotifyViewNeedsLayout();
+    
 
 	void ToggleMatching();
 };

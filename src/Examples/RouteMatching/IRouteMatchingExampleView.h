@@ -6,17 +6,20 @@
 #include "Types.h"
 #include "IUIActionHandler.h"
 
+
 namespace Examples
 {
-class IRouteMatchingExampleView
-{
-public:
-	virtual ~IRouteMatchingExampleView() { }
+    class IRouteMatchingExampleView
+    {
+    public:
+        virtual ~IRouteMatchingExampleView() { }
 
-	virtual void AddMatchingToggledHandler(IUIActionHandler& handler)=0;
+        virtual void AddMatchingToggledHandler(IUIActionHandler& handler)=0;
 
-	virtual void RemoveMatchingToggledHandler(IUIActionHandler& handler)=0;
-};
+        virtual void RemoveMatchingToggledHandler(IUIActionHandler& handler)=0;
+        
+        virtual void NotifyNeedsLayout() = 0;
+    };
 }
 
 #endif

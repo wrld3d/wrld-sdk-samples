@@ -3,7 +3,7 @@
 #ifndef __ExampleApp__PinOverModelExample__
 #define __ExampleApp__PinOverModelExample__
 
-#include "IExample.h"
+#include "GlobeCameraExampleBase.h"
 
 #include "Rendering.h"
 #include "Camera.h"
@@ -21,7 +21,7 @@
 
 namespace Examples
 {
-class PinOverModelExample : public IExample
+class PinOverModelExample : public GlobeCameraExampleBase
 {
 private:
 
@@ -60,8 +60,7 @@ private:
 	Eegeo::Rendering::AsyncTexturing::IAsyncTextureRequestor& m_textureRequestor;
 	Eegeo::Lighting::GlobalFogging& m_globalFogging;
 	Eegeo::Rendering::RenderableFilters& m_renderableFilters;
-    Eegeo::Camera::GlobeCamera::GlobeCameraController& m_cameraController;
-	GlobeCameraStateRestorer m_globeCameraStateRestorer;
+    
 
 	Eegeo::Model* m_pModel;
 	Eegeo::Rendering::Materials::NullMaterialFactory& m_nullMaterialFactory;
@@ -85,7 +84,8 @@ public:
 	    Eegeo::Rendering::AsyncTexturing::IAsyncTextureRequestor& textureRequestor,
 	    Eegeo::Lighting::GlobalFogging& fogging,
 	    Eegeo::Rendering::Materials::NullMaterialFactory& nullMaterialFactory,
-	    Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController
+	    Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
+                        Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController
 	);
 
 	virtual ~PinOverModelExample();
@@ -103,7 +103,8 @@ public:
 	void Update(float dt);
 	void Draw();
 	void Suspend();
-    const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
+    
+    
 
 private:
 	void CreateExamplePins();

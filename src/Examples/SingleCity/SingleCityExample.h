@@ -3,7 +3,7 @@
 #ifndef __ExampleApp__SingleCityExample__
 #define __ExampleApp__SingleCityExample__
 
-#include "IExample.h"
+#include "GlobeCameraExampleBase.h"
 #include "EegeoWorld.h"
 #include "PrecacheService.h"
 #include "GlobeCameraController.h"
@@ -11,14 +11,13 @@
 
 namespace Examples
 {
-class SingleCityExample : public IExample
+class SingleCityExample : public GlobeCameraExampleBase
 {
 private:
-	Eegeo::Camera::GlobeCamera::GlobeCameraController& m_globeCamera;
+	
 	Eegeo::Web::PrecacheService& m_precacheService;
 	Eegeo::Streaming::StreamingVolumeController& m_streamingVolumeController;
 	Eegeo::EegeoWorld& m_world;
-	GlobeCameraStateRestorer m_globeCameraStateRestorer;
 
 	bool m_startedPrecaching;
 	bool m_precacheComplete;
@@ -26,11 +25,12 @@ private:
 	void ConstrainCamera();
 
 public:
-	SingleCityExample(Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCamera,
+	SingleCityExample(
 	                  Eegeo::Web::PrecacheService& precacheService,
 	                  Eegeo::Streaming::StreamingVolumeController& streamingVolumeController,
 	                  Eegeo::EegeoWorld& world,
-	                  Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController);
+	                  Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
+                        Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController);
 
 	static std::string GetName()
 	{
@@ -42,11 +42,12 @@ public:
 	}
 
 	void Start() {}
+    void EarlyUpdate(float dt);
 	void Update(float dt);
-	void AfterCameraUpdate();
 	void Draw() {}
 	void Suspend();
-    const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
+    
+    
 };
 }
 

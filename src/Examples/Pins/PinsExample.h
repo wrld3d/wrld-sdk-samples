@@ -3,7 +3,7 @@
 #ifndef __ExampleApp__PinsExample__
 #define __ExampleApp__PinsExample__
 
-#include "IExample.h"
+#include "GlobeCameraExampleBase.h"
 
 #include "Rendering.h"
 #include "Camera.h"
@@ -21,14 +21,13 @@ namespace Examples
  *  This example also demonstrates how Pins can be selected by testing against their screen bounds.
  *  Pin add / remove functionality is demonstrated by adding / removing pin 0 every 3 seconds.
  */
-class PinsExample : public IExample
+class PinsExample : public GlobeCameraExampleBase
 {
 private:
 	Eegeo::Rendering::ITexturePageLayout* m_pPinIconsTexturePageLayout;
 	Eegeo::Helpers::GLHelpers::TextureInfo m_pinIconsTexture;
 	Eegeo::Pins::PinsModule* m_pPinsModule;
-	GlobeCameraStateRestorer m_globeCameraStateRestorer;
-    Eegeo::Camera::GlobeCamera::GlobeCameraController& m_cameraController;
+    
     
 	std::string m_pin0UserData;
 	std::string m_pin1UserData;
@@ -49,7 +48,8 @@ public:
 	    Eegeo::Rendering::RenderableFilters& renderableFilters,
 	    Eegeo::Resources::Terrain::Heights::TerrainHeightProvider& terrainHeightProvider,
 	    Eegeo::Rendering::EnvironmentFlatteningService& environmentFlatteningService,
-	    Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController
+	    Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
+                        Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController
 	);
 	virtual ~PinsExample();
 
@@ -66,9 +66,10 @@ public:
 	void Update(float dt);
 	void Draw();
 	void Suspend();
-    const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
+    
+    
 
-	bool Event_TouchTap(const AppInterface::TapData& data);
+	void Event_TouchTap(const AppInterface::TapData& data);
 
 private:
 	void CreateExamplePins();

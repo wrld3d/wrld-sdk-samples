@@ -3,7 +3,7 @@
 #pragma once
 
 #include "IExampleFactory.h"
-#include "IExample.h"
+#include "GlobeCameraExampleBase.h"
 #include "EegeoWorld.h"
 
 namespace Examples
@@ -11,11 +11,13 @@ namespace Examples
 class FireworksExampleFactory : public IExampleFactory
 {
 	Eegeo::EegeoWorld& m_world;
-	Eegeo::Camera::GlobeCamera::GlobeCameraController& m_globeCameraController;
+	DefaultCameraControllerFactory& m_defaultCameraControllerFactory;
+    Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& m_globeCameraTouchController;
 
 public:
 	FireworksExampleFactory(Eegeo::EegeoWorld& world,
-                            Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCameraController);
+                            DefaultCameraControllerFactory& defaultCameraControllerFactory,
+                                          Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController);
 
 	std::string ExampleName() const;
 

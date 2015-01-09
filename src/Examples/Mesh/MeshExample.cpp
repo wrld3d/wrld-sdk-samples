@@ -177,19 +177,19 @@ namespace Examples
     }
     
 
-    MeshExample::MeshExample(Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController,
+    MeshExample::MeshExample(Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
+                             Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController,
                                        Eegeo::Modules::Core::RenderingModule& renderingModule,
                                        Eegeo::Helpers::ITextureFileLoader& textureFileLoader,
                                        Eegeo::Rendering::EnvironmentFlatteningService& environmentFlatteningService,
                                        Eegeo::Web::IWebLoadRequestFactory& webRequestFactory,
                                        const MeshExampleConfig& config)
-    : m_cameraController(cameraController)
+    : GlobeCameraExampleBase(pCameraController, cameraTouchController)
     , m_renderingModule(renderingModule)
     , m_textureFileLoader(textureFileLoader)
     , m_environmentFlatteningService(environmentFlatteningService)
     , m_webRequestFactory(webRequestFactory)
     , m_config(config)
-    , m_globeCameraStateRestorer(cameraController)
     , m_webLoadCallback(this, &MeshExample::OnWebLoadCompleted)
     , m_pPositionUvVertexLayout(NULL)
     , m_pShader(NULL)
@@ -336,12 +336,6 @@ namespace Examples
                 m_madeTextureRequest = true;
             }
         }
-    }
-    
-    
-    const Eegeo::Camera::RenderCamera& MeshExample::GetRenderCamera() const
-    {
-        return *m_cameraController.GetCamera();
     }
     
     

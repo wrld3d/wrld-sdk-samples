@@ -9,17 +9,19 @@
 #include "GlobeCameraController.h"
 #include "GlobeCameraTouchController.h"
 #include "EegeoWorld.h"
+#include "EarthConstants.h"
+#include "ScreenProperties.h"
 
 namespace Examples
 {
     CameraSplineExample::CameraSplineExample(Eegeo::EegeoWorld& eegeoWorld,
-                                             Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCameraController,
-                                             Eegeo::Streaming::ResourceCeilingProvider& resourceCeilingProvider)
+                                             Eegeo::Streaming::ResourceCeilingProvider& resourceCeilingProvider,
+                                             const Eegeo::Rendering::ScreenProperties& initialScreenProperties)
     : m_world(eegeoWorld)
-    , m_globeCameraController(globeCameraController)
     , m_resourceCeilingProvider(resourceCeilingProvider)
     {
-        
+        m_pSplineCameraController = new Eegeo::Camera::SplinePlayback::CameraSplinePlaybackController(m_resourceCeilingProvider);
+        NotifyScreenPropertiesChanged(initialScreenProperties);
     }
     
     void CameraSplineExample::Start()
@@ -44,7 +46,7 @@ namespace Examples
         m_pTargetSpline->AddPoint(Eegeo::Space::LatLongAltitude::FromDegrees(37.803461, -122.447843, 0).ToECEF());
         
         // Initialise the camera controller and assign which splines we want to use for the animation
-        m_pSplineCameraController = new Eegeo::Camera::SplinePlayback::CameraSplinePlaybackController(m_resourceCeilingProvider);
+        
         m_pSplineCameraController->SetSplines(m_pPositionSpline, m_pTargetSpline);
         
         // Select a playback speed
@@ -68,14 +70,24 @@ namespace Examples
         delete m_pTargetSpline;
     }
     
-    void CameraSplineExample::UpdateCamera(Eegeo::Camera::GlobeCamera::GlobeCameraController *pGlobeCameraController, Eegeo::Camera::GlobeCamera::GlobeCameraTouchController *pCameraTouchController, float dt)
+    void CameraSplineExample::EarlyUpdate(float dt)
     {
-        // Update the camera spline animation
         m_pSplineCameraController->Update(dt);
+    }
+    
+    void CameraSplineExample::NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties)
+    {
+        m_pSplineCameraController->GetCamera()->SetViewport(0.f, 0.f, screenProperties.GetScreenWidth(), screenProperties.GetScreenHeight());
     }
     
     const Eegeo::Camera::RenderCamera& CameraSplineExample::GetRenderCamera() const
     {
         return *m_pSplineCameraController->GetCamera();
+    }
+    
+    Eegeo::dv3 CameraSplineExample::GetInterestPoint() const
+    {
+        // todo - spline camera controller does not model streaming interest point
+        return m_pSplineCameraController->GetCamera()->GetEcefLocation().Norm() * Eegeo::Space::EarthConstants::Radius;
     }
 }

@@ -4,14 +4,17 @@
 #include "MeshExample.h"
 #include "CoreModule.h"
 #include "RenderingModule.h"
+#include "DefaultCameraControllerFactory.h"
 
 
 namespace Examples
 {
     MeshExampleFactory::MeshExampleFactory(Eegeo::EegeoWorld& world,
-                                                     Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCameraController)
+                                           DefaultCameraControllerFactory& defaultCameraControllerFactory,
+                                           Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController)
     : m_world(world)
-    , m_globeCameraController(globeCameraController)
+    , m_defaultCameraControllerFactory(defaultCameraControllerFactory)
+    , m_globeCameraTouchController(globeCameraTouchController)
     {
         
     }
@@ -37,7 +40,8 @@ namespace Examples
         config.environmentFlatteningCyclesPerMinute = 4.f;
         config.secondsDelayBeforeTextureWebRequest = 5.f;
         
-        return new Examples::MeshExample(m_globeCameraController,
+        return new Examples::MeshExample(m_defaultCameraControllerFactory.Create(),
+                                         m_globeCameraTouchController,
                                          renderingModule,
                                          platformAbstractionModule.GetTextureFileLoader(),
                                          mapModule.GetEnvironmentFlatteningService(),

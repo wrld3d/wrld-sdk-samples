@@ -42,12 +42,19 @@ using namespace Eegeo::iOS;
 - (void)onPause
 {
     m_pAppRunner->Pause();
+    
+    GLKView* glkView = static_cast<GLKView*>(self.view);
+    glkView.context = nil;
 }
 
 - (void)onResume
 {
+    GLKView* glkView = static_cast<GLKView*>(self.view);
+    glkView.context = [EAGLContext currentContext];
+    
     m_pAppRunner->Resume();
 }
+    
 
 - (void)glkView:(GLKView *)view drawInRect:(CGRect)rect
 {
@@ -74,8 +81,25 @@ using namespace Eegeo::iOS;
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return (m_pAppRunner == NULL)
-            ? true
-            : m_pAppRunner->ShouldAutoRotateToInterfaceOrientation(interfaceOrientation);
+        ? true
+        : m_pAppRunner->ShouldAutoRotateToInterfaceOrientation(interfaceOrientation);
+}
+
+- (BOOL)shouldAutorotate
+{
+    UIInterfaceOrientation interfaceOrientation = [[UIApplication sharedApplication] statusBarOrientation];
+    
+    return (m_pAppRunner == NULL)
+        ? true
+        : m_pAppRunner->ShouldAutoRotateToInterfaceOrientation(interfaceOrientation);
+}
+
+- (void)viewWillLayoutSubviews
+{
+    if (m_pAppRunner != NULL)
+    {
+        m_pAppRunner->NotifyViewLayoutChanged();
+    }
 }
 
 @end

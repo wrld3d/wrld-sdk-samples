@@ -5,6 +5,7 @@
 #include "RenderCamera.h"
 #include "ScreenProperties.h"
 #include "DebugRenderer.h"
+#include "GlobeCameraController.h"
 
 #define SPHERE_RADIUS 20.0
 #define UNPICKED_COLOUR Eegeo::v4(1.0f, 0.0f, 1.0f, 0.8f)
@@ -12,17 +13,15 @@
 
 namespace Examples
 {
-Pick3DObjectExample::Pick3DObjectExample(Eegeo::Space::LatLongAltitude interestLocation,
-                                         const Eegeo::Rendering::ScreenProperties& screenProperties,
+Pick3DObjectExample::Pick3DObjectExample(
                                          Eegeo::DebugRendering::DebugRenderer& debugRenderer,
-                                         Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController
+                                         Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
+                                         Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController
                                          )
-	:m_interestLocation(interestLocation)
+	: GlobeCameraExampleBase(pCameraController, cameraTouchController)
+    , m_interestLocation(Eegeo::Space::LatLongAltitude::FromECEF(pCameraController->GetEcefInterestPoint()))
     ,m_movingObject(false)
 	,m_pObject(NULL)
-	,m_globeCameraStateRestorer(cameraController)
-    ,m_cameraController(cameraController)
-    ,m_screenProperties(screenProperties)
     ,m_debugRenderer(debugRenderer)
 {
 
@@ -43,6 +42,9 @@ void Pick3DObjectExample::Suspend()
 {
 	delete m_pObject;
 	m_pObject = NULL;
+    
+    
+    
 }
 
 void Pick3DObjectExample::Update(float dt)
@@ -54,12 +56,15 @@ void Pick3DObjectExample::Draw()
 {
 }
 
-bool Pick3DObjectExample::Event_TouchPan(const AppInterface::PanData& data)
+void Pick3DObjectExample::Event_TouchPan(const AppInterface::PanData& data)
 {
-	return m_movingObject;
+	if (m_movingObject)
+        return;
+    
+    GlobeCameraExampleBase::Event_TouchPan(data);
 }
 
-bool Pick3DObjectExample::Event_TouchDown(const AppInterface::TouchData& data)
+void Pick3DObjectExample::Event_TouchDown(const AppInterface::TouchData& data)
 {
 	bool insideSphere = IsScreenPointInsideModel(data.point);
 
@@ -67,27 +72,30 @@ bool Pick3DObjectExample::Event_TouchDown(const AppInterface::TouchData& data)
 	{
 		m_objectColor = PICKED_COLOUR;
 		m_movingObject = true;
+        return;
 	}
 
-	return m_movingObject;
+	GlobeCameraExampleBase::Event_TouchDown(data);
 }
 
-bool Pick3DObjectExample::Event_TouchUp(const AppInterface::TouchData& data)
+void Pick3DObjectExample::Event_TouchUp(const AppInterface::TouchData& data)
 {
 	m_movingObject = false;
 
 	m_objectColor = UNPICKED_COLOUR;
 
-	return m_movingObject;
+	GlobeCameraExampleBase::Event_TouchUp(data);
 }
 
 void Pick3DObjectExample::CreateWorldSpaceRayFromScreen(const Eegeo::v2& screenPoint, Ray& ray)
 {
-	const Eegeo::Camera::RenderCamera& renderCamera = *m_cameraController.GetCamera();
+	const Eegeo::Camera::RenderCamera& renderCamera = GetRenderCamera();
+
+    // todo - this assumes viewport origin is 0,0
 
 	//normalize the point
-	float nx = 2.0f * screenPoint.GetX() / m_screenProperties.GetScreenWidth() - 1.f;
-	float ny = - 2.0f * screenPoint.GetY() / m_screenProperties.GetScreenHeight() + 1.f;
+	float nx = 2.0f * screenPoint.GetX() / renderCamera.GetViewportWidth() - 1.f;
+	float ny = - 2.0f * screenPoint.GetY() / renderCamera.GetViewportHeight() + 1.f;
 
 	//prepare near and far points
 	Eegeo::v4 near(nx, ny, 0.0f, 1.0f);
@@ -154,10 +162,5 @@ bool Pick3DObjectExample::IsScreenPointInsideModel(const Eegeo::v2& screenPoint)
 
 	return true;
 }
-    
-    const Eegeo::Camera::RenderCamera& Pick3DObjectExample::GetRenderCamera() const
-    {
-        return *m_cameraController.GetCamera();
-    }
 
 }

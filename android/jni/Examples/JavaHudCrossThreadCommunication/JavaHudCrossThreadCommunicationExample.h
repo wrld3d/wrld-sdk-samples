@@ -3,7 +3,7 @@
 #ifndef JAVAHUDCROSSTHREADCOMMUNICATIONEXAMPLE_H_
 #define JAVAHUDCROSSTHREADCOMMUNICATIONEXAMPLE_H_
 
-#include "IExample.h"
+#include "GlobeCameraExampleBase.h"
 #include "AndroidNativeState.h"
 #include "CityThemes.h"
 #include "CityThemeData.h"
@@ -12,15 +12,13 @@
 
 namespace Examples
 {
-class JavaHudCrossThreadCommunicationExample : public IExample
+class JavaHudCrossThreadCommunicationExample : public GlobeCameraExampleBase
 {
 	AndroidNativeState& m_nativeState;
 	Eegeo::Resources::CityThemes::ICityThemesService& m_themeService;
 	Eegeo::Resources::CityThemes::ICityThemeRepository& m_themeRepository;
 	Eegeo::Resources::CityThemes::ICityThemesUpdater& m_themeUpdater;
 	Eegeo::Resources::CityThemes::CityThemeData m_initialCityTheme;
-	Eegeo::Camera::GlobeCamera::GlobeCameraController& m_cameraController;
-	GlobeCameraStateRestorer m_globeCameraStateRestorer;
 
 	jclass m_themeReaderWriterHudClass;
 	jobject m_themeReaderWriterHud;
@@ -31,7 +29,8 @@ public:
 	    Eegeo::Resources::CityThemes::ICityThemesService& themeService,
 	    Eegeo::Resources::CityThemes::ICityThemeRepository& themeRepository,
 	    Eegeo::Resources::CityThemes::ICityThemesUpdater& themeUpdater,
-	    Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCameraController);
+	    Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
+	    Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController);
 
 	~JavaHudCrossThreadCommunicationExample();
 
@@ -51,7 +50,6 @@ public:
 	void Update(float dt) {}
 	void Draw() {}
 	void Suspend();
-	const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
 };
 }
 

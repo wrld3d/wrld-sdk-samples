@@ -26,9 +26,11 @@ PinOverModelExample::PinOverModelExample(
     Eegeo::Rendering::AsyncTexturing::IAsyncTextureRequestor& textureRequestor,
     Eegeo::Lighting::GlobalFogging& fogging,
     Eegeo::Rendering::Materials::NullMaterialFactory& nullMaterialFactory,
-    Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController
+    Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
+                        Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController
 )
-	:m_pin0UserData("Pin Zero(0) User Data")
+	: GlobeCameraExampleBase(pCameraController, cameraTouchController)
+    , m_pin0UserData("Pin Zero(0) User Data")
 	,m_pPin0(NULL)
 	,m_fileIO(fileIO)
 	,m_textureRequestor(textureRequestor)
@@ -37,8 +39,6 @@ PinOverModelExample::PinOverModelExample(
 	,m_renderableFilters(renderableFilters)
 	,m_nullMaterialFactory(nullMaterialFactory)
     ,m_pNullMaterial(NULL)
-	,m_globeCameraStateRestorer(cameraController)
-    ,m_cameraController(cameraController)
 {
 	textureLoader.LoadTexture(m_pinIconsTexture, "pin_over_model_example/PinIconTexturePage.png", true);
 	Eegeo_ASSERT(m_pinIconsTexture.textureId != 0);
@@ -115,7 +115,7 @@ void PinOverModelExample::Start()
 
     m_pNullMaterial = m_nullMaterialFactory.Create("PinOverModelExampleNullMaterial");
 
-	m_pMyModelRenderable = Eegeo_NEW (MyModelRenderable)(*m_pModel, m_globalFogging, *m_pNullMaterial, *m_cameraController.GetCamera());
+	m_pMyModelRenderable = Eegeo_NEW (MyModelRenderable)(*m_pModel, m_globalFogging, *m_pNullMaterial, GetRenderCamera());
 	m_pMyRenderableFilter = Eegeo_NEW (MyRenderableFilter)(*m_pMyModelRenderable);
 	m_renderableFilters.AddRenderableFilter(*m_pMyRenderableFilter);
 }
@@ -124,12 +124,15 @@ void PinOverModelExample::Suspend()
 {
 	delete m_pModel;
 	m_pModel = NULL;
+    
+    
+    
 }
 
 void PinOverModelExample::Update(float dt)
 {
 	// Update the PinsModule to query terrain heights and update screen space coordinats for the Pins.
-	m_pPinsModule->Update(dt, *m_cameraController.GetCamera());
+	m_pPinsModule->Update(dt, GetRenderCamera());
     
 	m_pModel->UpdateAnimator(1.0f/30.0f);
 }
@@ -137,11 +140,6 @@ void PinOverModelExample::Update(float dt)
 void PinOverModelExample::Draw()
 {
 }
-    
-    const Eegeo::Camera::RenderCamera& PinOverModelExample::GetRenderCamera() const
-    {
-        return *m_cameraController.GetCamera();
-    }
 
 PinOverModelExample::MyModelRenderable::MyModelRenderable(Eegeo::Model& model,
         Eegeo::Lighting::GlobalFogging& globalFogging,

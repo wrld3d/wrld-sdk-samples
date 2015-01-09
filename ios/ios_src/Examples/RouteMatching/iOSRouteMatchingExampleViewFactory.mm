@@ -3,7 +3,8 @@
 #include "iOSRouteMatchingExampleViewFactory.h"
 #include "iOSRouteMatchingExampleView.h"
 
-using namespace Examples;
+namespace Examples
+{
 
 iOSRouteMatchingExampleViewFactory::iOSRouteMatchingExampleViewFactory(UIView* pView)
 	: m_pView(pView)
@@ -19,4 +20,6 @@ iOSRouteMatchingExampleViewFactory::~iOSRouteMatchingExampleViewFactory()
 IRouteMatchingExampleView* iOSRouteMatchingExampleViewFactory::CreateRouteMatchingExampleView() const
 {
 	return Eegeo_NEW(iOSRouteMatchingExampleView)(m_pView);
+}
+
 }

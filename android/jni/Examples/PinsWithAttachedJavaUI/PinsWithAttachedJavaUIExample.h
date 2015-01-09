@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "IExample.h"
+#include "GlobeCameraExampleBase.h"
 
 #include "Rendering.h"
 #include "Camera.h"
@@ -23,7 +23,7 @@ namespace Examples
  *
  *  This is a combination of the PinsExample & the PositionJavaPinButtonExample
  */
-class PinsWithAttachedJavaUIExample : public IExample
+class PinsWithAttachedJavaUIExample : public GlobeCameraExampleBase
 {
 private:
 	// pin stuff
@@ -35,8 +35,6 @@ private:
 	// java ui stuff
 	AndroidNativeState& m_nativeState;
 	Eegeo::EegeoWorld& m_world;
-	Eegeo::Camera::GlobeCamera::GlobeCameraController& m_cameraController;
-	GlobeCameraStateRestorer m_globeCameraStateRestorer;
 
 	int m_buttonID;
 	jclass m_hudPinControllerClass;
@@ -56,7 +54,8 @@ public:
 	    Eegeo::Rendering::RenderableFilters& renderableFilters,
 	    Eegeo::Resources::Terrain::Heights::TerrainHeightProvider& terrainHeightProvider,
 	    Eegeo::Rendering::EnvironmentFlatteningService& environmentFlatteningService,
-	    Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCameraController
+	    Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
+	    Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController
 	);
 	virtual ~PinsWithAttachedJavaUIExample();
 
@@ -73,9 +72,8 @@ public:
 	void Update(float dt);
 	void Draw();
 	void Suspend();
-	const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
 
-	bool Event_TouchTap(const AppInterface::TapData& data);
+	void Event_TouchTap(const AppInterface::TapData& data);
 
 private:
 	void CreateExamplePins();

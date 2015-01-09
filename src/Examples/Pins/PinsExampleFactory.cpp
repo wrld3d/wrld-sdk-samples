@@ -2,18 +2,21 @@
 
 #include "PinsExampleFactory.h"
 #include "PinsExample.h"
-
+#include "DefaultCameraControllerFactory.h"
 #include "IPlatformAbstractionModule.h"
 #include "RenderingModule.h"
 #include "TerrainModelModule.h"
 #include "MapModule.h"
 
-using namespace Examples;
+namespace Examples
+{
 
 PinsExampleFactory::PinsExampleFactory(Eegeo::EegeoWorld& world,
-                                       Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCameraController)
+                                       DefaultCameraControllerFactory& defaultCameraControllerFactory,
+                                          Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController)
 	: m_world(world)
-	, m_globeCameraController(globeCameraController)
+	, m_defaultCameraControllerFactory(defaultCameraControllerFactory)
+    , m_globeCameraTouchController(globeCameraTouchController)
 {
 
 }
@@ -34,11 +37,14 @@ IExample* PinsExampleFactory::CreateExample() const
 	                                 renderingModule.GetRenderableFilters(),
 	                                 terrainModelModule.GetTerrainHeightProvider(),
 	                                 mapModule.GetEnvironmentFlatteningService(),
-	                                 m_globeCameraController);
+	                                 m_defaultCameraControllerFactory.Create(),
+                                     m_globeCameraTouchController);
 }
 
 std::string PinsExampleFactory::ExampleName() const
 {
 	return Examples::PinsExample::GetName();
+}
+
 }
 

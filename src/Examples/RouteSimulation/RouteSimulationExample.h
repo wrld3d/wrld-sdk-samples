@@ -4,7 +4,7 @@
 #define __ExampleApp__RouteSimulationExample__
 
 #include <vector>
-#include "IExample.h"
+#include "GlobeCameraExampleBase.h"
 #include "RouteService.h"
 #include "RouteBuilder.h"
 #include "Route.h"
@@ -29,6 +29,7 @@
 #include "IRouteSimulationExampleViewFactory.h"
 #include "IRouteSimulationExampleView.h"
 #include "UIActionHandler.h"
+#include "ScreenPropertiesProvider.h"
 
 namespace Examples
 {
@@ -51,7 +52,7 @@ private:
 	Eegeo::Node* GetRandomModelNode() const;
 };
 
-class RouteSimulationExample : public IExample
+class RouteSimulationExample : public GlobeCameraExampleBase
 {
 private:
 	Eegeo::Routes::RouteService& m_routeService;
@@ -59,9 +60,9 @@ private:
 	Eegeo::Routes::Simulation::View::RouteSimulationViewService& m_routeSimulationViewService;
 	Eegeo::Helpers::IFileIO& m_fileIO;
 	Eegeo::Rendering::AsyncTexturing::IAsyncTextureRequestor& m_textureRequestor;
-	Eegeo::Camera::GlobeCamera::GlobeCameraController& m_defaultCamera;
 	Eegeo::Routes::Simulation::Camera::RouteSimulationGlobeCameraControllerFactory& m_routeSimulationGlobeCameraControllerFactory;
 	Eegeo::EegeoWorld& m_world;
+    const IScreenPropertiesProvider& m_screenPropertiesProvider;
 	const IRouteSimulationExampleViewFactory& m_routeSimulationExampleViewFactory;
 	IRouteSimulationExampleView* m_pRouteSimulationView;
 	Examples::UIActionHandler<RouteSimulationExample> m_decreaseSpeedToggleHandler;
@@ -91,15 +92,16 @@ private:
 	Eegeo::Routes::Simulation::Camera::RouteSimulationGlobeCameraController* m_pRouteSessionFollowCameraController;
 
 	RouteSimulationExampleObserver* m_pExampleObserver;
-	GlobeCameraStateRestorer m_globeCameraStateRestorer;
 public:
 	RouteSimulationExample(Eegeo::Routes::RouteService& routeService,
 	                       Eegeo::Routes::Simulation::RouteSimulationService& routeSimulationService,
 	                       Eegeo::Routes::Simulation::View::RouteSimulationViewService& routeSimulationViewService,
 	                       Eegeo::Helpers::IFileIO& fileIO,
 	                       Eegeo::Rendering::AsyncTexturing::IAsyncTextureRequestor& textureRequestor,
-	                       Eegeo::Camera::GlobeCamera::GlobeCameraController& defaultCamera,
+	                       Eegeo::Camera::GlobeCamera::GlobeCameraController* pDefaultCameraController,
+                           Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& defaultCameraTouchController,
 	                       Eegeo::Routes::Simulation::Camera::RouteSimulationGlobeCameraControllerFactory& routeSimulationGlobeCameraControllerFactory,
+                           const IScreenPropertiesProvider& screenPropertiesProvider,
 	                       const IRouteSimulationExampleViewFactory& routeSimulationExampleViewFactory,
 	                       Eegeo::EegeoWorld& eegeoWorld);
 
@@ -117,19 +119,28 @@ public:
 	void Update(float dt);
 	void Draw() {}
 	void Suspend();
+    void NotifyViewNeedsLayout();
+    void NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties);
     const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
+    Eegeo::dv3 GetInterestPoint() const;
 
-	bool Event_TouchRotate 			(const AppInterface::RotateData& data);
-	bool Event_TouchRotate_Start	(const AppInterface::RotateData& data);
-	bool Event_TouchRotate_End 		(const AppInterface::RotateData& data);
+	void Event_TouchRotate 			(const AppInterface::RotateData& data);
+	void Event_TouchRotate_Start	(const AppInterface::RotateData& data);
+	void Event_TouchRotate_End 		(const AppInterface::RotateData& data);
 
-	bool Event_TouchPinch 			(const AppInterface::PinchData& data);
-	bool Event_TouchPinch_Start 	(const AppInterface::PinchData& data);
-	bool Event_TouchPinch_End 		(const AppInterface::PinchData& data);
+	void Event_TouchPinch 			(const AppInterface::PinchData& data);
+	void Event_TouchPinch_Start 	(const AppInterface::PinchData& data);
+	void Event_TouchPinch_End 		(const AppInterface::PinchData& data);
 
-	bool Event_TouchPan				(const AppInterface::PanData& data);
-	bool Event_TouchPan_Start		(const AppInterface::PanData& data);
-	bool Event_TouchPan_End 		(const AppInterface::PanData& data);
+	void Event_TouchPan				(const AppInterface::PanData& data);
+	void Event_TouchPan_Start		(const AppInterface::PanData& data);
+	void Event_TouchPan_End 		(const AppInterface::PanData& data);
+    
+    void Event_TouchTap 			(const AppInterface::TapData& data) {;}
+    void Event_TouchDoubleTap		(const AppInterface::TapData& data) {;}
+    void Event_TouchDown 			(const AppInterface::TouchData& data) {;}
+    void Event_TouchMove 			(const AppInterface::TouchData& data) {;}
+    void Event_TouchUp 				(const AppInterface::TouchData& data) {;}
 
 	void ToggleFollowCamera();
 	void ChangeFollowDirection();

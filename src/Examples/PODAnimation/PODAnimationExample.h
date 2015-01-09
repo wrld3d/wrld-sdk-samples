@@ -3,7 +3,7 @@
 #ifndef __ExampleApp__PODAnimationExample__
 #define __ExampleApp__PODAnimationExample__
 
-#include "IExample.h"
+#include "GlobeCameraExampleBase.h"
 #include "RenderContext.h"
 #include "LatLongAltitude.h"
 #include "RenderableBase.h"
@@ -14,7 +14,7 @@
 namespace Examples
 {
     
-class PODAnimationExample : public IExample
+class PODAnimationExample : public GlobeCameraExampleBase
 {
 private:
     class MyModelRenderable : public Eegeo::Rendering::RenderableBase
@@ -44,8 +44,7 @@ private:
 	Eegeo::Helpers::IFileIO& m_fileIO;
 	Eegeo::Rendering::AsyncTexturing::IAsyncTextureRequestor& m_textureRequestor;
 	Eegeo::Lighting::GlobalFogging& m_globalFogging;
-    Eegeo::Camera::GlobeCamera::GlobeCameraController& m_cameraController;
-	GlobeCameraStateRestorer m_globeCameraStateRestorer;
+    
     Eegeo::Rendering::RenderableFilters& m_renderableFilters;
     Eegeo::Rendering::Materials::NullMaterialFactory& m_nullMaterialFactory;
     Eegeo::Rendering::Materials::NullMaterial* m_pNullMaterial;
@@ -61,7 +60,8 @@ public:
                         Eegeo::Lighting::GlobalFogging& fogging,
                         Eegeo::Rendering::RenderableFilters& renderableFilters,
                         Eegeo::Rendering::Materials::NullMaterialFactory& nullMaterialFactory,
-                        Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController);
+                        Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
+                        Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController);
     
     ~PODAnimationExample();
 
@@ -78,7 +78,8 @@ public:
 	void Update(float dt);
 	void Draw();
 	void Suspend();
-    const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
+    
+    
 };
 }
 

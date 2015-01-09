@@ -6,6 +6,10 @@
 #include "ModelMaterial.h"
 #include "Mesh.h"
 #include "Node.h"
+#include "GlobeCameraController.h"
+
+
+
 #include <sys/time.h>
 
 #include "GLState.h"
@@ -15,20 +19,20 @@ namespace Examples
 const size_t BoundsVisualiser::NumVerts = 8;
 const size_t BoundsVisualiser::NumIndices = 36;
 
-LoadModelExample::LoadModelExample(Eegeo::Space::LatLongAltitude interestLocation,
+LoadModelExample::LoadModelExample(
                                    Eegeo::Helpers::IFileIO& fileIO,
                                    Eegeo::Rendering::AsyncTexturing::IAsyncTextureRequestor& textureRequestor,
                                    Eegeo::Lighting::GlobalFogging& fogging,
-                                   Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController)
-	:m_interestLocation(interestLocation)
+                                   Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
+                        Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController)
+    : GlobeCameraExampleBase(pCameraController, cameraTouchController)
+	, m_interestLocation(Eegeo::Space::LatLongAltitude::FromECEF(pCameraController->GetEcefInterestPoint()))
 	,m_fileIO(fileIO)
 	,m_textureRequestor(textureRequestor)
 	,m_pModel(NULL)
 	,m_globalFogging(fogging)
 	,m_pDiscMaterial(NULL)
 	,m_elapsedTime(0.0f)
-	,m_globeCameraStateRestorer(cameraController)
-    ,m_cameraController(cameraController)
 {
 }
 
@@ -72,6 +76,9 @@ void LoadModelExample::Suspend()
 
 	delete m_pModel;
 	m_pModel = NULL;
+    
+    
+    
 }
 
 void LoadModelExample::Update(float dt)
@@ -108,7 +115,7 @@ void LoadModelExample::Draw()
 	Eegeo::v3 right(Eegeo::v3::Cross(up, forward).Norm());
 	up = Eegeo::v3::Cross(forward, right);
 
-    const Eegeo::Camera::RenderCamera& renderCamera = *m_cameraController.GetCamera();
+    const Eegeo::Camera::RenderCamera& renderCamera = GetRenderCamera();
 	//compute a camera local position
 	Eegeo::v3 cameraRelativePos = (m_mesh.positionEcef - renderCamera.GetEcefLocation()).ToSingle();
 
@@ -338,9 +345,4 @@ void BoundsVisualiser::Draw(const Eegeo::v3& minExtents, const Eegeo::v3& maxExt
 	DestroyGeometry();
 }
 
-    const Eegeo::Camera::RenderCamera& LoadModelExample::GetRenderCamera() const
-    {
-        return *m_cameraController.GetCamera();
-    }
-    
 }

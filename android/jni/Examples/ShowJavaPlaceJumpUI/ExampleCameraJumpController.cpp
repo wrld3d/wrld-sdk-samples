@@ -8,6 +8,8 @@
 #include "LatLongAltitude.h"
 #include "ITouchController.h"
 
+namespace Examples
+{
 ExampleCameraJumpController::ExampleCameraJumpController(
     Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController,
     Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController)
@@ -43,4 +45,4 @@ bool ExampleCameraJumpController::CanJump() const
 	// In this example, always allow camera jumps
 	return true;
 }
-
+}

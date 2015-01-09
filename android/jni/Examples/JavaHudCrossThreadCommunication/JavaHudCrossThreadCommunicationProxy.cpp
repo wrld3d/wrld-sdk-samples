@@ -3,7 +3,7 @@
 #include "JavaHudCrossThreadCommunicationProxy.h"
 #include "JavaHudCrossThreadCommunicationExample.h"
 
-using namespace Examples;
+
 
 JNIEXPORT void JNICALL Java_com_eegeo_examples_themereaderwriter_ThemeReaderWriterJniMethods_SetCurrentTheme(
     JNIEnv* jenv, jobject obj,
@@ -28,3 +28,5 @@ JNIEXPORT void JNICALL Java_com_eegeo_examples_themereaderwriter_ThemeReaderWrit
 
 	pExample->PostCurrentThemeNameToHud();
 }
+
+

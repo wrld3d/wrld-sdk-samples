@@ -5,7 +5,7 @@
 
 #include <map>
 
-#include "IExample.h"
+#include "GlobeCameraExampleBase.h"
 #include "RenderContext.h"
 #include "SphereMesh.h"
 #include "LatLongAltitude.h"
@@ -50,13 +50,11 @@ public:
 	void RemovedStreamingResourceFromSceneGraph(const Eegeo::Streaming::MortonKey& key);
 };
 
-class EnvironmentNotifierExample : public IExample
+class EnvironmentNotifierExample : public GlobeCameraExampleBase
 {
 private:
 	Eegeo::Resources::Terrain::TerrainStreaming& m_terrainStreaming;
 	EnvironmentNotifierExampleTerrainStreamObserver* m_pObserver;
-    Eegeo::Camera::GlobeCamera::GlobeCameraController& m_cameraController;
-	GlobeCameraStateRestorer m_globeCameraStateRestorer;
     Eegeo::DebugRendering::DebugRenderer& m_debugRenderer;
 
 	TKeySphereMap m_spheres;
@@ -65,7 +63,8 @@ private:
 public:
 	EnvironmentNotifierExample(Eegeo::DebugRendering::DebugRenderer& debugRenderer,
 	                           Eegeo::Resources::Terrain::TerrainStreaming& terrainStreaming,
-	                           Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController);
+	                           Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
+                        Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController);
 
 	static std::string GetName()
 	{
@@ -80,7 +79,8 @@ public:
 	void Update(float dt);
 	void Draw();
 	void Suspend();
-    const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
+    
+    
 };
 }
 

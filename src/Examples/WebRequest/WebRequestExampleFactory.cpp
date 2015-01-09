@@ -2,15 +2,18 @@
 
 #include "WebRequestExampleFactory.h"
 #include "WebRequestExample.h"
-
+#include "DefaultCameraControllerFactory.h"
 #include "IPlatformAbstractionModule.h"
 
-using namespace Examples;
+namespace Examples
+{
 
 WebRequestExampleFactory::WebRequestExampleFactory(Eegeo::EegeoWorld& world,
-        Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCameraController)
+        DefaultCameraControllerFactory& defaultCameraControllerFactory,
+                                          Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController)
 	: m_world(world)
-	, m_globeCameraController(globeCameraController)
+	, m_defaultCameraControllerFactory(defaultCameraControllerFactory)
+    , m_globeCameraTouchController(globeCameraTouchController)
 {
 
 }
@@ -20,10 +23,13 @@ IExample* WebRequestExampleFactory::CreateExample() const
     Eegeo::Modules::IPlatformAbstractionModule& platformAbstractionModule = m_world.GetPlatformAbstractionModule();
     
 	return new Examples::WebRequestExample(platformAbstractionModule.GetWebLoadRequestFactory(),
-	                                       m_globeCameraController);
+	                                       m_defaultCameraControllerFactory.Create(),
+                                           m_globeCameraTouchController);
 }
 
 std::string WebRequestExampleFactory::ExampleName() const
 {
 	return Examples::WebRequestExample::GetName();
+}
+
 }

@@ -3,7 +3,8 @@
 #include "AndroidRouteMatchingExampleViewFactory.h"
 #include "AndroidRouteMatchingExampleView.h"
 
-using namespace Examples;
+namespace Examples
+{
 
 AndroidRouteMatchingExampleViewFactory::AndroidRouteMatchingExampleViewFactory(
     AndroidNativeState& nativeState)
@@ -20,4 +21,6 @@ AndroidRouteMatchingExampleViewFactory::~AndroidRouteMatchingExampleViewFactory(
 IRouteMatchingExampleView* AndroidRouteMatchingExampleViewFactory::CreateRouteMatchingExampleView() const
 {
 	return Eegeo_NEW(AndroidRouteMatchingExampleView)(m_nativeState);
+}
+
 }

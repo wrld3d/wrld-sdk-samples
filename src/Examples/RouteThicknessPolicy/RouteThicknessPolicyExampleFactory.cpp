@@ -2,15 +2,18 @@
 
 #include "RouteThicknessPolicyExampleFactory.h"
 #include "RouteThicknessPolicyExample.h"
-
+#include "DefaultCameraControllerFactory.h"
 #include "RoutesModule.h"
 
-using namespace Examples;
+namespace Examples
+{
 
 RouteThicknessPolicyExampleFactory::RouteThicknessPolicyExampleFactory(Eegeo::EegeoWorld& world,
-        Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCameraController)
+        DefaultCameraControllerFactory& defaultCameraControllerFactory,
+                                          Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController)
 	: m_world(world)
-	, m_globeCameraController(globeCameraController)
+	, m_defaultCameraControllerFactory(defaultCameraControllerFactory)
+    , m_globeCameraTouchController(globeCameraTouchController)
 {
 
 }
@@ -20,11 +23,13 @@ IExample* RouteThicknessPolicyExampleFactory::CreateExample() const
     Eegeo::Modules::RoutesModule& routesModule = m_world.GetRoutesModule();
     
 	return new Examples::RouteThicknessPolicyExample(routesModule.GetRouteService(),
-	        m_world,
-	        m_globeCameraController);
+                                                     m_world,
+                                                     m_defaultCameraControllerFactory.Create(),
+                                                     m_globeCameraTouchController);
 }
 
 std::string RouteThicknessPolicyExampleFactory::ExampleName() const
 {
 	return Examples::RouteThicknessPolicyExample::GetName();
+}
 }

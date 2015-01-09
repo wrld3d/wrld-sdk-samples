@@ -24,10 +24,11 @@
 #include "EegeoWorld.h"
 #include "IdentityRouteThicknessPolicy.h"
 #include "GlobeCameraController.h"
+#include "ScreenPropertiesProvider.h"
 
 namespace Examples
 {
-class RouteSimulationAnimationExample : public IExample
+class RouteSimulationAnimationExample : public IExample, Eegeo::NonCopyable
 {
 private:
 	Eegeo::Routes::RouteService& m_routeService;
@@ -35,8 +36,8 @@ private:
 	Eegeo::Routes::Simulation::View::RouteSimulationViewService& m_routeSimulationViewService;
 	Eegeo::Helpers::IFileIO& m_fileIO;
 	Eegeo::Rendering::AsyncTexturing::IAsyncTextureRequestor& m_textureRequestor;
-	Eegeo::Camera::GlobeCamera::GlobeCameraController& m_defaultCamera;
 	Eegeo::Routes::Simulation::Camera::RouteSimulationGlobeCameraControllerFactory& m_routeSimulationGlobeCameraControllerFactory;
+    const IScreenPropertiesProvider& m_screenPropertiesProvider;
 	Eegeo::EegeoWorld& m_world;
 	float m_modelAnimationSpeed;
 
@@ -44,7 +45,6 @@ private:
 	Eegeo::Model* m_pModel;
 	Eegeo::Routes::Route* m_pRoute;
 	Eegeo::Routes::Style::Thickness::IdentityRouteThicknessPolicy m_routeThicknessPolicy;
-	GlobeCameraStateRestorer m_globeCameraStateRestorer;
 
 	Eegeo::Routes::Simulation::RouteSimulationSession* m_pRouteSimulationSession;
 
@@ -59,11 +59,12 @@ public:
 	RouteSimulationAnimationExample(Eegeo::Routes::RouteService& routeService,
 	                                Eegeo::Routes::Simulation::RouteSimulationService& routeSimulationService,
 	                                Eegeo::Routes::Simulation::View::RouteSimulationViewService& routeSimulationViewService,
-	                                Eegeo::Camera::GlobeCamera::GlobeCameraController& defaultCamera,
 	                                Eegeo::Helpers::IFileIO& fileIO,
 	                                Eegeo::Rendering::AsyncTexturing::IAsyncTextureRequestor& textureRequestor,
 	                                Eegeo::Routes::Simulation::Camera::RouteSimulationGlobeCameraControllerFactory& routeSimulationGlobeCameraControllerFactory,
+                                    const IScreenPropertiesProvider& screenPropertiesProvider,
 	                                Eegeo::EegeoWorld& eegeoWorld);
+    virtual ~RouteSimulationAnimationExample();
 
 	static std::string GetName()
 	{
@@ -77,21 +78,32 @@ public:
 	void Start() {}
 	void EarlyUpdate(float dt);
 	void Update(float dt);
+    void PreWorldDraw() {}
 	void Draw() {}
 	void Suspend();
-    const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
+    void NotifyViewNeedsLayout() {}
     
-	bool Event_TouchRotate 			(const AppInterface::RotateData& data);
-	bool Event_TouchRotate_Start	(const AppInterface::RotateData& data);
-	bool Event_TouchRotate_End 		(const AppInterface::RotateData& data);
+    void NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties);
+    const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
+    Eegeo::dv3 GetInterestPoint() const;
+    
+	void Event_TouchRotate 			(const AppInterface::RotateData& data);
+	void Event_TouchRotate_Start	(const AppInterface::RotateData& data);
+	void Event_TouchRotate_End 		(const AppInterface::RotateData& data);
 
-	bool Event_TouchPinch 			(const AppInterface::PinchData& data);
-	bool Event_TouchPinch_Start 	(const AppInterface::PinchData& data);
-	bool Event_TouchPinch_End 		(const AppInterface::PinchData& data);
+	void Event_TouchPinch 			(const AppInterface::PinchData& data);
+	void Event_TouchPinch_Start 	(const AppInterface::PinchData& data);
+	void Event_TouchPinch_End 		(const AppInterface::PinchData& data);
 
-	bool Event_TouchPan				(const AppInterface::PanData& data);
-	bool Event_TouchPan_Start		(const AppInterface::PanData& data);
-	bool Event_TouchPan_End 		(const AppInterface::PanData& data);
+	void Event_TouchPan				(const AppInterface::PanData& data);
+	void Event_TouchPan_Start		(const AppInterface::PanData& data);
+	void Event_TouchPan_End 		(const AppInterface::PanData& data);
+    
+    void Event_TouchTap 			(const AppInterface::TapData& data) {;}
+    void Event_TouchDoubleTap		(const AppInterface::TapData& data) {;}
+    void Event_TouchDown 			(const AppInterface::TouchData& data) {;}
+    void Event_TouchMove 			(const AppInterface::TouchData& data) {;}
+    void Event_TouchUp 				(const AppInterface::TouchData& data) {;}
 
 private:
 

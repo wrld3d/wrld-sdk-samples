@@ -15,14 +15,15 @@ class iOSRouteSimulationExampleView;
 
 @interface IRouteSimulationExampleBinding : NSObject
 
--(void) setExampleInstance:(Examples::iOSRouteSimulationExampleView*)pExample :(UIButton*)direction :(UIButton*)increaseSpeed :(UIButton*)decreaseSpeed :(UIButton*)rotateToFollow;
-
+-(instancetype) initWith:(Examples::iOSRouteSimulationExampleView*)pExample :(UIView*)pView;
 -(void) toggleFollowCamera;
+-(void) toggleFollowMode:(bool)followEnabled;
 -(void) changeFollowDirection;
 -(void) increaseSpeedFollowed;
 -(void) decreaseSpeedFollowed;
 -(void) rotateToFollow;
 -(void) toggleSideOfRoadToDriveOn;
+-(void) layoutViews;
 
 @end
 
@@ -37,14 +38,9 @@ class iOSRouteSimulationExampleView : public IRouteSimulationExampleView, privat
 	std::vector<IUIActionHandler*> m_rotateToFollowToggledHandlers;
 	std::vector<IUIActionHandler*> m_roadSideChangedHandlers;
 
-	UIView* m_pView;
+	
 	IRouteSimulationExampleBinding* m_pBinding;
-	UIButton* m_pToggleFollowButton;
-	UIButton* m_pIncreaseSpeedButton;
-	UIButton* m_pDecreaseSpeedButton;
-	UIButton* m_pRotateToFollowButton;
-	UIButton* m_pChangeDirectionButton;
-	UIButton* m_pToggleSideOfRoadToDriveOnButton;
+
 
 public:
 
@@ -87,6 +83,8 @@ public:
 	void RemoveSideOfRoadToDriveOnToggledHandler(IUIActionHandler& handler);
 
 	void ChangeSideOfRoad();
+    
+    void NotifyNeedsLayout();
 
 private:
 

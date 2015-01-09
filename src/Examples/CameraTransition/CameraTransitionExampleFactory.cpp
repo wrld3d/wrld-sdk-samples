@@ -2,24 +2,30 @@
 
 #include "CameraTransitionExampleFactory.h"
 #include "CameraTransitionExample.h"
+#include "DefaultCameraControllerFactory.h"
 
-using namespace Examples;
+namespace Examples
+{
 
 CameraTransitionExampleFactory::CameraTransitionExampleFactory(Eegeo::EegeoWorld& world,
-        Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCameraController)
+        DefaultCameraControllerFactory& defaultCameraControllerFactory,
+        Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController)
 	: m_world(world)
-	, m_globeCameraController(globeCameraController)
+	, m_defaultCameraControllerFactory(defaultCameraControllerFactory)
+    , m_globeCameraTouchController(globeCameraTouchController)
 {
 
 }
 
 IExample* CameraTransitionExampleFactory::CreateExample() const
 {
-	return new Examples::CameraTransitionExample(m_globeCameraController);
+	return new Examples::CameraTransitionExample(m_defaultCameraControllerFactory.Create(), m_globeCameraTouchController);
 }
 
 std::string CameraTransitionExampleFactory::ExampleName() const
 {
 	return Examples::CameraTransitionExample::GetName();
+}
+
 }
 

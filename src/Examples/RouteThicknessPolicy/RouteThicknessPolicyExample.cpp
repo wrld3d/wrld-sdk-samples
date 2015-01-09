@@ -5,20 +5,26 @@
 #include "VectorMath.h"
 #include "RouteStyle.h"
 #include "CameraHelpers.h"
+#include "GlobeCameraController.h"
+#include "EcefTangentBasis.h"
 
-using namespace Examples;
+
 using namespace Eegeo;
 using namespace Eegeo::Routes;
 
+namespace Examples
+{
+    
+
 RouteThicknessPolicyExample::RouteThicknessPolicyExample(RouteService& routeService,
         EegeoWorld& world,
-        Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController)
-	:m_routeService(routeService)
+        Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
+                        Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController)
+    : GlobeCameraExampleBase(pCameraController, cameraTouchController)
+	, m_routeService(routeService)
 	,m_world(world)
 	,m_createdRoutes(false)
-    ,m_linearAltitudeBasedRouteThicknessPolicy(*cameraController.GetCamera())
-    ,m_cameraController(cameraController)
-	,m_globeCameraStateRestorer(cameraController)
+    ,m_linearAltitudeBasedRouteThicknessPolicy(*pCameraController->GetCamera())
 {
 	Eegeo::Space::EcefTangentBasis cameraInterestBasis;
 
@@ -27,7 +33,7 @@ RouteThicknessPolicyExample::RouteThicknessPolicyExample(RouteService& routeServ
 	    354.824249f,
 	    cameraInterestBasis);
 
-	cameraController.SetView(cameraInterestBasis, 1374.298706f);
+	pCameraController->SetView(cameraInterestBasis, 1374.298706f);
 }
 
 void RouteThicknessPolicyExample::Update(float dt)
@@ -134,9 +140,9 @@ void RouteThicknessPolicyExample::Suspend()
 
 	m_routes.clear();
 	m_createdRoutes = false;
+    
+    
+    
 }
 
-const Eegeo::Camera::RenderCamera& RouteThicknessPolicyExample::GetRenderCamera() const
-{
-    return *m_cameraController.GetCamera();
 }

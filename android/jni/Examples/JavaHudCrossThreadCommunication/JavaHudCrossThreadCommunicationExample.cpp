@@ -17,15 +17,16 @@ JavaHudCrossThreadCommunicationExample::JavaHudCrossThreadCommunicationExample(
     Eegeo::Resources::CityThemes::ICityThemesService& themeService,
     Eegeo::Resources::CityThemes::ICityThemeRepository& themeRepository,
     Eegeo::Resources::CityThemes::ICityThemesUpdater& themeUpdater,
-    Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCameraController
+    Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
+    Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController
 )
-	: m_nativeState(nativeState)
+	: GlobeCameraExampleBase(pCameraController, cameraTouchController)
+	, m_nativeState(nativeState)
 	, m_themeService(themeService)
 	, m_themeUpdater(themeUpdater)
 	, m_themeRepository(themeRepository)
 	, m_initialCityTheme(themeService.GetCurrentTheme())
-	, m_cameraController(globeCameraController)
-	, m_globeCameraStateRestorer(globeCameraController)
+
 {
 
 }
@@ -88,10 +89,6 @@ void JavaHudCrossThreadCommunicationExample::Suspend()
 	env->DeleteGlobalRef(m_themeReaderWriterHud);
 
 	m_themeService.SetSpecificTheme(m_initialCityTheme);
-}
-const Eegeo::Camera::RenderCamera& JavaHudCrossThreadCommunicationExample::GetRenderCamera() const
-{
-	return *m_cameraController.GetCamera();
 }
 
 void JavaHudCrossThreadCommunicationExample::SetCurrentThemeByName(const std::string& themeName)

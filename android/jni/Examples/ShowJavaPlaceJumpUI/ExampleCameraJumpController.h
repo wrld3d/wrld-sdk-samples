@@ -6,6 +6,8 @@
 #include "ICameraJumpController.h"
 #include "GlobeCamera.h"
 
+namespace Examples
+{
 /*!
  *  \brief Implements ICameraJumpController for the camera controller used in example apps
  *
@@ -27,5 +29,6 @@ private:
 	Eegeo::Camera::GlobeCamera::GlobeCameraController& m_cameraController;
 	Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& m_cameraTouchController;
 };
+}
 
 #endif // __examples_ExampleCameraJumpController__

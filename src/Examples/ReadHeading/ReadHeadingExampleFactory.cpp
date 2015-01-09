@@ -4,16 +4,19 @@
 #include "ReadHeadingExample.h"
 #include "Location.h"
 #include "EegeoWorld.h"
-
+#include "DefaultCameraControllerFactory.h"
 #include "DebugRenderingModule.h"
 
-using namespace Examples;
+namespace Examples
+{
 
 ReadHeadingExampleFactory::ReadHeadingExampleFactory(
-	Eegeo::EegeoWorld& world,
-	Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCameraController)
+                                                     Eegeo::EegeoWorld& world,
+                                                     DefaultCameraControllerFactory& defaultCameraControllerFactory,
+                                          Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController)
 : m_world(world)
-, m_globeCameraController(globeCameraController)
+, m_defaultCameraControllerFactory(defaultCameraControllerFactory)
+, m_globeCameraTouchController(globeCameraTouchController)
 {
 
 }
@@ -24,7 +27,8 @@ IExample* ReadHeadingExampleFactory::CreateExample() const
 	
     return new Examples::ReadHeadingExample(
 		m_world,
-		m_globeCameraController,
+		m_defaultCameraControllerFactory.Create(),
+        m_globeCameraTouchController,
 		debugRenderingModule.GetDebugRenderer(),
 		m_world.GetLocationService()
 	);
@@ -33,4 +37,6 @@ IExample* ReadHeadingExampleFactory::CreateExample() const
 std::string ReadHeadingExampleFactory::ExampleName() const
 {
 	return Examples::ReadHeadingExample::GetName();
+}
+
 }

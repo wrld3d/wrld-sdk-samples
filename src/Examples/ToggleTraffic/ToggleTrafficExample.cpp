@@ -3,24 +3,31 @@
 #include "ToggleTrafficExample.h"
 #include "TimeHelpers.h"
 
-using namespace Examples;
+
 using namespace Eegeo::Traffic;
 using namespace Eegeo::Helpers::Time;
 
-#define TRAFFIC_ENABLED_SWITCH_DELAY_MILLISECONDS 5000
+
+namespace Examples
+{
+
+const int TRAFFIC_ENABLED_SWITCH_DELAY_MILLISECONDS = 5000;
 
 ToggleTrafficExample::ToggleTrafficExample(Eegeo::Traffic::TrafficSimulationController& trafficSimulation,
-        Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController)
-	:m_trafficSimulation(trafficSimulation)
+        Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
+                        Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController)
+    : GlobeCameraExampleBase(pCameraController, cameraTouchController)
+	, m_trafficSimulation(trafficSimulation)
 	,m_lastToggle(MillisecondsSinceEpoch())
-    ,m_cameraController(cameraController)
-	,m_globeCameraStateRestorer(cameraController)
 {
 }
 
 void ToggleTrafficExample::Suspend()
 {
 	m_trafficSimulation.SetEnabled(true);
+    
+    
+    
 }
 
 void ToggleTrafficExample::Update(float dt)
@@ -36,7 +43,4 @@ void ToggleTrafficExample::Update(float dt)
 	}
 }
 
-const Eegeo::Camera::RenderCamera& ToggleTrafficExample::GetRenderCamera() const
-{
-    return *m_cameraController.GetCamera();
 }

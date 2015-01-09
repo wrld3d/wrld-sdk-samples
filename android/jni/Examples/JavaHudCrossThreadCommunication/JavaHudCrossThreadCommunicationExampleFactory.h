@@ -15,13 +15,15 @@ class JavaHudCrossThreadCommunicationExampleFactory : public IExampleFactory
 {
 	Eegeo::EegeoWorld& m_world;
 	AndroidNativeState& m_nativeState;
-	Eegeo::Camera::GlobeCamera::GlobeCameraController& m_globeCameraController;
+	DefaultCameraControllerFactory& m_defaultCameraControllerFactory;
+    Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& m_globeCameraTouchController;
 
 public:
 	JavaHudCrossThreadCommunicationExampleFactory(
 	    Eegeo::EegeoWorld& world,
 	    AndroidNativeState& nativeState,
-	    Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCameraController);
+        DefaultCameraControllerFactory& defaultCameraControllerFactory,
+        Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController);
 
 	std::string ExampleName() const;
 

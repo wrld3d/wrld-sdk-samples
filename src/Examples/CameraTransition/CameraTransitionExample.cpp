@@ -145,11 +145,11 @@ void CameraTransitioner::StopCurrentTransition()
 	m_transitionDuration = 0.f;
 }
 
-CameraTransitionExample::CameraTransitionExample(Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController)
-	: m_cameraController(cameraController)
-	, m_transitioner(cameraController)
+CameraTransitionExample::CameraTransitionExample(Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
+                                                 Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController)
+	: GlobeCameraExampleBase(pCameraController, cameraTouchController)
+	, m_transitioner(*pCameraController)
 	, m_firstPoint(true)
-	,m_globeCameraStateRestorer(cameraController)
 {
 }
 
@@ -173,25 +173,14 @@ void CameraTransitionExample::EarlyUpdate(float dt)
 {
 	if (!m_transitioner.IsTransitioning())
 	{
+        // Do not update touch events or the globe controller if the transition controller is working
+        GetGlobeCameraController().Update(dt);
+        
 		Transition();
 	}
 	m_transitioner.Update(dt);
 }
 
-void CameraTransitionExample::UpdateCamera(Eegeo::Camera::GlobeCamera::GlobeCameraController* pGlobeCameraController,
-        Eegeo::Camera::GlobeCamera::GlobeCameraTouchController* pCameraTouchController,
-        float dt)
-{
-	// Do not update touch events or the globe controller if the transition controller is working
-	if (!m_transitioner.IsTransitioning())
-	{
-		pCameraTouchController->Update(dt);
-		pGlobeCameraController->Update(dt);
-	}
-}
-    
-const Eegeo::Camera::RenderCamera& CameraTransitionExample::GetRenderCamera() const
-{
-    return *m_cameraController.GetCamera();
-}
+
+
 }

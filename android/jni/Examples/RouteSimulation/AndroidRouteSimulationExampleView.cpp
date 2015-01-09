@@ -4,7 +4,6 @@
 #include "UIHelpers.h"
 #include "AndroidRouteSimulationProxy.h"
 
-using namespace Examples;
 
 namespace Examples
 {

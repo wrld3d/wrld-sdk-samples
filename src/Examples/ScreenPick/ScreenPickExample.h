@@ -3,7 +3,7 @@
 #ifndef __ExampleApp__ScreenPickExample__
 #define __ExampleApp__ScreenPickExample__
 
-#include "IExample.h"
+#include "GlobeCameraExampleBase.h"
 #include "Rendering.h"
 #include "Terrain.h"
 #include "Camera.h"
@@ -18,14 +18,13 @@ namespace Examples
  *  streamed terrain resources, making use of Eegeo::Resources::Terrain::Collision::TerrainRayPicker.
  *  We draw a red marker sphere at the intersection point if found.
  */
-class ScreenPickExample : public IExample
+class ScreenPickExample : public GlobeCameraExampleBase
 {
 private:
 
 	Eegeo::Resources::Terrain::Collision::TerrainRayPicker* m_pRayPicker;
     Eegeo::DebugRendering::DebugRenderer& m_debugRenderer;
-    Eegeo::Camera::GlobeCamera::GlobeCameraController& m_cameraController;
-	GlobeCameraStateRestorer m_globeCameraStateRestorer;
+    
     
     Eegeo::dv3 m_spherePosition;
 
@@ -33,7 +32,8 @@ public:
 	ScreenPickExample(Eegeo::Resources::Terrain::Heights::TerrainHeightProvider& terrainHeightProvider,
 	                  const Eegeo::Resources::Terrain::Collision::ICollisionMeshResourceProvider& collisionMeshResourceProvider,
                       Eegeo::DebugRendering::DebugRenderer& debugRenderer,
-	                  Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController);
+	                  Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
+                        Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController);
 
 	virtual ~ScreenPickExample();
 
@@ -50,9 +50,10 @@ public:
 	void Update(float dt);
 	void Draw();
 	void Suspend();
-    const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
+    
+    
 
-	bool Event_TouchTap(const AppInterface::TapData& data);
+	void Event_TouchTap(const AppInterface::TapData& data);
 };
 }
 

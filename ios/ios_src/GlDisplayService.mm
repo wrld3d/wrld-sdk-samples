@@ -88,15 +88,26 @@ bool GlDisplayService::TryBindDisplay(GLKView& view)
     
 	[EAGLContext setCurrentContext: pView.context];
     
-	UIScreen* screen = [UIScreen mainScreen];
+	m_displayBound = true;
+    
+    UpdateDisplayDimensions();
+    
+	return m_displayBound;
+}
+
+void GlDisplayService::UpdateDisplayDimensions()
+{
+    Eegeo_ASSERT(m_displayBound, "GlDisplayService::UpdateDisplayDimensions - display not bound");
+    
+    UIScreen* screen = [UIScreen mainScreen];
     if ([screen respondsToSelector: @selector(scale)])
-	{
-		m_pixelScale = static_cast<float>(screen.scale);
-	}
-	else
-	{
-		m_pixelScale = 1.f;
-	}
+    {
+        m_pixelScale = static_cast<float>(screen.scale);
+    }
+    else
+    {
+        m_pixelScale = 1.f;
+    }
     
     CGSize screenBounds;
     
@@ -108,25 +119,20 @@ bool GlDisplayService::TryBindDisplay(GLKView& view)
     {
         screenBounds = screen.bounds.size;
     }
-
-    OrientationMode orientationMode = App::GetOrientationMode();
     
-    // if we were not able to query info.plist, default to landscape on ipad, portrait on iphone/ipod
-    m_isPortraitAspect = (orientationMode == ORIENTATION_MODE_UNKNOWN)
-        ? App::IsDeviceSmall()
-        : (orientationMode == ORIENTATION_MODE_PORTRAIT);
-
+    OrientationMode orientationMode = App::DetermineOrientationMode();
+    
+    // default to landscape if we were not able to query info.plist (orientationMode == ORIENTATION_MODE_UNKNOWN)
+    m_isPortraitAspect = (orientationMode == ORIENTATION_MODE_PORTRAIT);
+    
     if (!m_isPortraitAspect)
     {
         std::swap(screenBounds.width, screenBounds.height);
     }
     
-	m_displayWidth = static_cast<float>(screenBounds.width * m_pixelScale);
-	m_displayHeight = static_cast<float>(screenBounds.height * m_pixelScale);
+    m_displayWidth = static_cast<float>(screenBounds.width * m_pixelScale);
+    m_displayHeight = static_cast<float>(screenBounds.height * m_pixelScale);
     m_displayDpi = App::GetDeviceDpi() * m_pixelScale;
-
-	m_displayBound = true;
-	return m_displayBound;
 }
 
 void GlDisplayService::ReleaseDisplay()

@@ -2,16 +2,21 @@
 
 #include "SingleCityExampleFactory.h"
 #include "SingleCityExample.h"
-
-using namespace Examples;
-
+#include "DefaultCameraControllerFactory.h"
 #include "MapModule.h"
 #include "StreamingModule.h"
 
+namespace Examples
+{
+
+
+
 SingleCityExampleFactory::SingleCityExampleFactory(Eegeo::EegeoWorld& world,
-        Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCameraController)
+        DefaultCameraControllerFactory& defaultCameraControllerFactory,
+                                          Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController)
 	: m_world(world)
-	, m_globeCameraController(globeCameraController)
+	, m_defaultCameraControllerFactory(defaultCameraControllerFactory)
+    , m_globeCameraTouchController(globeCameraTouchController)
 {
 
 }
@@ -20,14 +25,17 @@ IExample* SingleCityExampleFactory::CreateExample() const
 {
     Eegeo::Modules::Map::StreamingModule& streamingModule = m_world.GetStreamingModule();
     
-	return new Examples::SingleCityExample(m_globeCameraController,
+	return new Examples::SingleCityExample(
 	                                       streamingModule.GetPrecachingService(),
 	                                       streamingModule.GetStreamingVolumeController(),
 	                                       m_world,
-	                                       m_globeCameraController);
+	                                       m_defaultCameraControllerFactory.Create(),
+                                           m_globeCameraTouchController);
 }
 
 std::string SingleCityExampleFactory::ExampleName() const
 {
 	return Examples::SingleCityExample::GetName();
+}
+
 }

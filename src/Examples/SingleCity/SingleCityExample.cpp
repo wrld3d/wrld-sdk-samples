@@ -5,7 +5,8 @@
 #include "LatLongAltitude.h"
 #include "CubeMapCellInfo.h"
 
-using namespace Examples;
+namespace Examples
+{
 
 namespace
 {
@@ -70,18 +71,18 @@ public:
 };
 }
 
-SingleCityExample::SingleCityExample(Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCamera,
+SingleCityExample::SingleCityExample(
                                      Eegeo::Web::PrecacheService& precacheService,
                                      Eegeo::Streaming::StreamingVolumeController& streamingVolumeController,
                                      Eegeo::EegeoWorld& world,
-                                     Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController)
-	: m_precacheService(precacheService)
+                                     Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
+                        Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController)
+    : GlobeCameraExampleBase(pCameraController, cameraTouchController)
+	, m_precacheService(precacheService)
 	, m_streamingVolumeController(streamingVolumeController)
-	, m_globeCamera(globeCamera)
 	, m_world(world)
 	, m_startedPrecaching(false)
 	, m_precacheComplete(false)
-	, m_globeCameraStateRestorer(cameraController)
 {
 
 }
@@ -94,6 +95,9 @@ void SingleCityExample::Suspend()
 	}
 
 	m_startedPrecaching = false;
+    
+    
+    
 }
 
 void SingleCityExample::Update(float dt)
@@ -126,14 +130,16 @@ void SingleCityExample::Update(float dt)
 	}
 }
 
-void SingleCityExample::AfterCameraUpdate()
+void SingleCityExample::EarlyUpdate(float dt)
 {
+    GlobeCameraExampleBase::EarlyUpdate(dt);
 	ConstrainCamera();
 }
 
 void SingleCityExample::ConstrainCamera()
 {
-	Eegeo::dv3 interestPoint = m_globeCamera.GetInterestBasis().GetPointEcef();
+    Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCamera = GetGlobeCameraController();
+	Eegeo::dv3 interestPoint = globeCamera.GetInterestBasis().GetPointEcef();
 
 	const Eegeo::Space::LatLongAltitude constrainCenter = Eegeo::Space::LatLongAltitude::FromDegrees(37.7858, -122.401, 0);
 	const Eegeo::dv3 constrainCenterEcef = constrainCenter.ToECEF();
@@ -143,12 +149,12 @@ void SingleCityExample::ConstrainCamera()
 	Eegeo::dv3 offsetFromCenter = (interestPoint - constrainCenterEcef);
 	double distance = offsetFromCenter.Length();
 
-	bool tooHigh = m_globeCamera.GetDistanceToInterest() > maxInterestDistance;
+	bool tooHigh = globeCamera.GetDistanceToInterest() > maxInterestDistance;
 	bool tooFar = distance > radiusMeters;
 
 	if (tooHigh)
 	{
-		m_globeCamera.SetView(m_globeCamera.GetInterestBasis(), maxInterestDistance);
+		globeCamera.SetView(globeCamera.GetInterestBasis(), maxInterestDistance);
 	}
 
 	if(tooFar)
@@ -158,19 +164,15 @@ void SingleCityExample::ConstrainCamera()
 		Eegeo::Space::LatLongAltitude newInterestPointLatLong = Eegeo::Space::LatLongAltitude::FromECEF(newInterestPoint);
 		newInterestPointLatLong.SetAltitude(interestAltitude);
 
-		Eegeo::Space::EcefTangentBasis cameraInterestBasis = m_globeCamera.GetInterestBasis();
+		Eegeo::Space::EcefTangentBasis cameraInterestBasis = globeCamera.GetInterestBasis();
 		cameraInterestBasis.SetPoint(newInterestPointLatLong.ToECEF());
-		m_globeCamera.SetInterestBasis(cameraInterestBasis);
+		globeCamera.SetInterestBasis(cameraInterestBasis);
 	}
 
 	if (tooHigh || tooFar)
 	{
 		// Also update the Streaming Volume as we'll have changed the position of the frustum.
-		m_streamingVolumeController.update(0.f, *m_globeCamera.GetCamera());
+		m_streamingVolumeController.update(0.f, *globeCamera.GetCamera());
 	}
 }
-
-const Eegeo::Camera::RenderCamera& SingleCityExample::GetRenderCamera() const
-{
-    return *m_globeCamera.GetCamera();
 }

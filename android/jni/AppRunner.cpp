@@ -12,6 +12,7 @@ AppRunner::AppRunner
 	: m_apiKey(apiKey)
 	, m_pNativeState(pNativeState)
 	, m_pAppHost(NULL)
+	, m_isPaused(false)
 {
 	Eegeo::Helpers::ThreadHelpers::SetThisThreadAsMainThread();
 }
@@ -46,9 +47,10 @@ void AppRunner::CreateAppHost()
 
 void AppRunner::Pause()
 {
-	if(m_pAppHost != NULL)
+	if(m_pAppHost != NULL && !m_isPaused)
 	{
 		m_pAppHost->OnPause();
+		m_isPaused = true;
 	}
 
 	ReleaseDisplay();
@@ -56,19 +58,23 @@ void AppRunner::Pause()
 
 void AppRunner::Resume()
 {
-	if(m_pAppHost != NULL)
+	if(m_pAppHost != NULL && m_isPaused)
 	{
 		m_pAppHost->OnResume();
 	}
+
+	m_isPaused = false;
 }
 
 void AppRunner::ActivateSurface()
 {
-	ReleaseDisplay();
+	Pause();
 	bool displayBound = TryBindDisplay();
 	Eegeo_ASSERT(displayBound);
 	CreateAppHost();
+	Resume();
 }
+
 
 void AppRunner::HandleTouchEvent(const Eegeo::Android::Input::TouchInputEvent& event)
 {
@@ -94,6 +100,12 @@ bool AppRunner::TryBindDisplay()
 		if(m_pAppHost != NULL)
 		{
 			m_pAppHost->SetSharedSurface(m_displayService.GetSharedSurface());
+			const Eegeo::Rendering::ScreenProperties& screenProperties = Eegeo::Rendering::ScreenProperties::Make(
+					m_displayService.GetDisplayWidth(),
+					m_displayService.GetDisplayHeight(),
+					1.f,
+					m_pNativeState->deviceDpi);
+			m_pAppHost->NotifyScreenPropertiesChanged(screenProperties);
 			m_pAppHost->SetViewportOffset(0, 0);
 		}
 
@@ -110,7 +122,7 @@ void AppRunner::Update(float deltaSeconds)
 		m_pAppHost->Update(deltaSeconds);
 
 		Eegeo_GL(eglSwapBuffers(m_displayService.GetDisplay(), m_displayService.GetSurface()));
-		Eegeo_GL(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT));
+		Eegeo::Helpers::GLHelpers::ClearBuffers();
 
 		m_pAppHost->Draw(deltaSeconds);
 	}

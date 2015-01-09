@@ -21,17 +21,17 @@ PinsWithAttachedJavaUIExample::PinsWithAttachedJavaUIExample(
     Eegeo::Rendering::RenderableFilters& renderableFilters,
     Eegeo::Resources::Terrain::Heights::TerrainHeightProvider& terrainHeightProvider,
     Eegeo::Rendering::EnvironmentFlatteningService& environmentFlatteningService,
-    Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCameraController
+    Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
+    Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController
 )
-	: m_nativeState(nativeState)
+	: GlobeCameraExampleBase(pCameraController, cameraTouchController)
+	, m_nativeState(nativeState)
 	, m_world(world)
 	, m_buttonID(0)
 	, m_hudPinControllerClass(NULL)
 	, m_hudPinController(NULL)
 	, m_updateLocationMethodId(NULL)
 	, m_pinUserData("Pin User Data")
-	, m_cameraController(globeCameraController)
-	, m_globeCameraStateRestorer(globeCameraController)
 {
 	textureLoader.LoadTexture(m_pinIconsTexture, "pins_with_attached_java_ui_example/PinIconTexturePage.png", true);
 	Eegeo_ASSERT(m_pinIconsTexture.textureId != 0);
@@ -119,7 +119,7 @@ void PinsWithAttachedJavaUIExample::Suspend()
 void PinsWithAttachedJavaUIExample::Update(float dt)
 {
 	// Update the PinsModule to query terrain heights and update screen space coordinates for the Pins.
-	m_pPinsModule->Update(dt, *m_cameraController.GetCamera());
+	m_pPinsModule->Update(dt, GetRenderCamera());
 }
 
 void PinsWithAttachedJavaUIExample::Draw()
@@ -164,12 +164,8 @@ void PinsWithAttachedJavaUIExample::Draw()
 	);
 }
 
-const Eegeo::Camera::RenderCamera& PinsWithAttachedJavaUIExample::GetRenderCamera() const
-{
-	return *m_cameraController.GetCamera();
-}
 
-bool PinsWithAttachedJavaUIExample::Event_TouchTap(const AppInterface::TapData& data)
+void PinsWithAttachedJavaUIExample::Event_TouchTap(const AppInterface::TapData& data)
 {
 	Eegeo::v2 screenTapPoint = Eegeo::v2(data.point.GetX(), data.point.GetY());
 
@@ -187,14 +183,12 @@ bool PinsWithAttachedJavaUIExample::Event_TouchTap(const AppInterface::TapData& 
 
 			Eegeo_TTY("\tId=%d, User Data='%s'\n", pPin->GetId(), ((std::string*) pPin->GetUserData())->c_str());
 		}
-
-		return true;
 	}
 	else
 	{
 		Eegeo_TTY("none found.\n");
-		return false;
 	}
+	GlobeCameraExampleBase::Event_TouchTap(data);
 }
 
 void PinsWithAttachedJavaUIExample::CreateJavaUIButton()

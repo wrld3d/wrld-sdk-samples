@@ -4,7 +4,7 @@
 #define __ExampleApp__CameraTransitionExample__
 
 #include <iostream>
-#include "IExample.h"
+#include "GlobeCameraExampleBase.h"
 #include "EegeoWorld.h"
 #include "Location.h"
 #include "GlobeCamera.h"
@@ -45,17 +45,16 @@ private:
 /*!
  *  CameraTransitionExample demonstrates the ability to ease the camera position from it's current location to a destination and back again
  */
-class CameraTransitionExample : public IExample
+class CameraTransitionExample : public GlobeCameraExampleBase
 {
 private:
-	Eegeo::Camera::GlobeCamera::GlobeCameraController& m_cameraController;
 	CameraTransitioner m_transitioner;
-	GlobeCameraStateRestorer m_globeCameraStateRestorer;
 	bool m_firstPoint;
 	void Transition();
 
 public:
-	CameraTransitionExample(Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController);
+	CameraTransitionExample(Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
+                            Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController);
 
 	static std::string GetName()
 	{
@@ -71,12 +70,6 @@ public:
 	void Update(float dt) { }
 	void Draw() {}
 	void Suspend() {}
-
-    const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
-    
-	void UpdateCamera(Eegeo::Camera::GlobeCamera::GlobeCameraController* pGlobeCameraController,
-	                  Eegeo::Camera::GlobeCamera::GlobeCameraTouchController* pCameraTouchController,
-	                  float dt);
 };
 }
 

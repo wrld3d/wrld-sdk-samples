@@ -60,6 +60,8 @@ public:
 	void OnPause();
 	void OnResume();
 
+	void NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties);
+
 	void HandleTouchInputEvent(const Eegeo::Android::Input::TouchInputEvent& event);
 
 	void SetEnvironmentFlatten(bool flattenState);
@@ -70,10 +72,10 @@ public:
 	void SetViewportOffset(float x, float y);
 
 private:
+	bool m_isPaused;
 	Eegeo::Blitter* m_pBlitter;
     Eegeo::Helpers::Jpeg::IJpegLoader* m_pJpegLoader;
 	Eegeo::Android::AndroidLocationService* m_pAndroidLocationService;
-	Eegeo::Rendering::ScreenProperties* m_pScreenProperties;
 	Eegeo::EegeoWorld* m_pWorld;
 	AndroidNativeState& m_nativeState;
 	AppInputDelegate* m_pAppInputDelegate;
@@ -85,17 +87,15 @@ private:
 	Eegeo::UI::NativeUIFactories m_androidNativeUIFactories;
 
 	ExampleApp* m_pApp;
-	Examples::ExampleController* m_pExampleController;
 	Examples::AndroidExampleControllerView* m_pAndroidExampleControllerView;
 	Examples::AndroidRouteMatchingExampleViewFactory* m_pAndroidRouteMatchingExampleViewFactory;
 	Examples::AndroidRouteSimulationExampleViewFactory* m_pAndroidRouteSimulationExampleViewFactory;
-	ExampleCameraJumpController* m_pExampleCameraJumpController;
 
 	Eegeo::Android::Input::AndroidInputProcessor* m_pInputProcessor;
 
 	Eegeo::Android::AndroidPlatformAbstractionModule* m_pAndroidPlatformAbstractionModule;
 
-	void ConfigureExamples();
+	void ConfigureExamples(const Eegeo::Rendering::ScreenProperties& screenProperties);
 	void DestroyExamples();
 	void RegisterAndroidSpecificExamples();
 };

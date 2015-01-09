@@ -3,26 +3,31 @@
 #include "EnvironmentFlatteningExample.h"
 #include "TimeHelpers.h"
 
-using namespace Examples;
 using namespace Eegeo::Rendering;
 using namespace Eegeo::Helpers::Time;
 
-#define ENVIRONMENT_FLATTEN_DIRECTION_SWITCH_DELAY_MILLISECONDS 5000
+
+namespace Examples
+{
+
+const int ENVIRONMENT_FLATTEN_DIRECTION_SWITCH_DELAY_MILLISECONDS = 5000;
 
 EnvironmentFlatteningExample::EnvironmentFlatteningExample(Eegeo::Rendering::EnvironmentFlatteningService& environmentFlatteningService,
-        Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController)
-	:m_environmentFlatteningService(environmentFlatteningService)
+                                                           Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
+                                                           Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController)
+    : GlobeCameraExampleBase(pCameraController, cameraTouchController)
+	, m_environmentFlatteningService(environmentFlatteningService)
 	,m_lastToggle(MillisecondsSinceEpoch())
 	,m_scaleUp(true)
 	,m_initialEnvironmentScale(environmentFlatteningService.GetCurrentScale())
-	,m_globeCameraStateRestorer(cameraController)
-    ,m_cameraController(cameraController)
 {
 }
 
 void EnvironmentFlatteningExample::Suspend()
 {
 	m_environmentFlatteningService.SetCurrentScale(m_initialEnvironmentScale);
+    
+    
 }
 
 void EnvironmentFlatteningExample::Update(float dt)
@@ -47,7 +52,4 @@ void EnvironmentFlatteningExample::Update(float dt)
 	m_environmentFlatteningService.SetCurrentScale(scale);
 }
 
-const Eegeo::Camera::RenderCamera& EnvironmentFlatteningExample::GetRenderCamera() const
-{
-    return *m_cameraController.GetCamera();
 }

@@ -2,11 +2,16 @@
 
 #include "ExampleController.h"
 
-using namespace Examples;
+namespace Examples
+{
 
 ExampleController::ExampleController(Eegeo::EegeoWorld& world,
-                                     IExampleControllerView& view)
+                                     IExampleControllerView& view,
+                                     DefaultCameraControllerFactory& defaultCameraControllerFactory,
+                                     Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController)
 	: m_world(world)
+    , m_defaultCameraControllerFactory(defaultCameraControllerFactory)
+    , m_globeCameraTouchController(globeCameraTouchController)
 	, m_pCurrentExample(NULL)
 	, m_currentExampleFactoryIndex(-1)
 	, m_view(view)
@@ -108,15 +113,11 @@ void ExampleController::ActivateNext()
 	RefreshExample();
 }
 
-void ExampleController::EarlyUpdate(float dt,
-                                    Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCamera,
-                                    Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController)
+void ExampleController::EarlyUpdate(float dt)
 {
 	if(m_pCurrentExample != NULL)
 	{
 		m_pCurrentExample->EarlyUpdate(dt);
-		m_pCurrentExample->UpdateCamera(&globeCamera, &globeCameraTouchController, dt);
-		m_pCurrentExample->AfterCameraUpdate();
 	}
 }
 
@@ -171,143 +172,136 @@ const Eegeo::Camera::RenderCamera& ExampleController::GetCurrentActiveCamera() c
     return m_pCurrentExample->GetRenderCamera();
 }
 
-bool ExampleController::Event_TouchRotate(const AppInterface::RotateData& data)
+Eegeo::dv3 ExampleController::GetCurrentInterestPoint() const
 {
-	if(m_pCurrentExample != NULL)
-	{
-		return m_pCurrentExample->Event_TouchRotate(data);
-	}
-
-	return false;
-}
-
-bool ExampleController::Event_TouchRotate_Start(const AppInterface::RotateData& data)
-{
-	if(m_pCurrentExample != NULL)
-	{
-		return m_pCurrentExample->Event_TouchRotate_Start(data);
-	}
-
-	return false;
-}
-
-bool ExampleController::Event_TouchRotate_End(const AppInterface::RotateData& data)
-{
-	if(m_pCurrentExample != NULL)
-	{
-		return m_pCurrentExample->Event_TouchRotate_End(data);
-	}
-
-	return false;
+    return m_pCurrentExample->GetInterestPoint();
 }
 
 
-bool ExampleController::Event_TouchPinch(const AppInterface::PinchData& data)
+void ExampleController::NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties)
 {
-	if(m_pCurrentExample != NULL)
-	{
-		return m_pCurrentExample->Event_TouchPinch(data);
-	}
-
-	return false;
+    if (m_pCurrentExample != NULL)
+    {
+        m_pCurrentExample->NotifyScreenPropertiesChanged(screenProperties);
+        
+        m_pCurrentExample->NotifyViewNeedsLayout();
+    }
+    
+    m_view.NotifyNeedsLayout();
 }
 
-bool ExampleController::Event_TouchPinch_Start(const AppInterface::PinchData& data)
-{
-	if(m_pCurrentExample != NULL)
-	{
-		return m_pCurrentExample->Event_TouchPinch_Start(data);
-	}
 
-	return false;
+void ExampleController::Event_TouchRotate(const AppInterface::RotateData& data)
+{
+	if (m_pCurrentExample != NULL)
+	{
+		m_pCurrentExample->Event_TouchRotate(data);
+	}
 }
 
-bool ExampleController::Event_TouchPinch_End(const AppInterface::PinchData& data)
+void ExampleController::Event_TouchRotate_Start(const AppInterface::RotateData& data)
 {
-	if(m_pCurrentExample != NULL)
+	if (m_pCurrentExample != NULL)
 	{
-		return m_pCurrentExample->Event_TouchPinch_End(data);
+		m_pCurrentExample->Event_TouchRotate_Start(data);
 	}
-
-	return false;
 }
 
-bool ExampleController::Event_TouchPan(const AppInterface::PanData& data)
+void ExampleController::Event_TouchRotate_End(const AppInterface::RotateData& data)
 {
-	if(m_pCurrentExample != NULL)
+	if (m_pCurrentExample != NULL)
 	{
-		return m_pCurrentExample->Event_TouchPan(data);
+		m_pCurrentExample->Event_TouchRotate_End(data);
 	}
-
-	return false;
 }
 
-bool ExampleController::Event_TouchPan_Start(const AppInterface::PanData& data)
-{
-	if(m_pCurrentExample != NULL)
-	{
-		return m_pCurrentExample->Event_TouchPan_Start(data);
-	}
 
-	return false;
+void ExampleController::Event_TouchPinch(const AppInterface::PinchData& data)
+{
+	if (m_pCurrentExample != NULL)
+	{
+		m_pCurrentExample->Event_TouchPinch(data);
+	}
 }
 
-bool ExampleController::Event_TouchPan_End(const AppInterface::PanData& data)
+void ExampleController::Event_TouchPinch_Start(const AppInterface::PinchData& data)
 {
-	if(m_pCurrentExample != NULL)
+	if (m_pCurrentExample != NULL)
 	{
-		return m_pCurrentExample->Event_TouchPan_End(data);
+		m_pCurrentExample->Event_TouchPinch_Start(data);
 	}
-
-	return false;
 }
 
-bool ExampleController::Event_TouchTap(const AppInterface::TapData& data)
+void ExampleController::Event_TouchPinch_End(const AppInterface::PinchData& data)
 {
-	if(m_pCurrentExample != NULL)
+	if (m_pCurrentExample != NULL)
 	{
-		return m_pCurrentExample->Event_TouchTap(data);
+		m_pCurrentExample->Event_TouchPinch_End(data);
 	}
-
-	return false;
 }
 
-bool ExampleController::Event_TouchDoubleTap(const AppInterface::TapData& data)
+void ExampleController::Event_TouchPan(const AppInterface::PanData& data)
 {
-	if(m_pCurrentExample != NULL)
+	if (m_pCurrentExample != NULL)
 	{
-		return m_pCurrentExample->Event_TouchDoubleTap(data);
+		m_pCurrentExample->Event_TouchPan(data);
 	}
-
-	return false;
 }
 
-bool ExampleController::Event_TouchDown(const AppInterface::TouchData& data)
+void ExampleController::Event_TouchPan_Start(const AppInterface::PanData& data)
 {
-	if(m_pCurrentExample != NULL)
+	if (m_pCurrentExample != NULL)
 	{
-		return m_pCurrentExample->Event_TouchDown(data);
+		m_pCurrentExample->Event_TouchPan_Start(data);
 	}
-
-	return false;
 }
 
-bool ExampleController::Event_TouchMove(const AppInterface::TouchData& data)
+void ExampleController::Event_TouchPan_End(const AppInterface::PanData& data)
 {
-	if(m_pCurrentExample != NULL)
+	if (m_pCurrentExample != NULL)
 	{
-		return m_pCurrentExample->Event_TouchMove(data);
+		m_pCurrentExample->Event_TouchPan_End(data);
 	}
-
-	return false;
 }
 
-bool ExampleController::Event_TouchUp(const AppInterface::TouchData& data)
+void ExampleController::Event_TouchTap(const AppInterface::TapData& data)
 {
-	if(m_pCurrentExample != NULL)
+	if (m_pCurrentExample != NULL)
 	{
-		return m_pCurrentExample->Event_TouchUp(data);
+		m_pCurrentExample->Event_TouchTap(data);
 	}
+}
 
-	return false;
+void ExampleController::Event_TouchDoubleTap(const AppInterface::TapData& data)
+{
+	if (m_pCurrentExample != NULL)
+	{
+		m_pCurrentExample->Event_TouchDoubleTap(data);
+	}
+}
+
+void ExampleController::Event_TouchDown(const AppInterface::TouchData& data)
+{
+	if (m_pCurrentExample != NULL)
+	{
+		m_pCurrentExample->Event_TouchDown(data);
+	}
+}
+
+void ExampleController::Event_TouchMove(const AppInterface::TouchData& data)
+{
+	if (m_pCurrentExample != NULL)
+	{
+		m_pCurrentExample->Event_TouchMove(data);
+	}
+}
+
+void ExampleController::Event_TouchUp(const AppInterface::TouchData& data)
+{
+	if (m_pCurrentExample != NULL)
+	{
+		m_pCurrentExample->Event_TouchUp(data);
+	}
+}
+
 }

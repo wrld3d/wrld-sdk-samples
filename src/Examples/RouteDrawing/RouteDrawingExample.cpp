@@ -5,19 +5,23 @@
 #include "VectorMath.h"
 #include "RouteStyle.h"
 #include "CameraHelpers.h"
+#include "GlobeCameraController.h"
+#include "EcefTangentBasis.h"
 
-using namespace Examples;
+
 using namespace Eegeo;
 using namespace Eegeo::Routes;
 
-RouteDrawingExample::RouteDrawingExample(RouteService& routeService,
-        EegeoWorld& world,
-        Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController)
-	:m_routeService(routeService)
+namespace Examples
+{
+RouteDrawingExample::RouteDrawingExample(Eegeo::Routes::RouteService& routeService,
+        Eegeo::EegeoWorld& world,
+        Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
+                        Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController)
+    : GlobeCameraExampleBase(pCameraController, cameraTouchController)
+	, m_routeService(routeService)
 	,m_world(world)
 	,m_createdRoutes(false)
-    ,m_cameraController(cameraController)
-	,m_globeCameraStateRestorer(cameraController)
 {
 	Eegeo::Space::EcefTangentBasis cameraInterestBasis;
 
@@ -26,7 +30,7 @@ RouteDrawingExample::RouteDrawingExample(RouteService& routeService,
 	    354.824249f,
 	    cameraInterestBasis);
 
-	cameraController.SetView(cameraInterestBasis, 1374.298706f);
+	pCameraController->SetView(cameraInterestBasis, 1374.298706f);
 }
 
 void RouteDrawingExample::Update(float dt)
@@ -163,9 +167,8 @@ void RouteDrawingExample::Suspend()
 
 	m_routes.clear();
 	m_createdRoutes = false;
+    
+    
+    
 }
-
-const Eegeo::Camera::RenderCamera& RouteDrawingExample::GetRenderCamera() const
-{
-    return *m_cameraController.GetCamera();
 }

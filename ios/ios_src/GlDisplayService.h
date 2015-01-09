@@ -16,6 +16,7 @@ public:
 
 	bool TryBindDisplay(GLKView& view);
 	void ReleaseDisplay();
+    void UpdateDisplayDimensions();
 
 	bool IsDisplayAvailable() const;
     bool IsPortraitAspect() const;

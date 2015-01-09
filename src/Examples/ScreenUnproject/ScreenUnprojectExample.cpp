@@ -63,11 +63,11 @@ namespace Examples
 {
     ScreenUnprojectExample::ScreenUnprojectExample(Eegeo::DebugRendering::DebugRenderer& debugRenderer,
                                                    Eegeo::Resources::Terrain::Heights::TerrainHeightProvider& terrainHeightProvider,
-                                                   Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController)
-    : m_debugRenderer(debugRenderer)
+                                                   Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
+                        Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController)
+    : GlobeCameraExampleBase(pCameraController, cameraTouchController)
+    , m_debugRenderer(debugRenderer)
 	, m_terrainHeightProvider(terrainHeightProvider)
-	, m_globeCameraStateRestorer(cameraController)
-    , m_globeCameraController(cameraController)
 {
 
 }
@@ -79,11 +79,13 @@ void ScreenUnprojectExample::Start()
 
 void ScreenUnprojectExample::Suspend()
 {
+    
+    
 }
 
 void ScreenUnprojectExample::Update(float dt)
 {
-    const Eegeo::Camera::RenderCamera& renderCamera = *m_globeCameraController.GetCamera();
+    const Eegeo::Camera::RenderCamera& renderCamera = GetRenderCamera();
 	//select the middle of the client screen as the position of the sphere
 	float screenPointOfInterestX = (renderCamera.GetViewportWidth()/2.0f);
 	float screenPointOfInterestY = (renderCamera.GetViewportHeight()/2.0f);
@@ -126,10 +128,5 @@ void ScreenUnprojectExample::Update(float dt)
         m_debugRenderer.DrawSphere(intersectionLocation.ToECEF(), 50.f, Eegeo::v4(1.f, 0.f, 0.f, 1.f));
 	}
 }
-    const Eegeo::Camera::RenderCamera& ScreenUnprojectExample::GetRenderCamera() const
-    {
-        return *m_globeCameraController.GetCamera();
-    }
-
 
 }

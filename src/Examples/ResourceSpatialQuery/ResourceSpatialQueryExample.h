@@ -3,26 +3,26 @@
 #ifndef __ExampleApp__SpatialResourceQueryExample__
 #define __ExampleApp__SpatialResourceQueryExample__
 
-#include "IExample.h"
+#include "GlobeCameraExampleBase.h"
 #include "ResourceSpatialQueryService.h"
 #include "Location.h"
 #include "MortonKey.h"
 
 namespace Examples
 {
-class ResourceSpatialQueryExample : public IExample
+class ResourceSpatialQueryExample : public GlobeCameraExampleBase
 {
 private:
 	Eegeo::Resources::ResourceSpatialQueryService& m_resourceSpatialQueryService;
-	Eegeo::Camera::GlobeCamera::GlobeCameraController& m_cameraController;
-	GlobeCameraStateRestorer m_globeCameraStateRestorer;
+	
 
 	Eegeo::Streaming::MortonKey m_key;
 	int m_numBuildings;
 
 public:
 	ResourceSpatialQueryExample(Eegeo::Resources::ResourceSpatialQueryService& resourceSpatialQueryService,
-	                            Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController);
+	                            Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
+                        Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController);
 
 	static std::string GetName()
 	{
@@ -37,7 +37,8 @@ public:
 	void Update(float dt);
 	void Draw() {}
 	void Suspend() {}
-    const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
+    
+    
 };
 }
 

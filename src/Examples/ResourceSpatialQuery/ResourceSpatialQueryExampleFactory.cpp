@@ -2,13 +2,17 @@
 
 #include "ResourceSpatialQueryExampleFactory.h"
 #include "ResourceSpatialQueryExample.h"
+#include "DefaultCameraControllerFactory.h"
 
-using namespace Examples;
+namespace Examples
+{
 
 ResourceSpatialQueryExampleFactory::ResourceSpatialQueryExampleFactory(Eegeo::EegeoWorld& world,
-        Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCameraController)
+        DefaultCameraControllerFactory& defaultCameraControllerFactory,
+                                          Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController)
 	: m_world(world)
-	, m_globeCameraController(globeCameraController)
+	, m_defaultCameraControllerFactory(defaultCameraControllerFactory)
+    , m_globeCameraTouchController(globeCameraTouchController)
 {
 
 }
@@ -16,7 +20,8 @@ ResourceSpatialQueryExampleFactory::ResourceSpatialQueryExampleFactory(Eegeo::Ee
 IExample* ResourceSpatialQueryExampleFactory::CreateExample() const
 {
 	return new Examples::ResourceSpatialQueryExample(m_world.GetResourceSpatialQueryService(),
-	        m_globeCameraController);
+                                                     m_defaultCameraControllerFactory.Create(),
+                                                     m_globeCameraTouchController);
 }
 
 std::string ResourceSpatialQueryExampleFactory::ExampleName() const
@@ -24,4 +29,4 @@ std::string ResourceSpatialQueryExampleFactory::ExampleName() const
 	return Examples::ResourceSpatialQueryExample::GetName();
 }
 
-
+}

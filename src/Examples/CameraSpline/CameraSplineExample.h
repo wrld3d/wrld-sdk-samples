@@ -13,13 +13,12 @@ namespace Examples
 /*!
  *  CameraSplineExample demonstrates a camera controller that can animate the camera along a spline
  */
-class CameraSplineExample : public IExample
+class CameraSplineExample : public IExample, Eegeo::NonCopyable
 {
 private:
 	
     Eegeo::EegeoWorld& m_world;
     Eegeo::Streaming::ResourceCeilingProvider& m_resourceCeilingProvider;
-    Eegeo::Camera::GlobeCamera::GlobeCameraController& m_globeCameraController;
     
     Eegeo::Geometry::CatmullRomSpline* m_pPositionSpline;
 	Eegeo::Geometry::CatmullRomSpline* m_pTargetSpline;
@@ -27,8 +26,8 @@ private:
     
 public:
 	CameraSplineExample(Eegeo::EegeoWorld& eegeoWorld,
-                        Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCameraController,
-                        Eegeo::Streaming::ResourceCeilingProvider& resourceCeilingProvider);
+                        Eegeo::Streaming::ResourceCeilingProvider& resourceCeilingProvider,
+                        const Eegeo::Rendering::ScreenProperties& initialScreenProperties);
     
 	static std::string GetName()
 	{
@@ -40,15 +39,36 @@ public:
 	}
     
 	void Start();
-	void EarlyUpdate(float dt) {};
+	void EarlyUpdate(float dt);
 	void Update(float dt) { }
+    void PreWorldDraw() { }
 	void Draw() {}
 	void Suspend();
-    const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
     
-	void UpdateCamera(Eegeo::Camera::GlobeCamera::GlobeCameraController* pGlobeCameraController,
-	                  Eegeo::Camera::GlobeCamera::GlobeCameraTouchController* pCameraTouchController,
-	                  float dt);
+    void NotifyViewNeedsLayout() {}
+    
+    void NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties);
+    const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
+    Eegeo::dv3 GetInterestPoint() const;
+    
+    void Event_TouchRotate 			(const AppInterface::RotateData& data) { }
+    void Event_TouchRotate_Start	(const AppInterface::RotateData& data) { }
+    void Event_TouchRotate_End 		(const AppInterface::RotateData& data) { }
+    
+    void Event_TouchPinch 			(const AppInterface::PinchData& data) { }
+    void Event_TouchPinch_Start 	(const AppInterface::PinchData& data) { }
+    void Event_TouchPinch_End 		(const AppInterface::PinchData& data) { }
+    
+    void Event_TouchPan				(const AppInterface::PanData& data) { }
+    void Event_TouchPan_Start		(const AppInterface::PanData& data) { }
+    void Event_TouchPan_End 		(const AppInterface::PanData& data) { }
+    
+    void Event_TouchTap 			(const AppInterface::TapData& data) { }
+    void Event_TouchDoubleTap		(const AppInterface::TapData& data) { }
+    void Event_TouchDown 			(const AppInterface::TouchData& data) { }
+    void Event_TouchMove 			(const AppInterface::TouchData& data) { }
+    void Event_TouchUp 				(const AppInterface::TouchData& data) { }
+
 };
 }
 

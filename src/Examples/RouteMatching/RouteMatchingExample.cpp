@@ -5,24 +5,29 @@
 #include "VectorMath.h"
 #include "RouteStyle.h"
 #include "CameraHelpers.h"
+#include "EcefTangentBasis.h"
+#include "GlobeCameraController.h"
 
-using namespace Examples;
 using namespace Eegeo;
 using namespace Eegeo::Routes;
+
+namespace Examples
+{
+    
 
 RouteMatchingExample::RouteMatchingExample(RouteService& routeService,
         EegeoWorld& world,
         const IRouteMatchingExampleViewFactory& routeMatchingViewFactory,
-        Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController)
-	:m_routeService(routeService)
+        Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
+                        Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController)
+    : GlobeCameraExampleBase(pCameraController, cameraTouchController)
+    , m_routeService(routeService)
 	,m_world(world)
 	,m_createdRoutes(false)
 	,m_routesMatchedToNavigationGraph(false)
 	,m_routeMatchingViewFactory(routeMatchingViewFactory)
 	,m_pRouteMatchingView(NULL)
 	,m_toggleRouteMatchingHandler(this, &RouteMatchingExample::ToggleMatching)
-    ,m_cameraController(cameraController)
-	,m_globeCameraStateRestorer(cameraController)
 {
 	Eegeo::Space::EcefTangentBasis cameraInterestBasis;
 
@@ -31,7 +36,7 @@ RouteMatchingExample::RouteMatchingExample(RouteService& routeService,
 	    9.429380f,
 	    cameraInterestBasis);
 
-	cameraController.SetView(cameraInterestBasis, 963.714111f);
+	pCameraController->SetView(cameraInterestBasis, 963.714111f);
 }
 
 void RouteMatchingExample::CreateRoutes(bool shouldMatchToNavigationGraph)
@@ -153,11 +158,9 @@ void RouteMatchingExample::Suspend()
 	Eegeo_DELETE m_pRouteMatchingView;
 
 	m_pRouteMatchingView = NULL;
-}
-
-const Eegeo::Camera::RenderCamera& RouteMatchingExample::GetRenderCamera() const
-{
-    return *m_cameraController.GetCamera();
+    
+    
+    
 }
 
 void RouteMatchingExample::ToggleMatching()
@@ -172,4 +175,13 @@ void RouteMatchingExample::CreateAndBindUI()
 	m_pRouteMatchingView = m_routeMatchingViewFactory.CreateRouteMatchingExampleView();
 
 	m_pRouteMatchingView->AddMatchingToggledHandler(m_toggleRouteMatchingHandler);
+}
+
+void RouteMatchingExample::NotifyViewNeedsLayout()
+{
+    if (m_pRouteMatchingView != NULL)
+    {
+        m_pRouteMatchingView->NotifyNeedsLayout();
+    }
+}
 }

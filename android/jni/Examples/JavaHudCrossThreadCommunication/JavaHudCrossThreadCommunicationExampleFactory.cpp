@@ -3,18 +3,22 @@
 #include "JavaHudCrossThreadCommunicationExampleFactory.h"
 #include "JavaHudCrossThreadCommunicationExample.h"
 #include "JavaHudCrossThreadCommunicationProxy.h"
+#include "DefaultCameraControllerFactory.h"
 
 #include "CityThemesModule.h"
 
-using namespace Examples;
+namespace Examples
+{
 
 JavaHudCrossThreadCommunicationExampleFactory::JavaHudCrossThreadCommunicationExampleFactory(
     Eegeo::EegeoWorld& world,
     AndroidNativeState& nativeState,
-    Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCameraController)
+    DefaultCameraControllerFactory& defaultCameraControllerFactory,
+    Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController)
 	: m_world(world)
 	, m_nativeState(nativeState)
-	, m_globeCameraController(globeCameraController)
+	, m_defaultCameraControllerFactory(defaultCameraControllerFactory)
+    , m_globeCameraTouchController(globeCameraTouchController)
 {
 
 }
@@ -28,10 +32,13 @@ IExample* JavaHudCrossThreadCommunicationExampleFactory::CreateExample() const
 	           cityThemesModule.GetCityThemesService(),
 	           cityThemesModule.GetCityThemesRepository(),
 	           cityThemesModule.GetCityThemesUpdater(),
-	           m_globeCameraController);
+	           m_defaultCameraControllerFactory.Create(),
+	           m_globeCameraTouchController);
 }
 
 std::string JavaHudCrossThreadCommunicationExampleFactory::ExampleName() const
 {
 	return Examples::JavaHudCrossThreadCommunicationExample::GetName();
+}
+
 }

@@ -4,7 +4,7 @@
 #define __ExampleApp__DynamicText3DExampleFactory__
 
 #include "IExampleFactory.h"
-#include "IExample.h"
+#include "GlobeCameraExampleBase.h"
 #include "EegeoWorld.h"
 
 namespace Examples
@@ -12,11 +12,13 @@ namespace Examples
 class DynamicText3DExampleFactory : public IExampleFactory
 {
 	Eegeo::EegeoWorld& m_world;
-	Eegeo::Camera::GlobeCamera::GlobeCameraController& m_globeCameraController;
+		DefaultCameraControllerFactory& m_defaultCameraControllerFactory;
+    Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& m_globeCameraTouchController;
 
 public:
 	DynamicText3DExampleFactory(Eegeo::EegeoWorld& world,
-	                            Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCameraController);
+	                            DefaultCameraControllerFactory& defaultCameraControllerFactory,
+                                          Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController);
 
 	std::string ExampleName() const;
 

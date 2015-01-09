@@ -4,7 +4,7 @@
 #define __ExampleApp__RouteMatchingExampleFactory__
 
 #include "IExampleFactory.h"
-#include "IExample.h"
+#include "GlobeCameraExampleBase.h"
 #include "EegeoWorld.h"
 #include "IRouteMatchingExampleViewFactory.h"
 
@@ -14,12 +14,14 @@ class RouteMatchingExampleFactory : public IExampleFactory
 {
 	Eegeo::EegeoWorld& m_world;
 	const IRouteMatchingExampleViewFactory& m_routeMatchingViewFactory;
-	Eegeo::Camera::GlobeCamera::GlobeCameraController& m_globeCameraController;
+    DefaultCameraControllerFactory& m_defaultCameraControllerFactory;
+    Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& m_globeCameraTouchController;
 
 public:
 	RouteMatchingExampleFactory(Eegeo::EegeoWorld& world,
 	                            const IRouteMatchingExampleViewFactory& routeMatchingViewFactory,
-	                            Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCameraController);
+	                            DefaultCameraControllerFactory& defaultCameraControllerFactory,
+                                Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController);
 
 	std::string ExampleName() const;
 

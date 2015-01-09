@@ -3,7 +3,7 @@
 #ifndef __ExampleApp__ModifiedRenderingExample__
 #define __ExampleApp__ModifiedRenderingExample__
 
-#include "IExample.h"
+#include "GlobeCameraExampleBase.h"
 
 #include <vector>
 #include "RenderContext.h"
@@ -74,7 +74,7 @@ private:
 
 typedef Eegeo::Rendering::Scene::ISceneElementObserver<Eegeo::Rendering::Renderables::PackedRenderable> TSceneElementObserver;
 
-class ModifiedRenderingExample : public IExample, TSceneElementObserver, Eegeo::Rendering::IRenderableFilter
+class ModifiedRenderingExample : public GlobeCameraExampleBase, TSceneElementObserver, Eegeo::Rendering::IRenderableFilter
 {
 private:
 
@@ -95,10 +95,8 @@ private:
 	Eegeo::Rendering::RenderableFilters& m_renderableFilters;
 	Eegeo::Rendering::Shaders::ShaderIdGenerator& m_shaderIdGenerator;
 	Eegeo::Rendering::Materials::MaterialIdGenerator& m_materialIdGenerator;
-	const Eegeo::Helpers::GLHelpers::TextureInfo& m_placeHolderTexture;
-	GlobeCameraStateRestorer m_globeCameraStateRestorer;
-    Eegeo::Camera::GlobeCamera::GlobeCameraController& m_cameraController;
     Eegeo::Rendering::VertexLayouts::VertexBindingPool& m_vertexBindingPool;
+	const Eegeo::Helpers::GLHelpers::TextureInfo& m_placeHolderTexture;
 
 	Eegeo::Lighting::GlobalLighting* m_pAlternativeLighting;
 	Eegeo::Rendering::Shaders::PackedDiffuseShader* m_pAlternativeShader;
@@ -120,9 +118,10 @@ public:
 	                         Eegeo::Rendering::RenderableFilters& renderableFilters,
 	                         Eegeo::Rendering::Shaders::ShaderIdGenerator& shaderIdGenerator,
 	                         Eegeo::Rendering::Materials::MaterialIdGenerator& materialIdGenerator,
+                             Eegeo::Rendering::VertexLayouts::VertexBindingPool& vertexBindingPool,
 	                         const Eegeo::Helpers::GLHelpers::TextureInfo& placeHolderTexture,
-	                         Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController,
-                             Eegeo::Rendering::VertexLayouts::VertexBindingPool& m_vertexBindingPool
+	                         Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
+	                         Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController
 	                        );
 
 	//ISceneElementObserver interface.
@@ -146,7 +145,8 @@ public:
 	void Update(float dt);
 	void Draw();
 	void Suspend();
-    const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
+    
+    
 };
 }
 

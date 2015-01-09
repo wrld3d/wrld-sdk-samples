@@ -2,26 +2,26 @@
 
 #pragma once
 
-#include "IExample.h"
+#include "GlobeCameraExampleBase.h"
 #include "TrafficCongestion.h"
 #include "ITrafficCongestionService.h"
 
 namespace Examples
 {
-class TrafficCongestionExample : public IExample
+class TrafficCongestionExample : public GlobeCameraExampleBase
 {
 private:
 	Eegeo::TrafficCongestion::ITrafficCongestionService& m_trafficCongestionService;
 	float m_timeAccumulator;
 	Eegeo::Streaming::MortonKey m_key;
 	int m_congestionValue;
-    Eegeo::Camera::GlobeCamera::GlobeCameraController& m_cameraController;
-	GlobeCameraStateRestorer m_globeCameraStateRestorer;
+    
 
 public:
 	TrafficCongestionExample(
 	    Eegeo::TrafficCongestion::ITrafficCongestionService& trafficCongestionService,
-	    Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController);
+	    Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
+                        Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController);
 
 	static std::string GetName()
 	{
@@ -36,6 +36,7 @@ public:
 	void Update(float dt);
 	void Draw() {}
 	void Suspend();
-    const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
+    
+    
 };
 }

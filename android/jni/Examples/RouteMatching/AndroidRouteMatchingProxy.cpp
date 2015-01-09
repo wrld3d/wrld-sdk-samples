@@ -3,8 +3,6 @@
 #include "AndroidRouteMatchingProxy.h"
 #include "AndroidRouteMatchingExampleView.h"
 
-using namespace Examples;
-
 JNIEXPORT void JNICALL Java_com_eegeo_examples_routematching_RouteMatchingJniMethods_ToggleRouteMatching(
     JNIEnv* jenv, jobject obj,
     jlong nativeObjectPtr)

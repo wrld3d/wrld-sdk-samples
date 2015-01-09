@@ -8,12 +8,13 @@
 
 #include "MapModule.h"
 
-using namespace Examples;
+namespace Examples
+{
 
 CameraSplineExampleFactory::CameraSplineExampleFactory(Eegeo::EegeoWorld& world,
-                                                       Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCameraController)
+                                                       const IScreenPropertiesProvider& screenPropertiesProvider)
 : m_world(world)
-, m_globeCameraController(globeCameraController)
+, m_screenPropertiesProvider(screenPropertiesProvider)
 {
     
 }
@@ -22,12 +23,15 @@ IExample* CameraSplineExampleFactory::CreateExample() const
 {
     Eegeo::Modules::Map::MapModule& mapModule = m_world.GetMapModule();
     
+    const Eegeo::Rendering::ScreenProperties& initialScreenProperties = m_screenPropertiesProvider.GetScreenProperties();
+    
 	return new Examples::CameraSplineExample(m_world,
-                                             m_globeCameraController,
-                                             mapModule.GetResourceCeilingProvider());
+                                             mapModule.GetResourceCeilingProvider(),
+                                             initialScreenProperties);
 }
 
 std::string CameraSplineExampleFactory::ExampleName() const
 {
 	return Examples::CameraSplineExample::GetName();
+}
 }

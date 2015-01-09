@@ -2,16 +2,19 @@
 
 #include "ScreenUnprojectExampleFactory.h"
 #include "ScreenUnprojectExample.h"
-
+#include "DefaultCameraControllerFactory.h"
 #include "DebugRenderingModule.h"
 #include "TerrainModelModule.h"
 
-using namespace Examples;
+namespace Examples
+{
 
 ScreenUnprojectExampleFactory::ScreenUnprojectExampleFactory(Eegeo::EegeoWorld& world,
-        Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCameraController)
+        DefaultCameraControllerFactory& defaultCameraControllerFactory,
+                                          Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController)
 	: m_world(world)
-	, m_globeCameraController(globeCameraController)
+	, m_defaultCameraControllerFactory(defaultCameraControllerFactory)
+    , m_globeCameraTouchController(globeCameraTouchController)
 {
 
 }
@@ -23,10 +26,13 @@ IExample* ScreenUnprojectExampleFactory::CreateExample() const
     
 	return new Examples::ScreenUnprojectExample(debugRenderingModule.GetDebugRenderer(),
                                                 terrainModelModule.GetTerrainHeightProvider(),
-                                                m_globeCameraController);
+                                                m_defaultCameraControllerFactory.Create(),
+                                                m_globeCameraTouchController);
 }
 
 std::string ScreenUnprojectExampleFactory::ExampleName() const
 {
 	return Examples::ScreenUnprojectExample::GetName();
+}
+
 }

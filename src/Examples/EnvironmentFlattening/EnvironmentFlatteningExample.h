@@ -3,24 +3,23 @@
 #ifndef __ExampleApp__EnvironmentFlatteningExample__
 #define __ExampleApp__EnvironmentFlatteningExample__
 
-#include "IExample.h"
+#include "GlobeCameraExampleBase.h"
 #include "EnvironmentFlatteningService.h"
 
 namespace Examples
 {
-class EnvironmentFlatteningExample : public IExample
+class EnvironmentFlatteningExample : public GlobeCameraExampleBase
 {
 private:
 	long long m_lastToggle;
 	bool m_scaleUp;
 	Eegeo::Rendering::EnvironmentFlatteningService& m_environmentFlatteningService;
 	float m_initialEnvironmentScale;
-    Eegeo::Camera::GlobeCamera::GlobeCameraController& m_cameraController;
-	GlobeCameraStateRestorer m_globeCameraStateRestorer;
 
 public:
 	EnvironmentFlatteningExample(Eegeo::Rendering::EnvironmentFlatteningService& environmentFlatteningService,
-	                             Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController);
+	                             Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
+                        Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController);
 
 	static std::string GetName()
 	{
@@ -35,7 +34,8 @@ public:
 	void Update(float dt);
 	void Draw() {}
 	void Suspend();
-    const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
+    
+    
 };
 }
 

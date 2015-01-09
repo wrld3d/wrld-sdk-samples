@@ -3,7 +3,7 @@
 #ifndef __ExampleApp__WebRequestExample__
 #define __ExampleApp__WebRequestExample__
 
-#include "IExample.h"
+#include "GlobeCameraExampleBase.h"
 
 #include "IWebLoadRequestFactory.h"
 #include "WebLoadRequestCompletionCallback.h"
@@ -11,16 +11,16 @@
 
 namespace Examples
 {
-class WebRequestExample : public IExample
+class WebRequestExample : public GlobeCameraExampleBase
 {
 private:
 	Eegeo::Web::IWebLoadRequestFactory& m_webRequestFactory;
-    Eegeo::Camera::GlobeCamera::GlobeCameraController& m_cameraController;
-	GlobeCameraStateRestorer m_globeCameraStateRestorer;
+    
 
 public:
 	WebRequestExample(Eegeo::Web::IWebLoadRequestFactory& webRequestFactory,
-	                  Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController);
+	                  Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
+                        Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController);
 
 	static std::string GetName()
 	{
@@ -35,7 +35,8 @@ public:
 	void Update(float dt) {}
 	void Draw() {}
 	void Suspend() {}
-    const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
+    
+    
 };
 }
 

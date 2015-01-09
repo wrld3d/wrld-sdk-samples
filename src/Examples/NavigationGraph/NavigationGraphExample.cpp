@@ -22,12 +22,12 @@ DebugRenderable* CreateVisualisation(const Eegeo::v3& roadColor,
 namespace Examples
 {
 NavigationGraphExample::NavigationGraphExample(NavigationGraphRepository& navigationGraphRepository,
-        Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController)
-	:m_navigationGraphRepository(navigationGraphRepository)
+        Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
+                        Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController)
+    : GlobeCameraExampleBase(pCameraController, cameraTouchController)
+	, m_navigationGraphRepository(navigationGraphRepository)
 	,m_addedHandler(*this)
 	,m_removedHandler(*this)
-	,m_globeCameraStateRestorer(cameraController)
-    ,m_cameraController(cameraController)
 {
 }
 
@@ -42,6 +42,9 @@ void NavigationGraphExample::Suspend()
 {
 	m_navigationGraphRepository.UnregisterAddedCallback(&m_addedHandler);
 	m_navigationGraphRepository.UnregisterRemovalCallback(&m_removedHandler);
+    
+    
+    
 }
 
 void NavigationGraphExample::Draw()
@@ -56,7 +59,7 @@ void NavigationGraphExample::Draw()
 
 		Eegeo::dv3 ecefPosition = navGraph.GetCellInfo().GetFaceCentreECEF() + Eegeo::dv3::FromSingle(navGraph.GetUpECEF() * 2.0f);
         
-        const Eegeo::Camera::RenderCamera& renderCamera = *m_cameraController.GetCamera();
+        const Eegeo::Camera::RenderCamera& renderCamera = GetRenderCamera();
 		Eegeo::v3 m_cameraRelativePosition = Eegeo::Camera::CameraHelpers::CameraRelativePoint(ecefPosition, renderCamera.GetEcefLocation());
 		renderable.Draw(m_cameraRelativePosition, renderCamera, glState);
 	}
@@ -73,11 +76,7 @@ void NavigationGraphExample::HandleRemovedGraph(const Eegeo::Resources::Roads::N
 	delete m_navGraphsToVisualisers[&navGraph];
 	m_navGraphsToVisualisers.erase(m_navGraphsToVisualisers.find(&navGraph));
 }
-    
-    const Eegeo::Camera::RenderCamera& NavigationGraphExample::GetRenderCamera() const
-    {
-        return *m_cameraController.GetCamera();
-    }
+
 }
 
 namespace

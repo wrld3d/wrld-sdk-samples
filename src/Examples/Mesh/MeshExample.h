@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "IExample.h"
+#include "GlobeCameraExampleBase.h"
 #include "IRenderableFilter.h"
 #include "MeshExampleConfig.h"
 #include "RenderTexture.h"
@@ -23,17 +23,18 @@ namespace Examples
     
 
     
-    class MeshExample : public IExample, Eegeo::Rendering::IRenderableFilter
+    class MeshExample : public GlobeCameraExampleBase, Eegeo::Rendering::IRenderableFilter
     {
     public:
         typedef std::vector<ExampleMeshRenderable*> ExampleMeshRenderableVector;
         
-        MeshExample(Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController,
-                         Eegeo::Modules::Core::RenderingModule& renderingModule,
-                         Eegeo::Helpers::ITextureFileLoader& textureFileLoader,
-                         Eegeo::Rendering::EnvironmentFlatteningService& environmentFlatteningService,
-                         Eegeo::Web::IWebLoadRequestFactory& webRequestFactory,
-                         const MeshExampleConfig& config);
+        MeshExample(Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
+                    Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController,
+                    Eegeo::Modules::Core::RenderingModule& renderingModule,
+                    Eegeo::Helpers::ITextureFileLoader& textureFileLoader,
+                    Eegeo::Rendering::EnvironmentFlatteningService& environmentFlatteningService,
+                    Eegeo::Web::IWebLoadRequestFactory& webRequestFactory,
+                    const MeshExampleConfig& config);
         
         virtual ~MeshExample();
         
@@ -52,7 +53,6 @@ namespace Examples
 
         void Draw() {}
         void Suspend() {}
-        const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
         
         // IRenderableFilter interface
         void EnqueueRenderables(const Eegeo::Rendering::RenderContext& renderContext, Eegeo::Rendering::RenderQueue& renderQueue);
@@ -60,7 +60,6 @@ namespace Examples
     private:
         void OnWebLoadCompleted(Eegeo::Web::IWebLoadRequest& webLoadRequest);
     
-        Eegeo::Camera::GlobeCamera::GlobeCameraController& m_cameraController;
         Eegeo::Modules::Core::RenderingModule& m_renderingModule;
         Eegeo::Helpers::ITextureFileLoader& m_textureFileLoader;
         Eegeo::Rendering::EnvironmentFlatteningService& m_environmentFlatteningService;
@@ -68,8 +67,6 @@ namespace Examples
         MeshExampleConfig m_config;
         
         Eegeo::Web::TWebLoadRequestCompletionCallback<MeshExample> m_webLoadCallback;
-        
-        GlobeCameraStateRestorer m_globeCameraStateRestorer;
         
         Eegeo::Helpers::GLHelpers::TextureInfo m_textureInfo;
         Eegeo::Helpers::GLHelpers::TextureInfo m_asyncTextureInfo;

@@ -2,18 +2,21 @@
 
 #include "ScreenPickExampleFactory.h"
 #include "ScreenPickExample.h"
-
+#include "DefaultCameraControllerFactory.h"
 #include "CollisionMeshResourceRepository.h"
 
 #include "TerrainModelModule.h"
 #include "DebugRenderingModule.h"
 
-using namespace Examples;
+namespace Examples
+{
 
 ScreenPickExampleFactory::ScreenPickExampleFactory(Eegeo::EegeoWorld& world,
-        Eegeo::Camera::GlobeCamera::GlobeCameraController& globeCameraController)
+        DefaultCameraControllerFactory& defaultCameraControllerFactory,
+                                          Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController)
 	: m_world(world)
-	, m_globeCameraController(globeCameraController)
+	, m_defaultCameraControllerFactory(defaultCameraControllerFactory)
+    , m_globeCameraTouchController(globeCameraTouchController)
 {
 
 }
@@ -26,7 +29,8 @@ IExample* ScreenPickExampleFactory::CreateExample() const
 	return new Examples::ScreenPickExample(terrainModelModule.GetTerrainHeightProvider(),
 	                                       terrainModelModule.GetCollisionMeshResourceRepository(),
                                            debugRenderingModule.GetDebugRenderer(),
-	                                       m_globeCameraController);
+	                                       m_defaultCameraControllerFactory.Create(),
+                                           m_globeCameraTouchController);
 }
 
 std::string ScreenPickExampleFactory::ExampleName() const
@@ -34,3 +38,4 @@ std::string ScreenPickExampleFactory::ExampleName() const
 	return Examples::ScreenPickExample::GetName();
 }
 
+}

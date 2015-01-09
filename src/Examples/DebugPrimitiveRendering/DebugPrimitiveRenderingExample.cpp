@@ -16,11 +16,11 @@
 namespace Examples
 {
 DebugPrimitiveRenderingExample::DebugPrimitiveRenderingExample(Eegeo::DebugRendering::DebugRenderer &debugRenderer,
-        Eegeo::Camera::GlobeCamera::GlobeCameraController& cameraController)
-	:m_debugRenderer(debugRenderer)
-    ,m_camera(*cameraController.GetCamera())
-	,m_globeCameraStateRestorer(cameraController)
-    ,m_frustumDrawTimer(0.0)
+        Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
+                        Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController)
+: GlobeCameraExampleBase(pCameraController, cameraTouchController)
+, m_debugRenderer(debugRenderer)
+, m_frustumDrawTimer(0.0)
 {
 }
 
@@ -77,12 +77,12 @@ void DebugPrimitiveRenderingExample::Update(float dt)
         // Construct a frustum representation from the current render camera's ViewProjection matrix
         std::vector<Eegeo::Geometry::Plane> frustumPlanes;
         frustumPlanes.resize(6);
-        Eegeo::Geometry::BuildFrustumPlanesFromViewProjection(frustumPlanes, m_camera.GetViewProjectionMatrix());
+        Eegeo::Geometry::BuildFrustumPlanesFromViewProjection(frustumPlanes, GetRenderCamera().GetViewProjectionMatrix());
         Eegeo::Geometry::Frustum frustum;
         frustum.Update(frustumPlanes);
         
         // Draw this frustum for 3 seconds.
-        m_debugRenderer.DrawWireFrustum(m_camera.GetEcefLocation(), frustum, Eegeo::Rendering::Colors::GREEN, 3.0f);
+        m_debugRenderer.DrawWireFrustum(GetRenderCamera().GetEcefLocation(), frustum, Eegeo::Rendering::Colors::GREEN, 3.0f);
         
         // And draw some text for 4 seconds where the cube is
         Eegeo::dv3 ecefCenter3 = ConvertLatLongAltitudeToEcef(Eegeo::Space::LatLongAltitude::FromDegrees(37.78469,-122.40143, 400));
@@ -100,11 +100,8 @@ void DebugPrimitiveRenderingExample::Draw()
 
 void DebugPrimitiveRenderingExample::Suspend()
 {
-
-}
     
-const Eegeo::Camera::RenderCamera& DebugPrimitiveRenderingExample::GetRenderCamera() const
-{
-    return m_camera;
+    
 }
+
 }
