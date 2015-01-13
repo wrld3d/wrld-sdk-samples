@@ -20,9 +20,16 @@ class AppLocationDelegate : protected Eegeo::NonCopyable
 {
     AppLocationDelegateLocationListener* m_pAppLocationDelegateLocationListener;
     
+    bool m_receivedPermissionResponse;
+    
 public:
-	AppLocationDelegate(Eegeo::iOS::iOSLocationService& m_iOSLocationService, ViewController& viewController);
+	AppLocationDelegate(Eegeo::iOS::iOSLocationService& m_iOSLocationService,
+                        ViewController& viewController);
     ~AppLocationDelegate();
+    
+    void NotifyReceivedPermissionResponse();
+    
+    bool HasReceivedPermissionResponse() const;
 };
 
 #endif

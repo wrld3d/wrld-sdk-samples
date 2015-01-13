@@ -8,12 +8,15 @@
 CLLocationManager* m_pLocationManager;
 Eegeo::iOS::iOSLocationService* m_piOSLocationService;
 ViewController* m_pUIViewController;
+AppLocationDelegate* m_pAppLocationDelegate;
 
 -(void)start:(Eegeo::iOS::iOSLocationService *)piOSLocationService
             :(ViewController*)pUIViewController
+            :(AppLocationDelegate*)pAppLocationDelegate
 {
     m_piOSLocationService = piOSLocationService;
     m_pUIViewController = pUIViewController;
+    m_pAppLocationDelegate = pAppLocationDelegate;
     
 	m_pLocationManager = [[CLLocationManager alloc] init];
 	m_pLocationManager.delegate = self;
@@ -33,6 +36,15 @@ ViewController* m_pUIViewController;
 {
 	m_piOSLocationService->FailedToGetLocation();
 	m_piOSLocationService->FailedToGetHeading();
+}
+
+
+- (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status
+{
+    if (status != kCLAuthorizationStatusNotDetermined)
+    {
+        m_pAppLocationDelegate->NotifyReceivedPermissionResponse();
+    }
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation
@@ -88,14 +100,27 @@ ViewController* m_pUIViewController;
 
 @end
 
-AppLocationDelegate::AppLocationDelegate(Eegeo::iOS::iOSLocationService& iOSLocationService, ViewController& viewController)
+AppLocationDelegate::AppLocationDelegate(Eegeo::iOS::iOSLocationService& iOSLocationService,
+                                         ViewController& viewController)
+: m_receivedPermissionResponse(false)
 {
-	m_pAppLocationDelegateLocationListener = [[AppLocationDelegateLocationListener alloc] init];
-    [m_pAppLocationDelegateLocationListener start:&iOSLocationService :&viewController];
+    m_pAppLocationDelegateLocationListener = [[AppLocationDelegateLocationListener alloc] init];
+    [m_pAppLocationDelegateLocationListener start:&iOSLocationService: &viewController: this];
 }
 
 AppLocationDelegate::~AppLocationDelegate()
 {
-	[m_pAppLocationDelegateLocationListener release];
-	m_pAppLocationDelegateLocationListener = nil;
+    [m_pAppLocationDelegateLocationListener release];
+    m_pAppLocationDelegateLocationListener = nil;
 }
+
+void AppLocationDelegate::NotifyReceivedPermissionResponse()
+{
+    m_receivedPermissionResponse = true;
+}
+
+bool AppLocationDelegate::HasReceivedPermissionResponse() const
+{
+    return m_receivedPermissionResponse;
+}
+

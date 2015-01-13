@@ -55,6 +55,8 @@ AppHost::AppHost(
     
 	Eegeo::Config::PlatformConfig config = Eegeo::iOS::iOSPlatformConfigBuilder(App::GetDevice(), App::IsDeviceMultiCore(), App::GetMajorSystemVersion()).Build();
     
+    config.OptionsConfig.StartMapModuleAutomatically = false;
+    
 	m_pWorld = new Eegeo::EegeoWorld(apiKey,
                                      *m_piOSPlatformAbstractionModule,
                                      *m_pJpegLoader,
@@ -125,6 +127,11 @@ void AppHost::NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProper
 
 void AppHost::Update(float dt)
 {
+    Eegeo::Modules::Map::MapModule& mapModule = m_pWorld->GetMapModule();
+    if (!mapModule.IsRunning() && m_pAppLocationDelegate->HasReceivedPermissionResponse())
+    {
+        mapModule.Start();
+    }
 	m_pApp->Update(dt);
 }
 
