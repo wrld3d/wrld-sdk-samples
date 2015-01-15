@@ -8,6 +8,7 @@
 #include "TerrainHeightProvider.h"
 #include "LatLongAltitude.h"
 #include "DebugRenderer.h"
+#include "GlobeCameraController.h"
 
 namespace
 {
@@ -85,8 +86,9 @@ void ScreenUnprojectExample::Suspend()
 
 void ScreenUnprojectExample::Update(float dt)
 {
-    const Eegeo::Camera::RenderCamera& renderCamera = GetRenderCamera();
-	//select the middle of the client screen as the position of the sphere
+    Eegeo::Camera::RenderCamera renderCamera(GetGlobeCameraController().GetRenderCamera());
+    
+    //select the middle of the client screen as the position of the sphere
 	float screenPointOfInterestX = (renderCamera.GetViewportWidth()/2.0f);
 	float screenPointOfInterestY = (renderCamera.GetViewportHeight()/2.0f);
 

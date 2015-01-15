@@ -37,21 +37,15 @@ private:
 	Eegeo::Helpers::IFileIO& m_fileIO;
 	Eegeo::Rendering::AsyncTexturing::IAsyncTextureRequestor& m_textureRequestor;
 	Eegeo::Routes::Simulation::Camera::RouteSimulationGlobeCameraControllerFactory& m_routeSimulationGlobeCameraControllerFactory;
-    const IScreenPropertiesProvider& m_screenPropertiesProvider;
 	Eegeo::EegeoWorld& m_world;
 	float m_modelAnimationSpeed;
-
 	bool m_initialised;
 	Eegeo::Model* m_pModel;
 	Eegeo::Routes::Route* m_pRoute;
 	Eegeo::Routes::Style::Thickness::IdentityRouteThicknessPolicy m_routeThicknessPolicy;
-
 	Eegeo::Routes::Simulation::RouteSimulationSession* m_pRouteSimulationSession;
-
-	Eegeo::Routes::Simulation::View::RouteSimulationModelBinding* m_pViewBindingForCameraSession;
-
-
-	Eegeo::Routes::Simulation::Camera::RouteSimulationGlobeCameraController* m_pRouteSessionFollowCameraController;
+    Eegeo::Routes::Simulation::View::RouteSimulationModelBinding* m_pViewBindingForCameraSession;
+    Eegeo::Routes::Simulation::Camera::RouteSimulationGlobeCameraController* m_pRouteSessionFollowCameraController;
 
 	void CalculateTransform(Eegeo::m44& transform);
 
@@ -81,11 +75,12 @@ public:
     void PreWorldDraw() {}
 	void Draw() {}
 	void Suspend();
-    void NotifyViewNeedsLayout() {}
     
-    void NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties);
-    const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
-    Eegeo::dv3 GetInterestPoint() const;
+    Eegeo::Camera::CameraState GetCurrentCameraState() const;
+    
+    virtual void NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties);
+
+    void NotifyViewNeedsLayout() {}
     
 	void Event_TouchRotate 			(const AppInterface::RotateData& data);
 	void Event_TouchRotate_Start	(const AppInterface::RotateData& data);

@@ -36,6 +36,8 @@ namespace Examples
         
         void UpdateEffect();
         
+        void HandleScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties);
+        
     public:
         RenderToTextureExample(Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
                                Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController,
@@ -58,14 +60,13 @@ namespace Examples
         }
         
         void Start();
+        void EarlyUpdate(float dt);
         void Update(float dt);
         void PreWorldDraw();
         void Draw() {}
         void Suspend();
+        
         void NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties);
-        
-        
-    
     };
 }
 

@@ -89,7 +89,7 @@ void Pick3DObjectExample::Event_TouchUp(const AppInterface::TouchData& data)
 
 void Pick3DObjectExample::CreateWorldSpaceRayFromScreen(const Eegeo::v2& screenPoint, Ray& ray)
 {
-	const Eegeo::Camera::RenderCamera& renderCamera = GetRenderCamera();
+    const Eegeo::Camera::RenderCamera& renderCamera = GetGlobeCameraController().GetRenderCamera();
 
     // todo - this assumes viewport origin is 0,0
 

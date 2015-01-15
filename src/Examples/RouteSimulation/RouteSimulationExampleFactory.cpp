@@ -57,9 +57,9 @@ IExample* RouteSimulationExampleFactory::CreateExample() const
 	        m_defaultCameraControllerFactory.Create(),
             m_globeCameraTouchController,
 	        *m_pRouteSimulationGlobeCameraControllerFactory,
-            m_screenPropertiesProvider,
 	        m_routeSimulationViewFactory,
-	        m_world);
+	        m_world,
+            m_screenPropertiesProvider.GetScreenProperties());
 }
 
 std::string RouteSimulationExampleFactory::ExampleName() const

@@ -1,6 +1,7 @@
 // Copyright eeGeo Ltd (2012-2014), All Rights Reserved
 
 #include "ExampleController.h"
+#include "CameraFrustumStreamingVolume.h"
 
 namespace Examples
 {
@@ -8,7 +9,8 @@ namespace Examples
 ExampleController::ExampleController(Eegeo::EegeoWorld& world,
                                      IExampleControllerView& view,
                                      DefaultCameraControllerFactory& defaultCameraControllerFactory,
-                                     Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController)
+                                     Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController,
+                                     Examples::ScreenPropertiesProvider& screenPropertiesProvider)
 	: m_world(world)
     , m_defaultCameraControllerFactory(defaultCameraControllerFactory)
     , m_globeCameraTouchController(globeCameraTouchController)
@@ -19,6 +21,7 @@ ExampleController::ExampleController(Eegeo::EegeoWorld& world,
 	, m_previousExampleHandler(this, &ExampleController::ActivatePrevious)
 	, m_selectedExampleChangedHandler(this, &ExampleController::UpdateSelectedExample)
 	, m_uiVisible(false)
+    , m_screenPropertiesProvider(screenPropertiesProvider)
 {
 	m_view.AddSelectNextExampleHandler(m_nextExampleHandler);
 	m_view.AddSelectPreviousExampleHandler(m_previousExampleHandler);
@@ -118,6 +121,7 @@ void ExampleController::EarlyUpdate(float dt)
 	if(m_pCurrentExample != NULL)
 	{
 		m_pCurrentExample->EarlyUpdate(dt);
+        m_pCurrentExample->AfterCameraUpdate();
 	}
 }
 
@@ -166,18 +170,17 @@ void ExampleController::DestroyCurrentExample()
 		m_pCurrentExample = NULL;
 	}
 }
-
-const Eegeo::Camera::RenderCamera& ExampleController::GetCurrentActiveCamera() const
+    
+Eegeo::Camera::CameraState ExampleController::GetCurrentCameraState() const
 {
-    return m_pCurrentExample->GetRenderCamera();
+    return m_pCurrentExample->GetCurrentCameraState();
 }
-
-Eegeo::dv3 ExampleController::GetCurrentInterestPoint() const
+    
+Eegeo::Streaming::IStreamingVolume& ExampleController::GetCurrentStreamingVolume() const
 {
-    return m_pCurrentExample->GetInterestPoint();
+    return m_world.GetMapModule().GetStreamingVolume();
 }
-
-
+    
 void ExampleController::NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties)
 {
     if (m_pCurrentExample != NULL)
@@ -189,8 +192,7 @@ void ExampleController::NotifyScreenPropertiesChanged(const Eegeo::Rendering::Sc
     
     m_view.NotifyNeedsLayout();
 }
-
-
+    
 void ExampleController::Event_TouchRotate(const AppInterface::RotateData& data)
 {
 	if (m_pCurrentExample != NULL)

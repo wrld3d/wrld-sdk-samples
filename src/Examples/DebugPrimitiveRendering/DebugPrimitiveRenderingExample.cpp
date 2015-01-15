@@ -74,15 +74,17 @@ void DebugPrimitiveRenderingExample::Update(float dt)
     {
         m_frustumDrawTimer = 0.0;
         
+        Eegeo::Camera::RenderCamera renderCamera(GetGlobeCameraController().GetRenderCamera());
+        
         // Construct a frustum representation from the current render camera's ViewProjection matrix
         std::vector<Eegeo::Geometry::Plane> frustumPlanes;
         frustumPlanes.resize(6);
-        Eegeo::Geometry::BuildFrustumPlanesFromViewProjection(frustumPlanes, GetRenderCamera().GetViewProjectionMatrix());
+        Eegeo::Geometry::BuildFrustumPlanesFromViewProjection(frustumPlanes, renderCamera.GetViewProjectionMatrix());
         Eegeo::Geometry::Frustum frustum;
         frustum.Update(frustumPlanes);
         
         // Draw this frustum for 3 seconds.
-        m_debugRenderer.DrawWireFrustum(GetRenderCamera().GetEcefLocation(), frustum, Eegeo::Rendering::Colors::GREEN, 3.0f);
+        m_debugRenderer.DrawWireFrustum(renderCamera.GetEcefLocation(), frustum, Eegeo::Rendering::Colors::GREEN, 3.0f);
         
         // And draw some text for 4 seconds where the cube is
         Eegeo::dv3 ecefCenter3 = ConvertLatLongAltitudeToEcef(Eegeo::Space::LatLongAltitude::FromDegrees(37.78469,-122.40143, 400));

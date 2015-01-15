@@ -17,22 +17,20 @@ using namespace Eegeo::Routes::Simulation::Camera;
 
 namespace Examples
 {
-RouteSimulationAnimationExample::RouteSimulationAnimationExample(
-    RouteService& routeService,
-    RouteSimulationService& routeSimulationService,
-    RouteSimulationViewService& routeSimulationViewService,
-    Eegeo::Helpers::IFileIO& fileIO,
-    Eegeo::Rendering::AsyncTexturing::IAsyncTextureRequestor& textureRequestor,
-    RouteSimulationGlobeCameraControllerFactory& routeSimulationGlobeCameraControllerFactory,
-    const IScreenPropertiesProvider& screenPropertiesProvider,
-    EegeoWorld& world)
-	:m_routeService(routeService)
-	,m_routeSimulationService(routeSimulationService)
+    RouteSimulationAnimationExample::RouteSimulationAnimationExample(RouteService& routeService,
+                                                                     RouteSimulationService& routeSimulationService,
+                                                                     RouteSimulationViewService& routeSimulationViewService,
+                                                                     Eegeo::Helpers::IFileIO& fileIO,
+                                                                     Eegeo::Rendering::AsyncTexturing::IAsyncTextureRequestor& textureRequestor,
+                                                                     RouteSimulationGlobeCameraControllerFactory& routeSimulationGlobeCameraControllerFactory,
+                                                                     const IScreenPropertiesProvider& screenPropertiesProvider,
+                                                                     EegeoWorld& world)
+    :m_routeService(routeService)
+    ,m_routeSimulationService(routeSimulationService)
 	,m_routeSimulationViewService(routeSimulationViewService)
 	,m_fileIO(fileIO)
 	,m_textureRequestor(textureRequestor)
 	,m_routeSimulationGlobeCameraControllerFactory(routeSimulationGlobeCameraControllerFactory)
-    ,m_screenPropertiesProvider(screenPropertiesProvider)
 	,m_world(world)
 	,m_initialised(false)
 	,m_pRoute(NULL)
@@ -44,9 +42,8 @@ RouteSimulationAnimationExample::RouteSimulationAnimationExample(
 {
     RouteSimulationGlobeCameraControllerConfig routeSimCameraConfig = RouteSimulationGlobeCameraControllerConfig::CreateDefault();
     Eegeo::Camera::GlobeCamera::GlobeCameraTouchControllerConfiguration touchConfiguration = Eegeo::Camera::GlobeCamera::GlobeCameraTouchControllerConfiguration::CreateDefault();
-    m_pRouteSessionFollowCameraController = m_routeSimulationGlobeCameraControllerFactory.Create(false, touchConfiguration, routeSimCameraConfig);
-    const Eegeo::Rendering::ScreenProperties& screenProperties = m_screenPropertiesProvider.GetScreenProperties();
-    m_pRouteSessionFollowCameraController->GetCamera()->SetViewport(0.f, 0.f, screenProperties.GetScreenWidth(), screenProperties.GetScreenHeight());
+    const Eegeo::Rendering::ScreenProperties& screenProperties = screenPropertiesProvider.GetScreenProperties();
+    m_pRouteSessionFollowCameraController = m_routeSimulationGlobeCameraControllerFactory.Create(false, touchConfiguration, routeSimCameraConfig, screenProperties);
 }
 
 RouteSimulationAnimationExample::~RouteSimulationAnimationExample()
@@ -67,13 +64,10 @@ void RouteSimulationAnimationExample::Initialise()
 
 	m_pRouteSimulationSession = m_routeSimulationService.BeginRouteSimulationSession(*m_pRoute);
     
-
-    
-    Eegeo::Camera::RenderCamera* pRenderCamera = m_pRouteSessionFollowCameraController->GetCamera();
     const float fovDegrees = 45.f;
     const float nearClipDistance = 10.f;
     const float farClipDistance = 10000.f;
-    pRenderCamera->SetProjection(Eegeo::Math::Deg2Rad(fovDegrees), nearClipDistance, farClipDistance);
+    m_pRouteSessionFollowCameraController->SetProjection(Eegeo::Math::Deg2Rad(fovDegrees), nearClipDistance, farClipDistance);
 
 	Eegeo::m44 transform;
 	CalculateTransform(transform);
@@ -108,7 +102,7 @@ void RouteSimulationAnimationExample::EarlyUpdate(float dt)
 
 	m_pRouteSessionFollowCameraController->Update(dt);
     
-    const Eegeo::Camera::RenderCamera& renderCamera = *m_pRouteSessionFollowCameraController->GetCamera();
+    Eegeo::Camera::RenderCamera renderCamera(m_pRouteSessionFollowCameraController->GetRenderCamera());
     m_pViewBindingForCameraSession->UpdateCameraLocation(renderCamera.GetEcefLocation());
 }
 
@@ -160,6 +154,11 @@ void RouteSimulationAnimationExample::Suspend()
     
 	m_initialised = false;
 }
+    
+void RouteSimulationAnimationExample::NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties)
+{
+    m_pRouteSessionFollowCameraController->UpdateScreenProperties(screenProperties);
+}
 
 Route* RouteSimulationAnimationExample::BuildRoute()
 {
@@ -209,13 +208,12 @@ void RouteSimulationAnimationExample::CalculateTransform(Eegeo::m44& transform)
 {
 	const float scaleModifier = 100.f;
 	const float minimumScale = 3.f;
-
-	const Eegeo::dv3& position = m_pRouteSimulationSession->GetCurrentPositionEcef();
-	float scaleAsFunctionOfAltitude = Eegeo::Helpers::TransformHelpers::ComputeModelScaleForConstantScreenSize(
-	                                      *m_pRouteSessionFollowCameraController->GetCamera(),
-	                                      position
-	                                  ) / scaleModifier;
-
+    
+    const Eegeo::dv3& position = m_pRouteSimulationSession->GetCurrentPositionEcef();
+    float scaleAsFunctionOfAltitude =
+    Eegeo::Helpers::TransformHelpers::ComputeModelScaleForConstantScreenSize(m_pRouteSessionFollowCameraController->GetRenderCamera(),
+                                                                             position) / scaleModifier;
+    
     
 	Eegeo::m44 scale, rotation;
 	scale.Scale(Eegeo::Max(scaleAsFunctionOfAltitude, minimumScale));
@@ -223,20 +221,10 @@ void RouteSimulationAnimationExample::CalculateTransform(Eegeo::m44& transform)
 	m44::Mul(transform, scale, rotation);
 
 }
-
-void RouteSimulationAnimationExample::NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties)
+    
+Eegeo::Camera::CameraState RouteSimulationAnimationExample::GetCurrentCameraState() const
 {
-    m_pRouteSessionFollowCameraController->GetCamera()->SetViewport(0.f, 0.f, screenProperties.GetScreenWidth(), screenProperties.GetScreenHeight());
-}
-
-const Eegeo::Camera::RenderCamera& RouteSimulationAnimationExample::GetRenderCamera() const
-{
-    return *m_pRouteSessionFollowCameraController->GetCamera();
-}
-
-Eegeo::dv3 RouteSimulationAnimationExample::GetInterestPoint() const
-{
-    return m_pRouteSessionFollowCameraController->GetEcefInterestPoint();
+    return m_pRouteSessionFollowCameraController->GetCameraState();
 }
 
 void RouteSimulationAnimationExample::Event_TouchRotate(const AppInterface::RotateData& data)

@@ -77,17 +77,17 @@ namespace Examples
     
     void CameraSplineExample::NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties)
     {
-        m_pSplineCameraController->GetCamera()->SetViewport(0.f, 0.f, screenProperties.GetScreenWidth(), screenProperties.GetScreenHeight());
+        m_pSplineCameraController->UpdateScreenProperties(screenProperties);
     }
     
-    const Eegeo::Camera::RenderCamera& CameraSplineExample::GetRenderCamera() const
+    Eegeo::Camera::CameraState CameraSplineExample::GetCurrentCameraState() const
     {
-        return *m_pSplineCameraController->GetCamera();
-    }
-    
-    Eegeo::dv3 CameraSplineExample::GetInterestPoint() const
-    {
-        // todo - spline camera controller does not model streaming interest point
-        return m_pSplineCameraController->GetCamera()->GetEcefLocation().Norm() * Eegeo::Space::EarthConstants::Radius;
+        Eegeo::dv3 interestPoint(m_pSplineCameraController->GetRenderCamera().GetEcefLocation().Norm() * Eegeo::Space::EarthConstants::Radius);
+        Eegeo::Camera::RenderCamera renderCamera(m_pSplineCameraController->GetRenderCamera());
+        
+        return Eegeo::Camera::CameraState(renderCamera.GetEcefLocation(),
+                                          interestPoint,
+                                          renderCamera.GetViewMatrix(),
+                                          renderCamera.GetProjectionMatrix());
     }
 }

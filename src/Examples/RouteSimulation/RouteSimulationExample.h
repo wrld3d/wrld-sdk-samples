@@ -62,7 +62,6 @@ private:
 	Eegeo::Rendering::AsyncTexturing::IAsyncTextureRequestor& m_textureRequestor;
 	Eegeo::Routes::Simulation::Camera::RouteSimulationGlobeCameraControllerFactory& m_routeSimulationGlobeCameraControllerFactory;
 	Eegeo::EegeoWorld& m_world;
-    const IScreenPropertiesProvider& m_screenPropertiesProvider;
 	const IRouteSimulationExampleViewFactory& m_routeSimulationExampleViewFactory;
 	IRouteSimulationExampleView* m_pRouteSimulationView;
 	Examples::UIActionHandler<RouteSimulationExample> m_decreaseSpeedToggleHandler;
@@ -101,9 +100,9 @@ public:
 	                       Eegeo::Camera::GlobeCamera::GlobeCameraController* pDefaultCameraController,
                            Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& defaultCameraTouchController,
 	                       Eegeo::Routes::Simulation::Camera::RouteSimulationGlobeCameraControllerFactory& routeSimulationGlobeCameraControllerFactory,
-                           const IScreenPropertiesProvider& screenPropertiesProvider,
 	                       const IRouteSimulationExampleViewFactory& routeSimulationExampleViewFactory,
-	                       Eegeo::EegeoWorld& eegeoWorld);
+                           Eegeo::EegeoWorld& eegeoWorld,
+                           const Eegeo::Rendering::ScreenProperties& screenProperties);
 
 	static std::string GetName()
 	{
@@ -119,11 +118,13 @@ public:
 	void Update(float dt);
 	void Draw() {}
 	void Suspend();
+    
+    Eegeo::Camera::CameraState GetCurrentCameraState() const;
+    
+    virtual void NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties);
+    
     void NotifyViewNeedsLayout();
-    void NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties);
-    const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
-    Eegeo::dv3 GetInterestPoint() const;
-
+    
 	void Event_TouchRotate 			(const AppInterface::RotateData& data);
 	void Event_TouchRotate_Start	(const AppInterface::RotateData& data);
 	void Event_TouchRotate_End 		(const AppInterface::RotateData& data);

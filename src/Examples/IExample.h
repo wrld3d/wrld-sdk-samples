@@ -6,7 +6,8 @@
 #include "IAppOnMap.h"
 #include "Camera.h"
 #include "Rendering.h"
-
+#include "RenderCamera.h"
+#include "CameraState.h"
 #include <string>
 
 namespace Examples
@@ -24,15 +25,14 @@ namespace Examples
         virtual void PreWorldDraw() = 0;
         virtual void Draw() = 0;
         virtual void Suspend()= 0;
+        virtual void AfterCameraUpdate() { }
         
         virtual void NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties) = 0;
         
+        virtual Eegeo::Camera::CameraState GetCurrentCameraState() const = 0;
+
         virtual void NotifyViewNeedsLayout() = 0;
         
-        virtual const Eegeo::Camera::RenderCamera& GetRenderCamera() const = 0;
-        
-        virtual Eegeo::dv3 GetInterestPoint() const = 0;
-
         virtual void Event_TouchRotate 			(const AppInterface::RotateData& data) = 0;
         virtual void Event_TouchRotate_Start	(const AppInterface::RotateData& data) = 0;
         virtual void Event_TouchRotate_End 		(const AppInterface::RotateData& data) = 0;

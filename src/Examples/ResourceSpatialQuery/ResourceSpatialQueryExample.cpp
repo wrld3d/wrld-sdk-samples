@@ -2,6 +2,7 @@
 
 #include "ResourceSpatialQueryExample.h"
 #include "RenderCamera.h"
+#include "CameraState.h"
 
 namespace Examples
 {
@@ -18,7 +19,7 @@ ResourceSpatialQueryExample::ResourceSpatialQueryExample(Eegeo::Resources::Resou
 
 void ResourceSpatialQueryExample::Update(float dt)
 {
-	const Eegeo::dv3& ecefPointOfInterest = GetInterestPoint();
+    Eegeo::dv3 ecefPointOfInterest(GetCurrentCameraState().InterestPointEcef());
 
 	Eegeo::Streaming::MortonKey lastKey = m_key;
 

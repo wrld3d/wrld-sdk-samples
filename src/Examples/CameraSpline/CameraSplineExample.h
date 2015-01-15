@@ -45,11 +45,11 @@ public:
 	void Draw() {}
 	void Suspend();
     
-    void NotifyViewNeedsLayout() {}
+    virtual Eegeo::Camera::CameraState GetCurrentCameraState() const;
     
-    void NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties);
-    const Eegeo::Camera::RenderCamera& GetRenderCamera() const;
-    Eegeo::dv3 GetInterestPoint() const;
+    virtual void NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties);
+
+    void NotifyViewNeedsLayout() {}
     
     void Event_TouchRotate 			(const AppInterface::RotateData& data) { }
     void Event_TouchRotate_Start	(const AppInterface::RotateData& data) { }

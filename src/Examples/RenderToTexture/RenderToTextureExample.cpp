@@ -107,6 +107,11 @@ namespace Examples
         m_pRenderTexture = NULL;
     }
     
+    void RenderToTextureExample::EarlyUpdate(float dt)
+    {
+        GlobeCameraExampleBase::EarlyUpdate(dt);
+    }
+    
     void RenderToTextureExample::NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties)
     {
         if (m_screenProperties.GetScreenWidth() != screenProperties.GetScreenWidth() ||

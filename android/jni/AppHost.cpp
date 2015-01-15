@@ -239,7 +239,6 @@ void AppHost::RegisterAndroidSpecificExamples()
 			m_pApp->GetDefaultCameraControllerFactory(),
 			m_pApp->GetTouchController()));
 
-
 	exampleController.RegisterExample(new Examples::ShowJavaPlaceJumpUIExampleFactory(
 			m_nativeState,
 			m_pApp->GetDefaultCameraControllerFactory(),

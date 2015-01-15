@@ -3,6 +3,7 @@
 #include "PinsExample.h"
 #include "RegularTexturePageLayout.h"
 #include "MaterialIdGenerator.h"
+#include "GlobeCameraController.h"
 
 namespace Examples
 {
@@ -127,8 +128,9 @@ void PinsExample::Update(float dt)
 		m_addRemoveTimer = 0.0f;
 	}
 
-	// Update the PinsModule to query terrain heights and update screen space coordinats for the Pins.
-	m_pPinsModule->Update(dt, GetRenderCamera());
+    // Update the PinsModule to query terrain heights and update screen space coordinats for the Pins.
+    Eegeo::Camera::RenderCamera renderCamera(GetGlobeCameraController().GetRenderCamera());
+	m_pPinsModule->Update(dt, renderCamera);
 }
 
 void PinsExample::Draw()

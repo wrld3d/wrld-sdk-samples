@@ -6,6 +6,7 @@
 #include "DebugRenderable.h"
 #include "RenderCamera.h"
 #include "GLState.h"
+#include "GlobeCameraController.h"
 
 #include <limits>
 
@@ -59,7 +60,7 @@ void NavigationGraphExample::Draw()
 
 		Eegeo::dv3 ecefPosition = navGraph.GetCellInfo().GetFaceCentreECEF() + Eegeo::dv3::FromSingle(navGraph.GetUpECEF() * 2.0f);
         
-        const Eegeo::Camera::RenderCamera& renderCamera = GetRenderCamera();
+        Eegeo::Camera::RenderCamera renderCamera(GetGlobeCameraController().GetRenderCamera());
 		Eegeo::v3 m_cameraRelativePosition = Eegeo::Camera::CameraHelpers::CameraRelativePoint(ecefPosition, renderCamera.GetEcefLocation());
 		renderable.Draw(m_cameraRelativePosition, renderCamera, glState);
 	}

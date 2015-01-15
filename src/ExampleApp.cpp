@@ -123,7 +123,11 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     
     m_pLoadingScreen = CreateLoadingScreen(screenProperties, eegeoWorld.GetRenderingModule(), eegeoWorld.GetPlatformAbstractionModule());
     
-    m_pExampleController = new Examples::ExampleController(*m_pWorld, view, *m_pCameraControllerFactory, *m_pCameraTouchController);
+    m_pExampleController = new Examples::ExampleController(*m_pWorld,
+                                                           view,
+                                                           *m_pCameraControllerFactory,
+                                                           *m_pCameraTouchController,
+                                                           m_screenPropertiesProvider);
 
 	//register all generic examples
 
@@ -157,7 +161,6 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
 	m_pExampleController->RegisterCameraExample<Examples::ToggleTrafficExampleFactory>();
 	m_pExampleController->RegisterCameraExample<Examples::TrafficCongestionExampleFactory>();
 	m_pExampleController->RegisterCameraExample<Examples::WebRequestExampleFactory>();
-    
     m_pExampleController->RegisterCameraControllerScreenPropertiesProviderExample<Examples::RenderToTextureExampleFactory>(m_screenPropertiesProvider);
 }
 
@@ -184,18 +187,25 @@ void ExampleApp::Update (float dt)
 {
 	Eegeo::EegeoWorld& eegeoWorld = World();
     
-    
     m_pCameraTouchController->Update(dt);
 
 	eegeoWorld.EarlyUpdate(dt);
     
-
 	m_pExampleController->EarlyUpdate(dt);
     
-    const Eegeo::Camera::RenderCamera& currentRenderCamera = m_pExampleController->GetCurrentActiveCamera();
-    const Eegeo::dv3& currentInterestPoint = m_pExampleController->GetCurrentInterestPoint();
-
-	eegeoWorld.Update(dt, currentRenderCamera, currentInterestPoint);
+    Eegeo::Camera::CameraState cameraState(m_pExampleController->GetCurrentCameraState());
+    Eegeo::Streaming::IStreamingVolume& streamingVolume(m_pExampleController->GetCurrentStreamingVolume());
+    
+    Eegeo::EegeoUpdateParameters updateParameters(dt,
+                                                  cameraState.LocationEcef(),
+                                                  cameraState.InterestPointEcef(),
+                                                  cameraState.ViewMatrix(),
+                                                  cameraState.ProjectionMatrix(),
+                                                  streamingVolume,
+                                                  m_screenPropertiesProvider.GetScreenProperties());
+    
+	eegeoWorld.Update(updateParameters);
+    
     m_pExampleController->Update(dt);
     
     UpdateLoadingScreen(dt);
@@ -207,9 +217,15 @@ void ExampleApp::Draw (float dt)
     
     Eegeo::EegeoWorld& eegeoWorld = World();
     
-    const Eegeo::Camera::RenderCamera& currentRenderCamera = m_pExampleController->GetCurrentActiveCamera();
+    Eegeo::Camera::CameraState cameraState(m_pExampleController->GetCurrentCameraState());
     
-    eegeoWorld.Draw(currentRenderCamera, m_screenPropertiesProvider.GetScreenProperties());
+    Eegeo::EegeoDrawParameters drawParameters(cameraState.LocationEcef(),
+                                              cameraState.InterestPointEcef(),
+                                              cameraState.ViewMatrix(),
+                                              cameraState.ProjectionMatrix(),
+                                              m_screenPropertiesProvider.GetScreenProperties());
+    
+    eegeoWorld.Draw(drawParameters);
     
     m_pExampleController->Draw();
     

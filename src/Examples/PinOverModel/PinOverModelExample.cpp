@@ -1,7 +1,7 @@
 // Copyright eeGeo Ltd (2012-2014), All Rights Reserved
 
 #include "PinOverModelExample.h"
-
+#include "GlobeCameraController.h"
 #include "RegularTexturePageLayout.h"
 #include "RenderCamera.h"
 #include "Node.h"
@@ -114,8 +114,8 @@ void PinOverModelExample::Start()
 	Eegeo_ASSERT(m_pModel->GetRootNode());
 
     m_pNullMaterial = m_nullMaterialFactory.Create("PinOverModelExampleNullMaterial");
-
-	m_pMyModelRenderable = Eegeo_NEW (MyModelRenderable)(*m_pModel, m_globalFogging, *m_pNullMaterial, GetRenderCamera());
+    
+	m_pMyModelRenderable = Eegeo_NEW (MyModelRenderable)(*m_pModel, m_globalFogging, *m_pNullMaterial);
 	m_pMyRenderableFilter = Eegeo_NEW (MyRenderableFilter)(*m_pMyModelRenderable);
 	m_renderableFilters.AddRenderableFilter(*m_pMyRenderableFilter);
 }
@@ -124,17 +124,16 @@ void PinOverModelExample::Suspend()
 {
 	delete m_pModel;
 	m_pModel = NULL;
-    
-    
-    
 }
 
 void PinOverModelExample::Update(float dt)
 {
-	// Update the PinsModule to query terrain heights and update screen space coordinats for the Pins.
-	m_pPinsModule->Update(dt, GetRenderCamera());
+    // Update the PinsModule to query terrain heights and update screen space coordinats for the Pins.
+    Eegeo::Camera::RenderCamera renderCamera(GetGlobeCameraController().GetRenderCamera());
+	m_pPinsModule->Update(dt, renderCamera);
     
 	m_pModel->UpdateAnimator(1.0f/30.0f);
+    m_pMyModelRenderable->UpdateObserverLocation(renderCamera.GetEcefLocation());
 }
 
 void PinOverModelExample::Draw()
@@ -143,16 +142,19 @@ void PinOverModelExample::Draw()
 
 PinOverModelExample::MyModelRenderable::MyModelRenderable(Eegeo::Model& model,
         Eegeo::Lighting::GlobalFogging& globalFogging,
-        Eegeo::Rendering::Materials::NullMaterial& nullMat,
-                                                          const Eegeo::Camera::RenderCamera& renderCamera)
+        Eegeo::Rendering::Materials::NullMaterial& nullMat)
 	: Eegeo::Rendering::RenderableBase(Eegeo::Rendering::LayerIds::Buildings,
 	                                   Eegeo::Space::LatLong::FromDegrees(37.7858,-122.401).ToECEF(),
 	                                   &nullMat)
 	, m_model(model)
 	, m_globalFogging(globalFogging)
-    , m_renderCamera(renderCamera)
 {
 
+}
+    
+void PinOverModelExample::MyModelRenderable::UpdateObserverLocation(const Eegeo::dv3& observerLocationEcef)
+{
+    m_observerLocationEcef = observerLocationEcef;
 }
     
 void PinOverModelExample::MyModelRenderable::Render(Eegeo::Rendering::GLState& glState) const
@@ -163,7 +165,7 @@ void PinOverModelExample::MyModelRenderable::Render(Eegeo::Rendering::GLState& g
 	Eegeo::v3 forward = (location  - Eegeo::v3(0.f, 1.f, 0.f)).Norm().ToSingle();
 	Eegeo::v3 right(Eegeo::v3::Cross(up, forward).Norm());
 	forward = Eegeo::v3::Cross(up, right);
-	Eegeo::v3 cameraRelativePos = (location - m_renderCamera.GetEcefLocation()).ToSingle();
+	Eegeo::v3 cameraRelativePos = (location - m_observerLocationEcef).ToSingle();
 	Eegeo::m44 scaleMatrix;
 	scaleMatrix.Scale(1.f);
 	Eegeo::m44 cameraRelativeTransform;
