@@ -12,7 +12,7 @@
 #include "Helpers.h"
 #include "Web.h"
 #include "WebLoadRequestCompletionCallback.h"
-
+#include "Geofencing.h"
 
 #include <vector>
 
@@ -20,8 +20,6 @@ namespace Examples
 {
     class ExampleMeshRenderable;
     class ExampleMeshUnlitTexturedMaterial;
-    
-
     
     class MeshExample : public GlobeCameraExampleBase, Eegeo::Rendering::IRenderableFilter
     {
@@ -34,6 +32,7 @@ namespace Examples
                     Eegeo::Helpers::ITextureFileLoader& textureFileLoader,
                     Eegeo::Rendering::EnvironmentFlatteningService& environmentFlatteningService,
                     Eegeo::Web::IWebLoadRequestFactory& webRequestFactory,
+                    Eegeo::Geofencing::GeofenceController& geofenceController,
                     const MeshExampleConfig& config);
         
         virtual ~MeshExample();
@@ -64,6 +63,8 @@ namespace Examples
         Eegeo::Helpers::ITextureFileLoader& m_textureFileLoader;
         Eegeo::Rendering::EnvironmentFlatteningService& m_environmentFlatteningService;
         Eegeo::Web::IWebLoadRequestFactory& m_webRequestFactory;
+        Eegeo::Geofencing::GeofenceController& m_geofenceController;
+        Eegeo::Geofencing::GeofenceModel* m_pGeofence;
         MeshExampleConfig m_config;
         
         Eegeo::Web::TWebLoadRequestCompletionCallback<MeshExample> m_webLoadCallback;

@@ -30,8 +30,8 @@
 #include "RenderCamera.h"
 #include "IWebLoadRequestFactory.h"
 #include "IWebLoadRequest.h"
-
-
+#include "GeofenceController.h"
+#include "GeofenceModel.h"
 
 #include <algorithm>
 #include <cmath>
@@ -48,7 +48,7 @@ namespace Examples
             float u;
             float v;
         };
-        
+
         inline PositionUvVertex MakePositionUvVertex(const Eegeo::v3& pos, const Eegeo::v2& uv)
         {
             PositionUvVertex v;
@@ -59,7 +59,7 @@ namespace Examples
             v.v = uv.y;
             return v;
         }
-        
+
         inline PositionUvVertex GeometryHelpersVertexToPositionUvVertex(const GeometryHelpers::Vertex& v)
         {
             return MakePositionUvVertex(v.position, v.uv);
@@ -68,101 +68,102 @@ namespace Examples
         Eegeo::Rendering::VertexLayouts::VertexLayout* CreatePositionUvVertexLayout()
         {
             using namespace Eegeo::Rendering::VertexLayouts;
-            VertexLayout* pLayout = new (VertexLayout)(sizeof(PositionUvVertex));
-            
+            VertexLayout* pLayout = new(VertexLayout)(
+            sizeof(PositionUvVertex));
+
             int positionOffset = offsetof(PositionUvVertex, x);
-            pLayout->AddElement(VertexLayoutElement(Eegeo::Rendering::VertexSemanticId::Position, 3, GL_FLOAT,  positionOffset));
-            
+            pLayout->AddElement(VertexLayoutElement(Eegeo::Rendering::VertexSemanticId::Position, 3, GL_FLOAT, positionOffset));
+
             int uvOffset = offsetof(PositionUvVertex, u);
             pLayout->AddElement(VertexLayoutElement(Eegeo::Rendering::VertexSemanticId::UV, 2, GL_FLOAT, uvOffset));
-            
+
             return pLayout;
         }
-        
+
         Eegeo::Rendering::Mesh* CreateUnlitBoxMesh(float width, float height, const Eegeo::Rendering::VertexLayouts::VertexLayout& vertexLayout, Eegeo::Rendering::GlBufferPool& glBufferPool)
         {
-            Eegeo::v3 halfDimensions(width/2, height, width/2);
+            Eegeo::v3 halfDimensions(width / 2, height, width / 2);
             std::vector<GeometryHelpers::Vertex> boxVertices;
             std::vector<u16> triangleIndices;
-            
+
             BuildBox(halfDimensions, boxVertices, triangleIndices);
-            
+
             std::vector<PositionUvVertex> unlitVertices;
-            
+
             std::transform(boxVertices.begin(), boxVertices.end(), std::back_inserter(unlitVertices), GeometryHelpersVertexToPositionUvVertex);
-            
+
             size_t vertexBufferSizeBytes = sizeof(PositionUvVertex) * unlitVertices.size();
             size_t indexBufferSizeBytes = sizeof(u16) * triangleIndices.size();
-            
-            return new (Eegeo::Rendering::Mesh)(
-                                                vertexLayout,
-                                                glBufferPool,
-                                                unlitVertices.data(),
-                                                vertexBufferSizeBytes,
-                                                triangleIndices.data(),
-                                                indexBufferSizeBytes,
-                                                static_cast<u32>(triangleIndices.size()),
-                                                "UnlitBoxMesh"
-                                                );
+
+            return new(Eegeo::Rendering::Mesh)(
+                    vertexLayout,
+                    glBufferPool,
+                    unlitVertices.data(),
+                    vertexBufferSizeBytes,
+                    triangleIndices.data(),
+                    indexBufferSizeBytes,
+                    static_cast<u32>(triangleIndices.size()),
+                    "UnlitBoxMesh"
+            );
         }
-        
+
         ExampleMeshRenderable* CreateExampleMeshRenderable(Eegeo::Rendering::Mesh& mesh, Eegeo::Rendering::Materials::IMaterial& material, Eegeo::Rendering::VertexLayouts::VertexBindingPool& vertexBindingPool, const Eegeo::dv3 ecefPosition)
         {
             // A VertexBinding provides association between the fields of our vertex struct (in this case PositionUvVertex), and
             // corresponding attributes in our shader (in this case TexturedUniformColoredShader, which expects "Position" and "UV" attributes)
             const Eegeo::Rendering::VertexLayouts::VertexBinding& vertexBinding =
-            vertexBindingPool.GetVertexBinding(mesh.GetVertexLayout(), material.GetShader().GetVertexAttributes());
-            
+                    vertexBindingPool.GetVertexBinding(mesh.GetVertexLayout(), material.GetShader().GetVertexAttributes());
+
             // Create a WorldMeshRenderable, allowing the mesh to be inserted in render queue and drawn.
             const Eegeo::Rendering::LayerIds::Values renderLayer = Eegeo::Rendering::LayerIds::AfterWorld;
             const bool depthTest = true;
             const bool alphaBlend = true;
             const bool translateWithEnvironmentFlattening = true;
             const bool scaleWithEnvironmentFlattening = true;
-            
+
             ExampleMeshRenderable* pUnlitBoxRenderable = new ExampleMeshRenderable(renderLayer,
-                                                                                   ecefPosition,
-                                                                                   material,
-                                                                                   vertexBinding,
-                                                                                   mesh,
-                                                                                   Eegeo::Rendering::Colors::WHITE,
-                                                                                   depthTest,
-                                                                                   alphaBlend,
-                                                                                   translateWithEnvironmentFlattening,
-                                                                                   scaleWithEnvironmentFlattening);
-            
+                    ecefPosition,
+                    material,
+                    vertexBinding,
+                    mesh,
+                    Eegeo::Rendering::Colors::WHITE,
+                    depthTest,
+                    alphaBlend,
+                    translateWithEnvironmentFlattening,
+                    scaleWithEnvironmentFlattening);
+
             return pUnlitBoxRenderable;
         }
-        
+
         void DeleteRenderable(ExampleMeshRenderable* renderable)
         {
             delete renderable;
         }
-        
+
         Eegeo::m33 BuildBasisToEcef(double originLatitudeDegrees, double originLongitudeDegrees)
         {
             // create an orthogonal basis centred on originLocation, with positive y axis pointing up aligned with the Earth sphere normal
             Eegeo::Space::EcefTangentBasis basisFrame;
             Eegeo::Camera::CameraHelpers::EcefTangentBasisFromPointAndHeading(
-                                                                              Eegeo::Space::LatLong::FromDegrees(originLatitudeDegrees, originLongitudeDegrees).ToECEF(),
-                                                                              0.0,
-                                                                              basisFrame);
+                    Eegeo::Space::LatLong::FromDegrees(originLatitudeDegrees, originLongitudeDegrees).ToECEF(),
+                    0.0,
+                    basisFrame);
             Eegeo::m33 basisToEcef;
             basisFrame.GetBasisOrientationAsMatrix(basisToEcef);
-            
+
             return basisToEcef;
         }
-        
+
         Eegeo::m33 MakeEcefOrientation(float rotationRadiansYAxis, const Eegeo::m33& basisToEcef)
         {
             Eegeo::m33 localOrientation;
             localOrientation.RotateY(rotationRadiansYAxis);
-            
+
             Eegeo::m33 ecefOrientation;
             Eegeo::m33::Mul(ecefOrientation, basisToEcef, localOrientation);
             return ecefOrientation;
         }
-        
+
         float CalcFlatteningParam(float phase)
         {
             const float threshold = 0.8f;
@@ -171,24 +172,56 @@ namespace Examples
             float flatteningParam = Eegeo::Math::Lerp(minFlatteningScale, 1.f, clippedSine);
             return flatteningParam;
         }
-        
-        const float revsPerMinuteToRadiansPerSecond = Eegeo::Math::kPI*2.f/60.f;
-        
+
+        Eegeo::Geofencing::GeofenceModel* CreateGeofence()
+        {
+            const size_t BL = 0;
+            const size_t BR = 1;
+            const size_t TR = 2;
+            const size_t TL = 3;
+
+            std::vector<Eegeo::Space::LatLongAltitude> extVerts;
+            extVerts.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(37.803424, -122.431638, 0.0));
+            extVerts.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(37.804280, -122.425287, 0.0));
+            extVerts.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(37.806552, -122.425716, 0.0));
+            extVerts.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(37.805535, -122.432089, 0.0));
+
+            std::vector<Eegeo::Space::LatLongAltitude> intVerts;
+            intVerts.push_back(Eegeo::Space::LatLongAltitude::Lerp(extVerts[BL], extVerts[TR], 0.2f));
+            intVerts.push_back(Eegeo::Space::LatLongAltitude::Lerp(extVerts[BR], extVerts[TL], 0.2f));
+            intVerts.push_back(Eegeo::Space::LatLongAltitude::Lerp(extVerts[BL], extVerts[TR], 1.0f - 0.2f));
+            intVerts.push_back(Eegeo::Space::LatLongAltitude::Lerp(extVerts[BR], extVerts[TL], 1.0f - 0.2f));
+
+            const Eegeo::v4 polygonColor(1.0f, 0.0f, 0.0f, 0.5f);
+
+            return Eegeo::Geofencing::GeofenceModel::GeofenceBuilder(
+                    "sf_test",
+                    polygonColor,
+                    extVerts)
+                    .AddInteriorRing(intVerts)
+                    .AltitudeOffset(20.0f)
+                    .Build();
+        }
+
+        const float revsPerMinuteToRadiansPerSecond = Eegeo::Math::kPI * 2.f / 60.f;
     }
     
 
     MeshExample::MeshExample(Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
                              Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController,
-                                       Eegeo::Modules::Core::RenderingModule& renderingModule,
-                                       Eegeo::Helpers::ITextureFileLoader& textureFileLoader,
-                                       Eegeo::Rendering::EnvironmentFlatteningService& environmentFlatteningService,
-                                       Eegeo::Web::IWebLoadRequestFactory& webRequestFactory,
-                                       const MeshExampleConfig& config)
+                             Eegeo::Modules::Core::RenderingModule& renderingModule,
+                             Eegeo::Helpers::ITextureFileLoader& textureFileLoader,
+                             Eegeo::Rendering::EnvironmentFlatteningService& environmentFlatteningService,
+                             Eegeo::Web::IWebLoadRequestFactory& webRequestFactory,
+                             Eegeo::Geofencing::GeofenceController& geofenceController,
+                             const MeshExampleConfig& config)
     : GlobeCameraExampleBase(pCameraController, cameraTouchController)
     , m_renderingModule(renderingModule)
     , m_textureFileLoader(textureFileLoader)
     , m_environmentFlatteningService(environmentFlatteningService)
     , m_webRequestFactory(webRequestFactory)
+    , m_geofenceController(geofenceController)
+    , m_pGeofence(NULL)
     , m_config(config)
     , m_webLoadCallback(this, &MeshExample::OnWebLoadCompleted)
     , m_pPositionUvVertexLayout(NULL)
@@ -247,6 +280,13 @@ namespace Examples
         {
             Eegeo_GL(glDeleteTextures(1, &m_asyncTextureInfo.textureId));
         }
+
+        if(m_pGeofence != NULL)
+        {
+            m_geofenceController.RemoveGeofence(*m_pGeofence);
+            Eegeo_DELETE m_pGeofence;
+            m_pGeofence = NULL;
+        }
     }
     
     void MeshExample::Start()
@@ -304,6 +344,9 @@ namespace Examples
         ExampleMeshRenderable& southEastRenderable = *m_renderables[southToNorthColumns - 1];
         southEastRenderable.SetColor(Eegeo::Rendering::Colors::MAGENTA);
         southEastRenderable.SetEnvironmentFlattenTranslate(false);
+
+        m_pGeofence = CreateGeofence();
+        m_geofenceController.AddGeofence(*m_pGeofence);
     }
     
     void MeshExample::Update(float dt)
