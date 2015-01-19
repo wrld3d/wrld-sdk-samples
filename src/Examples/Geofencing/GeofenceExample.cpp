@@ -24,7 +24,7 @@ namespace Examples
             extVerts.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(37.806552, -122.425716, 0.0));
             extVerts.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(37.805535, -122.432089, 0.0));
 
-            // Lerp between the opposite corners to form an (optional) ring that will not be included in the goefence
+            // Lerp between the opposite corners to form an (optional) ring that will not be included in the geofence
             std::vector<Eegeo::Space::LatLongAltitude> intVerts;
             intVerts.push_back(Eegeo::Space::LatLongAltitude::Lerp(extVerts[BL], extVerts[TR], 0.2f));
             intVerts.push_back(Eegeo::Space::LatLongAltitude::Lerp(extVerts[BR], extVerts[TL], 0.2f));

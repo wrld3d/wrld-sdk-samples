@@ -582,7 +582,7 @@
 				E0287B361A2C802C00F44204 /* GlobeCameraExampleBase.h */,
 				E0FE7B0D1A2C99CA008754A2 /* DefaultCameraTouchControllerFactory.cpp */,
 				E0FE7B0E1A2C99CA008754A2 /* DefaultCameraTouchControllerFactory.h */,
-				99DE18C3D92FFEA7BA69EFE9 /* Goefencing */,
+				99DE18C3D92FFEA7BA69EFE9 /* Geofencing */,
 			);
 			path = Examples;
 			sourceTree = "<group>";
@@ -1088,7 +1088,7 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
-		99DE18C3D92FFEA7BA69EFE9 /* Goefencing */ = {
+		99DE18C3D92FFEA7BA69EFE9 /* Geofencing */ = {
 			isa = PBXGroup;
 			children = (
 				99DE1A6744EB9520483AAB16 /* GeofenceExample.cpp */,
@@ -1096,7 +1096,7 @@
 				99DE194254FAC9917ED3C17A /* GeofenceExampleFactory.cpp */,
 				99DE1B39E3763B1DDCC67C9E /* GeofenceExampleFactory.h */,
 			);
-			path = Goefencing;
+			path = Geofencing;
 			sourceTree = "<group>";
 		};
 		E0F992521A2F7F8E00CBFA18 /* Mesh */ = {
