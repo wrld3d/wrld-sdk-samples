@@ -3,6 +3,8 @@
 #include "EegeoWorld.h"
 #include "TrafficCongestionExample.h"
 #include <string>
+#include <GlobeCameraController.h>
+#include <CameraHelpers.h>
 
 namespace
 {
@@ -22,7 +24,14 @@ TrafficCongestionExample::TrafficCongestionExample(Eegeo::TrafficCongestion::ITr
 	, m_congestionValue(static_cast<int>(Eegeo::TrafficCongestion::CongestionLevel::Light))
 	, m_key(Eegeo::Streaming::MortonKey::CreateFromString("01131232132001"))
 {
+    Eegeo::Space::EcefTangentBasis cameraInterestBasis;
 
+    Eegeo::Camera::CameraHelpers::EcefTangentBasisFromPointAndHeading(
+            Eegeo::Space::LatLongAltitude::FromDegrees(37.787159, -122.400920, 0.0).ToECEF(),
+            45.0f,
+            cameraInterestBasis);
+
+    pCameraController->SetView(cameraInterestBasis, 200.0f);
 }
 
 void TrafficCongestionExample::Suspend()
