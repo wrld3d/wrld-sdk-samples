@@ -46,7 +46,6 @@ namespace Examples
                                          platformAbstractionModule.GetTextureFileLoader(),
                                          mapModule.GetEnvironmentFlatteningService(),
                                          platformAbstractionModule.GetWebLoadRequestFactory(),
-                                         m_world.GetGeofenceModule().GetController(),
                                          config);
 
     }
