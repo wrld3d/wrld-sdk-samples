@@ -44,6 +44,7 @@
 #include "ReadHeadingExampleFactory.h"
 #include "FireworksExampleFactory.h"
 #include "MeshExampleFactory.h"
+#include "GeofenceExampleFactory.h"
 
 
 namespace
@@ -131,7 +132,6 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
 
 	//register all generic examples
 
-    m_pExampleController->RegisterCameraExample<Examples::MeshExampleFactory>();
     m_pExampleController->RegisterScreenPropertiesProviderExample<Examples::CameraSplineExampleFactory>(m_screenPropertiesProvider);
     m_pExampleController->RegisterCameraExample<Examples::CameraTransitionExampleFactory>();
     m_pExampleController->RegisterCameraExample<Examples::ControlCityThemeExampleFactory>();
@@ -143,7 +143,9 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
 	m_pExampleController->RegisterCameraExample<Examples::EnvironmentNotifierExampleFactory>();
 	m_pExampleController->RegisterCameraExample<Examples::FileIOExampleFactory>();
     m_pExampleController->RegisterCameraExample<Examples::FireworksExampleFactory>();
+    m_pExampleController->RegisterCameraExample<Examples::GeofenceExampleFactory>();
 	m_pExampleController->RegisterCameraExample<Examples::LoadModelExampleFactory>();
+    m_pExampleController->RegisterCameraExample<Examples::MeshExampleFactory>();
 	m_pExampleController->RegisterCameraExample<Examples::ModifiedRenderingExampleFactory>();
 	m_pExampleController->RegisterCameraExample<Examples::NavigationGraphExampleFactory>();
 	m_pExampleController->RegisterCameraExample<Examples::Pick3DObjectExampleFactory>();
