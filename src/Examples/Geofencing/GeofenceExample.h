@@ -37,5 +37,6 @@ namespace Examples
     private:
         Eegeo::Geofencing::GeofenceController& m_geofenceController;
         Eegeo::Geofencing::GeofenceModel* m_pGeofence;
+        float m_elapsedTime;
     };
 }

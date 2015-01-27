@@ -49,6 +49,7 @@ namespace Examples
             Eegeo::Geofencing::GeofenceController& geofenceController)
     : GlobeCameraExampleBase(pCameraController, cameraTouchController)
     , m_geofenceController(geofenceController)
+    , m_elapsedTime(0.0f)
     {
         Eegeo::Space::EcefTangentBasis cameraInterestBasis;
 
@@ -78,6 +79,12 @@ namespace Examples
     
     void GeofenceExample::Update(float dt)
     {
+        m_elapsedTime += dt;
 
+        const float alpha = (Eegeo::Math::Sin(m_elapsedTime) + 1.0f) / 2.0f;
+
+        Eegeo::v4 currentColor = m_pGeofence->GetPolygonColor();
+        currentColor.w = alpha;
+        m_pGeofence->SetPolygonColor(currentColor);
     }
 }
