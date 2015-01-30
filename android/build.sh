@@ -27,15 +27,22 @@ if [ -z "${p}" ]; then
     usage
 fi
 
+ndkbuild_arguments=""
+
 if [ "$c" == "cpp11" ]; then
-   ndkbuild_arguments="COMPILE_CPP_11=1"
+    echo "Building for cpp11"
+    # note the leading space. on windows, ndk-build.cmd seems to tokenise on spaces    
+    ndkbuild_arguments=" COMPILE_CPP_11=1"
 fi
 
 # running on msys (basically the git provided shell we use on windows)
 if [ "$OSTYPE" == "msys" ]; then
-    cmd "/C ndk-build.cmd" $ndkbuild_arguments
+    cpu_count=$NUMBER_OF_PROCESSORS        
+    cmd "/C ndk-build.cmd -j${cpu_count}${ndkbuild_arguments}"
 else
-    ndk-build $ndkbuild_arguments
+    cpu_count=$(sysctl -n hw.ncpu)
+    echo "compile_android.step.sh (osx): cpu count: ${cpu_count}"
+    ndk-build -j$cpu_count$ndkbuild_arguments
 fi
 
 resultcode=$?
@@ -46,6 +53,5 @@ if [ $resultcode = 0 ] ; then
 else
   echo "COMPILE ANDROID PROJECT FAILED"
 fi
-
 
 exit $resultcode
