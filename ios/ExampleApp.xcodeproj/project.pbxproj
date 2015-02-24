@@ -249,6 +249,10 @@
 		EE3D48D61A9C8C9200D520D8 /* BuildingHighlightExample.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE3D48D11A9C8C9200D520D8 /* BuildingHighlightExample.cpp */; };
 		EE3D48D71A9C8C9200D520D8 /* BuildingHighlightExampleFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE3D48D31A9C8C9200D520D8 /* BuildingHighlightExampleFactory.cpp */; };
 		EE3D48D81A9C8C9200D520D8 /* BuildingHighlightExampleFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE3D48D31A9C8C9200D520D8 /* BuildingHighlightExampleFactory.cpp */; };
+		EE3D49421A9CD9AA00D520D8 /* PolyChartExample.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE3D493E1A9CD9AA00D520D8 /* PolyChartExample.cpp */; };
+		EE3D49431A9CD9AA00D520D8 /* PolyChartExample.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE3D493E1A9CD9AA00D520D8 /* PolyChartExample.cpp */; };
+		EE3D49441A9CD9AA00D520D8 /* PolyChartExampleFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE3D49401A9CD9AA00D520D8 /* PolyChartExampleFactory.cpp */; };
+		EE3D49451A9CD9AA00D520D8 /* PolyChartExampleFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE3D49401A9CD9AA00D520D8 /* PolyChartExampleFactory.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -483,6 +487,10 @@
 		EE3D48D21A9C8C9200D520D8 /* BuildingHighlightExample.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BuildingHighlightExample.h; sourceTree = "<group>"; };
 		EE3D48D31A9C8C9200D520D8 /* BuildingHighlightExampleFactory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BuildingHighlightExampleFactory.cpp; sourceTree = "<group>"; };
 		EE3D48D41A9C8C9200D520D8 /* BuildingHighlightExampleFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BuildingHighlightExampleFactory.h; sourceTree = "<group>"; };
+		EE3D493E1A9CD9AA00D520D8 /* PolyChartExample.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PolyChartExample.cpp; sourceTree = "<group>"; };
+		EE3D493F1A9CD9AA00D520D8 /* PolyChartExample.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PolyChartExample.h; sourceTree = "<group>"; };
+		EE3D49401A9CD9AA00D520D8 /* PolyChartExampleFactory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PolyChartExampleFactory.cpp; sourceTree = "<group>"; };
+		EE3D49411A9CD9AA00D520D8 /* PolyChartExampleFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PolyChartExampleFactory.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -546,6 +554,7 @@
 		18143847192B6E4500BCDF2E /* Examples */ = {
 			isa = PBXGroup;
 			children = (
+				EE3D493D1A9CD9AA00D520D8 /* PolyChart */,
 				EE3D48D01A9C8C9200D520D8 /* BuildingHighlight */,
 				E02BD0C71A24F79B00663A00 /* ScreenPropertiesProvider.h */,
 				E0F992521A2F7F8E00CBFA18 /* Mesh */,
@@ -1137,6 +1146,17 @@
 			path = BuildingHighlight;
 			sourceTree = "<group>";
 		};
+		EE3D493D1A9CD9AA00D520D8 /* PolyChart */ = {
+			isa = PBXGroup;
+			children = (
+				EE3D493E1A9CD9AA00D520D8 /* PolyChartExample.cpp */,
+				EE3D493F1A9CD9AA00D520D8 /* PolyChartExample.h */,
+				EE3D49401A9CD9AA00D520D8 /* PolyChartExampleFactory.cpp */,
+				EE3D49411A9CD9AA00D520D8 /* PolyChartExampleFactory.h */,
+			);
+			path = PolyChart;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1266,6 +1286,7 @@
 				E0F992821A30911800CBFA18 /* MeshExample.cpp in Sources */,
 				222E064C1948B08B0004FFD9 /* ExampleApp.cpp in Sources */,
 				7E1A2494197FF84E000ED126 /* CameraSplineExampleFactory.cpp in Sources */,
+				EE3D49431A9CD9AA00D520D8 /* PolyChartExample.cpp in Sources */,
 				222E064E1948B08B0004FFD9 /* Pick3DObjectExample.cpp in Sources */,
 				222E064F1948B08B0004FFD9 /* EnvironmentNotifierExampleFactory.cpp in Sources */,
 				222E06501948B08B0004FFD9 /* DebugPrimitiveRenderingExampleFactory.cpp in Sources */,
@@ -1303,6 +1324,7 @@
 				222E066C1948B08B0004FFD9 /* DebugPrimitiveRenderingExample.cpp in Sources */,
 				222E066D1948B08B0004FFD9 /* LoadModelExampleFactory.cpp in Sources */,
 				222E066E1948B08B0004FFD9 /* EnvironmentFlatteningExampleFactory.cpp in Sources */,
+				EE3D49451A9CD9AA00D520D8 /* PolyChartExampleFactory.cpp in Sources */,
 				222E066F1948B08B0004FFD9 /* ScreenPickExample.cpp in Sources */,
 				222E06701948B08B0004FFD9 /* UIHelpers.cpp in Sources */,
 				E0F992801A30911800CBFA18 /* GeometryHelpers.cpp in Sources */,
@@ -1364,6 +1386,7 @@
 				E0F992811A30911800CBFA18 /* MeshExample.cpp in Sources */,
 				181438AD192B6E4500BCDF2E /* EnvironmentNotifierExample.cpp in Sources */,
 				7E1A2493197FF84E000ED126 /* CameraSplineExampleFactory.cpp in Sources */,
+				EE3D49421A9CD9AA00D520D8 /* PolyChartExample.cpp in Sources */,
 				1899718F192CAE7E00E0E9F1 /* ModifiedRenderingExampleFactory.cpp in Sources */,
 				18AB38FA192B729F00F15546 /* iOSRouteMatchingExampleViewFactory.mm in Sources */,
 				181438BB192B6E4500BCDF2E /* RouteSimulationAnimationExample.cpp in Sources */,
@@ -1401,6 +1424,7 @@
 				181438BD192B6E4500BCDF2E /* ScreenPickExample.cpp in Sources */,
 				18AB38E5192B71F100F15546 /* UIHelpers.cpp in Sources */,
 				18C45A7119658A5C009B18A8 /* AppInputDelegate.mm in Sources */,
+				EE3D49441A9CD9AA00D520D8 /* PolyChartExampleFactory.cpp in Sources */,
 				181438C3192B6E4500BCDF2E /* WebRequestExample.cpp in Sources */,
 				1899719B192CB17100E0E9F1 /* PinsExampleFactory.cpp in Sources */,
 				E0F9927F1A30911800CBFA18 /* GeometryHelpers.cpp in Sources */,

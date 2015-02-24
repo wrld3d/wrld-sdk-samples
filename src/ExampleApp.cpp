@@ -30,6 +30,7 @@
 #include "PinOverModelExampleFactory.h"
 #include "PinsExampleFactory.h"
 #include "PODAnimationExampleFactory.h"
+#include "PolyChartExampleFactory.h"
 #include "RenderToTextureExampleFactory.h"
 #include "ResourceSpatialQueryExampleFactory.h"
 #include "RouteDrawingExampleFactory.h"
@@ -154,6 +155,7 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
 	m_pExampleController->RegisterCameraExample<Examples::PinsExampleFactory>();
 	m_pExampleController->RegisterCameraExample<Examples::PinOverModelExampleFactory>();
 	m_pExampleController->RegisterCameraExample<Examples::PODAnimationExampleFactory>();
+    m_pExampleController->RegisterCameraExample<Examples::PolyChartExampleFactory>();
 	m_pExampleController->RegisterCameraExample<Examples::ReadHeadingExampleFactory>();
 	m_pExampleController->RegisterCameraExample<Examples::ResourceSpatialQueryExampleFactory>();
 	m_pExampleController->RegisterCameraExample<Examples::RouteDrawingExampleFactory>();
