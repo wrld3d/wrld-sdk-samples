@@ -15,7 +15,7 @@ namespace Examples
         GeofenceExample(
                 Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
                 Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController,
-                Eegeo::Geofencing::GeofenceController& geofenceController);
+                Eegeo::Data::Geofencing::GeofenceController& geofenceController);
         
         virtual ~GeofenceExample();
         
@@ -35,8 +35,8 @@ namespace Examples
         void Draw() {}
         void Suspend() {}
     private:
-        Eegeo::Geofencing::GeofenceController& m_geofenceController;
-        Eegeo::Geofencing::GeofenceModel* m_pGeofence;
+        Eegeo::Data::Geofencing::GeofenceController& m_geofenceController;
+        Eegeo::Data::Geofencing::GeofenceModel* m_pGeofence;
         float m_elapsedTime;
     };
 }

@@ -4,6 +4,8 @@
 #include "GeofenceExample.h"
 #include "LatLongAltitude.h"
 #include "GeofenceModel.h"
+#include "GeofenceRenderer.h"
+#include "GeofenceViewFactory.h"
 #include "GeofenceController.h"
 #include "GlobeCameraController.h"
 
@@ -11,7 +13,7 @@ namespace Examples
 {
     namespace
     {
-        Eegeo::Geofencing::GeofenceModel* CreateGeofence()
+        Eegeo::Data::Geofencing::GeofenceModel* CreateGeofence()
         {
             const size_t BL = 0;
             const size_t BR = 1;
@@ -33,7 +35,7 @@ namespace Examples
 
             const Eegeo::v4 polygonColor(1.0f, 0.0f, 0.0f, 0.5f);
 
-            return Eegeo::Geofencing::GeofenceModel::GeofenceBuilder(
+            return Eegeo::Data::Geofencing::GeofenceModel::GeofenceBuilder(
                     "sf_test",
                     polygonColor,
                     extVerts)
@@ -46,7 +48,7 @@ namespace Examples
     GeofenceExample::GeofenceExample(
             Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
             Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController,
-            Eegeo::Geofencing::GeofenceController& geofenceController)
+            Eegeo::Data::Geofencing::GeofenceController& geofenceController)
     : GlobeCameraExampleBase(pCameraController, cameraTouchController)
     , m_geofenceController(geofenceController)
     , m_elapsedTime(0.0f)
@@ -65,7 +67,7 @@ namespace Examples
     {
         if(m_pGeofence != NULL)
         {
-            m_geofenceController.RemoveGeofence(*m_pGeofence);
+            m_geofenceController.Remove(*m_pGeofence);
             Eegeo_DELETE m_pGeofence;
             m_pGeofence = NULL;
         }
@@ -74,7 +76,7 @@ namespace Examples
     void GeofenceExample::Start()
     {
         m_pGeofence = CreateGeofence();
-        m_geofenceController.AddGeofence(*m_pGeofence);
+        m_geofenceController.Add(*m_pGeofence);
     }
     
     void GeofenceExample::Update(float dt)

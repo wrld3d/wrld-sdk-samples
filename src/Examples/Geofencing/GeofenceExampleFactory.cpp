@@ -2,6 +2,7 @@
 
 #include "GeofenceExampleFactory.h"
 #include "GeofenceExample.h"
+#include "DataModule.h"
 
 namespace Examples
 {
@@ -19,7 +20,7 @@ namespace Examples
     {
         return new Examples::GeofenceExample(m_defaultCameraControllerFactory.Create(),
                                              m_globeCameraTouchController,
-                                             m_world.GetGeofenceModule().GetController());
+                                             m_world.GetDataModule().GetGeofenceModule().GetController());
 
     }
     

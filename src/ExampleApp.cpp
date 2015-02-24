@@ -15,6 +15,7 @@
 #include "TerrainModelModule.h"
 
 //example factories
+#include "BuildingHighlightExampleFactory.h"
 #include "CameraTransitionExampleFactory.h"
 #include "ControlCityThemeExampleFactory.h"
 #include "DebugPrimitiveRenderingExampleFactory.h"
@@ -132,6 +133,7 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
 
 	//register all generic examples
 
+    m_pExampleController->RegisterCameraExample<Examples::BuildingHighlightExampleFactory>();
     m_pExampleController->RegisterScreenPropertiesProviderExample<Examples::CameraSplineExampleFactory>(m_screenPropertiesProvider);
     m_pExampleController->RegisterCameraExample<Examples::CameraTransitionExampleFactory>();
     m_pExampleController->RegisterCameraExample<Examples::ControlCityThemeExampleFactory>();
