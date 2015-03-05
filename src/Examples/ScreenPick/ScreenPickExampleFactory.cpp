@@ -27,7 +27,7 @@ IExample* ScreenPickExampleFactory::CreateExample() const
     Eegeo::Modules::Core::DebugRenderingModule& debugRenderingModule = m_world.GetDebugRenderingModule();
     
 	return new Examples::ScreenPickExample(terrainModelModule.GetTerrainHeightProvider(),
-	                                       terrainModelModule.GetCollisionMeshResourceRepository(),
+	                                       terrainModelModule.GetTerrainCollisionMeshResourceRepository(),
                                            debugRenderingModule.GetDebugRenderer(),
 	                                       m_defaultCameraControllerFactory.Create(),
                                            m_globeCameraTouchController);

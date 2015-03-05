@@ -223,6 +223,10 @@
 		99DE127CB0F89EE0EC063B69 /* GeofenceExampleFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 99DE194254FAC9917ED3C17A /* GeofenceExampleFactory.cpp */; };
 		99DE1B124717F52915B5CA1F /* GeofenceExample.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 99DE1A6744EB9520483AAB16 /* GeofenceExample.cpp */; };
 		99DE1B511870C369B6D569F0 /* GeofenceExampleFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 99DE194254FAC9917ED3C17A /* GeofenceExampleFactory.cpp */; };
+		E022EB751AA8D69100841D7B /* EnvironmentRayCasterExample.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E022EB731AA8D69100841D7B /* EnvironmentRayCasterExample.cpp */; };
+		E022EB761AA8D69100841D7B /* EnvironmentRayCasterExample.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E022EB731AA8D69100841D7B /* EnvironmentRayCasterExample.cpp */; };
+		E022EB791AA8D6B400841D7B /* EnvironmentRayCasterExampleFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E022EB771AA8D6B400841D7B /* EnvironmentRayCasterExampleFactory.cpp */; };
+		E022EB7A1AA8D6B400841D7B /* EnvironmentRayCasterExampleFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E022EB771AA8D6B400841D7B /* EnvironmentRayCasterExampleFactory.cpp */; };
 		E0287B371A2C802C00F44204 /* GlobeCameraExampleBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0287B351A2C802C00F44204 /* GlobeCameraExampleBase.cpp */; };
 		E0287B381A2C802C00F44204 /* GlobeCameraExampleBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0287B351A2C802C00F44204 /* GlobeCameraExampleBase.cpp */; };
 		E0645A961A27518E009C2349 /* DefaultCameraControllerFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0645A941A27518E009C2349 /* DefaultCameraControllerFactory.cpp */; };
@@ -462,6 +466,10 @@
 		99DE1A6744EB9520483AAB16 /* GeofenceExample.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GeofenceExample.cpp; sourceTree = "<group>"; };
 		99DE1B39E3763B1DDCC67C9E /* GeofenceExampleFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeofenceExampleFactory.h; sourceTree = "<group>"; };
 		99DE1D7F1921CD2B767B81E8 /* GeofenceExample.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeofenceExample.h; sourceTree = "<group>"; };
+		E022EB731AA8D69100841D7B /* EnvironmentRayCasterExample.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = EnvironmentRayCasterExample.cpp; path = EnvironmentRayCaster/EnvironmentRayCasterExample.cpp; sourceTree = "<group>"; };
+		E022EB741AA8D69100841D7B /* EnvironmentRayCasterExample.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EnvironmentRayCasterExample.h; path = EnvironmentRayCaster/EnvironmentRayCasterExample.h; sourceTree = "<group>"; };
+		E022EB771AA8D6B400841D7B /* EnvironmentRayCasterExampleFactory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = EnvironmentRayCasterExampleFactory.cpp; path = EnvironmentRayCaster/EnvironmentRayCasterExampleFactory.cpp; sourceTree = "<group>"; };
+		E022EB781AA8D6B400841D7B /* EnvironmentRayCasterExampleFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EnvironmentRayCasterExampleFactory.h; path = EnvironmentRayCaster/EnvironmentRayCasterExampleFactory.h; sourceTree = "<group>"; };
 		E0287B351A2C802C00F44204 /* GlobeCameraExampleBase.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = GlobeCameraExampleBase.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		E0287B361A2C802C00F44204 /* GlobeCameraExampleBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = GlobeCameraExampleBase.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		E02BD0C71A24F79B00663A00 /* ScreenPropertiesProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScreenPropertiesProvider.h; sourceTree = "<group>"; };
@@ -554,6 +562,7 @@
 		18143847192B6E4500BCDF2E /* Examples */ = {
 			isa = PBXGroup;
 			children = (
+				E022EB721AA8D66000841D7B /* EnvironmentRayCaster */,
 				EE3D493D1A9CD9AA00D520D8 /* PolyChart */,
 				EE3D48D01A9C8C9200D520D8 /* BuildingHighlight */,
 				E02BD0C71A24F79B00663A00 /* ScreenPropertiesProvider.h */,
@@ -1117,6 +1126,17 @@
 			path = Geofencing;
 			sourceTree = "<group>";
 		};
+		E022EB721AA8D66000841D7B /* EnvironmentRayCaster */ = {
+			isa = PBXGroup;
+			children = (
+				E022EB731AA8D69100841D7B /* EnvironmentRayCasterExample.cpp */,
+				E022EB741AA8D69100841D7B /* EnvironmentRayCasterExample.h */,
+				E022EB771AA8D6B400841D7B /* EnvironmentRayCasterExampleFactory.cpp */,
+				E022EB781AA8D6B400841D7B /* EnvironmentRayCasterExampleFactory.h */,
+			);
+			name = EnvironmentRayCaster;
+			sourceTree = "<group>";
+		};
 		E0F992521A2F7F8E00CBFA18 /* Mesh */ = {
 			isa = PBXGroup;
 			children = (
@@ -1322,6 +1342,7 @@
 				222E066A1948B08B0004FFD9 /* ResourceSpatialQueryExample.cpp in Sources */,
 				222E066B1948B08B0004FFD9 /* RouteThicknessPolicyExampleFactory.cpp in Sources */,
 				222E066C1948B08B0004FFD9 /* DebugPrimitiveRenderingExample.cpp in Sources */,
+				E022EB7A1AA8D6B400841D7B /* EnvironmentRayCasterExampleFactory.cpp in Sources */,
 				222E066D1948B08B0004FFD9 /* LoadModelExampleFactory.cpp in Sources */,
 				222E066E1948B08B0004FFD9 /* EnvironmentFlatteningExampleFactory.cpp in Sources */,
 				EE3D49451A9CD9AA00D520D8 /* PolyChartExampleFactory.cpp in Sources */,
@@ -1332,6 +1353,7 @@
 				222E06711948B08B0004FFD9 /* WebRequestExample.cpp in Sources */,
 				222E06721948B08B0004FFD9 /* PinsExampleFactory.cpp in Sources */,
 				222E06731948B08B0004FFD9 /* ModifiedRenderingExample.cpp in Sources */,
+				E022EB761AA8D69100841D7B /* EnvironmentRayCasterExample.cpp in Sources */,
 				222E06741948B08B0004FFD9 /* FileIOExampleFactory.cpp in Sources */,
 				18E1845F19891C990065F81D /* PostProcessVignetteRenderer.cpp in Sources */,
 				18F91C3819C70502000617D8 /* ReadHeadingExampleFactory.cpp in Sources */,
@@ -1422,6 +1444,7 @@
 				18997180192CAA8C00E0E9F1 /* EnvironmentFlatteningExampleFactory.cpp in Sources */,
 				18C45A7319658A5C009B18A8 /* AppRunner.mm in Sources */,
 				181438BD192B6E4500BCDF2E /* ScreenPickExample.cpp in Sources */,
+				E022EB791AA8D6B400841D7B /* EnvironmentRayCasterExampleFactory.cpp in Sources */,
 				18AB38E5192B71F100F15546 /* UIHelpers.cpp in Sources */,
 				18C45A7119658A5C009B18A8 /* AppInputDelegate.mm in Sources */,
 				EE3D49441A9CD9AA00D520D8 /* PolyChartExampleFactory.cpp in Sources */,
@@ -1432,6 +1455,7 @@
 				181438B1192B6E4500BCDF2E /* ModifiedRenderingExample.cpp in Sources */,
 				18997186192CAC5400E0E9F1 /* FileIOExampleFactory.cpp in Sources */,
 				189971A4192CB35600E0E9F1 /* RouteDrawingExampleFactory.cpp in Sources */,
+				E022EB751AA8D69100841D7B /* EnvironmentRayCasterExample.cpp in Sources */,
 				1899719E192CB24B00E0E9F1 /* PODAnimationExampleFactory.cpp in Sources */,
 				18E1845E19891C990065F81D /* PostProcessVignetteRenderer.cpp in Sources */,
 				18F91C3719C70502000617D8 /* ReadHeadingExampleFactory.cpp in Sources */,

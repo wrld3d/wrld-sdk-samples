@@ -34,7 +34,7 @@ RouteSimulationExampleFactory::RouteSimulationExampleFactory(Eegeo::EegeoWorld& 
 	    terrainModelModule.GetTerrainHeightProvider(),
 	    mapModule.GetEnvironmentFlatteningService(),
 	    mapModule.GetResourceCeilingProvider(),
-	    terrainModelModule.GetCollisionMeshResourceRepository()
+	    terrainModelModule.GetTerrainCollisionMeshResourceRepository()
 	);
 }
 

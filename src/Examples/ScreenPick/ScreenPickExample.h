@@ -8,6 +8,7 @@
 #include "Terrain.h"
 #include "Camera.h"
 #include "DebugRendering.h"
+#include "Collision.h"
 
 namespace Examples
 {
@@ -30,7 +31,7 @@ private:
 
 public:
 	ScreenPickExample(Eegeo::Resources::Terrain::Heights::TerrainHeightProvider& terrainHeightProvider,
-	                  const Eegeo::Resources::Terrain::Collision::ICollisionMeshResourceProvider& collisionMeshResourceProvider,
+	                  const Eegeo::Collision::ICollisionBvhProvider& collisionMeshResourceProvider,
                       Eegeo::DebugRendering::DebugRenderer& debugRenderer,
 	                  Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
                         Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController);

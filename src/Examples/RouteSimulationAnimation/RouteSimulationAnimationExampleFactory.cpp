@@ -35,7 +35,7 @@ RouteSimulationAnimationExampleFactory::RouteSimulationAnimationExampleFactory(E
             terrainModelModule.GetTerrainHeightProvider(),
 	        mapModule.GetEnvironmentFlatteningService(),
 	        mapModule.GetResourceCeilingProvider(),
-	        terrainModelModule.GetCollisionMeshResourceRepository()
+	        terrainModelModule.GetTerrainCollisionMeshResourceRepository()
 	);
 }
 

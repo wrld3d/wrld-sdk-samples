@@ -20,6 +20,7 @@
 #include "ControlCityThemeExampleFactory.h"
 #include "DebugPrimitiveRenderingExampleFactory.h"
 #include "DynamicText3DExampleFactory.h"
+#include "EnvironmentRayCasterExampleFactory.h"
 #include "EnvironmentFlatteningExampleFactory.h"
 #include "EnvironmentNotifierExampleFactory.h"
 #include "FileIOExampleFactory.h"
@@ -144,6 +145,7 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
 	m_pExampleController->RegisterCameraExample<Examples::DynamicText3DExampleFactory>();
 	m_pExampleController->RegisterCameraExample<Examples::EnvironmentFlatteningExampleFactory>();
 	m_pExampleController->RegisterCameraExample<Examples::EnvironmentNotifierExampleFactory>();
+    m_pExampleController->RegisterCameraExample<Examples::EnvironmentRayCasterExampleFactory>();
 	m_pExampleController->RegisterCameraExample<Examples::FileIOExampleFactory>();
     m_pExampleController->RegisterCameraExample<Examples::FireworksExampleFactory>();
     m_pExampleController->RegisterCameraExample<Examples::GeofenceExampleFactory>();
