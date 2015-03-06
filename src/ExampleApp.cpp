@@ -39,6 +39,7 @@
 #include "ScreenPickExampleFactory.h"
 #include "ScreenUnprojectExampleFactory.h"
 #include "SingleCityExampleFactory.h"
+#include "StencilAreaExampleFactory.h"
 #include "ToggleTrafficExampleFactory.h"
 #include "TrafficCongestionExampleFactory.h"
 #include "WebRequestExampleFactory.h"
@@ -164,6 +165,7 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
 	m_pExampleController->RegisterCameraExample<Examples::ScreenPickExampleFactory>();
 	m_pExampleController->RegisterCameraExample<Examples::ScreenUnprojectExampleFactory>();
 	m_pExampleController->RegisterCameraExample<Examples::SingleCityExampleFactory>();
+    m_pExampleController->RegisterCameraExample<Examples::StencilAreaExampleFactory>();
 	m_pExampleController->RegisterCameraExample<Examples::ToggleTrafficExampleFactory>();
 	m_pExampleController->RegisterCameraExample<Examples::TrafficCongestionExampleFactory>();
 	m_pExampleController->RegisterCameraExample<Examples::WebRequestExampleFactory>();
