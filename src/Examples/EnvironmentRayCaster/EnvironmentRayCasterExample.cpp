@@ -21,10 +21,14 @@ namespace Examples
                     return Eegeo::v4(139.f/255.f, 69.f/255.f, 19.f/255.f, 1.f);
                 case Eegeo::Collision::CollisionGroup::Trees:
                     return Eegeo::v4(0.f, 1.f, 0.f, 1.f);
+                case Eegeo::Collision::CollisionGroup::Roads:
+                    return Eegeo::v4(1.f, 0.f, 0.f, 1.f);
+                case Eegeo::Collision::CollisionGroup::Rail:
+                    return Eegeo::v4(0.f, 0.f, 0.f, 1.f);
                 default:
                     break;
             }
-            return Eegeo::v4(0.f, 0.f, 0.f, 1.f);
+            return Eegeo::v4(1.f, 1.f, 1.f, 1.f);
         }
     }
 

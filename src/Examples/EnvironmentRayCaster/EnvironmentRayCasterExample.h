@@ -22,7 +22,9 @@ namespace Examples
      *      brown: terrain
      *      blue: buildings
      *      green: trees / forrest
-     *      red: no collision found
+     *      red: roads
+     *      black: rail
+     *      white: no collision found
      *  A white line shows the surface normal of the environment mesh at the point of intersection
      */
     class EnvironmentRayCasterExample : public GlobeCameraExampleBase
