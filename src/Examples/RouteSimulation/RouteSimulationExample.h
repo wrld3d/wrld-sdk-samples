@@ -30,17 +30,17 @@
 #include "IRouteSimulationExampleView.h"
 #include "UIActionHandler.h"
 #include "ScreenPropertiesProvider.h"
+#include "Rendering.h"
 
 namespace Examples
 {
 class RouteSimulationExampleObserver : public Eegeo::Routes::Simulation::IRouteSimulationSessionObserver
 {
 public:
-	RouteSimulationExampleObserver(
-	    Eegeo::Routes::Simulation::View::RouteSimulationModelBinding* pModelBinding,
-	    Eegeo::Model* pModel)
+	RouteSimulationExampleObserver(Eegeo::Routes::Simulation::View::RouteSimulationModelBinding* pModelBinding,
+                                   std::vector<Eegeo::Rendering::SceneModels::SceneModel*>& vehicleModels)
 		: m_pModelBinding(pModelBinding)
-		, m_pModel(pModel)
+        , m_vehicleModels(vehicleModels)
 	{
 	}
 
@@ -48,8 +48,7 @@ public:
 
 private:
 	Eegeo::Routes::Simulation::View::RouteSimulationModelBinding* m_pModelBinding;
-	Eegeo::Model* m_pModel;
-	Eegeo::Node* GetRandomModelNode() const;
+    const std::vector<Eegeo::Rendering::SceneModels::SceneModel*>& m_vehicleModels;
 };
 
 class RouteSimulationExample : public GlobeCameraExampleBase
@@ -62,6 +61,9 @@ private:
 	Eegeo::Rendering::AsyncTexturing::IAsyncTextureRequestor& m_textureRequestor;
 	Eegeo::Routes::Simulation::Camera::RouteSimulationGlobeCameraControllerFactory& m_routeSimulationGlobeCameraControllerFactory;
 	Eegeo::EegeoWorld& m_world;
+    Eegeo::Rendering::SceneModels::SceneModelFactory& m_sceneModelFactory;
+    Eegeo::Rendering::Filters::SceneModelRenderableFilter& m_sceneModelRenderableFilter;
+    
 	const IRouteSimulationExampleViewFactory& m_routeSimulationExampleViewFactory;
 	IRouteSimulationExampleView* m_pRouteSimulationView;
 	Examples::UIActionHandler<RouteSimulationExample> m_decreaseSpeedToggleHandler;
@@ -69,11 +71,13 @@ private:
 	Examples::UIActionHandler<RouteSimulationExample> m_followCameraToggleHandler;
 	Examples::UIActionHandler<RouteSimulationExample> m_rotateToFollowToggledHandler;
 	Examples::UIActionHandler<RouteSimulationExample> m_directionChangedHandler;
-	Examples::UIActionHandler<RouteSimulationExample> m_roadSideChangedHandler;
-
+    Examples::UIActionHandler<RouteSimulationExample> m_roadSideChangedHandler;
+    
 	bool m_initialised;
 	bool m_usingFollowCamera;
-	Eegeo::Model* m_pModel;
+    Eegeo::Rendering::SceneModels::SceneModel* m_pVehicleModel1;
+    Eegeo::Rendering::SceneModels::SceneModel* m_pVehicleModel2;
+    std::vector<Eegeo::Rendering::SceneModels::SceneModel*> m_switchableVehicleModels;
 	Eegeo::Routes::Route* m_pRoute;
 	Eegeo::Routes::Style::Thickness::IdentityRouteThicknessPolicy m_routeThicknessPolicy;
 
@@ -97,7 +101,9 @@ public:
 	                       Eegeo::Routes::Simulation::View::RouteSimulationViewService& routeSimulationViewService,
 	                       Eegeo::Helpers::IFileIO& fileIO,
 	                       Eegeo::Rendering::AsyncTexturing::IAsyncTextureRequestor& textureRequestor,
-	                       Eegeo::Camera::GlobeCamera::GlobeCameraController* pDefaultCameraController,
+	                       Eegeo::Rendering::SceneModels::SceneModelFactory& sceneModelFactory,
+                           Eegeo::Rendering::Filters::SceneModelRenderableFilter& sceneModelRenderableFilter,
+                           Eegeo::Camera::GlobeCamera::GlobeCameraController* pDefaultCameraController,
                            Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& defaultCameraTouchController,
 	                       Eegeo::Routes::Simulation::Camera::RouteSimulationGlobeCameraControllerFactory& routeSimulationGlobeCameraControllerFactory,
 	                       const IRouteSimulationExampleViewFactory& routeSimulationExampleViewFactory,
@@ -158,9 +164,9 @@ private:
 
 	Eegeo::Routes::Route* BuildRoute() const;
 
-	Eegeo::Model* LoadModelVehicleNodes(Eegeo::Node*& pVehicle1,
-	                                    Eegeo::Node*& pVehicle2,
-	                                    Eegeo::Node*& pVehicle3) const;
+    void LoadModelVehicleNodes(Eegeo::Rendering::SceneModels::SceneModel*& pVehicleModel1,
+                               Eegeo::Rendering::SceneModels::SceneModel*& pVehicleModel2,
+                               std::vector<Eegeo::Rendering::SceneModels::SceneModel*>& out_vehicleModels) const;
 };
 }
 

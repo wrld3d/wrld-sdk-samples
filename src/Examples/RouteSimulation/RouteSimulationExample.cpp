@@ -12,6 +12,10 @@
 #include "ScreenProperties.h"
 #include "GlobeCameraTouchController.h"
 #include "GlobeCameraController.h"
+#include "SceneModel.h"
+#include "SceneModelFactory.h"
+#include "SceneModelRenderableFilter.h"
+#include "Random.h"
 
 using namespace Eegeo;
 using namespace Eegeo::Routes;
@@ -22,19 +26,12 @@ using namespace Eegeo::Routes::Simulation::Camera;
 namespace Examples
 {
 
-Eegeo::Node* RouteSimulationExampleObserver::GetRandomModelNode() const
-{
-	Eegeo::Node* parentNode = m_pModel->FindNode("Vehicles");
-	Eegeo_ASSERT(parentNode);
-	Eegeo_ASSERT(parentNode->GetNumChildNodes() >= 3);
-	int randomIndex = int((rand() % parentNode->GetNumChildNodes()));
-	return parentNode->GetChildNode(randomIndex);
-}
-
 void RouteSimulationExampleObserver::OnLinkReached(const Eegeo::Routes::Simulation::RouteSimulationSession& session) const
 {
 	// At each new link, we change the model being drawn
-	m_pModelBinding->SetModel(GetRandomModelNode());
+    int vehicleIndex = rand() % (int)(m_vehicleModels.size());
+    Eegeo::Rendering::SceneModels::SceneModel* vehicleModel = m_vehicleModels.at(vehicleIndex);
+	m_pModelBinding->SetModel(vehicleModel);
 
 	const dv3& ecef = session.GetCurrentPositionEcef();
 
@@ -48,6 +45,8 @@ RouteSimulationExample::RouteSimulationExample(RouteService& routeService,
         RouteSimulationViewService& routeSimulationViewService,
         Eegeo::Helpers::IFileIO& fileIO,
         Eegeo::Rendering::AsyncTexturing::IAsyncTextureRequestor& textureRequestor,
+        Eegeo::Rendering::SceneModels::SceneModelFactory& sceneModelFactory,
+        Eegeo::Rendering::Filters::SceneModelRenderableFilter& sceneModelRenderableFilter,
         Eegeo::Camera::GlobeCamera::GlobeCameraController* pDefaultCameraController,
         Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& defaultCameraTouchController,
         RouteSimulationGlobeCameraControllerFactory& routeSimulationGlobeCameraControllerFactory,
@@ -62,6 +61,8 @@ RouteSimulationExample::RouteSimulationExample(RouteService& routeService,
 	,m_textureRequestor(textureRequestor)
 	,m_routeSimulationGlobeCameraControllerFactory(routeSimulationGlobeCameraControllerFactory)
 	,m_world(world)
+    ,m_sceneModelFactory(sceneModelFactory)
+    ,m_sceneModelRenderableFilter(sceneModelRenderableFilter)
 	,m_initialised(false)
 	,m_pRoute(NULL)
 	,m_usingFollowCamera(false)
@@ -75,6 +76,8 @@ RouteSimulationExample::RouteSimulationExample(RouteService& routeService,
 	, m_linkSpeedMultiplier(1.f)
     ,m_pRouteSessionFollowCameraController(NULL)
     , m_pRouteSimulationView(NULL)
+    ,m_pVehicleModel1(NULL)
+    ,m_pVehicleModel2(NULL)
 	,m_decreaseSpeedToggleHandler(this, &RouteSimulationExample::DecreaseSpeedFollowed)
 	,m_increaseSpeedToggleHandler(this, &RouteSimulationExample::IncreaseSpeedFollowed)
 	,m_followCameraToggleHandler(this, &RouteSimulationExample::ToggleFollowCamera)
@@ -103,8 +106,7 @@ void RouteSimulationExample::Initialise()
 	//Load a model containing the nodes which will be bound to our route simulation sessions. For
 	//a detailed explation see http://sdk.eegeo.com/developers/mobiledocs/loading_rendering_models
 	//or see LoadModelExample.cpp.
-	Eegeo::Node *pVehicle1, *pVehicle2, *pVehicle3;
-	m_pModel = LoadModelVehicleNodes(pVehicle1, pVehicle2, pVehicle3);
+    LoadModelVehicleNodes(m_pVehicleModel1, m_pVehicleModel2, m_switchableVehicleModels);
 
 	//Build the route - see RouteDrawingExample.cpp for a detailed explanation of building routes, or
 	//check out http://sdk.eegeo.com/developers/mobiledocs/routes
@@ -150,9 +152,9 @@ void RouteSimulationExample::Initialise()
 	//A pointer is stored to the view bindings, such that we can access them to change the local
 	//model transform as the vehicle changes direction (when the route alternates between rewind
 	//and regular playback), or to disable and enable the rendering of the views.
-	m_pViewBindingForCycleSession = m_routeSimulationViewService.CreateBinding(*m_pSessionCycle, pVehicle1, transform);
-	m_pViewBindingForOscillatingSession = m_routeSimulationViewService.CreateBinding(*m_pSessionAlternatingSpeedChanger, pVehicle2, transform);
-	m_pViewBindingForCameraSession = m_routeSimulationViewService.CreateBinding(*m_pSessionCamera, pVehicle3, transform);
+	m_pViewBindingForCycleSession = m_routeSimulationViewService.CreateBinding(*m_pSessionCycle, m_switchableVehicleModels.at(0), transform);
+	m_pViewBindingForOscillatingSession = m_routeSimulationViewService.CreateBinding(*m_pSessionAlternatingSpeedChanger, m_pVehicleModel1, transform);
+	m_pViewBindingForCameraSession = m_routeSimulationViewService.CreateBinding(*m_pSessionCamera, m_pVehicleModel2, transform);
 
 
     m_pRouteSessionFollowCameraController->SetTiltEnabled(true);
@@ -161,7 +163,7 @@ void RouteSimulationExample::Initialise()
 
 
 	// Observe the progress along the route
-	m_pExampleObserver = Eegeo_NEW(RouteSimulationExampleObserver)(m_pViewBindingForCycleSession, m_pModel);
+	m_pExampleObserver = Eegeo_NEW(RouteSimulationExampleObserver)(m_pViewBindingForCycleSession, m_switchableVehicleModels);
 	m_pSessionCycle->AddSessionObserver(*m_pExampleObserver);
 
 	//Create some UI buttons for controlling the simulation...
@@ -210,9 +212,9 @@ void RouteSimulationExample::Update(float dt)
                                              ? m_pRouteSessionFollowCameraController->GetRenderCamera()
                                              : GetGlobeCameraController().GetRenderCamera());
     
-    m_pViewBindingForCycleSession->UpdateCameraLocation(renderCamera.GetEcefLocation());
-    m_pViewBindingForOscillatingSession->UpdateCameraLocation(renderCamera.GetEcefLocation());
-    m_pViewBindingForCameraSession->UpdateCameraLocation(renderCamera.GetEcefLocation());
+    m_pViewBindingForCycleSession->Update();
+    m_pViewBindingForOscillatingSession->Update();
+    m_pViewBindingForCameraSession->Update();
     
 	//The route session for which we want to project a position to (in this case, the ecef interest
 	//point) should be updated giving it the latest position.
@@ -254,7 +256,7 @@ void RouteSimulationExample::Suspend()
 	m_routeSimulationViewService.DestroyBinding(m_pViewBindingForCycleSession);
 	m_routeSimulationViewService.DestroyBinding(m_pViewBindingForOscillatingSession);
 	m_routeSimulationViewService.DestroyBinding(m_pViewBindingForCameraSession);
-
+    
 	m_routeSimulationService.EndRouteSimulationSession(m_pSessionCycle);
 	m_routeSimulationService.EndRouteSimulationSession(m_pSessionAlternatingSpeedChanger);
 	m_routeSimulationService.EndRouteSimulationSession(m_pSessionCamera);
@@ -265,9 +267,17 @@ void RouteSimulationExample::Suspend()
 
 	m_routeService.DestroyRoute(m_pRoute);
 	m_pRoute = NULL;
-
-	delete m_pModel;
-	m_pModel = NULL;
+    
+    delete m_pVehicleModel1;
+    m_pVehicleModel1 = NULL;
+    delete m_pVehicleModel2;
+    m_pVehicleModel2 = NULL;
+    
+    for(int i = 0; i < 3; i++)
+    {
+        delete m_switchableVehicleModels.at(i);
+    }
+    m_switchableVehicleModels.clear();
 
 	delete m_pRouteSessionFollowCameraController;
 	m_pRouteSessionFollowCameraController = NULL;
@@ -395,21 +405,16 @@ Route* RouteSimulationExample::BuildRoute() const
 	return m_routeService.CreateRoute(points, routeStyle, false);
 }
 
-Eegeo::Model* RouteSimulationExample::LoadModelVehicleNodes(Eegeo::Node*& pVehicle1,
-        Eegeo::Node*& pVehicle2,
-        Eegeo::Node*& pVehicle3) const
+    void RouteSimulationExample::LoadModelVehicleNodes(Eegeo::Rendering::SceneModels::SceneModel*& pVehicleModel1,
+                                                       Eegeo::Rendering::SceneModels::SceneModel*& pVehicleModel2,
+                                                       std::vector<Eegeo::Rendering::SceneModels::SceneModel*>& out_vehicleModels) const
 {
-	Eegeo::Model* pModel = Eegeo::Model::CreateFromPODFile("route_simulation_example/SanFrancisco_Vehicles.pod", m_fileIO, &m_textureRequestor, "route_simulation_example/");
-	Eegeo::Node* parentNode = pModel->FindNode("Vehicles");
-
-	Eegeo_ASSERT(parentNode);
-	Eegeo_ASSERT(parentNode->GetNumChildNodes() >= 3);
-
-	pVehicle1 = parentNode->GetChildNode(0);
-	pVehicle2 = parentNode->GetChildNode(1);
-	pVehicle3 = parentNode->GetChildNode(2);
-
-	return pModel;
+    pVehicleModel1 = m_sceneModelFactory.CreateSceneModelFromFile("route_simulation_example/car1.pod", m_fileIO, m_textureRequestor, "route_simulation_example/");
+    pVehicleModel2 = m_sceneModelFactory.CreateSceneModelFromFile("route_simulation_example/car2.pod", m_fileIO, m_textureRequestor, "route_simulation_example/");
+    
+    out_vehicleModels.push_back(pVehicleModel1->Clone());
+    out_vehicleModels.push_back(pVehicleModel2->Clone());
+    out_vehicleModels.push_back(m_sceneModelFactory.CreateSceneModelFromFile("route_simulation_example/car3.pod", m_fileIO, m_textureRequestor, "route_simulation_example/"));
 }
 
 void RouteSimulationExample::NotifyViewNeedsLayout()

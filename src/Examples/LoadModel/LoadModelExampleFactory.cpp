@@ -9,6 +9,8 @@
 #include "IPlatformAbstractionModule.h"
 #include "AsyncLoadersModule.h"
 #include "LightingModule.h"
+#include "SceneModelsModule.h"
+#include "DebugRenderingModule.h"
 
 namespace Examples
 {
@@ -27,12 +29,16 @@ IExample* LoadModelExampleFactory::CreateExample() const
 {
     Eegeo::Modules::IPlatformAbstractionModule& platformAbstractionModule = m_world.GetPlatformAbstractionModule();
     Eegeo::Modules::Core::AsyncLoadersModule& asyncLoadersModule = m_world.GetAsyncLoadersModule();
-    Eegeo::Modules::Core::LightingModule& lightingModule = m_world.GetLightingModule();
+    Eegeo::Modules::Core::DebugRenderingModule& debugRenderingModule = m_world.GetDebugRenderingModule();
+    Eegeo::Modules::Core::SceneModelsModule& sceneModelsModule = m_world.GetCoreModule().GetSceneModelsModule();
     
 	return new Examples::LoadModelExample(
 	                                      platformAbstractionModule.GetFileIO(),
 	                                      asyncLoadersModule.GetLocalAsyncTextureLoader(),
-	                                      lightingModule.GetGlobalFogging(),
+                                          sceneModelsModule.GetSceneModelFactory(),
+                                          sceneModelsModule.GetMaterialResourceRepository(),
+                                          sceneModelsModule.GetSceneModelRenderableFilter(),
+                                          debugRenderingModule.GetDebugRenderer(),
 	                                      m_defaultCameraControllerFactory.Create(),
                                           m_globeCameraTouchController);
 }
