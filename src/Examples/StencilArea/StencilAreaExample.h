@@ -9,22 +9,20 @@
 #include "LatLongAltitude.h"
 #include "GlobeCameraExampleBase.h"
 #include "VectorMath.h"
+#include <vector>
 
 namespace Examples
 {
     class StencilAreaExample : public GlobeCameraExampleBase
     {
     private:
-        Eegeo::Data::StencilArea::StencilAreaModel* m_pDundeeEastWard;
-        Eegeo::Data::StencilArea::StencilAreaPaletteModel* m_pDundeeEastPalette;
+        typedef std::vector<Eegeo::Data::StencilArea::StencilAreaPaletteModel*> TPalettes;
+        typedef std::vector<Eegeo::Data::StencilArea::StencilAreaModel*> TOutlines;
         
-        Eegeo::Data::StencilArea::StencilAreaModel* m_pCircleArea;
-        Eegeo::Data::StencilArea::StencilAreaPaletteModel* m_pCirclePalette;
+        TPalettes m_palettes;
+        TOutlines m_outlines;
         
-        Eegeo::Data::StencilArea::StencilAreaModel* m_pDundeeWestWard;
-        Eegeo::Data::StencilArea::StencilAreaPaletteModel* m_pDundeeWestPalette;
-        Eegeo::Data::StencilArea::StencilAreaController& m_StencilAreaController;
-        
+        Eegeo::Data::StencilArea::StencilAreaController& m_controller;
     public:
         StencilAreaExample(
                          Eegeo::Data::StencilArea::StencilAreaController& StencilAreaController,
@@ -35,6 +33,7 @@ namespace Examples
         {
             return "StencilAreaExample";
         }
+        
         std::string Name() const
         {
             return GetName();
@@ -50,9 +49,5 @@ namespace Examples
         void Event_TouchPan				(const AppInterface::PanData& data);
         void Event_TouchDown            (const AppInterface::TouchData& data);
         void Event_TouchUp              (const AppInterface::TouchData& data);
-        
-    private:
-        void CreateDundeeEastData();
-        void CreateDundeeWestData();
     };
 }

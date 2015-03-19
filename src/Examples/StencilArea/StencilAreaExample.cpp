@@ -11,41 +11,18 @@
 
 namespace Examples
 {
-    namespace
-    {
-        const Eegeo::v4 ScottishNationalParty(1.f, 204.f/255.f, 0.f, 0.5f);
-        const Eegeo::v4 Labour(204.f/255.f, 0.f, 0.f, 0.5f);
-        const Eegeo::v4 LiberalDemocrats(1.f, 153.f/255.f, 0.f, 0.5f);
-        const Eegeo::v4 Conservative(51.f/255.f, 51.f/255.f, 153.f/255.f, 0.5f);
-        const Eegeo::v4 Other(0.7f, 0.7f, 0.7f, 0.5f);
-        
-        const Eegeo::v4 ScottishNationalPartyNoAlpha(1.f, 204.f/255.f, 0.f, 1.f);
-        const Eegeo::v4 LabourNoAlpha(204.f/255.f, 0.f, 0.f, 1.f);
-        const Eegeo::v4 LiberalDemocratsNoAlpha(1.f, 153.f/255.f, 0.f, 2.f);
-        const Eegeo::v4 ConservativeNoAlpha(51.f/255.f, 51.f/255.f, 153.f/255.f, 1.f);
-        const Eegeo::v4 OtherNoAlpha(0.7f, 0.7f, 0.7f, 1.f);
-        
-        const Eegeo::v4 GreenParty(0.f, 1.f, 0.f, 0.5f);
-    }
-    
     StencilAreaExample::StencilAreaExample(
                                        Eegeo::Data::StencilArea::StencilAreaController& StencilAreaController,
                                        Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
                                        Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController)
     : GlobeCameraExampleBase(pCameraController, cameraTouchController)
-    , m_StencilAreaController(StencilAreaController)
-    , m_pDundeeEastPalette(NULL)
-    , m_pDundeeWestPalette(NULL)
-    , m_pDundeeEastWard(NULL)
-    , m_pDundeeWestWard(NULL)
-    , m_pCirclePalette(NULL)
-    , m_pCircleArea(NULL)
+    , m_controller(StencilAreaController)
     {
         Eegeo::Space::EcefTangentBasis cameraInterestBasis;
         
         Eegeo::Camera::CameraHelpers::EcefTangentBasisFromPointAndHeading(
-                                                                          Eegeo::Space::LatLong::FromDegrees(56.459956, -2.978128).ToECEF(),
-                                                                          16.472872f,
+                                                                          Eegeo::Space::LatLong::FromDegrees(37.793348, -122.399035).ToECEF(),
+                                                                          354.824249f,
                                                                           cameraInterestBasis);
         
         pCameraController->SetView(cameraInterestBasis, 1900.0f);
@@ -53,40 +30,55 @@ namespace Examples
     
     void StencilAreaExample::Start()
     {
-        CreateDundeeEastData();
-        CreateDundeeWestData();
+        m_palettes.push_back(Eegeo::Data::StencilArea::StencilAreaPaletteModel::StencilAreaPaletteBuilder("0", Eegeo::v4(0.f, 0.f/255.f, 255.f/255.f, 0.4f)).Build());
+        m_palettes.push_back(Eegeo::Data::StencilArea::StencilAreaPaletteModel::StencilAreaPaletteBuilder("1", Eegeo::v4(0.f, 128.f/255.f, 255.f/255.f, 0.4f)).Build());
+        m_palettes.push_back(Eegeo::Data::StencilArea::StencilAreaPaletteModel::StencilAreaPaletteBuilder("2", Eegeo::v4(0.f, 255.f/255.f, 128.f/255.f, 0.4f)).Build());
+        m_palettes.push_back(Eegeo::Data::StencilArea::StencilAreaPaletteModel::StencilAreaPaletteBuilder("3", Eegeo::v4(0.f, 255.f/255.f, 0.f/255.f, 0.4f)).Build());
+        m_palettes.push_back(Eegeo::Data::StencilArea::StencilAreaPaletteModel::StencilAreaPaletteBuilder("4", Eegeo::v4(128.f/255.f, 255.f/255.f, 0.f, 0.4f)).Build());
+        m_palettes.push_back(Eegeo::Data::StencilArea::StencilAreaPaletteModel::StencilAreaPaletteBuilder("5", Eegeo::v4(255.f/255.f, 255.f/255.f, 0.f, 0.4f)).Build());
+        m_palettes.push_back(Eegeo::Data::StencilArea::StencilAreaPaletteModel::StencilAreaPaletteBuilder("6", Eegeo::v4(255.f/255.f, 128.f/255.f, 0.f, 0.4f)).Build());
+        m_palettes.push_back(Eegeo::Data::StencilArea::StencilAreaPaletteModel::StencilAreaPaletteBuilder("7", Eegeo::v4(255.f/255.f, 0.f/255.f, 0.f, 0.4f)).Build());
+
+        typedef std::vector<std::vector<Eegeo::Space::LatLongAltitude> > TDistricts;
+        TDistricts districtOutlines;
+        Data::SanFranciscoDistricts(districtOutlines);
         
-        m_pCirclePalette = Eegeo::Data::StencilArea::StencilAreaPaletteModel::StencilAreaPaletteBuilder("circle_palette", GreenParty).Build();
-        m_pCircleArea = Eegeo::Data::StencilArea::StencilAreaModel::StencilAreaBuilder("circle_area",
-                                                                                       *m_pCirclePalette,
-                                                                                       Eegeo::Space::LatLongAltitude::FromDegrees(56.459977, -2.978189,0),
-                                                                                       80.f,
-                                                                                       Eegeo::Rendering::StencilMapLayerMask::TransportAndTerrain,
-                                                                                       150.f)
-                                                                                    .Build();
+        // outlineAltitudeOffsets are terrain heights (from ITerrainHeightLookup) at outline centroids
+        const float outlineAltitudeOffsets[] = {4.6849f, 43.7334f, 2.6585f, 90.3125f, 75.8662f, 102.4601f, 44.9174f, 66.8289f, 75.8662f, 114.1066f, 133.8441f, 133.8441f, 62.8317f, 114.9324f, 118.5516f, 95.9089f, 95.5290f, 74.7607f, 51.2341f, 75.5237f, 25.9373f, 73.1260f, 25.9373f, 150.2888f, 89.1085f, 51.5655f, 114.1066f, 100.2126f, 70.4457f, 97.8528f, 20.2937f, 60.0656f, 85.6781f, 104.2594f, 99.6410f, 116.9411f, 214.2081f, 96.4998f, 210.9473f, 253.4782f, 153.0558f, 83.6688f, 96.4998f, 201.9720f, 131.3402f, 179.9836f, 253.4782f, 71.6693f, 103.3735f, 97.8528f, 182.9989f, 198.2886f, 198.2886f, 210.7315f, 214.2081f, 68.3862f, 180.9597f, 95.9089f, 114.9324f, 89.3736f, 46.2380f, 46.2380f, 9.2913f, 38.6931f, 66.5644f, 68.5033f, 59.7500f, 87.9804f, 87.3458f, 180.5154f, 31.2882f, 85.6422f, 29.3151f, 86.2003f, 84.5633f, 24.2386f, 68.4895f, 67.2186f, 65.6160f, 93.8255f, 65.5967f, 93.8255f, 49.4197f, 102.0758f, 48.5513f, 32.5650f, 32.5650f, 18.5832f, 15.9373f, 65.6160f, 145.7743f, 153.0558f, 24.2386f, 83.5538f, 21.3396f, 102.0758f, 84.0589f, 45.1286f, 18.5832f, 60.8095f, 65.5967f, 78.1820f, 64.3211f, 84.5633f, 87.0487f, 27.0241f, 38.6449f, 9.0000f, 87.9804f, 68.0252f, 78.8772f, 86.1506f, 10.5388f, 50.2124f, 63.0208f, 24.9978f, 68.6975f, 34.0320f, 81.3867f, 73.4589f, 99.1616f, 74.4662f, 29.0826f, 67.2422f, 24.4150f, 37.3627f, 74.5852f, 51.0264f, 7.7920f, 58.2490f, 57.2189f, 65.7713f, 86.5244f, 3.9804f, 28.7383f, 38.1068f, 57.2189f, 50.3965f, 74.5852f, 31.1714f, 3.9804f, 6.0546f, 99.1616f, 18.1432f, 104.0983f, 17.7228f, 16.0400f, 63.0100f, 13.3495f, 21.9093f, 16.0400f, 38.7216f, 86.5244f, 68.5033f, 54.6419f, 67.0218f, 24.3175f, 15.2920f, 50.4095f, 10.6337f, 51.0376f};
         
-        m_StencilAreaController.Add(*m_pDundeeEastWard);
-        m_StencilAreaController.Add(*m_pDundeeWestWard);
-        m_StencilAreaController.Add(*m_pCircleArea);
+        const float heightOfStencilAreaInM = 250.f;
+        
+        int districtCount = 0;
+        for (TDistricts::iterator it = districtOutlines.begin(); it != districtOutlines.end(); ++it)
+        {
+            int randomPalette = int((rand() % m_palettes.size()));
+            const Eegeo::Data::StencilArea::StencilAreaPaletteModel& paletteModel = *(m_palettes[randomPalette]);
+            const std::vector<Eegeo::Space::LatLongAltitude>& outline = *it;
+            Eegeo::Data::StencilArea::StencilAreaModel* pModel = Eegeo::Data::StencilArea::StencilAreaModel::StencilAreaBuilder("stencil_area",
+                                                                                                                                paletteModel,
+                                                                                                                                outline,
+                                                                                                                                Eegeo::Rendering::StencilMapLayerMask::Buildings,
+                                                                                                                                outlineAltitudeOffsets[districtCount]+heightOfStencilAreaInM)
+                                                                                                                                .Build();
+            m_outlines.push_back(pModel);
+            m_controller.Add(*pModel);
+            ++districtCount;
+        }
     }
     
     void StencilAreaExample::Suspend()
     {
-        m_StencilAreaController.Remove(*m_pCircleArea);
-        m_StencilAreaController.Remove(*m_pDundeeWestWard);
-        m_StencilAreaController.Remove(*m_pDundeeEastWard);
-        delete m_pDundeeWestPalette;
-        delete m_pDundeeWestWard;
-        delete m_pDundeeEastPalette;
-        delete m_pDundeeEastWard;
-        delete m_pCirclePalette;
-        delete m_pCircleArea;
-        m_pDundeeWestPalette = NULL;
-        m_pDundeeWestWard = NULL;
-        m_pDundeeEastPalette = NULL;
-        m_pDundeeEastWard = NULL;
-        m_pCirclePalette = NULL;
-        m_pCircleArea = NULL;
+        for (TOutlines::iterator it = m_outlines.begin(); it != m_outlines.end(); ++it)
+        {
+            m_controller.Remove(**it);
+            delete *it;
+        }
+        m_outlines.clear();
+        for(TPalettes::iterator it = m_palettes.begin(); it != m_palettes.end(); ++it)
+        {
+            delete *it;
+        }
+        m_palettes.clear();
     }
     
     void StencilAreaExample::Update(float dt)
@@ -110,37 +102,5 @@ namespace Examples
     void StencilAreaExample::Event_TouchUp(const AppInterface::TouchData& data)
     {
         GlobeCameraExampleBase::Event_TouchUp(data);
-    }
-    
-    void StencilAreaExample::CreateDundeeEastData()
-    {
-        std::vector<Eegeo::Space::LatLongAltitude> dundeeEast;
-        Examples::Data::DundeeEast(dundeeEast);
-        
-        m_pDundeeEastPalette = Eegeo::Data::StencilArea::StencilAreaPaletteModel::StencilAreaPaletteBuilder("dundee_east_palette", ScottishNationalParty).Build();
-        
-        m_pDundeeEastWard = Eegeo::Data::StencilArea::StencilAreaModel::StencilAreaBuilder(
-                                                                                     "dundee_east_ward",
-                                                                                     *m_pDundeeEastPalette,
-                                                                                     dundeeEast,
-                                                                                     Eegeo::Rendering::StencilMapLayerMask::Terrain,
-                                                                                     150.f)
-                                .Build();
-    }
-    
-    void StencilAreaExample::CreateDundeeWestData()
-    {
-        std::vector<Eegeo::Space::LatLongAltitude> dundeeWest;
-        Examples::Data::DundeeWest(dundeeWest);
-        
-        m_pDundeeWestPalette = Eegeo::Data::StencilArea::StencilAreaPaletteModel::StencilAreaPaletteBuilder("dundee_west_palette", Labour).Build();
-        
-        m_pDundeeWestWard = Eegeo::Data::StencilArea::StencilAreaModel::StencilAreaBuilder(
-                                                                                           "dundee_west_ward",
-                                                                                           *m_pDundeeWestPalette,
-                                                                                           dundeeWest,
-                                                                                           Eegeo::Rendering::StencilMapLayerMask::Buildings,
-                                                                                           150.f)
-        .Build();
     }
 }
