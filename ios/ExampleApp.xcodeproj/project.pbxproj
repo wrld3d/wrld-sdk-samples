@@ -257,6 +257,12 @@
 		EE3D49431A9CD9AA00D520D8 /* PolyChartExample.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE3D493E1A9CD9AA00D520D8 /* PolyChartExample.cpp */; };
 		EE3D49441A9CD9AA00D520D8 /* PolyChartExampleFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE3D49401A9CD9AA00D520D8 /* PolyChartExampleFactory.cpp */; };
 		EE3D49451A9CD9AA00D520D8 /* PolyChartExampleFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE3D49401A9CD9AA00D520D8 /* PolyChartExampleFactory.cpp */; };
+		EEF758B61AB338C0002B63E6 /* heatmap_example in Resources */ = {isa = PBXBuildFile; fileRef = EEF758B51AB338C0002B63E6 /* heatmap_example */; };
+		EEF758B71AB338C0002B63E6 /* heatmap_example in Resources */ = {isa = PBXBuildFile; fileRef = EEF758B51AB338C0002B63E6 /* heatmap_example */; };
+		EEF758BD1AB338D5002B63E6 /* HeatmapExample.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EEF758B91AB338D5002B63E6 /* HeatmapExample.cpp */; };
+		EEF758BE1AB338D5002B63E6 /* HeatmapExample.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EEF758B91AB338D5002B63E6 /* HeatmapExample.cpp */; };
+		EEF758BF1AB338D5002B63E6 /* HeatmapExampleFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EEF758BB1AB338D5002B63E6 /* HeatmapExampleFactory.cpp */; };
+		EEF758C01AB338D5002B63E6 /* HeatmapExampleFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EEF758BB1AB338D5002B63E6 /* HeatmapExampleFactory.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -500,6 +506,11 @@
 		EE3D493F1A9CD9AA00D520D8 /* PolyChartExample.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PolyChartExample.h; sourceTree = "<group>"; };
 		EE3D49401A9CD9AA00D520D8 /* PolyChartExampleFactory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PolyChartExampleFactory.cpp; sourceTree = "<group>"; };
 		EE3D49411A9CD9AA00D520D8 /* PolyChartExampleFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PolyChartExampleFactory.h; sourceTree = "<group>"; };
+		EEF758B51AB338C0002B63E6 /* heatmap_example */ = {isa = PBXFileReference; lastKnownFileType = folder; path = heatmap_example; sourceTree = "<group>"; };
+		EEF758B91AB338D5002B63E6 /* HeatmapExample.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HeatmapExample.cpp; sourceTree = "<group>"; };
+		EEF758BA1AB338D5002B63E6 /* HeatmapExample.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeatmapExample.h; sourceTree = "<group>"; };
+		EEF758BB1AB338D5002B63E6 /* HeatmapExampleFactory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HeatmapExampleFactory.cpp; sourceTree = "<group>"; };
+		EEF758BC1AB338D5002B63E6 /* HeatmapExampleFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeatmapExampleFactory.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -563,6 +574,7 @@
 		18143847192B6E4500BCDF2E /* Examples */ = {
 			isa = PBXGroup;
 			children = (
+				EEF758B81AB338D5002B63E6 /* Heatmap */,
 				EE234E6D1AA9A7210068E68C /* Data */,
 				EE234E621AA9989B0068E68C /* StencilArea */,
 				EE3D493D1A9CD9AA00D520D8 /* PolyChart */,
@@ -1105,6 +1117,7 @@
 		7EE4825B16847E7C0006E99B /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				EEF758B51AB338C0002B63E6 /* heatmap_example */,
 				E0F9926B1A3090C900CBFA18 /* mesh_example */,
 				18D1D346194A057200FAA1B9 /* load_model_example */,
 				18D1D347194A057200FAA1B9 /* pin_over_model_example */,
@@ -1187,6 +1200,17 @@
 			path = PolyChart;
 			sourceTree = "<group>";
 		};
+		EEF758B81AB338D5002B63E6 /* Heatmap */ = {
+			isa = PBXGroup;
+			children = (
+				EEF758B91AB338D5002B63E6 /* HeatmapExample.cpp */,
+				EEF758BA1AB338D5002B63E6 /* HeatmapExample.h */,
+				EEF758BB1AB338D5002B63E6 /* HeatmapExampleFactory.cpp */,
+				EEF758BC1AB338D5002B63E6 /* HeatmapExampleFactory.h */,
+			);
+			path = Heatmap;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1266,6 +1290,7 @@
 				186D293C196D9E4B00E004E0 /* pod_animation_example in Resources */,
 				186D293D196D9E4B00E004E0 /* route_simulation_animation_example in Resources */,
 				7E841E9B19FE91A800D002A2 /* firework_01.png in Resources */,
+				EEF758B71AB338C0002B63E6 /* heatmap_example in Resources */,
 				186D293E196D9E4B00E004E0 /* route_simulation_example in Resources */,
 				E0B9CF9319F697090012D0B4 /* Images.xcassets in Resources */,
 				E096AE1D19F6713300C3D04A /* SplashScreen-1024x768.png in Resources */,
@@ -1289,6 +1314,7 @@
 				18D1D35C194A057200FAA1B9 /* pod_animation_example in Resources */,
 				18D1D359194A057200FAA1B9 /* pins_example in Resources */,
 				7E841E9A19FE91A800D002A2 /* firework_01.png in Resources */,
+				EEF758B61AB338C0002B63E6 /* heatmap_example in Resources */,
 				18D1D358194A057200FAA1B9 /* pin_over_model_example in Resources */,
 				18D1D35B194A057200FAA1B9 /* placeholder.pvr in Resources */,
 				18D1D357194A057200FAA1B9 /* load_model_example in Resources */,
@@ -1352,6 +1378,8 @@
 				222E06691948B08B0004FFD9 /* Pick3DObjectExampleFactory.cpp in Sources */,
 				222E066A1948B08B0004FFD9 /* ResourceSpatialQueryExample.cpp in Sources */,
 				222E066B1948B08B0004FFD9 /* RouteThicknessPolicyExampleFactory.cpp in Sources */,
+				EEF758C01AB338D5002B63E6 /* HeatmapExampleFactory.cpp in Sources */,
+				EEF758BE1AB338D5002B63E6 /* HeatmapExample.cpp in Sources */,
 				222E066C1948B08B0004FFD9 /* DebugPrimitiveRenderingExample.cpp in Sources */,
 				222E066D1948B08B0004FFD9 /* LoadModelExampleFactory.cpp in Sources */,
 				222E066E1948B08B0004FFD9 /* EnvironmentFlatteningExampleFactory.cpp in Sources */,
@@ -1454,6 +1482,8 @@
 				1899718C192CAD9800E0E9F1 /* LoadModelExampleFactory.cpp in Sources */,
 				18997180192CAA8C00E0E9F1 /* EnvironmentFlatteningExampleFactory.cpp in Sources */,
 				18C45A7319658A5C009B18A8 /* AppRunner.mm in Sources */,
+				EEF758BF1AB338D5002B63E6 /* HeatmapExampleFactory.cpp in Sources */,
+				EEF758BD1AB338D5002B63E6 /* HeatmapExample.cpp in Sources */,
 				181438BD192B6E4500BCDF2E /* ScreenPickExample.cpp in Sources */,
 				18AB38E5192B71F100F15546 /* UIHelpers.cpp in Sources */,
 				18C45A7119658A5C009B18A8 /* AppInputDelegate.mm in Sources */,
