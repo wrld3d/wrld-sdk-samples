@@ -8,6 +8,7 @@
 #include "EcefTangentBasis.h"
 #include "GlobeCameraController.h"
 #include "LatLongAltitude.h"
+#include "StencilMapLayerMask.h"
 
 namespace Examples
 {
@@ -49,6 +50,7 @@ namespace Examples
                                                                          )
                                                                     .Alpha(0.5)
                                                                     .MaxValue(24)
+                                                                    .Layer(Eegeo::Rendering::StencilMapLayerMask::Buildings)
                                                                     .Build();
         
         m_heatmapController.Add(*m_pSfCrimeHeatmap);
