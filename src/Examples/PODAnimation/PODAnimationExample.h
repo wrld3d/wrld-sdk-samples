@@ -6,10 +6,10 @@
 #include "GlobeCameraExampleBase.h"
 #include "RenderContext.h"
 #include "LatLongAltitude.h"
-#include "RenderableBase.h"
-#include "IRenderableFilter.h"
+#include "AsyncTexturing.h"
+#include "Helpers.h"
 
-#include "Model.h"
+#include "Rendering.h"
 
 namespace Examples
 {
@@ -17,50 +17,21 @@ namespace Examples
 class PODAnimationExample : public GlobeCameraExampleBase
 {
 private:
-    class MyModelRenderable : public Eegeo::Rendering::RenderableBase
-	{
-		Eegeo::Model& m_model;
-		Eegeo::Lighting::GlobalFogging& m_globalFogging;
-        Eegeo::dv3 m_observerLocationEcef;
-        
-	public:
-		MyModelRenderable(Eegeo::Model& model,
-		                  Eegeo::Lighting::GlobalFogging& globalFogging,
-		                  Eegeo::Rendering::Materials::NullMaterial& nullMaterial);
-        
-        void UpdateObserverLocation(const Eegeo::dv3& observerLocationEcef);
-        
-		void Render(Eegeo::Rendering::GLState& glState) const;
-	};
-    
-    class MyRenderableFilter : public Eegeo::Rendering::IRenderableFilter
-	{
-		Eegeo::Rendering::RenderableBase& m_renderable;
-	public:
-		MyRenderableFilter(Eegeo::Rendering::RenderableBase& renderable);
-        
-		void EnqueueRenderables(const Eegeo::Rendering::RenderContext& renderContext, Eegeo::Rendering::RenderQueue& renderQueue);
-	};
-    
+
 	Eegeo::Helpers::IFileIO& m_fileIO;
 	Eegeo::Rendering::AsyncTexturing::IAsyncTextureRequestor& m_textureRequestor;
-	Eegeo::Lighting::GlobalFogging& m_globalFogging;
     
-    Eegeo::Rendering::RenderableFilters& m_renderableFilters;
-    Eegeo::Rendering::Materials::NullMaterialFactory& m_nullMaterialFactory;
-    Eegeo::Rendering::Materials::NullMaterial* m_pNullMaterial;
+    Eegeo::Rendering::Filters::SceneModelRenderableFilter& m_renderableFilter;
     
-	Eegeo::Model* m_pModel;
-    
-    MyModelRenderable* m_pMyModelRenderable;
-    MyRenderableFilter* m_pMyRenderableFilter;
+    Eegeo::Rendering::SceneModels::SceneModelFactory& m_sceneModelFactory;
+    Eegeo::Rendering::SceneModels::SceneModel* m_pModel;
+    Eegeo::Rendering::SceneModels::SceneModelAnimator* m_pModelAnimator;
 
 public:
 	PODAnimationExample(Eegeo::Helpers::IFileIO& fileIO,
                         Eegeo::Rendering::AsyncTexturing::IAsyncTextureRequestor& textureRequestor,
-                        Eegeo::Lighting::GlobalFogging& fogging,
-                        Eegeo::Rendering::RenderableFilters& renderableFilters,
-                        Eegeo::Rendering::Materials::NullMaterialFactory& nullMaterialFactory,
+                        Eegeo::Rendering::SceneModels::SceneModelFactory& sceneModelFactory,
+                        Eegeo::Rendering::Filters::SceneModelRenderableFilter& renderableFilter,
                         Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
                         Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController);
     
