@@ -9,6 +9,7 @@
 #include "RenderingModule.h"
 #include "AsyncLoadersModule.h"
 #include "LightingModule.h"
+#include "SceneModelsModule.h"
 
 namespace Examples
 {
@@ -26,15 +27,13 @@ PODAnimationExampleFactory::PODAnimationExampleFactory(Eegeo::EegeoWorld& world,
 IExample* PODAnimationExampleFactory::CreateExample() const
 { 
     Eegeo::Modules::IPlatformAbstractionModule& platformAbstractioModule = m_world.GetPlatformAbstractionModule();
-    Eegeo::Modules::Core::RenderingModule& renderingModule = m_world.GetRenderingModule();
     Eegeo::Modules::Core::AsyncLoadersModule& asyncLoadersModule = m_world.GetAsyncLoadersModule();
-    Eegeo::Modules::Core::LightingModule& lightingModule = m_world.GetLightingModule();
+    Eegeo::Modules::Core::SceneModelsModule& sceneModulesModule = m_world.GetCoreModule().GetSceneModelsModule();
     
 	return new Examples::PODAnimationExample(platformAbstractioModule.GetFileIO(),
                                              asyncLoadersModule.GetLocalAsyncTextureLoader(),
-                                             lightingModule.GetGlobalFogging(),
-                                             renderingModule.GetRenderableFilters(),
-                                             renderingModule.GetNullMaterialFactory(),
+                                             sceneModulesModule.GetSceneModelFactory(),
+                                             sceneModulesModule.GetSceneModelRenderableFilter(),
                                              m_defaultCameraControllerFactory.Create(),
                                              m_globeCameraTouchController);
     

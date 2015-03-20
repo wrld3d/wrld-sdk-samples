@@ -7,76 +7,39 @@
 #include "RenderCamera.h"
 #include "LatLongAltitude.h"
 #include "IAsyncTextureRequestor.h"
-#include "Model.h"
+#include "Rendering.h"
+#include "SceneModelFactory.h"
+#include "DebugRendering.h"
 
 namespace Examples
 {
-class BoundsVisualiser
-{
-	struct Shader
-	{
-		int positionSlot;
-		int mvpUniform;
-		u32 programHandle;
-	};
-
-	struct Vertex
-	{
-		float x, y, z;
-	};
-
-	static const size_t NumVerts;
-	static const size_t NumIndices;
-	Shader* m_pShader;
-	u32 m_glVertexBuffer;
-	u32 m_glIndexBuffer;
-
-	std::string VertexShader();
-	std::string FragmentShader();
-	void CompileShaders();
-	void InitMeshGLBuffers(Vertex* verts, u16* indices);
-	void Build(const Eegeo::v3& minExtents, const Eegeo::v3& maxExtents);
-	void DestroyGeometry();
-
-public:
-	BoundsVisualiser();
-	~BoundsVisualiser();
-
-	void Draw(const Eegeo::v3& minExtents, const Eegeo::v3& maxExtents, const Eegeo::Camera::RenderCamera& renderCamera);
-};
-
-
 class LoadModelExample : public GlobeCameraExampleBase
 {
 private:
-	struct MeshInstance
-	{
-		float scale;
-		Eegeo::dv3 positionEcef;
-		Eegeo::v3 forward;
-		Eegeo::v3 up;
-		Eegeo::Node* pNode;
-	};
 
 	Eegeo::Helpers::IFileIO& m_fileIO;
 	Eegeo::Rendering::AsyncTexturing::IAsyncTextureRequestor& m_textureRequestor;
 	Eegeo::Space::LatLongAltitude m_interestLocation;
-	Eegeo::Lighting::GlobalFogging& m_globalFogging;
-    
+    Eegeo::Rendering::SceneModels::SceneModelFactory& m_sceneModelFactory;
+    Eegeo::Rendering::SceneModels::SceneModelFactory::TMaterialRepo& m_sceneModelMaterials;
 
-	Eegeo::Model* m_pModel;
-	BoundsVisualiser m_boundsVisualiser;
-	MeshInstance m_mesh;
-	Eegeo::ModelMaterial* m_pDiscMaterial;
+	Eegeo::Rendering::SceneModels::SceneModel* m_pModel;
+    Eegeo::Rendering::SceneModels::SceneModelMaterialResource* m_pDiscMaterialResource;
+    Eegeo::Rendering::Filters::SceneModelRenderableFilter& m_sceneModelRenderableFilter;
+    Eegeo::DebugRendering::DebugRenderer& m_debugRenderer;
+    Eegeo::m44 m_transform;
 	float m_elapsedTime;
 
 public:
 	LoadModelExample(
 	                 Eegeo::Helpers::IFileIO& fileIO,
 	                 Eegeo::Rendering::AsyncTexturing::IAsyncTextureRequestor& textureRequestor,
-	                 Eegeo::Lighting::GlobalFogging& fogging,
+                     Eegeo::Rendering::SceneModels::SceneModelFactory& sceneModelFactory,
+                     Eegeo::Rendering::SceneModels::SceneModelFactory::TMaterialRepo& sceneModelMaterials,
+                     Eegeo::Rendering::Filters::SceneModelRenderableFilter& sceneModelRenderableFilter,
+                     Eegeo::DebugRendering::DebugRenderer& debugRenderer,
 	                 Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
-                        Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController);
+                     Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController);
 
 	static std::string GetName()
 	{

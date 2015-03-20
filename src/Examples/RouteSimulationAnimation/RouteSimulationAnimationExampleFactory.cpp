@@ -13,6 +13,7 @@
 #include "RenderingModule.h"
 #include "IPlatformAbstractionModule.h"
 #include "AsyncLoadersModule.h"
+#include "SceneModelsModule.h"
 
 namespace Examples
 {
@@ -50,12 +51,14 @@ IExample* RouteSimulationAnimationExampleFactory::CreateExample() const
     Eegeo::Modules::RoutesModule& routesModule = m_world.GetRoutesModule();
     Eegeo::Modules::IPlatformAbstractionModule& platformAbstractionModule = m_world.GetPlatformAbstractionModule();
     Eegeo::Modules::Core::AsyncLoadersModule& asyncLoadersModule = m_world.GetAsyncLoadersModule();
+    Eegeo::Modules::Core::SceneModelsModule& sceneModelsModule = m_world.GetCoreModule().GetSceneModelsModule();
     
 	return new Examples::RouteSimulationAnimationExample(routesModule.GetRouteService(),
 	        routesModule.GetRouteSimulationService(),
 	        routesModule.GetRouteSimulationViewService(),
 	        platformAbstractionModule.GetFileIO(),
 	        asyncLoadersModule.GetLocalAsyncTextureLoader(),
+            sceneModelsModule.GetSceneModelFactory(),
 	        *m_pRouteSimulationGlobeCameraControllerFactory,
             m_screenPropertiesProvider,
 	        m_world);

@@ -18,13 +18,12 @@
 #include "GLState.h"
 #include "IFileIO.h"
 #include "ITextureFileLoader.h"
-#include "Model.h"
-#include "Node.h"
 #include "GlobeCameraController.h"
 #include "EegeoWorld.h"
 #include "IdentityRouteThicknessPolicy.h"
 #include "GlobeCameraController.h"
 #include "ScreenPropertiesProvider.h"
+#include "Rendering.h"
 
 namespace Examples
 {
@@ -40,7 +39,9 @@ private:
 	Eegeo::EegeoWorld& m_world;
 	float m_modelAnimationSpeed;
 	bool m_initialised;
-	Eegeo::Model* m_pModel;
+    Eegeo::Rendering::SceneModels::SceneModel* m_pModel;
+    Eegeo::Rendering::SceneModels::SceneModelFactory& m_sceneModelFactory;
+    Eegeo::Rendering::SceneModels::SceneModelAnimator* m_pSceneModelAnimator;
 	Eegeo::Routes::Route* m_pRoute;
 	Eegeo::Routes::Style::Thickness::IdentityRouteThicknessPolicy m_routeThicknessPolicy;
 	Eegeo::Routes::Simulation::RouteSimulationSession* m_pRouteSimulationSession;
@@ -55,6 +56,7 @@ public:
 	                                Eegeo::Routes::Simulation::View::RouteSimulationViewService& routeSimulationViewService,
 	                                Eegeo::Helpers::IFileIO& fileIO,
 	                                Eegeo::Rendering::AsyncTexturing::IAsyncTextureRequestor& textureRequestor,
+                                    Eegeo::Rendering::SceneModels::SceneModelFactory& sceneModelFactory,
 	                                Eegeo::Routes::Simulation::Camera::RouteSimulationGlobeCameraControllerFactory& routeSimulationGlobeCameraControllerFactory,
                                     const IScreenPropertiesProvider& screenPropertiesProvider,
 	                                Eegeo::EegeoWorld& eegeoWorld);
@@ -106,7 +108,7 @@ private:
 
 	Eegeo::Routes::Route* BuildRoute();
 
-	Eegeo::Model* LoadCharacterModel(Eegeo::Node*& pCharacter) const;
+	 Eegeo::Rendering::SceneModels::SceneModel* LoadCharacterModel() const;
 };
 }
 

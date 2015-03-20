@@ -249,6 +249,10 @@
 		E0F992841A30911800CBFA18 /* MeshExampleFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0F992791A30911800CBFA18 /* MeshExampleFactory.cpp */; };
 		E0FE7B0F1A2C99CA008754A2 /* DefaultCameraTouchControllerFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0FE7B0D1A2C99CA008754A2 /* DefaultCameraTouchControllerFactory.cpp */; };
 		E0FE7B101A2C99CA008754A2 /* DefaultCameraTouchControllerFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0FE7B0D1A2C99CA008754A2 /* DefaultCameraTouchControllerFactory.cpp */; };
+		EE234E671AA9989B0068E68C /* StencilAreaExample.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE234E631AA9989B0068E68C /* StencilAreaExample.cpp */; };
+		EE234E681AA9989B0068E68C /* StencilAreaExample.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE234E631AA9989B0068E68C /* StencilAreaExample.cpp */; };
+		EE234E691AA9989B0068E68C /* StencilAreaExampleFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE234E651AA9989B0068E68C /* StencilAreaExampleFactory.cpp */; };
+		EE234E6A1AA9989B0068E68C /* StencilAreaExampleFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE234E651AA9989B0068E68C /* StencilAreaExampleFactory.cpp */; };
 		EE3D48D51A9C8C9200D520D8 /* BuildingHighlightExample.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE3D48D11A9C8C9200D520D8 /* BuildingHighlightExample.cpp */; };
 		EE3D48D61A9C8C9200D520D8 /* BuildingHighlightExample.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE3D48D11A9C8C9200D520D8 /* BuildingHighlightExample.cpp */; };
 		EE3D48D71A9C8C9200D520D8 /* BuildingHighlightExampleFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE3D48D31A9C8C9200D520D8 /* BuildingHighlightExampleFactory.cpp */; };
@@ -257,6 +261,12 @@
 		EE3D49431A9CD9AA00D520D8 /* PolyChartExample.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE3D493E1A9CD9AA00D520D8 /* PolyChartExample.cpp */; };
 		EE3D49441A9CD9AA00D520D8 /* PolyChartExampleFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE3D49401A9CD9AA00D520D8 /* PolyChartExampleFactory.cpp */; };
 		EE3D49451A9CD9AA00D520D8 /* PolyChartExampleFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE3D49401A9CD9AA00D520D8 /* PolyChartExampleFactory.cpp */; };
+		EEF758B61AB338C0002B63E6 /* heatmap_example in Resources */ = {isa = PBXBuildFile; fileRef = EEF758B51AB338C0002B63E6 /* heatmap_example */; };
+		EEF758B71AB338C0002B63E6 /* heatmap_example in Resources */ = {isa = PBXBuildFile; fileRef = EEF758B51AB338C0002B63E6 /* heatmap_example */; };
+		EEF758BD1AB338D5002B63E6 /* HeatmapExample.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EEF758B91AB338D5002B63E6 /* HeatmapExample.cpp */; };
+		EEF758BE1AB338D5002B63E6 /* HeatmapExample.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EEF758B91AB338D5002B63E6 /* HeatmapExample.cpp */; };
+		EEF758BF1AB338D5002B63E6 /* HeatmapExampleFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EEF758BB1AB338D5002B63E6 /* HeatmapExampleFactory.cpp */; };
+		EEF758C01AB338D5002B63E6 /* HeatmapExampleFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EEF758BB1AB338D5002B63E6 /* HeatmapExampleFactory.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -491,6 +501,11 @@
 		E0F9927A1A30911800CBFA18 /* MeshExampleFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MeshExampleFactory.h; path = Mesh/MeshExampleFactory.h; sourceTree = "<group>"; };
 		E0FE7B0D1A2C99CA008754A2 /* DefaultCameraTouchControllerFactory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DefaultCameraTouchControllerFactory.cpp; sourceTree = "<group>"; };
 		E0FE7B0E1A2C99CA008754A2 /* DefaultCameraTouchControllerFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DefaultCameraTouchControllerFactory.h; sourceTree = "<group>"; };
+		EE234E631AA9989B0068E68C /* StencilAreaExample.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StencilAreaExample.cpp; sourceTree = "<group>"; };
+		EE234E641AA9989B0068E68C /* StencilAreaExample.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StencilAreaExample.h; sourceTree = "<group>"; };
+		EE234E651AA9989B0068E68C /* StencilAreaExampleFactory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StencilAreaExampleFactory.cpp; sourceTree = "<group>"; };
+		EE234E661AA9989B0068E68C /* StencilAreaExampleFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StencilAreaExampleFactory.h; sourceTree = "<group>"; };
+		EE234E6E1AA9A7210068E68C /* ExamplePolygons.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExamplePolygons.h; sourceTree = "<group>"; };
 		EE3D48D11A9C8C9200D520D8 /* BuildingHighlightExample.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BuildingHighlightExample.cpp; sourceTree = "<group>"; };
 		EE3D48D21A9C8C9200D520D8 /* BuildingHighlightExample.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BuildingHighlightExample.h; sourceTree = "<group>"; };
 		EE3D48D31A9C8C9200D520D8 /* BuildingHighlightExampleFactory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BuildingHighlightExampleFactory.cpp; sourceTree = "<group>"; };
@@ -499,6 +514,11 @@
 		EE3D493F1A9CD9AA00D520D8 /* PolyChartExample.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PolyChartExample.h; sourceTree = "<group>"; };
 		EE3D49401A9CD9AA00D520D8 /* PolyChartExampleFactory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PolyChartExampleFactory.cpp; sourceTree = "<group>"; };
 		EE3D49411A9CD9AA00D520D8 /* PolyChartExampleFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PolyChartExampleFactory.h; sourceTree = "<group>"; };
+		EEF758B51AB338C0002B63E6 /* heatmap_example */ = {isa = PBXFileReference; lastKnownFileType = folder; path = heatmap_example; sourceTree = "<group>"; };
+		EEF758B91AB338D5002B63E6 /* HeatmapExample.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HeatmapExample.cpp; sourceTree = "<group>"; };
+		EEF758BA1AB338D5002B63E6 /* HeatmapExample.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeatmapExample.h; sourceTree = "<group>"; };
+		EEF758BB1AB338D5002B63E6 /* HeatmapExampleFactory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HeatmapExampleFactory.cpp; sourceTree = "<group>"; };
+		EEF758BC1AB338D5002B63E6 /* HeatmapExampleFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeatmapExampleFactory.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -563,6 +583,9 @@
 			isa = PBXGroup;
 			children = (
 				E022EB721AA8D66000841D7B /* EnvironmentRayCaster */,
+				EEF758B81AB338D5002B63E6 /* Heatmap */,
+				EE234E6D1AA9A7210068E68C /* Data */,
+				EE234E621AA9989B0068E68C /* StencilArea */,
 				EE3D493D1A9CD9AA00D520D8 /* PolyChart */,
 				EE3D48D01A9C8C9200D520D8 /* BuildingHighlight */,
 				E02BD0C71A24F79B00663A00 /* ScreenPropertiesProvider.h */,
@@ -1103,6 +1126,7 @@
 		7EE4825B16847E7C0006E99B /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				EEF758B51AB338C0002B63E6 /* heatmap_example */,
 				E0F9926B1A3090C900CBFA18 /* mesh_example */,
 				18D1D346194A057200FAA1B9 /* load_model_example */,
 				18D1D347194A057200FAA1B9 /* pin_over_model_example */,
@@ -1155,6 +1179,25 @@
 			name = Mesh;
 			sourceTree = "<group>";
 		};
+		EE234E621AA9989B0068E68C /* StencilArea */ = {
+			isa = PBXGroup;
+			children = (
+				EE234E631AA9989B0068E68C /* StencilAreaExample.cpp */,
+				EE234E641AA9989B0068E68C /* StencilAreaExample.h */,
+				EE234E651AA9989B0068E68C /* StencilAreaExampleFactory.cpp */,
+				EE234E661AA9989B0068E68C /* StencilAreaExampleFactory.h */,
+			);
+			path = StencilArea;
+			sourceTree = "<group>";
+		};
+		EE234E6D1AA9A7210068E68C /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				EE234E6E1AA9A7210068E68C /* ExamplePolygons.h */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
 		EE3D48D01A9C8C9200D520D8 /* BuildingHighlight */ = {
 			isa = PBXGroup;
 			children = (
@@ -1175,6 +1218,17 @@
 				EE3D49411A9CD9AA00D520D8 /* PolyChartExampleFactory.h */,
 			);
 			path = PolyChart;
+			sourceTree = "<group>";
+		};
+		EEF758B81AB338D5002B63E6 /* Heatmap */ = {
+			isa = PBXGroup;
+			children = (
+				EEF758B91AB338D5002B63E6 /* HeatmapExample.cpp */,
+				EEF758BA1AB338D5002B63E6 /* HeatmapExample.h */,
+				EEF758BB1AB338D5002B63E6 /* HeatmapExampleFactory.cpp */,
+				EEF758BC1AB338D5002B63E6 /* HeatmapExampleFactory.h */,
+			);
+			path = Heatmap;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1256,6 +1310,7 @@
 				186D293C196D9E4B00E004E0 /* pod_animation_example in Resources */,
 				186D293D196D9E4B00E004E0 /* route_simulation_animation_example in Resources */,
 				7E841E9B19FE91A800D002A2 /* firework_01.png in Resources */,
+				EEF758B71AB338C0002B63E6 /* heatmap_example in Resources */,
 				186D293E196D9E4B00E004E0 /* route_simulation_example in Resources */,
 				E0B9CF9319F697090012D0B4 /* Images.xcassets in Resources */,
 				E096AE1D19F6713300C3D04A /* SplashScreen-1024x768.png in Resources */,
@@ -1279,6 +1334,7 @@
 				18D1D35C194A057200FAA1B9 /* pod_animation_example in Resources */,
 				18D1D359194A057200FAA1B9 /* pins_example in Resources */,
 				7E841E9A19FE91A800D002A2 /* firework_01.png in Resources */,
+				EEF758B61AB338C0002B63E6 /* heatmap_example in Resources */,
 				18D1D358194A057200FAA1B9 /* pin_over_model_example in Resources */,
 				18D1D35B194A057200FAA1B9 /* placeholder.pvr in Resources */,
 				18D1D357194A057200FAA1B9 /* load_model_example in Resources */,
@@ -1311,6 +1367,7 @@
 				222E064F1948B08B0004FFD9 /* EnvironmentNotifierExampleFactory.cpp in Sources */,
 				222E06501948B08B0004FFD9 /* DebugPrimitiveRenderingExampleFactory.cpp in Sources */,
 				E0F992841A30911800CBFA18 /* MeshExampleFactory.cpp in Sources */,
+				EE234E681AA9989B0068E68C /* StencilAreaExample.cpp in Sources */,
 				222E06511948B08B0004FFD9 /* EnvironmentFlatteningExample.cpp in Sources */,
 				18E18E8E198BE4C80065F81D /* PostProcessVignetteMaterial.cpp in Sources */,
 				222E06521948B08B0004FFD9 /* EnvironmentNotifierExample.cpp in Sources */,
@@ -1341,6 +1398,8 @@
 				222E06691948B08B0004FFD9 /* Pick3DObjectExampleFactory.cpp in Sources */,
 				222E066A1948B08B0004FFD9 /* ResourceSpatialQueryExample.cpp in Sources */,
 				222E066B1948B08B0004FFD9 /* RouteThicknessPolicyExampleFactory.cpp in Sources */,
+				EEF758C01AB338D5002B63E6 /* HeatmapExampleFactory.cpp in Sources */,
+				EEF758BE1AB338D5002B63E6 /* HeatmapExample.cpp in Sources */,
 				222E066C1948B08B0004FFD9 /* DebugPrimitiveRenderingExample.cpp in Sources */,
 				E022EB7A1AA8D6B400841D7B /* EnvironmentRayCasterExampleFactory.cpp in Sources */,
 				222E066D1948B08B0004FFD9 /* LoadModelExampleFactory.cpp in Sources */,
@@ -1388,6 +1447,7 @@
 				222E06861948B08B0004FFD9 /* SingleCityExample.cpp in Sources */,
 				222E06871948B08B0004FFD9 /* RouteMatchingExample.cpp in Sources */,
 				222E06881948B08B0004FFD9 /* TrafficCongestionExampleFactory.cpp in Sources */,
+				EE234E6A1AA9989B0068E68C /* StencilAreaExampleFactory.cpp in Sources */,
 				99DE1B124717F52915B5CA1F /* GeofenceExample.cpp in Sources */,
 				99DE127CB0F89EE0EC063B69 /* GeofenceExampleFactory.cpp in Sources */,
 			);
@@ -1413,6 +1473,7 @@
 				18AB38FA192B729F00F15546 /* iOSRouteMatchingExampleViewFactory.mm in Sources */,
 				181438BB192B6E4500BCDF2E /* RouteSimulationAnimationExample.cpp in Sources */,
 				E0F992831A30911800CBFA18 /* MeshExampleFactory.cpp in Sources */,
+				EE234E671AA9989B0068E68C /* StencilAreaExample.cpp in Sources */,
 				18AB38FE192B729F00F15546 /* ViewController.mm in Sources */,
 				18E18E8D198BE4C80065F81D /* PostProcessVignetteMaterial.cpp in Sources */,
 				181438BC192B6E4500BCDF2E /* RouteThicknessPolicyExample.cpp in Sources */,
@@ -1443,6 +1504,8 @@
 				1899718C192CAD9800E0E9F1 /* LoadModelExampleFactory.cpp in Sources */,
 				18997180192CAA8C00E0E9F1 /* EnvironmentFlatteningExampleFactory.cpp in Sources */,
 				18C45A7319658A5C009B18A8 /* AppRunner.mm in Sources */,
+				EEF758BF1AB338D5002B63E6 /* HeatmapExampleFactory.cpp in Sources */,
+				EEF758BD1AB338D5002B63E6 /* HeatmapExample.cpp in Sources */,
 				181438BD192B6E4500BCDF2E /* ScreenPickExample.cpp in Sources */,
 				E022EB791AA8D6B400841D7B /* EnvironmentRayCasterExampleFactory.cpp in Sources */,
 				18AB38E5192B71F100F15546 /* UIHelpers.cpp in Sources */,
@@ -1490,6 +1553,7 @@
 				181438C0192B6E4500BCDF2E /* SingleCityExample.cpp in Sources */,
 				181438B9192B6E4500BCDF2E /* RouteMatchingExample.cpp in Sources */,
 				189971BC192CB8B800E0E9F1 /* TrafficCongestionExampleFactory.cpp in Sources */,
+				EE234E691AA9989B0068E68C /* StencilAreaExampleFactory.cpp in Sources */,
 				99DE12177F4CD065FC763CF8 /* GeofenceExample.cpp in Sources */,
 				99DE1B511870C369B6D569F0 /* GeofenceExampleFactory.cpp in Sources */,
 			);

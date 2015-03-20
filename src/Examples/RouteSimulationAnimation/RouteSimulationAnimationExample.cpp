@@ -7,7 +7,9 @@
 #include "TransformHelpers.h"
 #include "RenderCamera.h"
 #include "ScreenProperties.h"
-
+#include "SceneModelFactory.h"
+#include "SceneModel.h"
+#include "SceneModelAnimator.h"
 
 using namespace Eegeo;
 using namespace Eegeo::Routes;
@@ -22,6 +24,7 @@ namespace Examples
                                                                      RouteSimulationViewService& routeSimulationViewService,
                                                                      Eegeo::Helpers::IFileIO& fileIO,
                                                                      Eegeo::Rendering::AsyncTexturing::IAsyncTextureRequestor& textureRequestor,
+                                                                     Eegeo::Rendering::SceneModels::SceneModelFactory& sceneModelFactory,
                                                                      RouteSimulationGlobeCameraControllerFactory& routeSimulationGlobeCameraControllerFactory,
                                                                      const IScreenPropertiesProvider& screenPropertiesProvider,
                                                                      EegeoWorld& world)
@@ -30,12 +33,13 @@ namespace Examples
 	,m_routeSimulationViewService(routeSimulationViewService)
 	,m_fileIO(fileIO)
 	,m_textureRequestor(textureRequestor)
+    ,m_sceneModelFactory(sceneModelFactory)
 	,m_routeSimulationGlobeCameraControllerFactory(routeSimulationGlobeCameraControllerFactory)
 	,m_world(world)
 	,m_initialised(false)
 	,m_pRoute(NULL)
 	,m_pModel(NULL)
-	,m_modelAnimationSpeed(1.f/30.f)
+    ,m_pSceneModelAnimator(NULL)
 	,m_pRouteSimulationSession(NULL)
 	,m_pViewBindingForCameraSession(NULL)
 	,m_pRouteSessionFollowCameraController(NULL)
@@ -55,8 +59,12 @@ void RouteSimulationAnimationExample::Initialise()
 	//Load a model containing the node that will be bound to our route simulation session. For
 	//a detailed explation see http://sdk.eegeo.com/developers/mobiledocs/loading_rendering_models
 	//or see LoadModelExample.cpp.
-	Eegeo::Node *pCharacter;
-	m_pModel = LoadCharacterModel(pCharacter);
+	m_pModel = LoadCharacterModel();
+    
+    // Initialise animation.
+    const int framesPerSecond = 30;
+    m_pSceneModelAnimator = new Eegeo::Rendering::SceneModels::SceneModelAnimator(*m_pModel, framesPerSecond);
+    m_pSceneModelAnimator->Play();
 
 	//Build the route - see RouteDrawingExample.cpp for a detailed explanation of building routes, or
 	//check out http://sdk.eegeo.com/developers/mobiledocs/routes
@@ -72,7 +80,7 @@ void RouteSimulationAnimationExample::Initialise()
 	Eegeo::m44 transform;
 	CalculateTransform(transform);
 
-	m_pViewBindingForCameraSession = m_routeSimulationViewService.CreateBinding(*m_pRouteSimulationSession, pCharacter, transform);
+	m_pViewBindingForCameraSession = m_routeSimulationViewService.CreateBinding(*m_pRouteSimulationSession, m_pModel, transform);
 
 	m_pRouteSimulationSession->StartPlaybackFromBeginning();
 
@@ -101,9 +109,7 @@ void RouteSimulationAnimationExample::EarlyUpdate(float dt)
 	}
 
 	m_pRouteSessionFollowCameraController->Update(dt);
-    
-    Eegeo::Camera::RenderCamera renderCamera(m_pRouteSessionFollowCameraController->GetRenderCamera());
-    m_pViewBindingForCameraSession->UpdateCameraLocation(renderCamera.GetEcefLocation());
+    m_pViewBindingForCameraSession->Update();
 }
 
 void RouteSimulationAnimationExample::Update(float dt)
@@ -127,7 +133,7 @@ void RouteSimulationAnimationExample::Update(float dt)
 	m_pViewBindingForCameraSession->SetModelTransform(transform);
 
 	//Update animation
-	m_pModel->UpdateAnimator(m_modelAnimationSpeed);
+    m_pSceneModelAnimator->Update(dt);
 }
 
 void RouteSimulationAnimationExample::Suspend()
@@ -146,6 +152,9 @@ void RouteSimulationAnimationExample::Suspend()
 	m_routeService.DestroyRoute(m_pRoute);
 	m_pRoute = NULL;
 
+    delete m_pSceneModelAnimator;
+    m_pSceneModelAnimator = NULL;
+    
 	delete m_pModel;
 	m_pModel = NULL;
 
@@ -194,12 +203,12 @@ Route* RouteSimulationAnimationExample::BuildRoute()
 	return m_routeService.CreateRoute(points, routeStyle, false);
 }
 
-Eegeo::Model* RouteSimulationAnimationExample::LoadCharacterModel(Eegeo::Node*& pCharacter) const
+Eegeo::Rendering::SceneModels::SceneModel* RouteSimulationAnimationExample::LoadCharacterModel() const
 {
-	Eegeo::Model* pModel = Eegeo::Model::CreateFromPODFile("route_simulation_animation_example/BoxCharacter.pod", m_fileIO, &m_textureRequestor, "route_simulation_animation_example/");
-	Eegeo_ASSERT(pModel->GetRootNode());
-
-	pCharacter = pModel->GetRootNode();
+    Eegeo::Rendering::SceneModels::SceneModel* pModel = m_sceneModelFactory.CreateSceneModelFromFile("route_simulation_animation_example/BoxCharacter.pod",
+                                                                                                     m_fileIO,
+                                                                                                     m_textureRequestor,
+                                                                                                     "route_simulation_animation_example/");
 
 	return pModel;
 }
