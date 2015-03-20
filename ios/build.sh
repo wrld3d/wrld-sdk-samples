@@ -28,9 +28,9 @@ if [ -z "${p}" ]; then
 fi
 
 if [ "$c" == "cpp11" ]; then
-   targetName="ExampleAppCpp11"
+   targetName="SDKSamplesAppCpp11"
 else
-   targetName="ExampleApp"
+   targetName="SDKSamplesApp"
 fi
 
 (cd $projectPath && xcodebuild -target $targetName -arch "i386" -sdk "iphonesimulator")

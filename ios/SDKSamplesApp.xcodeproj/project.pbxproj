@@ -440,7 +440,7 @@
 		18F91C3219C70502000617D8 /* ReadHeadingExample.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = ReadHeadingExample.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		18F91C3319C70502000617D8 /* ReadHeadingExampleFactory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = ReadHeadingExampleFactory.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		18F91C3419C70502000617D8 /* ReadHeadingExampleFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReadHeadingExampleFactory.h; sourceTree = "<group>"; };
-		222E06C91948B08B0004FFD9 /* ExampleAppCpp11.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ExampleAppCpp11.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		222E06C91948B08B0004FFD9 /* SDKSamplesAppCpp11.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SDKSamplesAppCpp11.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		222E06CB1948B0B70004FFD9 /* libapps-on-maps-cpp11-sim.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libapps-on-maps-cpp11-sim.a"; path = "Include/libapps-on-maps-cpp11-sim.a"; sourceTree = "<group>"; };
 		222E06CC1948B0B70004FFD9 /* libapps-on-maps-cpp11.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libapps-on-maps-cpp11.a"; path = "Include/libapps-on-maps-cpp11.a"; sourceTree = "<group>"; };
 		7E1A248D197FF827000ED126 /* CameraSplineExample.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = CameraSplineExample.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
@@ -453,14 +453,14 @@
 		7E841E9319FE681000D002A2 /* FireworksExampleFactory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = FireworksExampleFactory.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		7E841E9419FE681000D002A2 /* FireworksExampleFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FireworksExampleFactory.h; sourceTree = "<group>"; };
 		7E841E9919FE91A800D002A2 /* firework_01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = firework_01.png; sourceTree = "<group>"; };
-		7EE481E616836F370006E99B /* ExampleApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ExampleApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		7EE481E616836F370006E99B /* SDKSamplesApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SDKSamplesApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7EE481EA16836F370006E99B /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		7EE481EC16836F370006E99B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		7EE481EE16836F370006E99B /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		7EE481F016836F370006E99B /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
-		7EE481F416836F370006E99B /* ExampleApp-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ExampleApp-Info.plist"; sourceTree = "<group>"; };
+		7EE481F416836F370006E99B /* SDKSamplesApp-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SDKSamplesApp-Info.plist"; sourceTree = "<group>"; };
 		7EE481F616836F370006E99B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		7EE481FA16836F370006E99B /* ExampleApp-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ExampleApp-Prefix.pch"; sourceTree = "<group>"; };
+		7EE481FA16836F370006E99B /* SDKSamplesApp-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SDKSamplesApp-Prefix.pch"; sourceTree = "<group>"; };
 		7EE4820D1683713B0006E99B /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPhone.storyboard; sourceTree = "<group>"; };
 		7EE48210168371460006E99B /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPad.storyboard; sourceTree = "<group>"; };
 		7EE48223168373E20006E99B /* libapps-on-maps.a */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.objfile"; name = "libapps-on-maps.a"; path = "Include/libapps-on-maps.a"; sourceTree = "<group>"; };
@@ -1072,8 +1072,8 @@
 		7EE481E716836F370006E99B /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				7EE481E616836F370006E99B /* ExampleApp.app */,
-				222E06C91948B08B0004FFD9 /* ExampleAppCpp11.app */,
+				7EE481E616836F370006E99B /* SDKSamplesApp.app */,
+				222E06C91948B08B0004FFD9 /* SDKSamplesAppCpp11.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1116,9 +1116,9 @@
 			children = (
 				7EE4820F168371460006E99B /* MainStoryboard_iPad.storyboard */,
 				7EE4820C1683713B0006E99B /* MainStoryboard_iPhone.storyboard */,
-				7EE481F416836F370006E99B /* ExampleApp-Info.plist */,
+				7EE481F416836F370006E99B /* SDKSamplesApp-Info.plist */,
 				7EE481F516836F370006E99B /* InfoPlist.strings */,
-				7EE481FA16836F370006E99B /* ExampleApp-Prefix.pch */,
+				7EE481FA16836F370006E99B /* SDKSamplesApp-Prefix.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -1234,9 +1234,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		222E06471948B08B0004FFD9 /* ExampleAppCpp11 */ = {
+		222E06471948B08B0004FFD9 /* SDKSamplesAppCpp11 */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 222E06C61948B08B0004FFD9 /* Build configuration list for PBXNativeTarget "ExampleAppCpp11" */;
+			buildConfigurationList = 222E06C61948B08B0004FFD9 /* Build configuration list for PBXNativeTarget "SDKSamplesAppCpp11" */;
 			buildPhases = (
 				222E06481948B08B0004FFD9 /* Sources */,
 				222E06891948B08B0004FFD9 /* Frameworks */,
@@ -1246,14 +1246,14 @@
 			);
 			dependencies = (
 			);
-			name = ExampleAppCpp11;
+			name = SDKSamplesAppCpp11;
 			productName = ExampleApp;
-			productReference = 222E06C91948B08B0004FFD9 /* ExampleAppCpp11.app */;
+			productReference = 222E06C91948B08B0004FFD9 /* SDKSamplesAppCpp11.app */;
 			productType = "com.apple.product-type.application";
 		};
-		7EE481E516836F370006E99B /* ExampleApp */ = {
+		7EE481E516836F370006E99B /* SDKSamplesApp */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 7EE4820916836F370006E99B /* Build configuration list for PBXNativeTarget "ExampleApp" */;
+			buildConfigurationList = 7EE4820916836F370006E99B /* Build configuration list for PBXNativeTarget "SDKSamplesApp" */;
 			buildPhases = (
 				7EE481E216836F370006E99B /* Sources */,
 				7EE481E316836F370006E99B /* Frameworks */,
@@ -1263,9 +1263,9 @@
 			);
 			dependencies = (
 			);
-			name = ExampleApp;
+			name = SDKSamplesApp;
 			productName = ExampleApp;
-			productReference = 7EE481E616836F370006E99B /* ExampleApp.app */;
+			productReference = 7EE481E616836F370006E99B /* SDKSamplesApp.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -1277,7 +1277,7 @@
 				LastUpgradeCheck = 0600;
 				ORGANIZATIONNAME = eeGeo;
 			};
-			buildConfigurationList = 7EE481E016836F360006E99B /* Build configuration list for PBXProject "ExampleApp" */;
+			buildConfigurationList = 7EE481E016836F360006E99B /* Build configuration list for PBXProject "SDKSamplesApp" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -1289,8 +1289,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				7EE481E516836F370006E99B /* ExampleApp */,
-				222E06471948B08B0004FFD9 /* ExampleAppCpp11 */,
+				7EE481E516836F370006E99B /* SDKSamplesApp */,
+				222E06471948B08B0004FFD9 /* SDKSamplesAppCpp11 */,
 			);
 		};
 /* End PBXProject section */
@@ -1601,9 +1601,9 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "ExampleApp/ExampleApp-Prefix.pch";
+				GCC_PREFIX_HEADER = "ExampleApp/SDKSamplesApp-Prefix.pch";
 				HEADER_SEARCH_PATHS = "Include/**";
-				INFOPLIST_FILE = "$(SRCROOT)/ExampleApp/ExampleApp-Info.plist";
+				INFOPLIST_FILE = "ExampleApp/SDKSamplesApp-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Include\"",
@@ -1612,7 +1612,7 @@
 					"$(OTHER_CFLAGS)",
 					"-DCOMPILE_CPP_11=1",
 				);
-				PRODUCT_NAME = ExampleAppCpp11;
+				PRODUCT_NAME = SDKSamplesAppCpp11;
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
@@ -1630,9 +1630,9 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "ExampleApp/ExampleApp-Prefix.pch";
+				GCC_PREFIX_HEADER = "ExampleApp/SDKSamplesApp-Prefix.pch";
 				HEADER_SEARCH_PATHS = "Include/**";
-				INFOPLIST_FILE = "$(SRCROOT)/ExampleApp/ExampleApp-Info.plist";
+				INFOPLIST_FILE = "ExampleApp/SDKSamplesApp-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Include\"",
@@ -1641,7 +1641,7 @@
 					"$(OTHER_CFLAGS)",
 					"-DCOMPILE_CPP_11=1",
 				);
-				PRODUCT_NAME = ExampleAppCpp11;
+				PRODUCT_NAME = SDKSamplesAppCpp11;
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
@@ -1730,16 +1730,16 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "ExampleApp/ExampleApp-Prefix.pch";
+				GCC_PREFIX_HEADER = "ExampleApp/SDKSamplesApp-Prefix.pch";
 				GCC_TREAT_INCOMPATIBLE_POINTER_TYPE_WARNINGS_AS_ERRORS = YES;
 				HEADER_SEARCH_PATHS = "Include/**";
-				INFOPLIST_FILE = "ExampleApp/ExampleApp-Info.plist";
+				INFOPLIST_FILE = "ExampleApp/SDKSamplesApp-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Include\"",
 				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = SDKSamplesApp;
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
@@ -1759,16 +1759,16 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "ExampleApp/ExampleApp-Prefix.pch";
+				GCC_PREFIX_HEADER = "ExampleApp/SDKSamplesApp-Prefix.pch";
 				GCC_TREAT_INCOMPATIBLE_POINTER_TYPE_WARNINGS_AS_ERRORS = YES;
 				HEADER_SEARCH_PATHS = "Include/**";
-				INFOPLIST_FILE = "ExampleApp/ExampleApp-Info.plist";
+				INFOPLIST_FILE = "ExampleApp/SDKSamplesApp-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Include\"",
 				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = SDKSamplesApp;
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
@@ -1777,7 +1777,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		222E06C61948B08B0004FFD9 /* Build configuration list for PBXNativeTarget "ExampleAppCpp11" */ = {
+		222E06C61948B08B0004FFD9 /* Build configuration list for PBXNativeTarget "SDKSamplesAppCpp11" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				222E06C71948B08B0004FFD9 /* Debug */,
@@ -1786,7 +1786,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		7EE481E016836F360006E99B /* Build configuration list for PBXProject "ExampleApp" */ = {
+		7EE481E016836F360006E99B /* Build configuration list for PBXProject "SDKSamplesApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				7EE4820716836F370006E99B /* Debug */,
@@ -1795,7 +1795,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		7EE4820916836F370006E99B /* Build configuration list for PBXNativeTarget "ExampleApp" */ = {
+		7EE4820916836F370006E99B /* Build configuration list for PBXNativeTarget "SDKSamplesApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				7EE4820A16836F370006E99B /* Debug */,

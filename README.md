@@ -36,7 +36,7 @@ iOS c++11 support
 =================
 * ./update.platform.sh -p ios -c will fetch c++11/libc++ ABI compatible versions of the SDK for libc++
 * ./build -p ios -c from the command line will build targeting c++11 / libc++
-* An additional target in the XCode project file is provided for c++11 support: ExampleAppCpp11
+* An additional target in the XCode project file is provided for c++11 support: SDKSamplesAppCpp11
 
 android c++11 support
 =====================
