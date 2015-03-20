@@ -92,6 +92,8 @@ AppHost::AppHost(
 	std::string deviceModel = std::string(nativeState.deviceModel, strlen(nativeState.deviceModel));
 	Eegeo::Config::PlatformConfig config = Eegeo::Android::AndroidPlatformConfigBuilder(deviceModel).Build();
 
+	config.OptionsConfig.GenerateCollisionForAllResources = true;
+
 	m_pWorld = new Eegeo::EegeoWorld(
 	    apiKey,
 	    *m_pAndroidPlatformAbstractionModule,
