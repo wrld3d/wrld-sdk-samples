@@ -1577,7 +1577,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "ExampleApp/ExampleApp-Prefix.pch";
+				GCC_PREFIX_HEADER = "ExampleApp/SDKSamplesApp-Prefix.pch";
 				HEADER_SEARCH_PATHS = "Include/**";
 				INFOPLIST_FILE = "ExampleApp/SDKSamplesApp-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
@@ -1606,7 +1606,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "ExampleApp/ExampleApp-Prefix.pch";
+				GCC_PREFIX_HEADER = "ExampleApp/SDKSamplesApp-Prefix.pch";
 				HEADER_SEARCH_PATHS = "Include/**";
 				INFOPLIST_FILE = "ExampleApp/SDKSamplesApp-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
