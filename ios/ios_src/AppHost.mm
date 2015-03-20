@@ -56,6 +56,7 @@ AppHost::AppHost(
 	Eegeo::Config::PlatformConfig config = Eegeo::iOS::iOSPlatformConfigBuilder(App::GetDevice(), App::IsDeviceMultiCore(), App::GetMajorSystemVersion()).Build();
     
     config.OptionsConfig.StartMapModuleAutomatically = false;
+    config.OptionsConfig.GenerateCollisionForAllResources = true;
     
 	m_pWorld = new Eegeo::EegeoWorld(apiKey,
                                      *m_piOSPlatformAbstractionModule,
