@@ -36,6 +36,10 @@ AppLocationDelegate* m_pAppLocationDelegate;
 {
 	m_piOSLocationService->FailedToGetLocation();
 	m_piOSLocationService->FailedToGetHeading();
+    if(error.code == kCLErrorDenied)
+    {
+        m_piOSLocationService->SetAuthorized(false);
+    }
 }
 
 
@@ -117,6 +121,8 @@ AppLocationDelegate::~AppLocationDelegate()
 void AppLocationDelegate::NotifyReceivedPermissionResponse()
 {
     m_receivedPermissionResponse = true;
+    int authResult = [CLLocationManager authorizationStatus];
+    m_piOSLocationService->SetAuthorized(authResult == kCLAuthorizationStatusAuthorizedAlways || authResult == kCLAuthorizationStatusAuthorizedWhenInUse);
 }
 
 bool AppLocationDelegate::HasReceivedPermissionResponse() const

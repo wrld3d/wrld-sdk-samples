@@ -18,6 +18,7 @@ class LocationService
 	static boolean lastQuerySucceeded = false;
 	static boolean locationValid = false;
 	static Location bestLocation = null;
+	static boolean isAuthorized = false;
 
 	static Activity activity;
 
@@ -73,6 +74,11 @@ class LocationService
 			return false;
 		}
 		return bestLocation.hasAccuracy();
+	}
+	
+	public static boolean getIsAuthorized()
+	{
+		return isAuthorized;
 	}
 
 	static LocationListener locationListener;
@@ -169,6 +175,8 @@ class LocationService
 	private static void setupListenerAndLocationManager(Activity a)
 	{
 		LocationService.locationManager = (LocationManager) a.getSystemService(Context.LOCATION_SERVICE);
+		
+		LocationService.isAuthorized = LocationService.locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 
 		if (LocationService.locationListener == null)
 		{
@@ -192,11 +200,19 @@ class LocationService
 				public void onProviderEnabled(String provider)
 				{
 					Log.v("Location", "onProviderEnabled");
+					if(provider == LocationManager.GPS_PROVIDER)
+					{
+						LocationService.isAuthorized = true;
+					}
 				}
 
 				public void onProviderDisabled(String provider)
 				{
 					Log.v("Location", "onProviderDisabled");
+					if(provider == LocationManager.GPS_PROVIDER)
+					{
+						LocationService.isAuthorized = false;
+					}
 				}
 
 			};
