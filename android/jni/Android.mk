@@ -60,6 +60,7 @@ LOCAL_C_INCLUDES += ./libs/curl
 LOCAL_C_INCLUDES += ./libs/jpeg  
 LOCAL_C_INCLUDES += ./libs/httpxx/code
 LOCAL_C_INCLUDES += ./libs/httpxx/libs/http-parser
+LOCAL_C_INCLUDES += ./libs/rapidjson
 
 include $(BUILD_SHARED_LIBRARY)
 

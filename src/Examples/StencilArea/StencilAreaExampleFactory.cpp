@@ -26,6 +26,7 @@ namespace Examples
         Eegeo::Modules::Data::StencilAreaModule& StencilAreaModule = m_world.GetDataModule().GetStencilAreaModule();
         
         return new Examples::StencilAreaExample(
+                                              m_world.GetPlatformAbstractionModule().GetWebLoadRequestFactory(),
                                               StencilAreaModule.GetController(),
                                               m_defaultCameraControllerFactory.Create(),
                                               m_globeCameraTouchController);

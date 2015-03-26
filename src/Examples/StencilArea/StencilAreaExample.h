@@ -9,6 +9,9 @@
 #include "LatLongAltitude.h"
 #include "GlobeCameraExampleBase.h"
 #include "VectorMath.h"
+#include "IWebLoadRequestFactory.h"
+#include "WebLoadRequestCompletionCallback.h"
+
 #include <vector>
 
 namespace Examples
@@ -22,9 +25,16 @@ namespace Examples
         TPalettes m_palettes;
         TOutlines m_outlines;
         
+        Eegeo::Web::IWebLoadRequestFactory& m_webLoadRequestFactory;
         Eegeo::Data::StencilArea::StencilAreaController& m_controller;
+        
+        Eegeo::Web::TWebLoadRequestCompletionCallback<StencilAreaExample> m_handler;
+        
+        void HandleRequest(Eegeo::Web::IWebLoadRequest& webLoadRequest);
+        
     public:
         StencilAreaExample(
+                         Eegeo::Web::IWebLoadRequestFactory& webLoadRequestFactory,
                          Eegeo::Data::StencilArea::StencilAreaController& StencilAreaController,
                          Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
                          Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController);
