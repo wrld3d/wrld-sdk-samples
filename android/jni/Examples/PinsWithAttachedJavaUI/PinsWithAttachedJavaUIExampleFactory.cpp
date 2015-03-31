@@ -15,11 +15,13 @@ PinsWithAttachedJavaUIExampleFactory::PinsWithAttachedJavaUIExampleFactory(
     Eegeo::EegeoWorld& world,
     AndroidNativeState& nativeState,
     DefaultCameraControllerFactory& defaultCameraControllerFactory,
-    Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController)
+    Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController,
+    const IScreenPropertiesProvider& screenPropertiesProvider)
 	: m_world(world)
 	, m_nativeState(nativeState)
 	, m_defaultCameraControllerFactory(defaultCameraControllerFactory)
 	, m_globeCameraTouchController(globeCameraTouchController)
+	, m_screenPropertiesProvider(screenPropertiesProvider)
 {
 
 }
@@ -44,7 +46,8 @@ IExample* PinsWithAttachedJavaUIExampleFactory::CreateExample() const
 	           terrainModelModule.GetTerrainHeightProvider(),
 	           mapModule.GetEnvironmentFlatteningService(),
 	           m_defaultCameraControllerFactory.Create(),
-	           m_globeCameraTouchController);
+	           m_globeCameraTouchController,
+	           m_screenPropertiesProvider.GetScreenProperties());
 }
 
 std::string PinsWithAttachedJavaUIExampleFactory::ExampleName() const

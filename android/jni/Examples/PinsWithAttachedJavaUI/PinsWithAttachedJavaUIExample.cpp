@@ -23,7 +23,8 @@ PinsWithAttachedJavaUIExample::PinsWithAttachedJavaUIExample(
     Eegeo::Resources::Terrain::Heights::TerrainHeightProvider& terrainHeightProvider,
     Eegeo::Rendering::EnvironmentFlatteningService& environmentFlatteningService,
     Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
-    Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController
+    Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController,
+    const Eegeo::Rendering::ScreenProperties& screenProperties
 )
 	: GlobeCameraExampleBase(pCameraController, cameraTouchController)
 	, m_nativeState(nativeState)
@@ -42,8 +43,8 @@ PinsWithAttachedJavaUIExample::PinsWithAttachedJavaUIExample(
 	                                   numberOfTilesAlongEachAxisOfTexturePage);
 
 	// The following values specify the size and shape of the Pins within the 3D world.
-	int spriteWidthInMetres = 100;
-	int spriteHeightInMetres = 100;
+	int spriteWidthInMetres = 64;
+	int spriteHeightInMetres = 64;
 
 	m_pPinsModule = Eegeo_NEW(Eegeo::Pins::PinsModule)(
 	                    m_pinIconsTexture.textureId,
@@ -58,7 +59,9 @@ PinsWithAttachedJavaUIExample::PinsWithAttachedJavaUIExample(
 	                    spriteWidthInMetres,
 	                    spriteHeightInMetres,
 	                    Eegeo::Rendering::LayerIds::PlaceNames,
-	                    environmentFlatteningService);
+	                    environmentFlatteningService,
+	                    screenProperties,
+	                    false);
 
 	CreateExamplePins();
 }

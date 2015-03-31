@@ -233,7 +233,8 @@ void AppHost::RegisterAndroidSpecificExamples()
 			*m_pWorld,
 			m_nativeState,
 			m_pApp->GetDefaultCameraControllerFactory(),
-			m_pApp->GetTouchController()));
+			m_pApp->GetTouchController(),
+			m_pApp->GetScreenPropertiesProvider()));
 
 	exampleController.RegisterExample(new Examples::PositionJavaPinButtonExampleFactory(
 			*m_pWorld,

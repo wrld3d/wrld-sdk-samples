@@ -7,6 +7,7 @@
 #include "IExample.h"
 #include "EegeoWorld.h"
 #include "AndroidNativeState.h"
+#include "ScreenPropertiesProvider.h"
 
 namespace Examples
 {
@@ -16,13 +17,15 @@ class PinsWithAttachedJavaUIExampleFactory : public IExampleFactory
 	AndroidNativeState& m_nativeState;
 	DefaultCameraControllerFactory& m_defaultCameraControllerFactory;
     Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& m_globeCameraTouchController;
+    const IScreenPropertiesProvider& m_screenPropertiesProvider;
 
 public:
 	PinsWithAttachedJavaUIExampleFactory(
 	    Eegeo::EegeoWorld& world,
 	    AndroidNativeState& nativeState,
         DefaultCameraControllerFactory& defaultCameraControllerFactory,
-        Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController);
+        Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController,
+        const IScreenPropertiesProvider& screenPropertiesProvider);
 
 	std::string ExampleName() const;
 

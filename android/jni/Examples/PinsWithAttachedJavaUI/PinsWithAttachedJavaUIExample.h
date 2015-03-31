@@ -55,7 +55,8 @@ public:
 	    Eegeo::Resources::Terrain::Heights::TerrainHeightProvider& terrainHeightProvider,
 	    Eegeo::Rendering::EnvironmentFlatteningService& environmentFlatteningService,
 	    Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
-	    Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController
+	    Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController,
+	    const Eegeo::Rendering::ScreenProperties& screenProperties
 	);
 	virtual ~PinsWithAttachedJavaUIExample();
 
