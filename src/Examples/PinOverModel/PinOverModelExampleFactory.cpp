@@ -16,10 +16,12 @@ namespace Examples
 
 PinOverModelExampleFactory::PinOverModelExampleFactory(Eegeo::EegeoWorld& world,
         DefaultCameraControllerFactory& defaultCameraControllerFactory,
-                                          Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController)
+                                          Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController,
+                                          const IScreenPropertiesProvider& screenPropertiesProvider)
 	: m_world(world)
 	, m_defaultCameraControllerFactory(defaultCameraControllerFactory)
     , m_globeCameraTouchController(globeCameraTouchController)
+    , m_screenPropertiesProvider(screenPropertiesProvider)
 {
 
 }
@@ -32,6 +34,8 @@ IExample* PinOverModelExampleFactory::CreateExample() const
     Eegeo::Modules::Map::MapModule& mapModule = m_world.GetMapModule();
     Eegeo::Modules::Core::AsyncLoadersModule& asyncLoadersModule = m_world.GetAsyncLoadersModule();
     Eegeo::Modules::Core::LightingModule& lightingModule = m_world.GetLightingModule();
+    
+    const Eegeo::Rendering::ScreenProperties& initialScreenProperties = m_screenPropertiesProvider.GetScreenProperties();
     
 	return new Examples::PinOverModelExample(platformAbstractioModule.GetTextureFileLoader(),
 	        renderingModule.GetGlBufferPool(),
@@ -47,7 +51,8 @@ IExample* PinOverModelExampleFactory::CreateExample() const
 	        lightingModule.GetGlobalFogging(),
 	        renderingModule.GetNullMaterialFactory(),
 	        m_defaultCameraControllerFactory.Create(),
-            m_globeCameraTouchController);
+            m_globeCameraTouchController,
+            initialScreenProperties);
 }
 
 std::string PinOverModelExampleFactory::ExampleName() const

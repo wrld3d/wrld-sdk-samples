@@ -11,12 +11,14 @@
 namespace Examples
 {
 
-PinsExampleFactory::PinsExampleFactory(Eegeo::EegeoWorld& world,
-                                       DefaultCameraControllerFactory& defaultCameraControllerFactory,
-                                          Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController)
+    PinsExampleFactory::PinsExampleFactory(Eegeo::EegeoWorld& world,
+                                           DefaultCameraControllerFactory& defaultCameraControllerFactory,
+                                           Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController,
+                                           const IScreenPropertiesProvider& screenPropertiesProvider)
 	: m_world(world)
-	, m_defaultCameraControllerFactory(defaultCameraControllerFactory)
+    , m_defaultCameraControllerFactory(defaultCameraControllerFactory)
     , m_globeCameraTouchController(globeCameraTouchController)
+	, m_screenPropertiesProvider(screenPropertiesProvider)
 {
 
 }
@@ -28,6 +30,8 @@ IExample* PinsExampleFactory::CreateExample() const
     Eegeo::Modules::Map::Layers::TerrainModelModule& terrainModelModule = m_world.GetTerrainModelModule();
     Eegeo::Modules::Map::MapModule& mapModule = m_world.GetMapModule();
     
+    const Eegeo::Rendering::ScreenProperties& initialScreenProperties = m_screenPropertiesProvider.GetScreenProperties();
+    
 	return new Examples::PinsExample(platformAbstractioModule.GetTextureFileLoader(),
 	                                 renderingModule.GetGlBufferPool(),
 	                                 renderingModule.GetShaderIdGenerator(),
@@ -38,7 +42,9 @@ IExample* PinsExampleFactory::CreateExample() const
 	                                 terrainModelModule.GetTerrainHeightProvider(),
 	                                 mapModule.GetEnvironmentFlatteningService(),
 	                                 m_defaultCameraControllerFactory.Create(),
-                                     m_globeCameraTouchController);
+                                     m_globeCameraTouchController,
+                                     initialScreenProperties
+                                     );
 }
 
 std::string PinsExampleFactory::ExampleName() const

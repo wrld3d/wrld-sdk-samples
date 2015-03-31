@@ -18,7 +18,8 @@ PinsExample::PinsExample(
     Eegeo::Resources::Terrain::Heights::TerrainHeightProvider& terrainHeightProvider,
     Eegeo::Rendering::EnvironmentFlatteningService& environmentFlatteningService,
     Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
-                        Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController
+    Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController,
+    const Eegeo::Rendering::ScreenProperties& initialScreenProperties
 )
 	: GlobeCameraExampleBase(pCameraController, cameraTouchController)
     , m_pin0UserData("Pin Zero(0) User Data")
@@ -38,8 +39,8 @@ PinsExample::PinsExample(
 	m_pPinIconsTexturePageLayout = Eegeo_NEW(Eegeo::Rendering::RegularTexturePageLayout)(numberOfTilesAlongEachAxisOfTexturePage);
 
 	// The following values specify the size and shape of the Pins within the 3D world.
-	int spriteWidthInMetres = 100;
-	int spriteHeightInMetres = 100;
+	int spriteWidthInMetres = 64;
+	int spriteHeightInMetres = 64;
 
 	// N.B. The implementation for PinModule is given in PinModule.h as a guide for Apps that
 	// require an alternate configuration of the various Pin related components.
@@ -56,7 +57,9 @@ PinsExample::PinsExample(
 	                    spriteWidthInMetres,
 	                    spriteHeightInMetres,
 	                    Eegeo::Rendering::LayerIds::PlaceNames,
-	                    environmentFlatteningService
+	                    environmentFlatteningService,
+                        initialScreenProperties,
+                        false
 	                );
 
 	CreateExamplePins();
@@ -131,6 +134,12 @@ void PinsExample::Update(float dt)
     // Update the PinsModule to query terrain heights and update screen space coordinats for the Pins.
     Eegeo::Camera::RenderCamera renderCamera(GetGlobeCameraController().GetRenderCamera());
 	m_pPinsModule->Update(dt, renderCamera);
+}
+    
+void PinsExample::NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties &screenProperties)
+{
+    GlobeCameraExampleBase::NotifyScreenPropertiesChanged(screenProperties);
+    m_pPinsModule->UpdateScreenProperties(screenProperties);
 }
 
 void PinsExample::Draw()

@@ -86,7 +86,8 @@ public:
 	    Eegeo::Lighting::GlobalFogging& fogging,
 	    Eegeo::Rendering::Materials::NullMaterialFactory& nullMaterialFactory,
 	    Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
-                        Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController
+        Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController,
+        const Eegeo::Rendering::ScreenProperties& initialScreenProperties
 	);
 
 	virtual ~PinOverModelExample();
@@ -104,6 +105,8 @@ public:
 	void Update(float dt);
 	void Draw();
 	void Suspend();
+    
+    virtual void NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties);
     
     
 

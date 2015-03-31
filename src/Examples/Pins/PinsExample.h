@@ -49,7 +49,8 @@ public:
 	    Eegeo::Resources::Terrain::Heights::TerrainHeightProvider& terrainHeightProvider,
 	    Eegeo::Rendering::EnvironmentFlatteningService& environmentFlatteningService,
 	    Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
-                        Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController
+        Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController,
+        const Eegeo::Rendering::ScreenProperties& initialScreenProperties
 	);
 	virtual ~PinsExample();
 
@@ -67,6 +68,7 @@ public:
 	void Draw();
 	void Suspend();
     
+    virtual void NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties);
     
 
 	void Event_TouchTap(const AppInterface::TapData& data);

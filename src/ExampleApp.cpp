@@ -157,8 +157,8 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
 	m_pExampleController->RegisterCameraExample<Examples::ModifiedRenderingExampleFactory>();
 	m_pExampleController->RegisterCameraExample<Examples::NavigationGraphExampleFactory>();
 	m_pExampleController->RegisterCameraExample<Examples::Pick3DObjectExampleFactory>();
-	m_pExampleController->RegisterCameraExample<Examples::PinsExampleFactory>();
-	m_pExampleController->RegisterCameraExample<Examples::PinOverModelExampleFactory>();
+	m_pExampleController->RegisterCameraControllerScreenPropertiesProviderExample<Examples::PinsExampleFactory>(m_screenPropertiesProvider);
+	m_pExampleController->RegisterCameraControllerScreenPropertiesProviderExample<Examples::PinOverModelExampleFactory>(m_screenPropertiesProvider  );
 	m_pExampleController->RegisterCameraExample<Examples::PODAnimationExampleFactory>();
     m_pExampleController->RegisterCameraExample<Examples::PolyChartExampleFactory>();
 	m_pExampleController->RegisterCameraExample<Examples::ReadHeadingExampleFactory>();
