@@ -235,6 +235,10 @@
 		E096AE1C19F6713300C3D04A /* SplashScreen-1024x768.png in Resources */ = {isa = PBXBuildFile; fileRef = E096AE1B19F6713300C3D04A /* SplashScreen-1024x768.png */; };
 		E096AE1D19F6713300C3D04A /* SplashScreen-1024x768.png in Resources */ = {isa = PBXBuildFile; fileRef = E096AE1B19F6713300C3D04A /* SplashScreen-1024x768.png */; };
 		E0B9CF9319F697090012D0B4 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E096AE1919F670F100C3D04A /* Images.xcassets */; };
+		E0C66D0F1ACC58620096E08A /* BuildingSelectionExample.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0C66D0D1ACC58620096E08A /* BuildingSelectionExample.cpp */; };
+		E0C66D101ACC58620096E08A /* BuildingSelectionExample.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0C66D0D1ACC58620096E08A /* BuildingSelectionExample.cpp */; };
+		E0C66D131ACC58710096E08A /* BuildingSelectionExampleFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0C66D111ACC58710096E08A /* BuildingSelectionExampleFactory.cpp */; };
+		E0C66D141ACC58710096E08A /* BuildingSelectionExampleFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0C66D111ACC58710096E08A /* BuildingSelectionExampleFactory.cpp */; };
 		E0F9926C1A3090C900CBFA18 /* mesh_example in Resources */ = {isa = PBXBuildFile; fileRef = E0F9926B1A3090C900CBFA18 /* mesh_example */; };
 		E0F9926D1A3090C900CBFA18 /* mesh_example in Resources */ = {isa = PBXBuildFile; fileRef = E0F9926B1A3090C900CBFA18 /* mesh_example */; };
 		E0F9927B1A30911800CBFA18 /* ExampleMeshRenderable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0F992711A30911800CBFA18 /* ExampleMeshRenderable.cpp */; };
@@ -488,6 +492,10 @@
 		E06A8F131A30C08B00A492F2 /* MeshExampleConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MeshExampleConfig.h; path = Mesh/MeshExampleConfig.h; sourceTree = "<group>"; };
 		E096AE1919F670F100C3D04A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		E096AE1B19F6713300C3D04A /* SplashScreen-1024x768.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SplashScreen-1024x768.png"; sourceTree = "<group>"; };
+		E0C66D0D1ACC58620096E08A /* BuildingSelectionExample.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BuildingSelectionExample.cpp; path = BuildingSelection/BuildingSelectionExample.cpp; sourceTree = "<group>"; };
+		E0C66D0E1ACC58620096E08A /* BuildingSelectionExample.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BuildingSelectionExample.h; path = BuildingSelection/BuildingSelectionExample.h; sourceTree = "<group>"; };
+		E0C66D111ACC58710096E08A /* BuildingSelectionExampleFactory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BuildingSelectionExampleFactory.cpp; path = BuildingSelection/BuildingSelectionExampleFactory.cpp; sourceTree = "<group>"; };
+		E0C66D121ACC58710096E08A /* BuildingSelectionExampleFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BuildingSelectionExampleFactory.h; path = BuildingSelection/BuildingSelectionExampleFactory.h; sourceTree = "<group>"; };
 		E0F9926B1A3090C900CBFA18 /* mesh_example */ = {isa = PBXFileReference; lastKnownFileType = folder; path = mesh_example; sourceTree = "<group>"; };
 		E0F992711A30911800CBFA18 /* ExampleMeshRenderable.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ExampleMeshRenderable.cpp; path = Mesh/ExampleMeshRenderable.cpp; sourceTree = "<group>"; };
 		E0F992721A30911800CBFA18 /* ExampleMeshRenderable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ExampleMeshRenderable.h; path = Mesh/ExampleMeshRenderable.h; sourceTree = "<group>"; };
@@ -582,6 +590,7 @@
 		18143847192B6E4500BCDF2E /* Examples */ = {
 			isa = PBXGroup;
 			children = (
+				E0C66D0C1ACC58310096E08A /* BuildingSelection */,
 				E022EB721AA8D66000841D7B /* EnvironmentRayCaster */,
 				EEF758B81AB338D5002B63E6 /* Heatmap */,
 				EE234E6D1AA9A7210068E68C /* Data */,
@@ -1161,6 +1170,17 @@
 			name = EnvironmentRayCaster;
 			sourceTree = "<group>";
 		};
+		E0C66D0C1ACC58310096E08A /* BuildingSelection */ = {
+			isa = PBXGroup;
+			children = (
+				E0C66D0D1ACC58620096E08A /* BuildingSelectionExample.cpp */,
+				E0C66D0E1ACC58620096E08A /* BuildingSelectionExample.h */,
+				E0C66D111ACC58710096E08A /* BuildingSelectionExampleFactory.cpp */,
+				E0C66D121ACC58710096E08A /* BuildingSelectionExampleFactory.h */,
+			);
+			name = BuildingSelection;
+			sourceTree = "<group>";
+		};
 		E0F992521A2F7F8E00CBFA18 /* Mesh */ = {
 			isa = PBXGroup;
 			children = (
@@ -1368,6 +1388,7 @@
 				222E06501948B08B0004FFD9 /* DebugPrimitiveRenderingExampleFactory.cpp in Sources */,
 				E0F992841A30911800CBFA18 /* MeshExampleFactory.cpp in Sources */,
 				EE234E681AA9989B0068E68C /* StencilAreaExample.cpp in Sources */,
+				E0C66D101ACC58620096E08A /* BuildingSelectionExample.cpp in Sources */,
 				222E06511948B08B0004FFD9 /* EnvironmentFlatteningExample.cpp in Sources */,
 				18E18E8E198BE4C80065F81D /* PostProcessVignetteMaterial.cpp in Sources */,
 				222E06521948B08B0004FFD9 /* EnvironmentNotifierExample.cpp in Sources */,
@@ -1389,6 +1410,7 @@
 				222E06601948B08B0004FFD9 /* Main.m in Sources */,
 				222E06611948B08B0004FFD9 /* ScreenUnprojectExample.cpp in Sources */,
 				EE3D48D81A9C8C9200D520D8 /* BuildingHighlightExampleFactory.cpp in Sources */,
+				E0C66D141ACC58710096E08A /* BuildingSelectionExampleFactory.cpp in Sources */,
 				222E06631948B08B0004FFD9 /* CameraTransitionExample.cpp in Sources */,
 				222E06641948B08B0004FFD9 /* TrafficCongestionExample.cpp in Sources */,
 				222E06651948B08B0004FFD9 /* PODAnimationExample.cpp in Sources */,
@@ -1474,6 +1496,7 @@
 				181438BB192B6E4500BCDF2E /* RouteSimulationAnimationExample.cpp in Sources */,
 				E0F992831A30911800CBFA18 /* MeshExampleFactory.cpp in Sources */,
 				EE234E671AA9989B0068E68C /* StencilAreaExample.cpp in Sources */,
+				E0C66D0F1ACC58620096E08A /* BuildingSelectionExample.cpp in Sources */,
 				18AB38FE192B729F00F15546 /* ViewController.mm in Sources */,
 				18E18E8D198BE4C80065F81D /* PostProcessVignetteMaterial.cpp in Sources */,
 				181438BC192B6E4500BCDF2E /* RouteThicknessPolicyExample.cpp in Sources */,
@@ -1495,6 +1518,7 @@
 				181438B5192B6E4500BCDF2E /* PinsExample.cpp in Sources */,
 				18997174192CA64300E0E9F1 /* ControlCityThemeExampleFactory.cpp in Sources */,
 				EE3D48D71A9C8C9200D520D8 /* BuildingHighlightExampleFactory.cpp in Sources */,
+				E0C66D131ACC58710096E08A /* BuildingSelectionExampleFactory.cpp in Sources */,
 				18AB38F9192B729F00F15546 /* iOSRouteMatchingExampleView.mm in Sources */,
 				18C45A7019658A5C009B18A8 /* AppHost.mm in Sources */,
 				18997195192CAFED00E0E9F1 /* Pick3DObjectExampleFactory.cpp in Sources */,

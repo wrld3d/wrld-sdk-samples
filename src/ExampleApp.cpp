@@ -50,6 +50,7 @@
 #include "FireworksExampleFactory.h"
 #include "MeshExampleFactory.h"
 #include "GeofenceExampleFactory.h"
+#include "BuildingSelectionExampleFactory.h"
 
 
 namespace
@@ -138,6 +139,7 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
 	//register all generic examples
 
     m_pExampleController->RegisterCameraExample<Examples::BuildingHighlightExampleFactory>();
+    m_pExampleController->RegisterCameraExample<Examples::BuildingSelectionExampleFactory>();
     m_pExampleController->RegisterScreenPropertiesProviderExample<Examples::CameraSplineExampleFactory>(m_screenPropertiesProvider);
     m_pExampleController->RegisterCameraExample<Examples::CameraTransitionExampleFactory>();
     m_pExampleController->RegisterCameraExample<Examples::ControlCityThemeExampleFactory>();
