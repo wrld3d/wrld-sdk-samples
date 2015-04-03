@@ -29,8 +29,8 @@ namespace Examples
         void PreWorldDraw();
         void Draw() {;}
         void Suspend() {;}
-        
-        void Event_TouchDown(const AppInterface::TouchData& data);
+
+        void Event_TouchTap(const AppInterface::TapData& data);
     private:
         void PerformRayPick(const Eegeo::dv3& rayOrigin, const Eegeo::dv3& rayDirection);
     

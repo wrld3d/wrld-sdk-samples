@@ -47,7 +47,7 @@ namespace Examples
     }
     
     
-    void BuildingSelectionExample::Event_TouchDown(const AppInterface::TouchData& data)
+    void BuildingSelectionExample::Event_TouchTap(const AppInterface::TapData& data)
     {
         const Eegeo::Camera::RenderCamera& renderCamera = GetGlobeCameraController().GetRenderCamera();
         
