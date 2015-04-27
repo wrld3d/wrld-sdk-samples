@@ -1,14 +1,19 @@
 LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
+
+$(info TARGET_ARCH_ABI is $(TARGET_ARCH_ABI))
+
+PREBUILT_LIBS := ./libs/prebuilt/android-$(TARGET_ARCH_ABI)
+
 LOCAL_MODULE := native-activity-lib
-LOCAL_SRC_FILES := ./../libs/libnative-activity-lib.a
+LOCAL_SRC_FILES := ../$(PREBUILT_LIBS)/libnative-activity-lib.a
 include $(PREBUILT_STATIC_LIBRARY)
 
 include $(CLEAR_VARS)
 
 LOCAL_MODULE := native-activity
-LOCAL_LDLIBS    := -llog -landroid -lEGL -lGLESv2 -L./libs/ -lpng -lz -lm -lcrypto -lssl -lcurl -lcares -lsimd -lmyjpeg -lhttpxx-lib
+LOCAL_LDLIBS := -llog -landroid -lEGL -lGLESv2 -lz -lm -L${PREBUILT_LIBS} -lpng -lcurl -lssl -lcrypto -lxml2 -lhttp-parser -ljpeg -lturbojpeg
 LOCAL_LDLIBS += -fuse-ld=bfd
 LOCAL_STATIC_LIBRARIES := native-activity-lib 
 
@@ -55,12 +60,16 @@ else
 	LOCAL_C_INCLUDES += .\jni\Examples
 endif 
 
+
+$(info LOCAL_C_INCLUDES is $(LOCAL_C_INCLUDES))
+
+LOCAL_C_INCLUDES += ./libs/curl/android-$(TARGET_ARCH_ABI) 
+LOCAL_C_INCLUDES += ./libs/http-parser
+LOCAL_C_INCLUDES += ./libs/httpxx
+LOCAL_C_INCLUDES += ./libs/jpeg-turbo
 LOCAL_C_INCLUDES += ./libs/png
-LOCAL_C_INCLUDES += ./libs/curl 
-LOCAL_C_INCLUDES += ./libs/jpeg  
-LOCAL_C_INCLUDES += ./libs/httpxx/code
-LOCAL_C_INCLUDES += ./libs/httpxx/libs/http-parser
 LOCAL_C_INCLUDES += ./libs/rapidjson
+LOCAL_C_INCLUDES += ./libs/xml2
 
 include $(BUILD_SHARED_LIBRARY)
 
