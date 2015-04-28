@@ -65,6 +65,7 @@ AppHost::AppHost(
 	Eegeo::Rendering::ScreenProperties screenProperties(Eegeo::Rendering::ScreenProperties::Make(displayWidth, displayHeight, 1.f, nativeState.deviceDpi));
 
 	std::set<std::string> customApplicationAssetDirectories;
+	customApplicationAssetDirectories.insert("heatmap_example");
 	customApplicationAssetDirectories.insert("load_model_example");
 	customApplicationAssetDirectories.insert("mesh_example");
 	customApplicationAssetDirectories.insert("pin_over_model_example");
