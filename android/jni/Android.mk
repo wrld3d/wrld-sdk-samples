@@ -13,7 +13,7 @@ include $(PREBUILT_STATIC_LIBRARY)
 include $(CLEAR_VARS)
 
 LOCAL_MODULE := native-activity
-LOCAL_LDLIBS := -llog -landroid -lEGL -lGLESv2 -lz -lm -L${PREBUILT_LIBS} -lpng -lcurl -lssl -lcrypto -lxml2 -lhttp-parser -ljpeg -lturbojpeg
+LOCAL_LDLIBS := -llog -landroid -lEGL -lGLESv2 -lz -lm -L${PREBUILT_LIBS} -lpng -lcurl -lssl -lcrypto -lhttp-parser -ljpeg -lturbojpeg
 LOCAL_LDLIBS += -fuse-ld=bfd
 LOCAL_STATIC_LIBRARIES := native-activity-lib 
 
@@ -69,7 +69,6 @@ LOCAL_C_INCLUDES += ./libs/httpxx
 LOCAL_C_INCLUDES += ./libs/jpeg-turbo
 LOCAL_C_INCLUDES += ./libs/png
 LOCAL_C_INCLUDES += ./libs/rapidjson
-LOCAL_C_INCLUDES += ./libs/xml2
 
 include $(BUILD_SHARED_LIBRARY)
 
