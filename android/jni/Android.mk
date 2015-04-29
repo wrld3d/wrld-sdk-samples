@@ -1,24 +1,68 @@
 LOCAL_PATH := $(call my-dir)
 
-include $(CLEAR_VARS)
 
 $(info TARGET_ARCH_ABI is $(TARGET_ARCH_ABI))
 
+$(info LOCAL_PATH is $(LOCAL_PATH))
+
 PREBUILT_LIBS := ./libs/prebuilt/android-$(TARGET_ARCH_ABI)
 
-LOCAL_MODULE := native-activity-lib
-LOCAL_SRC_FILES := ../$(PREBUILT_LIBS)/libnative-activity-lib.a
+include $(CLEAR_VARS)
+LOCAL_MODULE := eegeo-sdk-lib
+LOCAL_SRC_FILES := ../$(PREBUILT_LIBS)/libeegeo-sdk.a
+include $(PREBUILT_STATIC_LIBRARY)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := png-lib
+LOCAL_SRC_FILES := ../$(PREBUILT_LIBS)/libpng.a
+LOCAL_EXPORT_C_INCLUDES := ./libs/png
+include $(PREBUILT_STATIC_LIBRARY)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := curl-lib
+LOCAL_SRC_FILES := ../$(PREBUILT_LIBS)/libcurl.a
+LOCAL_EXPORT_C_INCLUDES := ./libs/curl/android-$(TARGET_ARCH_ABI) 
+include $(PREBUILT_STATIC_LIBRARY)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := ssl-lib
+LOCAL_SRC_FILES := ../$(PREBUILT_LIBS)/libssl.a
+include $(PREBUILT_STATIC_LIBRARY)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := crypto-lib
+LOCAL_SRC_FILES := ../$(PREBUILT_LIBS)/libcrypto.a
+include $(PREBUILT_STATIC_LIBRARY)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := http-parser-lib
+LOCAL_SRC_FILES := ../$(PREBUILT_LIBS)/libhttp-parser.a
+LOCAL_EXPORT_C_INCLUDES := ./libs/http-parser 
+include $(PREBUILT_STATIC_LIBRARY)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := jpeg-lib
+LOCAL_SRC_FILES := ../$(PREBUILT_LIBS)/libjpeg.a
+include $(PREBUILT_STATIC_LIBRARY)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := turbojpeg-lib
+LOCAL_SRC_FILES := ../$(PREBUILT_LIBS)/libturbojpeg.a
+LOCAL_EXPORT_C_INCLUDES := ./libs/jpeg-turbo 
 include $(PREBUILT_STATIC_LIBRARY)
 
 include $(CLEAR_VARS)
 
-LOCAL_MODULE := native-activity
-LOCAL_LDLIBS := -llog -landroid -lEGL -lGLESv2 -lz -lm -L${PREBUILT_LIBS} -lpng -lcurl -lssl -lcrypto -lhttp-parser -ljpeg -lturbojpeg
+LOCAL_MODULE := eegeo-sdk-samples
+LOCAL_LDLIBS := -llog -landroid -lEGL -lGLESv2 -lz -lm
 LOCAL_LDLIBS += -fuse-ld=bfd
-LOCAL_STATIC_LIBRARIES := native-activity-lib 
+LOCAL_STATIC_LIBRARIES := eegeo-sdk-lib png-lib curl-lib ssl-lib crypto-lib http-parser-lib jpeg-lib turbojpeg-lib
 
 ifdef COMPILE_CPP_11
+  $(info Configured for C++11)
   LOCAL_CPPFLAGS += -DCOMPILE_CPP_11=1 -std=c++11
+else
+  $(info Configured for C++0x)
 endif
 
 os_name:=$(shell uname -s)
@@ -60,15 +104,9 @@ else
 	LOCAL_C_INCLUDES += .\jni\Examples
 endif 
 
+LOCAL_C_INCLUDES += ./libs/rapidjson
 
 $(info LOCAL_C_INCLUDES is $(LOCAL_C_INCLUDES))
-
-LOCAL_C_INCLUDES += ./libs/curl/android-$(TARGET_ARCH_ABI) 
-LOCAL_C_INCLUDES += ./libs/http-parser
-LOCAL_C_INCLUDES += ./libs/httpxx
-LOCAL_C_INCLUDES += ./libs/jpeg-turbo
-LOCAL_C_INCLUDES += ./libs/png
-LOCAL_C_INCLUDES += ./libs/rapidjson
 
 include $(BUILD_SHARED_LIBRARY)
 
