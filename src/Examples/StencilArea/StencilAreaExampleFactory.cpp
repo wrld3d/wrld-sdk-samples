@@ -27,6 +27,7 @@ namespace Examples
         
         return new Examples::StencilAreaExample(
                                               m_world.GetPlatformAbstractionModule().GetWebLoadRequestFactory(),
+                                              m_world.GetNativeUIFactories(),
                                               StencilAreaModule.GetController(),
                                               m_defaultCameraControllerFactory.Create(),
                                               m_globeCameraTouchController);

@@ -11,6 +11,7 @@
 #include "VectorMath.h"
 #include "IWebLoadRequestFactory.h"
 #include "WebLoadRequestCompletionCallback.h"
+#include "NativeUIFactories.h"
 
 #include <vector>
 
@@ -28,13 +29,18 @@ namespace Examples
         Eegeo::Web::IWebLoadRequestFactory& m_webLoadRequestFactory;
         Eegeo::Data::StencilArea::StencilAreaController& m_controller;
         
+        Eegeo::UI::NativeUIFactories& m_nativeUIFactories;
+        Eegeo::UI::NativeAlerts::ISingleOptionAlertBoxDismissedHandler* m_pAlertBoxDismissedHandler;
+        
         Eegeo::Web::TWebLoadRequestCompletionCallback<StencilAreaExample> m_handler;
         
         void HandleRequest(Eegeo::Web::IWebLoadRequest& webLoadRequest);
+        void HandleAlertBoxDismissed();
         
     public:
         StencilAreaExample(
                          Eegeo::Web::IWebLoadRequestFactory& webLoadRequestFactory,
+                         Eegeo::UI::NativeUIFactories& nativeUIFactories,
                          Eegeo::Data::StencilArea::StencilAreaController& StencilAreaController,
                          Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
                          Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController);
