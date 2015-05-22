@@ -19,6 +19,9 @@
 
 #include "IWebLoadRequest.h"
 
+#include "IAlertBoxFactory.h"
+#include "ISingleOptionAlertBoxDismissedHandler.h"
+
 namespace Examples
 {
     namespace
@@ -41,12 +44,15 @@ namespace Examples
     
     StencilAreaExample::StencilAreaExample(
                                        Eegeo::Web::IWebLoadRequestFactory& webRequestFactory,
+                                       Eegeo::UI::NativeUIFactories& nativeUIFactories,
                                        Eegeo::Data::StencilArea::StencilAreaController& StencilAreaController,
                                        Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
                                        Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController)
     : GlobeCameraExampleBase(pCameraController, cameraTouchController)
     , m_controller(StencilAreaController)
     , m_webLoadRequestFactory(webRequestFactory)
+    , m_nativeUIFactories(nativeUIFactories)
+    , m_pAlertBoxDismissedHandler(NULL)
     , m_handler(this, &StencilAreaExample::HandleRequest)
     {
         Eegeo::Space::EcefTangentBasis cameraInterestBasis;
@@ -77,6 +83,19 @@ namespace Examples
     
     void StencilAreaExample::HandleRequest(Eegeo::Web::IWebLoadRequest& webLoadRequest)
     {
+        if (!webLoadRequest.IsSucceeded())
+        {
+            Eegeo_ASSERT(m_pAlertBoxDismissedHandler == NULL, "AlertBoxDismissedHandler not NULL");
+            
+            m_pAlertBoxDismissedHandler = Eegeo_NEW(Eegeo::UI::NativeAlerts::TSingleOptionAlertBoxDismissedHandler<StencilAreaExample>(this, &StencilAreaExample::HandleAlertBoxDismissed));
+            
+            m_nativeUIFactories.AlertBoxFactory().CreateSingleOptionAlertBox("Unabled to Retrieve Stencil Data",
+                                                                             "Ensure network connection is enabled and retry the example",
+                                                                             *m_pAlertBoxDismissedHandler);
+            
+            return;
+        }
+        
         size_t resultSize = webLoadRequest.GetResourceData().size();
         std::string json( reinterpret_cast<char const*>(&(webLoadRequest.GetResourceData().front())), resultSize );
         
@@ -159,5 +178,16 @@ namespace Examples
     void StencilAreaExample::Event_TouchUp(const AppInterface::TouchData& data)
     {
         GlobeCameraExampleBase::Event_TouchUp(data);
+    }
+    
+    void StencilAreaExample::HandleAlertBoxDismissed()
+    {
+        if (m_pAlertBoxDismissedHandler != NULL)
+        {
+            Eegeo_DELETE m_pAlertBoxDismissedHandler;
+            m_pAlertBoxDismissedHandler = NULL;
+        }
+        
+        return;
     }
 }
