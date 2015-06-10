@@ -2,10 +2,10 @@
 
 package com.eegeo.mobilesdkharness;
 
+import android.support.v7.app.AppCompatActivity;
 import android.view.SurfaceHolder;
-import android.app.Activity;
 
-public abstract class MainActivity extends Activity implements SurfaceHolder.Callback, INativeMessageRunner
+public abstract class MainActivity extends AppCompatActivity implements SurfaceHolder.Callback, INativeMessageRunner
 {
 
 }

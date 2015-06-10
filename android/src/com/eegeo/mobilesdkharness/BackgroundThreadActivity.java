@@ -2,7 +2,23 @@
 
 package com.eegeo.mobilesdkharness;
 
+
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v4.app.ActionBarDrawerToggle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+import java.util.ArrayList;
+
+import com.eegeo.mobilesdkharness.R;
+import com.eegeo.mobilesdkharness.embeddedapp.CustomFragment;
+import com.eegeo.mobilesdkharness.embeddedapp.FragmentController;
+
 import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
@@ -18,6 +34,11 @@ public class BackgroundThreadActivity extends MainActivity
 	private long m_nativeAppWindowPtr;
 	private ThreadedUpdateRunner m_threadedRunner;
 	private Thread m_updater;
+	
+    public ArrayList<String> m_navItems;
+    private DrawerLayout m_drawerLayout;
+    private ListView m_drawerList;
+    private ActionBarDrawerToggle m_drawerToggle;
 
 	static {
 		System.loadLibrary("eegeo-sdk-samples");
@@ -26,11 +47,33 @@ public class BackgroundThreadActivity extends MainActivity
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
-		super.onCreate(savedInstanceState);
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.embedded_app_main);
+        
+        m_navItems = new ArrayList<String>();
+        m_navItems.add("Some Image App View");
+        m_navItems.add("Some Text App View");
+        m_navItems.add("The eeGeo Map");
+        
+        m_drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-		setContentView(R.layout.activity_main);
+        m_drawerToggle = new android.support.v4.app.ActionBarDrawerToggle(this, m_drawerLayout,
+                R.drawable.ic_drawer, R.string.open, R.string.close);
 
-		m_surfaceView = (EegeoSurfaceView)findViewById(R.id.surface);
+        m_drawerLayout.setDrawerListener(m_drawerToggle);
+
+        m_drawerList = (ListView) findViewById(R.id.left_drawer);
+        m_drawerList.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, m_navItems));
+        m_drawerList.setOnItemClickListener(new FragmentController(this));
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_drawer);
+        getSupportActionBar().setHomeButtonEnabled(true);
+	}
+	
+	public void handleMapFragmentCreated(View mapFragView) 
+	{
+        m_surfaceView = (EegeoSurfaceView)mapFragView.findViewById(R.id.surface);
 		m_surfaceView.getHolder().addCallback(this);
 		m_surfaceView.setActivity(this);
 
@@ -57,6 +100,35 @@ public class BackgroundThreadActivity extends MainActivity
 			}
 		});
 	}
+
+    public void switchFragment(CustomFragment frag, int position) 
+    {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.content_frame, frag)
+                .commit();
+
+        m_drawerList.setItemChecked(position, true);
+        getSupportActionBar().setTitle(m_navItems.get(position));
+        m_drawerLayout.closeDrawer(m_drawerList);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        if (m_drawerToggle.onOptionsItemSelected(item))
+        {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        getMenuInflater().inflate(R.menu.embedded_app_menu, menu);
+        return true;
+    }
 
 	public void runOnNativeThread(Runnable runnable)
 	{
@@ -97,6 +169,11 @@ public class BackgroundThreadActivity extends MainActivity
 			}
 		});
 	}
+    @Override
+    public void onBackPressed()
+    {
+        moveTaskToBack(true);
+    }
 
 	@Override
 	protected void onDestroy()
