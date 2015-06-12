@@ -32,8 +32,17 @@ namespace Examples
             
             const Eegeo::Modules::IPlatformAbstractionModule& platformAbstractionModule = world.GetPlatformAbstractionModule();
             const Eegeo::Modules::Core::RenderingModule& renderingModule = world.GetRenderingModule();
+            const Eegeo::Modules::Map::MapModule& mapModule = world.GetMapModule();
+            const Eegeo::Modules::Map::Layers::BuildingStreamingModule& buildingStreamingModule = mapModule.GetBuildingStreamingModule();
+            const Eegeo::Modules::Map::CoverageTreeModule& coverageTreeModule = mapModule.GetCoverageTreeModule();
             
-            Eegeo::Modules::BuildingFootprintsModule* pBuildingFootprintsModule = Eegeo::Modules::BuildingFootprintsModule::Create(platformAbstractionModule, renderingModule, collisionVisualizationModule, buildingFootprintSelectionControllerConfig);
+            Eegeo::Modules::BuildingFootprintsModule* pBuildingFootprintsModule =
+                Eegeo::Modules::BuildingFootprintsModule::Create(platformAbstractionModule,
+                                                                 renderingModule,
+                                                                 collisionVisualizationModule,
+                                                                 buildingStreamingModule,
+                                                                 coverageTreeModule,
+                                                                 buildingFootprintSelectionControllerConfig);
             return pBuildingFootprintsModule;
         }
     }
