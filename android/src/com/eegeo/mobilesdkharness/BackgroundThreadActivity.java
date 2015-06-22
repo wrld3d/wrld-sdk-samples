@@ -97,6 +97,8 @@ public class BackgroundThreadActivity extends MainActivity
 				{
 					throw new RuntimeException("Failed to start native code.");
 				}
+
+				trySetNativeSurfaceAndStartNativeUpdates();
 			}
 		});
 	}
@@ -139,20 +141,6 @@ public class BackgroundThreadActivity extends MainActivity
 	protected void onResume()
 	{
 		super.onResume();
-		
-		runOnNativeThread(new Runnable()
-		{
-			public void run()
-			{
-				NativeJniCalls.resumeNativeCode();
-				m_threadedRunner.start();
-				
-				if(m_surfaceHolder != null && m_surfaceHolder.getSurface() != null)
-				{
-					NativeJniCalls.setNativeSurface(m_surfaceHolder.getSurface());
-				}
-			}
-		});
 	}
 
 	@Override
@@ -203,7 +191,6 @@ public class BackgroundThreadActivity extends MainActivity
 	@Override
 	public void surfaceDestroyed(SurfaceHolder holder)
 	{
-
 		runOnNativeThread(new Runnable()
 		{
 			public void run()
@@ -216,20 +203,42 @@ public class BackgroundThreadActivity extends MainActivity
 	@Override
 	public void surfaceChanged(SurfaceHolder holder, int format, int width, int height)
 	{
-		final SurfaceHolder h = holder;
-		
-		runOnNativeThread(new Runnable()
+		setSurfaceHolder(holder);
+		trySetNativeSurfaceAndStartNativeUpdates();
+	}
+	
+	private void trySetNativeSurfaceAndStartNativeUpdates()
+	{
+		if(m_threadedRunner != null)
 		{
-			public void run()
+			runOnNativeThread(new Runnable()
 			{
-				m_surfaceHolder = h;
-				if(m_surfaceHolder != null) 
+				public void run()
 				{
-					NativeJniCalls.setNativeSurface(m_surfaceHolder.getSurface());
-					m_threadedRunner.start();
+					if(trySetNativeSurface())
+					{
+						NativeJniCalls.resumeNativeCode();
+						m_threadedRunner.start();
+					}
 				}
-			}
-		});
+			});
+		}
+	}
+	
+	private synchronized void setSurfaceHolder(SurfaceHolder holder)
+	{
+		m_surfaceHolder = holder;
+	}
+	
+	private synchronized boolean trySetNativeSurface()
+	{
+		if(m_surfaceHolder != null && m_surfaceHolder.getSurface() != null)
+		{
+			NativeJniCalls.setNativeSurface(m_surfaceHolder.getSurface());
+			return true;
+		}
+		
+		return false;
 	}
 
 	private class ThreadedUpdateRunner implements Runnable

@@ -23,7 +23,7 @@ public class FragmentController implements ListView.OnItemClickListener
 
         // Little bit of a hack here -- need to make the map view created 
         // in the view hierarchy so the surface is available for binding.
-        selectItem(2);
+        // selectItem(2);
         
         // We can then switch back to the real 'default' view.
         selectItem(0); 
