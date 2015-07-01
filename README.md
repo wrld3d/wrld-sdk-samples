@@ -15,6 +15,9 @@ iOS
 
 Android
 =======
+Note - In order to run, your version of Android Developer Tools must be >= 22.6
+In order to support 64-bit ABIs, you must be using Android NDK revision 10d or later:
+http://developer.android.com/tools/sdk/ndk/index.html#Revisions
 
 * Install the Android SDK and NDK
 * Run ./update.platform.sh -p android to get the latest platform libraries and headers.
@@ -31,6 +34,11 @@ Android
 * build.sh can be used to generate the native library if you want to manually package the .apk
 * Scroll between the examples using the Next and Previous buttons, or select the example from the drop-down list; the current example name is displayed at the top of the screen. 
 * To build at the command line, run ./build -p android from the repository root.
+* The project is configured to build for multiple target CPU architectures, creating a universal .apk containing exectutables for each of these architectures.
+       * The supported architectures are defined in ./Android/jni/Application.mk, by the line:
+               APP_ABI := armeabi,armeabi-v7a,arm64-v8a
+       * Removing the APP_ABI line will build and package for the default armeabi architecture. The armeabi architecture is backwards-compatible with armeabi-v7a, but will not run on devices 64-bit Arm instruction sets.
+       * For further information about supporting multiple architectures see: http://developer.android.com/google/play/publishing/multiple-apks.html
 
 iOS c++11 support
 =================
@@ -41,7 +49,7 @@ iOS c++11 support
 android c++11 support
 =====================
 * Android c++11 support is EXPERIMENTAL due to the experimental nature of c++11 support in the NDK (see https://developer.android.com/tools/sdk/ndk/index.html & https://gcc.gnu.org/gcc-4.8/cxx0x_status.html)
-* Only tested against Android NDK version r9d - https://developer.android.com/tools/sdk/ndk/index.html
+* Only tested against Android NDK version r10d - https://developer.android.com/tools/sdk/ndk/index.html
 * Only tested against gcc 4.8 & gnu libstd++ (see android/jni/Application.mk for how to target these)
 * ./update.platform.sh -p android -c will fetch c++11/gnu libstdc++ ABI compatible versions of the SDK
 * ./build -p android -c from the command line will build targeting c++11
