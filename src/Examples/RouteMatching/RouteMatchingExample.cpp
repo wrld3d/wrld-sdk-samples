@@ -44,7 +44,7 @@ void RouteMatchingExample::CreateRoutes(bool shouldMatchToNavigationGraph)
 	// This function generates some routes, potentially matching them to the navigation graph based on the
 	// value of the shouldMatchToNavigationGraph parameter. The API used here to build and submit the routes
 	// is not explained as has been covered in RouteDrawingExample.cpp - please refer to this example for more
-	// information about these API points at http://sdk.eegeo.com/developers/mobiledocs/routes
+	// information about these API points at http://www.eegeo.com/developers/documentation/routes
 
 	const float halfWidth = 5.f;
 	const float routeSpeedMetersPerSecond = 40.f;

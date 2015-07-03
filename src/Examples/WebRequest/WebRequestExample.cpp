@@ -73,15 +73,15 @@ WebRequestExample::WebRequestExample(IWebLoadRequestFactory& webRequestFactory,
 void WebRequestExample::Start()
 {
 	Eegeo_TTY("Making 3 Http GETs with integer labels as user data using a member as the handler...\n");
-	m_webRequestFactory.CreateGet("http://appstore.eegeo.com", externalGetHandler.GetRequestHandler(), new int(1))->Load();
+	m_webRequestFactory.CreateGet("http://apikey.eegeo.com", externalGetHandler.GetRequestHandler(), new int(1))->Load();
 	m_webRequestFactory.CreateGet("http://non-existent-example-host-1234.com", externalGetHandler.GetRequestHandler(), new int(2))->Load();
 	m_webRequestFactory.CreateGet("http://wikipedia.org", externalGetHandler.GetRequestHandler(), new int(3))->Load();
 	m_webRequestFactory.CreateGet("http://d2xvsc8j92rfya.cloudfront.net/non_existent_resource.hcff", externalGetHandler.GetRequestHandler(), new int(4))->Load();
 
 	std::map<std::string, std::string> postData;
 	postData["token"] = "123456789";
-	Eegeo_TTY("Making Https POST to Eegeo appstore with invalid key (123456789), with integer labels as user data using a non-member as the handler...\n");
-	m_webRequestFactory.CreatePost("https://appstore.eegeo.com/validate", externalPostHandler, new int(5678), postData)->Load();
+	Eegeo_TTY("Making Https POST to Eegeo apikey service with invalid key (123456789), with integer labels as user data using a non-member as the handler...\n");
+	m_webRequestFactory.CreatePost("https://apikey.eegeo.com/validate", externalPostHandler, new int(5678), postData)->Load();
 
 	std::map<std::string, std::string> httpHeaders;
 	httpHeaders["X-MyCustom-Header"] = "Hello World";

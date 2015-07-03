@@ -12,7 +12,7 @@
 using namespace Eegeo::Android;
 using namespace Eegeo::Android::Input;
 
-const std::string ApiKey = "OBTAIN API_KEY FROM https://appstore.eegeo.com AND INSERT IT HERE";
+const std::string ApiKey = "OBTAIN API_KEY FROM https://www.eegeo.com/developers/ AND INSERT IT HERE";
 
 AndroidNativeState g_nativeState;
 AppRunner* g_pAppRunner;

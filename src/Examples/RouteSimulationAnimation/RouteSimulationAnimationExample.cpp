@@ -57,7 +57,7 @@ RouteSimulationAnimationExample::~RouteSimulationAnimationExample()
 void RouteSimulationAnimationExample::Initialise()
 {
 	//Load a model containing the node that will be bound to our route simulation session. For
-	//a detailed explation see http://sdk.eegeo.com/developers/mobiledocs/loading_rendering_models
+	//a detailed explation see http://www.eegeo.com/developers/documentation/loading_rendering_models
 	//or see LoadModelExample.cpp.
 	m_pModel = LoadCharacterModel();
     
@@ -67,7 +67,7 @@ void RouteSimulationAnimationExample::Initialise()
     m_pSceneModelAnimator->Play();
 
 	//Build the route - see RouteDrawingExample.cpp for a detailed explanation of building routes, or
-	//check out http://sdk.eegeo.com/developers/mobiledocs/routes
+	//check out http://www.eegeo.com/developers/documentation/routes
 	m_pRoute = BuildRoute();
 
 	m_pRouteSimulationSession = m_routeSimulationService.BeginRouteSimulationSession(*m_pRoute);

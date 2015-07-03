@@ -3,7 +3,7 @@
 #include "ViewController.h"
 #include "AppLocationDelegate.h"
 
-const std::string ApiKey = "OBTAIN API_KEY FROM https://appstore.eegeo.com AND INSERT IT HERE";
+const std::string ApiKey = "OBTAIN API_KEY FROM https://www.eegeo.com/developers/ AND INSERT IT HERE";
 
 using namespace Eegeo::iOS;
 
