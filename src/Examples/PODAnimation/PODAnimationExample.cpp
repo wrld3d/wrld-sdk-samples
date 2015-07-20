@@ -8,7 +8,7 @@
 #include "EcefTangentBasis.h"
 #include "SceneModelRenderableFilter.h"
 #include "SceneModel.h"
-#include "SceneModelFactory.h"
+#include "SceneModelLoader.h"
 #include "SceneModelNode.h"
 #include "SceneModelAnimator.h"
 
@@ -16,16 +16,12 @@
 
 namespace Examples
 {
-    PODAnimationExample::PODAnimationExample(Eegeo::Helpers::IFileIO& fileIO,
-                                             Eegeo::Rendering::AsyncTexturing::IAsyncTextureRequestor& textureRequestor,
-                                             Eegeo::Rendering::SceneModels::SceneModelFactory& sceneModelFactory,
+    PODAnimationExample::PODAnimationExample(Eegeo::Rendering::SceneModels::SceneModelLoader& sceneModelLoader,
                                              Eegeo::Rendering::Filters::SceneModelRenderableFilter& renderableFilter,
                                              Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
                                              Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController)
 	: GlobeCameraExampleBase(pCameraController, cameraTouchController)
-    , m_fileIO(fileIO)
-	,m_textureRequestor(textureRequestor)
-    ,m_sceneModelFactory(sceneModelFactory)
+    ,m_sceneModelLoader(sceneModelLoader)
     ,m_renderableFilter(renderableFilter)
 	,m_pModel(NULL)
     ,m_pModelAnimator(NULL)
@@ -51,7 +47,7 @@ void PODAnimationExample::Start()
                                                                       cameraInterestBasis);
     
     // Load the model
-    m_pModel = m_sceneModelFactory.CreateSceneModelFromFile("pod_animation_example/Test_ROBOT_ARM.pod", m_fileIO, m_textureRequestor, "pod_animation_example/");
+    m_pModel = m_sceneModelLoader.LoadPOD("pod_animation_example/Test_ROBOT_ARM.pod");
     
     // Set position and orientation.
     m_pModel->SetEcefPosition(cameraInterestBasis.GetPointEcef());

@@ -13,7 +13,7 @@
 #include "GlobeCameraTouchController.h"
 #include "GlobeCameraController.h"
 #include "SceneModel.h"
-#include "SceneModelFactory.h"
+#include "SceneModelLoader.h"
 #include "SceneModelRenderableFilter.h"
 #include "Random.h"
 
@@ -43,9 +43,7 @@ void RouteSimulationExampleObserver::OnLinkReached(const Eegeo::Routes::Simulati
 RouteSimulationExample::RouteSimulationExample(RouteService& routeService,
         RouteSimulationService& routeSimulationService,
         RouteSimulationViewService& routeSimulationViewService,
-        Eegeo::Helpers::IFileIO& fileIO,
-        Eegeo::Rendering::AsyncTexturing::IAsyncTextureRequestor& textureRequestor,
-        Eegeo::Rendering::SceneModels::SceneModelFactory& sceneModelFactory,
+        Eegeo::Rendering::SceneModels::SceneModelLoader& sceneModelLoader,
         Eegeo::Rendering::Filters::SceneModelRenderableFilter& sceneModelRenderableFilter,
         Eegeo::Camera::GlobeCamera::GlobeCameraController* pDefaultCameraController,
         Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& defaultCameraTouchController,
@@ -57,11 +55,9 @@ RouteSimulationExample::RouteSimulationExample(RouteService& routeService,
     , m_routeService(routeService)
 	,m_routeSimulationService(routeSimulationService)
 	,m_routeSimulationViewService(routeSimulationViewService)
-	,m_fileIO(fileIO)
-	,m_textureRequestor(textureRequestor)
 	,m_routeSimulationGlobeCameraControllerFactory(routeSimulationGlobeCameraControllerFactory)
 	,m_world(world)
-    ,m_sceneModelFactory(sceneModelFactory)
+    ,m_sceneModelLoader(sceneModelLoader)
     ,m_sceneModelRenderableFilter(sceneModelRenderableFilter)
 	,m_initialised(false)
 	,m_pRoute(NULL)
@@ -409,12 +405,12 @@ Route* RouteSimulationExample::BuildRoute() const
                                                        Eegeo::Rendering::SceneModels::SceneModel*& pVehicleModel2,
                                                        std::vector<Eegeo::Rendering::SceneModels::SceneModel*>& out_vehicleModels) const
 {
-    pVehicleModel1 = m_sceneModelFactory.CreateSceneModelFromFile("route_simulation_example/car1.pod", m_fileIO, m_textureRequestor, "route_simulation_example/");
-    pVehicleModel2 = m_sceneModelFactory.CreateSceneModelFromFile("route_simulation_example/car2.pod", m_fileIO, m_textureRequestor, "route_simulation_example/");
+    pVehicleModel1 = m_sceneModelLoader.LoadPOD("route_simulation_example/car1.pod");
+    pVehicleModel2 = m_sceneModelLoader.LoadPOD("route_simulation_example/car2.pod");
     
     out_vehicleModels.push_back(pVehicleModel1->Clone());
     out_vehicleModels.push_back(pVehicleModel2->Clone());
-    out_vehicleModels.push_back(m_sceneModelFactory.CreateSceneModelFromFile("route_simulation_example/car3.pod", m_fileIO, m_textureRequestor, "route_simulation_example/"));
+    out_vehicleModels.push_back(m_sceneModelLoader.LoadPOD("route_simulation_example/car3.pod"));
 }
 
 void RouteSimulationExample::NotifyViewNeedsLayout()

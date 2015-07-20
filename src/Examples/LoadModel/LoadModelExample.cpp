@@ -7,7 +7,7 @@
 #include "Mesh.h"
 #include "Node.h"
 #include "GlobeCameraController.h"
-#include "SceneModelFactory.h"
+#include "SceneModelLoader.h"
 #include "SceneModel.h"
 #include "SceneModelNode.h"
 #include "SceneModelMaterialResource.h"
@@ -22,9 +22,7 @@
 namespace Examples
 {
 
-    LoadModelExample::LoadModelExample(Eegeo::Helpers::IFileIO& fileIO,
-                                       Eegeo::Rendering::AsyncTexturing::IAsyncTextureRequestor& textureRequestor,
-                                       Eegeo::Rendering::SceneModels::SceneModelFactory& sceneModelFactory,
+    LoadModelExample::LoadModelExample(Eegeo::Rendering::SceneModels::SceneModelLoader& sceneModelLoader,
                                        Eegeo::Rendering::SceneModels::SceneModelFactory::TMaterialRepo& sceneModelMaterials,
                                        Eegeo::Rendering::Filters::SceneModelRenderableFilter& sceneModelRenderableFilter,
                                        Eegeo::DebugRendering::DebugRenderer& debugRenderer,
@@ -32,9 +30,7 @@ namespace Examples
                                        Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController)
     : GlobeCameraExampleBase(pCameraController, cameraTouchController)
 	, m_interestLocation(Eegeo::Space::LatLongAltitude::FromECEF(pCameraController->GetEcefInterestPoint()))
-	,m_fileIO(fileIO)
-	,m_textureRequestor(textureRequestor)
-    ,m_sceneModelFactory(sceneModelFactory)
+    ,m_sceneModelLoader(sceneModelLoader)
     ,m_sceneModelMaterials(sceneModelMaterials)
     ,m_sceneModelRenderableFilter(sceneModelRenderableFilter)
     ,m_debugRenderer(debugRenderer)
@@ -46,7 +42,7 @@ namespace Examples
 
 void LoadModelExample::Start()
 {
-    m_pModel = m_sceneModelFactory.CreateSceneModelFromFile("load_model_example/sanfrancisco_vehicles_alpha.POD", m_fileIO, m_textureRequestor, "load_model_example");
+    m_pModel = m_sceneModelLoader.LoadPOD("load_model_example/sanfrancisco_vehicles_alpha.POD");
 
     // Look up the material for the disc so that we can animate its alpha value.
     // Materials will be loaded into the material resource repository and id' by 'filename/materials/material name'

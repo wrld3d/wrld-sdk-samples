@@ -25,14 +25,10 @@ PODAnimationExampleFactory::PODAnimationExampleFactory(Eegeo::EegeoWorld& world,
 }
 
 IExample* PODAnimationExampleFactory::CreateExample() const
-{ 
-    Eegeo::Modules::IPlatformAbstractionModule& platformAbstractioModule = m_world.GetPlatformAbstractionModule();
-    Eegeo::Modules::Core::AsyncLoadersModule& asyncLoadersModule = m_world.GetAsyncLoadersModule();
+{
     Eegeo::Modules::Core::SceneModelsModule& sceneModulesModule = m_world.GetCoreModule().GetSceneModelsModule();
     
-	return new Examples::PODAnimationExample(platformAbstractioModule.GetFileIO(),
-                                             asyncLoadersModule.GetLocalAsyncTextureLoader(),
-                                             sceneModulesModule.GetSceneModelFactory(),
+	return new Examples::PODAnimationExample(sceneModulesModule.GetLocalModelLoader(),
                                              sceneModulesModule.GetSceneModelRenderableFilter(),
                                              m_defaultCameraControllerFactory.Create(),
                                              m_globeCameraTouchController);

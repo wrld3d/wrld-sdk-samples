@@ -18,19 +18,14 @@ class PODAnimationExample : public GlobeCameraExampleBase
 {
 private:
 
-	Eegeo::Helpers::IFileIO& m_fileIO;
-	Eegeo::Rendering::AsyncTexturing::IAsyncTextureRequestor& m_textureRequestor;
-    
     Eegeo::Rendering::Filters::SceneModelRenderableFilter& m_renderableFilter;
     
-    Eegeo::Rendering::SceneModels::SceneModelFactory& m_sceneModelFactory;
+    Eegeo::Rendering::SceneModels::SceneModelLoader& m_sceneModelLoader;
     Eegeo::Rendering::SceneModels::SceneModel* m_pModel;
     Eegeo::Rendering::SceneModels::SceneModelAnimator* m_pModelAnimator;
 
 public:
-	PODAnimationExample(Eegeo::Helpers::IFileIO& fileIO,
-                        Eegeo::Rendering::AsyncTexturing::IAsyncTextureRequestor& textureRequestor,
-                        Eegeo::Rendering::SceneModels::SceneModelFactory& sceneModelFactory,
+	PODAnimationExample(Eegeo::Rendering::SceneModels::SceneModelLoader& sceneModelLoader,
                         Eegeo::Rendering::Filters::SceneModelRenderableFilter& renderableFilter,
                         Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
                         Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController);

@@ -17,10 +17,8 @@ class LoadModelExample : public GlobeCameraExampleBase
 {
 private:
 
-	Eegeo::Helpers::IFileIO& m_fileIO;
-	Eegeo::Rendering::AsyncTexturing::IAsyncTextureRequestor& m_textureRequestor;
 	Eegeo::Space::LatLongAltitude m_interestLocation;
-    Eegeo::Rendering::SceneModels::SceneModelFactory& m_sceneModelFactory;
+    Eegeo::Rendering::SceneModels::SceneModelLoader& m_sceneModelLoader;
     Eegeo::Rendering::SceneModels::SceneModelFactory::TMaterialRepo& m_sceneModelMaterials;
 
 	Eegeo::Rendering::SceneModels::SceneModel* m_pModel;
@@ -32,9 +30,7 @@ private:
 
 public:
 	LoadModelExample(
-	                 Eegeo::Helpers::IFileIO& fileIO,
-	                 Eegeo::Rendering::AsyncTexturing::IAsyncTextureRequestor& textureRequestor,
-                     Eegeo::Rendering::SceneModels::SceneModelFactory& sceneModelFactory,
+                     Eegeo::Rendering::SceneModels::SceneModelLoader& sceneModelLoader,
                      Eegeo::Rendering::SceneModels::SceneModelFactory::TMaterialRepo& sceneModelMaterials,
                      Eegeo::Rendering::Filters::SceneModelRenderableFilter& sceneModelRenderableFilter,
                      Eegeo::DebugRendering::DebugRenderer& debugRenderer,

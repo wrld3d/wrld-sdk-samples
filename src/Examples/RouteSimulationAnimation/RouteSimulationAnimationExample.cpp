@@ -7,7 +7,7 @@
 #include "TransformHelpers.h"
 #include "RenderCamera.h"
 #include "ScreenProperties.h"
-#include "SceneModelFactory.h"
+#include "SceneModelLoader.h"
 #include "SceneModel.h"
 #include "SceneModelAnimator.h"
 
@@ -22,18 +22,14 @@ namespace Examples
     RouteSimulationAnimationExample::RouteSimulationAnimationExample(RouteService& routeService,
                                                                      RouteSimulationService& routeSimulationService,
                                                                      RouteSimulationViewService& routeSimulationViewService,
-                                                                     Eegeo::Helpers::IFileIO& fileIO,
-                                                                     Eegeo::Rendering::AsyncTexturing::IAsyncTextureRequestor& textureRequestor,
-                                                                     Eegeo::Rendering::SceneModels::SceneModelFactory& sceneModelFactory,
+                                                                     Eegeo::Rendering::SceneModels::SceneModelLoader& sceneModelLoader,
                                                                      RouteSimulationGlobeCameraControllerFactory& routeSimulationGlobeCameraControllerFactory,
                                                                      const IScreenPropertiesProvider& screenPropertiesProvider,
                                                                      EegeoWorld& world)
     :m_routeService(routeService)
     ,m_routeSimulationService(routeSimulationService)
 	,m_routeSimulationViewService(routeSimulationViewService)
-	,m_fileIO(fileIO)
-	,m_textureRequestor(textureRequestor)
-    ,m_sceneModelFactory(sceneModelFactory)
+    ,m_sceneModelLoader(sceneModelLoader)
 	,m_routeSimulationGlobeCameraControllerFactory(routeSimulationGlobeCameraControllerFactory)
 	,m_world(world)
 	,m_initialised(false)
@@ -205,10 +201,7 @@ Route* RouteSimulationAnimationExample::BuildRoute()
 
 Eegeo::Rendering::SceneModels::SceneModel* RouteSimulationAnimationExample::LoadCharacterModel() const
 {
-    Eegeo::Rendering::SceneModels::SceneModel* pModel = m_sceneModelFactory.CreateSceneModelFromFile("route_simulation_animation_example/BoxCharacter.pod",
-                                                                                                     m_fileIO,
-                                                                                                     m_textureRequestor,
-                                                                                                     "route_simulation_animation_example/");
+    Eegeo::Rendering::SceneModels::SceneModel* pModel = m_sceneModelLoader.LoadPOD("route_simulation_animation_example/BoxCharacter.pod");
 
 	return pModel;
 }

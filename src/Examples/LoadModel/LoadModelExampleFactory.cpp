@@ -27,15 +27,11 @@ LoadModelExampleFactory::LoadModelExampleFactory(Eegeo::EegeoWorld& world,
 
 IExample* LoadModelExampleFactory::CreateExample() const
 {
-    Eegeo::Modules::IPlatformAbstractionModule& platformAbstractionModule = m_world.GetPlatformAbstractionModule();
-    Eegeo::Modules::Core::AsyncLoadersModule& asyncLoadersModule = m_world.GetAsyncLoadersModule();
     Eegeo::Modules::Core::DebugRenderingModule& debugRenderingModule = m_world.GetDebugRenderingModule();
     Eegeo::Modules::Core::SceneModelsModule& sceneModelsModule = m_world.GetCoreModule().GetSceneModelsModule();
     
 	return new Examples::LoadModelExample(
-	                                      platformAbstractionModule.GetFileIO(),
-	                                      asyncLoadersModule.GetLocalAsyncTextureLoader(),
-                                          sceneModelsModule.GetSceneModelFactory(),
+                                          sceneModelsModule.GetLocalModelLoader(),
                                           sceneModelsModule.GetMaterialResourceRepository(),
                                           sceneModelsModule.GetSceneModelRenderableFilter(),
                                           debugRenderingModule.GetDebugRenderer(),

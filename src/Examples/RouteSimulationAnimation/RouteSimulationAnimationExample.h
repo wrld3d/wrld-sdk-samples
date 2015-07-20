@@ -33,14 +33,13 @@ private:
 	Eegeo::Routes::RouteService& m_routeService;
 	Eegeo::Routes::Simulation::RouteSimulationService& m_routeSimulationService;
 	Eegeo::Routes::Simulation::View::RouteSimulationViewService& m_routeSimulationViewService;
-	Eegeo::Helpers::IFileIO& m_fileIO;
-	Eegeo::Rendering::AsyncTexturing::IAsyncTextureRequestor& m_textureRequestor;
+    
 	Eegeo::Routes::Simulation::Camera::RouteSimulationGlobeCameraControllerFactory& m_routeSimulationGlobeCameraControllerFactory;
 	Eegeo::EegeoWorld& m_world;
 	float m_modelAnimationSpeed;
 	bool m_initialised;
     Eegeo::Rendering::SceneModels::SceneModel* m_pModel;
-    Eegeo::Rendering::SceneModels::SceneModelFactory& m_sceneModelFactory;
+    Eegeo::Rendering::SceneModels::SceneModelLoader& m_sceneModelLoader;
     Eegeo::Rendering::SceneModels::SceneModelAnimator* m_pSceneModelAnimator;
 	Eegeo::Routes::Route* m_pRoute;
 	Eegeo::Routes::Style::Thickness::IdentityRouteThicknessPolicy m_routeThicknessPolicy;
@@ -54,9 +53,7 @@ public:
 	RouteSimulationAnimationExample(Eegeo::Routes::RouteService& routeService,
 	                                Eegeo::Routes::Simulation::RouteSimulationService& routeSimulationService,
 	                                Eegeo::Routes::Simulation::View::RouteSimulationViewService& routeSimulationViewService,
-	                                Eegeo::Helpers::IFileIO& fileIO,
-	                                Eegeo::Rendering::AsyncTexturing::IAsyncTextureRequestor& textureRequestor,
-                                    Eegeo::Rendering::SceneModels::SceneModelFactory& sceneModelFactory,
+                                    Eegeo::Rendering::SceneModels::SceneModelLoader& sceneModelLoader,
 	                                Eegeo::Routes::Simulation::Camera::RouteSimulationGlobeCameraControllerFactory& routeSimulationGlobeCameraControllerFactory,
                                     const IScreenPropertiesProvider& screenPropertiesProvider,
 	                                Eegeo::EegeoWorld& eegeoWorld);

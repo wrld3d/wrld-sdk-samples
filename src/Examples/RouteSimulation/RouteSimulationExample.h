@@ -57,11 +57,9 @@ private:
 	Eegeo::Routes::RouteService& m_routeService;
 	Eegeo::Routes::Simulation::RouteSimulationService& m_routeSimulationService;
 	Eegeo::Routes::Simulation::View::RouteSimulationViewService& m_routeSimulationViewService;
-	Eegeo::Helpers::IFileIO& m_fileIO;
-	Eegeo::Rendering::AsyncTexturing::IAsyncTextureRequestor& m_textureRequestor;
 	Eegeo::Routes::Simulation::Camera::RouteSimulationGlobeCameraControllerFactory& m_routeSimulationGlobeCameraControllerFactory;
 	Eegeo::EegeoWorld& m_world;
-    Eegeo::Rendering::SceneModels::SceneModelFactory& m_sceneModelFactory;
+    Eegeo::Rendering::SceneModels::SceneModelLoader& m_sceneModelLoader;
     Eegeo::Rendering::Filters::SceneModelRenderableFilter& m_sceneModelRenderableFilter;
     
 	const IRouteSimulationExampleViewFactory& m_routeSimulationExampleViewFactory;
@@ -99,9 +97,7 @@ public:
 	RouteSimulationExample(Eegeo::Routes::RouteService& routeService,
 	                       Eegeo::Routes::Simulation::RouteSimulationService& routeSimulationService,
 	                       Eegeo::Routes::Simulation::View::RouteSimulationViewService& routeSimulationViewService,
-	                       Eegeo::Helpers::IFileIO& fileIO,
-	                       Eegeo::Rendering::AsyncTexturing::IAsyncTextureRequestor& textureRequestor,
-	                       Eegeo::Rendering::SceneModels::SceneModelFactory& sceneModelFactory,
+	                       Eegeo::Rendering::SceneModels::SceneModelLoader& sceneModelLoader,
                            Eegeo::Rendering::Filters::SceneModelRenderableFilter& sceneModelRenderableFilter,
                            Eegeo::Camera::GlobeCamera::GlobeCameraController* pDefaultCameraController,
                            Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& defaultCameraTouchController,
