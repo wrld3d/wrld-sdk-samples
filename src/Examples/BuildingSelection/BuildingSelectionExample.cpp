@@ -63,9 +63,7 @@ namespace Examples
     
     void BuildingSelectionExample::PerformRayPick(const Eegeo::dv3& rayOrigin, const Eegeo::dv3& rayDirection)
     {
-        const u32 collisionMask = Eegeo::Collision::CollisionGroup::ToMask(Eegeo::Collision::CollisionGroup::Buildings);
-        
-        const Eegeo::Collision::RayCasterResult& pickResult = m_pRayCaster->CastRay(rayOrigin, rayDirection, collisionMask);
+        const Eegeo::Collision::RayCasterResult& pickResult = m_pRayCaster->CastRay(rayOrigin, rayDirection, Eegeo::Collision::CollisionGroup::Buildings);
         
         m_buildingSelectionController.PerformOperation(pickResult, Eegeo::BuildingFootprints::BuildingSelectionController::CycleFlashing);
     }
