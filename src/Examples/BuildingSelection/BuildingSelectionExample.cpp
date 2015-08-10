@@ -65,6 +65,9 @@ namespace Examples
     {
         const Eegeo::Collision::RayCasterResult& pickResult = m_pRayCaster->CastRay(rayOrigin, rayDirection, Eegeo::Collision::CollisionGroup::Buildings);
         
-        m_buildingSelectionController.PerformOperation(pickResult, Eegeo::BuildingFootprints::BuildingSelectionController::CycleFlashing);
+        if (pickResult.intersects)
+        {
+            m_buildingSelectionController.PerformOperation(pickResult, Eegeo::BuildingFootprints::BuildingSelectionController::CycleFlashing);
+        }
     }
 }
