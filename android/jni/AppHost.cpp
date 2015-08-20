@@ -25,6 +25,43 @@
 #include "ShowJavaPlaceJumpUIExampleFactory.h"
 #include "AndroidPlatformAbstractionModule.h"
 #include "ScreenProperties.h"
+#include "BuildingFootprintsModule.h"
+#include "CollisionVisualizationModule.h"
+
+namespace
+{
+    Eegeo::Modules::BuildingFootprintsModule* CreateBuildingFootprintsModule(Eegeo::EegeoWorld& world, const Eegeo::Modules::CollisionVisualizationModule& collisionVisualizationModule)
+    {
+        const Eegeo::BuildingFootprints::BuildingFootprintSelectionControllerConfig& buildingFootprintSelectionControllerConfig = Eegeo::Modules::BuildingFootprintsModule::MakeDefaultConfig();
+
+        const Eegeo::Modules::IPlatformAbstractionModule& platformAbstractionModule = world.GetPlatformAbstractionModule();
+        const Eegeo::Modules::Core::RenderingModule& renderingModule = world.GetRenderingModule();
+        const Eegeo::Modules::Map::MapModule& mapModule = world.GetMapModule();
+        const Eegeo::Modules::Map::Layers::BuildingStreamingModule& buildingStreamingModule = mapModule.GetBuildingStreamingModule();
+        const Eegeo::Modules::Map::CoverageTreeModule& coverageTreeModule = mapModule.GetCoverageTreeModule();
+
+        Eegeo::Modules::BuildingFootprintsModule* pBuildingFootprintsModule =
+        Eegeo::Modules::BuildingFootprintsModule::Create(platformAbstractionModule,
+                                                         renderingModule,
+                                                         collisionVisualizationModule,
+                                                         buildingStreamingModule,
+                                                         coverageTreeModule,
+                                                         buildingFootprintSelectionControllerConfig);
+        return pBuildingFootprintsModule;
+    }
+
+    Eegeo::Modules::CollisionVisualizationModule* CreateCollisionVisualizationModule(Eegeo::EegeoWorld& world)
+    {
+        const Eegeo::CollisionVisualization::MaterialSelectionControllerConfig& materialSelectionControllerConfig = Eegeo::Modules::CollisionVisualizationModule::MakeDefaultConfig();
+
+
+        const Eegeo::Modules::Core::RenderingModule& renderingModule = world.GetRenderingModule();
+        const Eegeo::Modules::Map::MapModule& mapModule = world.GetMapModule();
+
+        Eegeo::Modules::CollisionVisualizationModule* pCollisionVisualizationModule = Eegeo::Modules::CollisionVisualizationModule::Create(renderingModule, mapModule, materialSelectionControllerConfig);
+        return pCollisionVisualizationModule;
+    }
+}
 
 using namespace Eegeo::Android;
 using namespace Eegeo::Android::Input;
@@ -54,6 +91,8 @@ AppHost::AppHost(
 	,m_pAndroidRouteSimulationExampleViewFactory(NULL)
 	,m_pInputProcessor(NULL)
 	,m_pAndroidPlatformAbstractionModule(NULL)
+	,m_pCollisionVisualizationModule(NULL)
+	,m_pBuildingFootprintsModule(NULL)
 {
 	Eegeo::TtyHandler::TtyEnabled = false;
 	Eegeo::AssertHandler::BreakOnAssert = true;
@@ -107,6 +146,9 @@ AppHost::AppHost(
 	    config,
 	    NULL);
 
+    m_pCollisionVisualizationModule = CreateCollisionVisualizationModule(*m_pWorld);
+    m_pBuildingFootprintsModule = CreateBuildingFootprintsModule(*m_pWorld, *m_pCollisionVisualizationModule);
+
 	m_pAndroidPlatformAbstractionModule->SetWebRequestServiceWorkPool(m_pWorld->GetWorkPool());
 	m_pInputProcessor = new Eegeo::Android::Input::AndroidInputProcessor(&m_inputHandler, screenProperties.GetScreenWidth(), screenProperties.GetScreenHeight());
 
@@ -127,6 +169,12 @@ AppHost::~AppHost()
 	m_pApp = NULL;
 
 	DestroyExamples();
+
+    delete m_pBuildingFootprintsModule;
+    m_pBuildingFootprintsModule = NULL;
+
+    delete m_pCollisionVisualizationModule;
+    m_pCollisionVisualizationModule = NULL;
 
 	delete m_pWorld;
 	m_pWorld = NULL;
@@ -193,7 +241,7 @@ void AppHost::ConfigureExamples(const Eegeo::Rendering::ScreenProperties& screen
 {
 	m_pAndroidExampleControllerView = new Examples::AndroidExampleControllerView(m_nativeState);
 
-	m_pApp = new ExampleApp(m_pWorld, *m_pAndroidExampleControllerView, screenProperties);
+	m_pApp = new ExampleApp(m_pWorld, *m_pAndroidExampleControllerView, screenProperties, *m_pCollisionVisualizationModule, *m_pBuildingFootprintsModule);
 
 	RegisterAndroidSpecificExamples();
 

@@ -11,48 +11,16 @@
 
 namespace Examples
 {
-
-    namespace
-    {
-        Eegeo::Modules::CollisionVisualizationModule* CreateCollisionVisualizationModule(Eegeo::EegeoWorld& world)
-        {
-            const Eegeo::CollisionVisualization::MaterialSelectionControllerConfig& materialSelectionControllerConfig = Eegeo::Modules::CollisionVisualizationModule::MakeDefaultConfig();
-            
-            
-            const Eegeo::Modules::Core::RenderingModule& renderingModule = world.GetRenderingModule();
-            const Eegeo::Modules::Map::MapModule& mapModule = world.GetMapModule();
-            
-            Eegeo::Modules::CollisionVisualizationModule* pCollisionVisualizationModule = Eegeo::Modules::CollisionVisualizationModule::Create(renderingModule, mapModule, materialSelectionControllerConfig);
-            return pCollisionVisualizationModule;
-        }
-        
-        Eegeo::Modules::BuildingFootprintsModule* CreateBuildingFootprintsModule(Eegeo::EegeoWorld& world, const Eegeo::Modules::CollisionVisualizationModule& collisionVisualizationModule)
-        {
-            const Eegeo::BuildingFootprints::BuildingFootprintSelectionControllerConfig& buildingFootprintSelectionControllerConfig = Eegeo::Modules::BuildingFootprintsModule::MakeDefaultConfig();
-            
-            const Eegeo::Modules::IPlatformAbstractionModule& platformAbstractionModule = world.GetPlatformAbstractionModule();
-            const Eegeo::Modules::Core::RenderingModule& renderingModule = world.GetRenderingModule();
-            const Eegeo::Modules::Map::MapModule& mapModule = world.GetMapModule();
-            const Eegeo::Modules::Map::Layers::BuildingStreamingModule& buildingStreamingModule = mapModule.GetBuildingStreamingModule();
-            const Eegeo::Modules::Map::CoverageTreeModule& coverageTreeModule = mapModule.GetCoverageTreeModule();
-            
-            Eegeo::Modules::BuildingFootprintsModule* pBuildingFootprintsModule =
-                Eegeo::Modules::BuildingFootprintsModule::Create(platformAbstractionModule,
-                                                                 renderingModule,
-                                                                 collisionVisualizationModule,
-                                                                 buildingStreamingModule,
-                                                                 coverageTreeModule,
-                                                                 buildingFootprintSelectionControllerConfig);
-            return pBuildingFootprintsModule;
-        }
-    }
-    
     BuildingSelectionExampleFactory::BuildingSelectionExampleFactory(Eegeo::EegeoWorld& world,
                                     DefaultCameraControllerFactory& defaultCameraControllerFactory,
-                                    Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController)
+                                    Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController,
+                                    Eegeo::Modules::CollisionVisualizationModule& collisionVisualizationModule,
+                                    Eegeo::Modules::BuildingFootprintsModule& buildingFootprintsModule)
     : m_world(world)
     , m_defaultCameraControllerFactory(defaultCameraControllerFactory)
     , m_globeCameraTouchController(globeCameraTouchController)
+    , m_collisionVisualizationModule(collisionVisualizationModule)
+    , m_buildingFootprintsModule(buildingFootprintsModule)
     {}
     
     std::string BuildingSelectionExampleFactory::ExampleName() const
@@ -63,9 +31,6 @@ namespace Examples
     
     IExample* BuildingSelectionExampleFactory::CreateExample() const
     {
-        Eegeo::Modules::CollisionVisualizationModule* pCollisionVisualizationModule = CreateCollisionVisualizationModule(m_world);
-        Eegeo::Modules::BuildingFootprintsModule* pBuildingFootprintsModule = CreateBuildingFootprintsModule(m_world, *pCollisionVisualizationModule);
-        
         Eegeo::Modules::Map::MapModule& mapModule = m_world.GetMapModule();
         
         Eegeo::Collision::EnvironmentRayCaster* pRayCaster = new Eegeo::Collision::EnvironmentRayCaster
@@ -76,8 +41,8 @@ namespace Examples
         
         return new BuildingSelectionExample(m_defaultCameraControllerFactory.Create(),
                                             m_globeCameraTouchController,
-                                            pCollisionVisualizationModule,
-                                            pBuildingFootprintsModule,
+                                            m_collisionVisualizationModule,
+                                            m_buildingFootprintsModule,
                                             pRayCaster);
     }
 

@@ -15,35 +15,33 @@ namespace Examples
     BuildingSelectionExample::BuildingSelectionExample(
                                                        Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
                                                        Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController,
-                                                       Eegeo::Modules::CollisionVisualizationModule* pCollisionVisualizationModule,
-                                                       Eegeo::Modules::BuildingFootprintsModule* pBuildingFootprintsModule,
+                                                       Eegeo::Modules::CollisionVisualizationModule& collisionVisualizationModule,
+                                                       Eegeo::Modules::BuildingFootprintsModule& buildingFootprintsModule,
                                                        Eegeo::Collision::EnvironmentRayCaster* pRayCaster)
     : GlobeCameraExampleBase(pCameraController, cameraTouchController)
-    , m_pCollisionVisualizationModule(pCollisionVisualizationModule)
-    , m_pBuildingFootprintsModule(pBuildingFootprintsModule)
+    , m_collisionVisualizationModule(collisionVisualizationModule)
+    , m_buildingFootprintsModule(buildingFootprintsModule)
     , m_pRayCaster(pRayCaster)
-    , m_buildingSelectionController(pBuildingFootprintsModule->GetBuildingSelectionController())
+    , m_buildingSelectionController(m_buildingFootprintsModule.GetBuildingSelectionController())
     {
     }
     
     BuildingSelectionExample::~BuildingSelectionExample()
     {
-        delete m_pBuildingFootprintsModule;
-        delete m_pCollisionVisualizationModule;
         delete m_pRayCaster;
     }
     
     void BuildingSelectionExample::Update(float dt)
     {
-        m_pCollisionVisualizationModule->Update(dt);
-        m_pBuildingFootprintsModule->Update(dt);
+        m_collisionVisualizationModule.Update(dt);
+        m_buildingFootprintsModule.Update(dt);
     }
     
     void BuildingSelectionExample::PreWorldDraw()
     {
         const Eegeo::Camera::RenderCamera& renderCamera = GetGlobeCameraController().GetRenderCamera();
-        m_pCollisionVisualizationModule->Draw(renderCamera);
-        m_pBuildingFootprintsModule->Draw(renderCamera);
+        m_collisionVisualizationModule.Draw(renderCamera);
+        m_buildingFootprintsModule.Draw(renderCamera);
     }
     
     

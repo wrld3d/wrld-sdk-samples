@@ -88,7 +88,9 @@ namespace
 
 ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
                        Examples::IExampleControllerView& view,
-                       const Eegeo::Rendering::ScreenProperties& screenProperties)
+                       const Eegeo::Rendering::ScreenProperties& screenProperties,
+                       Eegeo::Modules::CollisionVisualizationModule& collisionVisualizationModule,
+                       Eegeo::Modules::BuildingFootprintsModule& buildingFootprintsModule)
 	: m_pCameraControllerFactory(NULL)
 	, m_pCameraTouchController(NULL)
 	, m_pWorld(pWorld)
@@ -139,7 +141,11 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
 	//register all generic examples
 
     m_pExampleController->RegisterCameraExample<Examples::BuildingHighlightExampleFactory>();
-    m_pExampleController->RegisterCameraExample<Examples::BuildingSelectionExampleFactory>();
+    m_pExampleController->RegisterExample(Eegeo_NEW(Examples::BuildingSelectionExampleFactory)(World(),
+                                                                                               *m_pCameraControllerFactory,
+                                                                                               *m_pCameraTouchController,
+                                                                                               collisionVisualizationModule,
+                                                                                               buildingFootprintsModule));
     m_pExampleController->RegisterScreenPropertiesProviderExample<Examples::CameraSplineExampleFactory>(m_screenPropertiesProvider);
     m_pExampleController->RegisterCameraExample<Examples::CameraTransitionExampleFactory>();
     m_pExampleController->RegisterCameraExample<Examples::ControlCityThemeExampleFactory>();

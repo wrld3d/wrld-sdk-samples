@@ -8,7 +8,7 @@
 #include "ExampleController.h"
 #include "ScreenProperties.h"
 #include "DefaultCameraControllerFactory.h"
-
+#include "Modules.h"
 
 
 class ExampleApp : private Eegeo::NonCopyable
@@ -32,7 +32,9 @@ private:
 public:
 	ExampleApp(Eegeo::EegeoWorld* pWorld,
 	           Examples::IExampleControllerView& view,
-               const Eegeo::Rendering::ScreenProperties& screenProperties);
+               const Eegeo::Rendering::ScreenProperties& screenProperties,
+               Eegeo::Modules::CollisionVisualizationModule& collisionVisualizationModule,
+               Eegeo::Modules::BuildingFootprintsModule& buildingFootprintsModule);
 
 	~ExampleApp();
 

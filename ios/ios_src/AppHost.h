@@ -55,6 +55,8 @@ private:
     Eegeo::Helpers::Jpeg::IJpegLoader* m_pJpegLoader;
 	Eegeo::iOS::iOSLocationService* m_piOSLocationService;
 	Eegeo::EegeoWorld* m_pWorld;
+    Eegeo::Modules::CollisionVisualizationModule* m_pCollisionVisualizationModule;
+    Eegeo::Modules::BuildingFootprintsModule* m_pBuildingFootprintsModule;
 	AppInputDelegate* m_pAppInputDelegate;
     AppLocationDelegate* m_pAppLocationDelegate;
 

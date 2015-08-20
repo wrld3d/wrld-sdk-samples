@@ -77,6 +77,8 @@ private:
     Eegeo::Helpers::Jpeg::IJpegLoader* m_pJpegLoader;
 	Eegeo::Android::AndroidLocationService* m_pAndroidLocationService;
 	Eegeo::EegeoWorld* m_pWorld;
+    Eegeo::Modules::CollisionVisualizationModule* m_pCollisionVisualizationModule;
+    Eegeo::Modules::BuildingFootprintsModule* m_pBuildingFootprintsModule;
 	AndroidNativeState& m_nativeState;
 	AppInputDelegate* m_pAppInputDelegate;
 

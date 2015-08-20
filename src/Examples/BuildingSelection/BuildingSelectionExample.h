@@ -15,8 +15,8 @@ namespace Examples
     public:
         BuildingSelectionExample(Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
                                  Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController,
-                                 Eegeo::Modules::CollisionVisualizationModule* pCollisionVisualizationModule,
-                                 Eegeo::Modules::BuildingFootprintsModule* pBuildingFootprintsModule,
+                                 Eegeo::Modules::CollisionVisualizationModule& collisionVisualizationModule,
+                                 Eegeo::Modules::BuildingFootprintsModule& buildingFootprintsModule,
                                  Eegeo::Collision::EnvironmentRayCaster* pRayCaster);
         
         virtual ~BuildingSelectionExample();
@@ -34,8 +34,8 @@ namespace Examples
     private:
         void PerformRayPick(const Eegeo::dv3& rayOrigin, const Eegeo::dv3& rayDirection);
     
-        Eegeo::Modules::CollisionVisualizationModule* m_pCollisionVisualizationModule;
-        Eegeo::Modules::BuildingFootprintsModule* m_pBuildingFootprintsModule;
+        Eegeo::Modules::CollisionVisualizationModule& m_collisionVisualizationModule;
+        Eegeo::Modules::BuildingFootprintsModule& m_buildingFootprintsModule;
         Eegeo::Collision::EnvironmentRayCaster* m_pRayCaster;
         Eegeo::BuildingFootprints::BuildingSelectionController& m_buildingSelectionController;
     };

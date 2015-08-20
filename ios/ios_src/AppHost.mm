@@ -20,6 +20,43 @@
 #include "JpegLoader.h"
 #include "iOSPlatformAbstractionModule.h"
 #include "ScreenProperties.h"
+#include "BuildingFootprintsModule.h"
+#include "CollisionVisualizationModule.h"
+
+namespace
+{
+    Eegeo::Modules::BuildingFootprintsModule* CreateBuildingFootprintsModule(Eegeo::EegeoWorld& world, const Eegeo::Modules::CollisionVisualizationModule& collisionVisualizationModule)
+    {
+        const Eegeo::BuildingFootprints::BuildingFootprintSelectionControllerConfig& buildingFootprintSelectionControllerConfig = Eegeo::Modules::BuildingFootprintsModule::MakeDefaultConfig();
+        
+        const Eegeo::Modules::IPlatformAbstractionModule& platformAbstractionModule = world.GetPlatformAbstractionModule();
+        const Eegeo::Modules::Core::RenderingModule& renderingModule = world.GetRenderingModule();
+        const Eegeo::Modules::Map::MapModule& mapModule = world.GetMapModule();
+        const Eegeo::Modules::Map::Layers::BuildingStreamingModule& buildingStreamingModule = mapModule.GetBuildingStreamingModule();
+        const Eegeo::Modules::Map::CoverageTreeModule& coverageTreeModule = mapModule.GetCoverageTreeModule();
+        
+        Eegeo::Modules::BuildingFootprintsModule* pBuildingFootprintsModule =
+        Eegeo::Modules::BuildingFootprintsModule::Create(platformAbstractionModule,
+                                                         renderingModule,
+                                                         collisionVisualizationModule,
+                                                         buildingStreamingModule,
+                                                         coverageTreeModule,
+                                                         buildingFootprintSelectionControllerConfig);
+        return pBuildingFootprintsModule;
+    }
+    
+    Eegeo::Modules::CollisionVisualizationModule* CreateCollisionVisualizationModule(Eegeo::EegeoWorld& world)
+    {
+        const Eegeo::CollisionVisualization::MaterialSelectionControllerConfig& materialSelectionControllerConfig = Eegeo::Modules::CollisionVisualizationModule::MakeDefaultConfig();
+        
+        
+        const Eegeo::Modules::Core::RenderingModule& renderingModule = world.GetRenderingModule();
+        const Eegeo::Modules::Map::MapModule& mapModule = world.GetMapModule();
+        
+        Eegeo::Modules::CollisionVisualizationModule* pCollisionVisualizationModule = Eegeo::Modules::CollisionVisualizationModule::Create(renderingModule, mapModule, materialSelectionControllerConfig);
+        return pCollisionVisualizationModule;
+    }
+}
 
 using namespace Eegeo::iOS;
 
@@ -39,6 +76,8 @@ AppHost::AppHost(
 	,m_iOSNativeUIFactories(m_iOSAlertBoxFactory, m_iOSInputBoxFactory, m_iOSKeyboardInputFactory)
     ,m_piOSPlatformAbstractionModule(NULL)
 	,m_pApp(NULL)
+    ,m_pCollisionVisualizationModule(NULL)
+    ,m_pBuildingFootprintsModule(NULL)
 {
 	m_piOSLocationService = new iOSLocationService();
 	   
@@ -47,7 +86,7 @@ AppHost::AppHost(
     m_piOSPlatformAbstractionModule = new Eegeo::iOS::iOSPlatformAbstractionModule(*m_pJpegLoader, apiKey);
 
 	Eegeo::EffectHandler::Initialise();
-
+	
 	m_pBlitter = new Eegeo::Blitter(1024 * 128, 1024 * 64, 1024 * 32);
 	m_pBlitter->Initialise();
 
@@ -69,6 +108,9 @@ AppHost::AppHost(
                                      config,
                                      NULL);
     
+    m_pCollisionVisualizationModule = CreateCollisionVisualizationModule(*m_pWorld);
+    m_pBuildingFootprintsModule = CreateBuildingFootprintsModule(*m_pWorld, *m_pCollisionVisualizationModule);
+    
 	ConfigureExamples(screenProperties);
     
     m_pAppInputDelegate = new AppInputDelegate(*m_pApp, m_viewController, screenProperties.GetScreenWidth(), screenProperties.GetScreenHeight(), screenProperties.GetPixelScale());
@@ -84,6 +126,12 @@ AppHost::~AppHost()
 	m_pAppInputDelegate = NULL;
 
 	DestroyExamples();
+    
+    delete m_pBuildingFootprintsModule;
+    m_pBuildingFootprintsModule = NULL;
+    
+    delete m_pCollisionVisualizationModule;
+    m_pCollisionVisualizationModule = NULL;
 
 	delete m_pApp;
 	m_pApp = NULL;
@@ -145,8 +193,7 @@ void AppHost::ConfigureExamples(const Eegeo::Rendering::ScreenProperties& screen
 {
 	m_piOSExampleControllerView = new Examples::iOSExampleControllerView([&m_viewController view]);
 
-
-	m_pApp = new ExampleApp(m_pWorld, *m_piOSExampleControllerView, screenProperties);
+	m_pApp = new ExampleApp(m_pWorld, *m_piOSExampleControllerView, screenProperties, *m_pCollisionVisualizationModule, *m_pBuildingFootprintsModule);
 
 	RegisteriOSSpecificExamples();
 
