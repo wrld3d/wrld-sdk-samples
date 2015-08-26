@@ -91,7 +91,8 @@ void DynamicText3DExample::CreateDynamic3DText(const std::string& str,
 	std::vector<u32> textUtf32;
 	Unicode::UnicodeConverter::Utf8ToUtf32(str.c_str(), textUtf32);
 
-	Resources::PlaceNames::PlaceNameView* pPlaceNameView = m_placeNameViewBuilder.CreatePlaceNameView(textUtf32, "", fontPointSize, posEcef, "", cellInfo);
+    const bool hasUnderline = false;
+	Resources::PlaceNames::PlaceNameView* pPlaceNameView = m_placeNameViewBuilder.CreatePlaceNameView(textUtf32, "", fontPointSize, posEcef, "", cellInfo, hasUnderline);
 
 	if (pPlaceNameView != NULL)
 	{
