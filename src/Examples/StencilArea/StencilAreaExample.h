@@ -12,6 +12,7 @@
 #include "IWebLoadRequestFactory.h"
 #include "WebLoadRequestCompletionCallback.h"
 #include "NativeUIFactories.h"
+#include "PendingWebRequestsContainer.h"
 
 #include <vector>
 
@@ -27,6 +28,8 @@ namespace Examples
         TOutlines m_outlines;
         
         Eegeo::Web::IWebLoadRequestFactory& m_webLoadRequestFactory;
+        Eegeo::Web::PendingWebRequestsContainer m_pendingWebRequestsContainer;
+        
         Eegeo::Data::StencilArea::StencilAreaController& m_controller;
         
         Eegeo::UI::NativeUIFactories& m_nativeUIFactories;

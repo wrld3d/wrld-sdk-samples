@@ -78,11 +78,16 @@ namespace Examples
 
         // Asynchronously fetch san francisco district polygons in GeoJSON format
         const std::string geoJsonURL = "https://eegeo-static.s3.amazonaws.com/mobile-sdk-harness-data/san-francisco-districts.geojson.gz";
-        m_webLoadRequestFactory.CreateGet(geoJsonURL, m_handler, NULL)->Load();
+    
+        Eegeo::Web::IWebLoadRequest* pRequest = m_webLoadRequestFactory.CreateGet(geoJsonURL, m_handler, NULL);
+        m_pendingWebRequestsContainer.InsertRequest(*pRequest);
+        pRequest->Load();
     }
     
     void StencilAreaExample::HandleRequest(Eegeo::Web::IWebLoadRequest& webLoadRequest)
     {
+        m_pendingWebRequestsContainer.RemoveRequest(webLoadRequest);
+        
         if (!webLoadRequest.IsSucceeded())
         {
             Eegeo_ASSERT(m_pAlertBoxDismissedHandler == NULL, "AlertBoxDismissedHandler not NULL");
