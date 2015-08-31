@@ -3,6 +3,7 @@
 #include "EnvironmentFlatteningExample.h"
 #include "TimeHelpers.h"
 
+
 using namespace Eegeo::Rendering;
 using namespace Eegeo::Helpers::Time;
 
@@ -11,6 +12,7 @@ namespace Examples
 {
 
 const int ENVIRONMENT_FLATTEN_DIRECTION_SWITCH_DELAY_MILLISECONDS = 5000;
+const float MINIMUM_ENVIRONMENT_SCALE = 0.015f;
 
 EnvironmentFlatteningExample::EnvironmentFlatteningExample(Eegeo::Rendering::EnvironmentFlatteningService& environmentFlatteningService,
                                                            Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
@@ -48,7 +50,8 @@ void EnvironmentFlatteningExample::Update(float dt)
 	{
 		scale = 1.f - scale;
 	}
-
+    
+    scale = MINIMUM_ENVIRONMENT_SCALE + (1-MINIMUM_ENVIRONMENT_SCALE)*scale;
 	m_environmentFlatteningService.SetCurrentScale(scale);
 }
 
