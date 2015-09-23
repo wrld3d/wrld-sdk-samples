@@ -194,6 +194,10 @@
 		222E069B1948B08B0004FFD9 /* MainStoryboard_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7EE4820F168371460006E99B /* MainStoryboard_iPad.storyboard */; };
 		222E06CD1948B0B70004FFD9 /* libapps-on-maps-cpp11-sim.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 222E06CB1948B0B70004FFD9 /* libapps-on-maps-cpp11-sim.a */; };
 		222E06CE1948B0B70004FFD9 /* libapps-on-maps-cpp11.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 222E06CC1948B0B70004FFD9 /* libapps-on-maps-cpp11.a */; };
+		564A24E61BB28FC300D7B498 /* RemoveMapLayerExample.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 564A24E21BB28FC300D7B498 /* RemoveMapLayerExample.cpp */; settings = {ASSET_TAGS = (); }; };
+		564A24E71BB28FC300D7B498 /* RemoveMapLayerExample.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 564A24E21BB28FC300D7B498 /* RemoveMapLayerExample.cpp */; settings = {ASSET_TAGS = (); }; };
+		564A24E81BB28FC300D7B498 /* RemoveMapLayerExampleFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 564A24E41BB28FC300D7B498 /* RemoveMapLayerExampleFactory.cpp */; settings = {ASSET_TAGS = (); }; };
+		564A24E91BB28FC300D7B498 /* RemoveMapLayerExampleFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 564A24E41BB28FC300D7B498 /* RemoveMapLayerExampleFactory.cpp */; settings = {ASSET_TAGS = (); }; };
 		7E1A248F197FF827000ED126 /* CameraSplineExample.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7E1A248D197FF827000ED126 /* CameraSplineExample.cpp */; };
 		7E1A2490197FF827000ED126 /* CameraSplineExample.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7E1A248D197FF827000ED126 /* CameraSplineExample.cpp */; };
 		7E1A2493197FF84E000ED126 /* CameraSplineExampleFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7E1A2491197FF84E000ED126 /* CameraSplineExampleFactory.cpp */; };
@@ -447,6 +451,10 @@
 		222E06C91948B08B0004FFD9 /* SDKSamplesAppCpp11.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SDKSamplesAppCpp11.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		222E06CB1948B0B70004FFD9 /* libapps-on-maps-cpp11-sim.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libapps-on-maps-cpp11-sim.a"; path = "Include/libapps-on-maps-cpp11-sim.a"; sourceTree = "<group>"; };
 		222E06CC1948B0B70004FFD9 /* libapps-on-maps-cpp11.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libapps-on-maps-cpp11.a"; path = "Include/libapps-on-maps-cpp11.a"; sourceTree = "<group>"; };
+		564A24E21BB28FC300D7B498 /* RemoveMapLayerExample.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RemoveMapLayerExample.cpp; sourceTree = "<group>"; };
+		564A24E31BB28FC300D7B498 /* RemoveMapLayerExample.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoveMapLayerExample.h; sourceTree = "<group>"; };
+		564A24E41BB28FC300D7B498 /* RemoveMapLayerExampleFactory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RemoveMapLayerExampleFactory.cpp; sourceTree = "<group>"; };
+		564A24E51BB28FC300D7B498 /* RemoveMapLayerExampleFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoveMapLayerExampleFactory.h; sourceTree = "<group>"; };
 		7E1A248D197FF827000ED126 /* CameraSplineExample.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = CameraSplineExample.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		7E1A248E197FF827000ED126 /* CameraSplineExample.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CameraSplineExample.h; sourceTree = "<group>"; };
 		7E1A2491197FF84E000ED126 /* CameraSplineExampleFactory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = CameraSplineExampleFactory.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
@@ -590,6 +598,7 @@
 		18143847192B6E4500BCDF2E /* Examples */ = {
 			isa = PBXGroup;
 			children = (
+				564A24E11BB28F6500D7B498 /* RemoveMapLayer */,
 				E0C66D0C1ACC58310096E08A /* BuildingSelection */,
 				E022EB721AA8D66000841D7B /* EnvironmentRayCaster */,
 				EEF758B81AB338D5002B63E6 /* Heatmap */,
@@ -1045,6 +1054,17 @@
 			path = ReadHeading;
 			sourceTree = "<group>";
 		};
+		564A24E11BB28F6500D7B498 /* RemoveMapLayer */ = {
+			isa = PBXGroup;
+			children = (
+				564A24E21BB28FC300D7B498 /* RemoveMapLayerExample.cpp */,
+				564A24E31BB28FC300D7B498 /* RemoveMapLayerExample.h */,
+				564A24E41BB28FC300D7B498 /* RemoveMapLayerExampleFactory.cpp */,
+				564A24E51BB28FC300D7B498 /* RemoveMapLayerExampleFactory.h */,
+			);
+			path = RemoveMapLayer;
+			sourceTree = "<group>";
+		};
 		7E1A248C197FF827000ED126 /* CameraSpline */ = {
 			isa = PBXGroup;
 			children = (
@@ -1389,6 +1409,7 @@
 				E0F992841A30911800CBFA18 /* MeshExampleFactory.cpp in Sources */,
 				EE234E681AA9989B0068E68C /* StencilAreaExample.cpp in Sources */,
 				E0C66D101ACC58620096E08A /* BuildingSelectionExample.cpp in Sources */,
+				564A24E91BB28FC300D7B498 /* RemoveMapLayerExampleFactory.cpp in Sources */,
 				222E06511948B08B0004FFD9 /* EnvironmentFlatteningExample.cpp in Sources */,
 				18E18E8E198BE4C80065F81D /* PostProcessVignetteMaterial.cpp in Sources */,
 				222E06521948B08B0004FFD9 /* EnvironmentNotifierExample.cpp in Sources */,
@@ -1418,6 +1439,7 @@
 				222E06671948B08B0004FFD9 /* ControlCityThemeExampleFactory.cpp in Sources */,
 				222E06681948B08B0004FFD9 /* iOSRouteMatchingExampleView.mm in Sources */,
 				222E06691948B08B0004FFD9 /* Pick3DObjectExampleFactory.cpp in Sources */,
+				564A24E71BB28FC300D7B498 /* RemoveMapLayerExample.cpp in Sources */,
 				222E066A1948B08B0004FFD9 /* ResourceSpatialQueryExample.cpp in Sources */,
 				222E066B1948B08B0004FFD9 /* RouteThicknessPolicyExampleFactory.cpp in Sources */,
 				EEF758C01AB338D5002B63E6 /* HeatmapExampleFactory.cpp in Sources */,
@@ -1497,6 +1519,7 @@
 				E0F992831A30911800CBFA18 /* MeshExampleFactory.cpp in Sources */,
 				EE234E671AA9989B0068E68C /* StencilAreaExample.cpp in Sources */,
 				E0C66D0F1ACC58620096E08A /* BuildingSelectionExample.cpp in Sources */,
+				564A24E81BB28FC300D7B498 /* RemoveMapLayerExampleFactory.cpp in Sources */,
 				18AB38FE192B729F00F15546 /* ViewController.mm in Sources */,
 				18E18E8D198BE4C80065F81D /* PostProcessVignetteMaterial.cpp in Sources */,
 				181438BC192B6E4500BCDF2E /* RouteThicknessPolicyExample.cpp in Sources */,
@@ -1526,6 +1549,7 @@
 				189971AA192CB4D900E0E9F1 /* RouteThicknessPolicyExampleFactory.cpp in Sources */,
 				181438A9192B6E4500BCDF2E /* DebugPrimitiveRenderingExample.cpp in Sources */,
 				1899718C192CAD9800E0E9F1 /* LoadModelExampleFactory.cpp in Sources */,
+				564A24E61BB28FC300D7B498 /* RemoveMapLayerExample.cpp in Sources */,
 				18997180192CAA8C00E0E9F1 /* EnvironmentFlatteningExampleFactory.cpp in Sources */,
 				18C45A7319658A5C009B18A8 /* AppRunner.mm in Sources */,
 				EEF758BF1AB338D5002B63E6 /* HeatmapExampleFactory.cpp in Sources */,
@@ -1623,6 +1647,7 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ExampleApp/SDKSamplesApp-Prefix.pch";
@@ -1652,6 +1677,7 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ExampleApp/SDKSamplesApp-Prefix.pch";
@@ -1752,6 +1778,7 @@
 				CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ExampleApp/SDKSamplesApp-Prefix.pch";
@@ -1781,6 +1808,7 @@
 				CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ExampleApp/SDKSamplesApp-Prefix.pch";

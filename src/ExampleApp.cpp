@@ -51,7 +51,7 @@
 #include "MeshExampleFactory.h"
 #include "GeofenceExampleFactory.h"
 #include "BuildingSelectionExampleFactory.h"
-
+#include "RemoveMapLayerExampleFactory.h"
 
 namespace
 {
@@ -170,6 +170,7 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
 	m_pExampleController->RegisterCameraExample<Examples::PODAnimationExampleFactory>();
     m_pExampleController->RegisterCameraExample<Examples::PolyChartExampleFactory>();
 	m_pExampleController->RegisterCameraExample<Examples::ReadHeadingExampleFactory>();
+    m_pExampleController->RegisterCameraExample<Examples::RemoveMapLayerExampleFactory>();
 	m_pExampleController->RegisterCameraExample<Examples::ResourceSpatialQueryExampleFactory>();
 	m_pExampleController->RegisterCameraExample<Examples::RouteDrawingExampleFactory>();
 	m_pExampleController->RegisterCameraControllerScreenPropertiesProviderExample<Examples::RouteSimulationAnimationExampleFactory>(m_screenPropertiesProvider);
