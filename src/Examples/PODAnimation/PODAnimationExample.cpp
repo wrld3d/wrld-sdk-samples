@@ -51,8 +51,14 @@ void PODAnimationExample::Start()
     
     // Set position and orientation.
     m_pModel->SetEcefPosition(cameraInterestBasis.GetPointEcef());
+    
+    Eegeo::v3 up = m_pModel->GetEcefPosition().Norm().ToSingle();
+    Eegeo::v3 right = Eegeo::v3::Cross(up, Eegeo::v3(0.0f, 1.0f, 0.0f)).Norm();
+    Eegeo::v3 forward(Eegeo::v3::Cross(up, right).Norm());
+    up = Eegeo::v3::Cross(right, forward).Norm();
+    
     Eegeo::m44 basisOrientation;
-    basisOrientation.SetFromBasis(cameraInterestBasis.GetRight(), cameraInterestBasis.GetUp(), cameraInterestBasis.GetForward(), Eegeo::v3::Zero());
+    basisOrientation.SetFromBasis(right, up, forward, Eegeo::v3::Zero());
     m_pModel->GetRootNode().SetTransform(basisOrientation);
     
     // Set correct layer for shadowing.
