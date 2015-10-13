@@ -92,12 +92,12 @@ void LoadModelExample::Update(float dt)
 	//up is relative to earth location, normal to tangent plane formed at surface below model
     Eegeo::v3 up = m_pModel->GetEcefPosition().Norm().ToSingle();
 
-	//cross with north pole (0,1,0) for a forward vector
-    Eegeo::v3 forward = -Eegeo::v3::Cross(up, Eegeo::v3(0.0f, 1.0f, 0.0f));
+	//cross with north pole (0,1,0) for a right vector
+    Eegeo::v3 right = Eegeo::v3::Cross(up, Eegeo::v3(0.0f, 1.0f, 0.0f)).Norm();
     
-    // Calculate right & recalculate up for the final correct axes.
-    Eegeo::v3 right(Eegeo::v3::Cross(up, forward).Norm());
-    up = Eegeo::v3::Cross(forward, right);
+    // Calculate forward & recalculate up for the final correct axes.
+    Eegeo::v3 forward(Eegeo::v3::Cross(up, right).Norm());
+    up = Eegeo::v3::Cross(right, forward).Norm();
 
 	//set some big scale value so we can see the vehicle - vary between x20 and x70
     float scale = 20.0f + ((Eegeo::Math::Sin(m_elapsedTime)/ 2.0f + 0.5f) * 50.0f);
