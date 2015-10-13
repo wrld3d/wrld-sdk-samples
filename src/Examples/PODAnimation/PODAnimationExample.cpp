@@ -11,6 +11,7 @@
 #include "SceneModelLoader.h"
 #include "SceneModelNode.h"
 #include "SceneModelAnimator.h"
+#include "SceneModelTransformHelpers.h"
 
 #include <sys/time.h>
 
@@ -38,29 +39,14 @@ PODAnimationExample::~PODAnimationExample()
 
 void PODAnimationExample::Start()
 {
-    // Setup the position and tangent space to help orientate and position the model
-    Eegeo::Space::EcefTangentBasis cameraInterestBasis;
-    
-    Eegeo::Camera::CameraHelpers::EcefTangentBasisFromPointAndHeading(
-                                                                      Eegeo::Space::LatLong::FromDegrees(37.780642, -122.385876).ToECEF(),
-                                                                      16.472872f,
-                                                                      cameraInterestBasis);
     
     // Load the model
     m_pModel = m_sceneModelLoader.LoadPOD("pod_animation_example/Test_ROBOT_ARM.pod");
     
-    // Set position and orientation.
-    m_pModel->SetEcefPosition(cameraInterestBasis.GetPointEcef());
-    
-    Eegeo::v3 up = m_pModel->GetEcefPosition().Norm().ToSingle();
-    Eegeo::v3 right = Eegeo::v3::Cross(up, Eegeo::v3(0.0f, 1.0f, 0.0f)).Norm();
-    Eegeo::v3 forward(Eegeo::v3::Cross(up, right).Norm());
-    up = Eegeo::v3::Cross(right, forward).Norm();
-    
-    Eegeo::m44 basisOrientation;
-    basisOrientation.SetFromBasis(right, up, forward, Eegeo::v3::Zero());
-    m_pModel->GetRootNode().SetTransform(basisOrientation);
-    
+    Eegeo::Space::EcefTangentBasis cameraInterestBasis = Eegeo::Rendering::SceneModels::SceneModelTransformHelpers::PositionOnEarthSurface(*m_pModel,
+                                                                                      Eegeo::Space::LatLongAltitude::FromDegrees(37.780642, -122.385876, 16.472872f).ToECEF(),
+                                                                                      0.f);
+
     // Set correct layer for shadowing.
     m_pModel->SetLayer(Eegeo::Rendering::LayerIds::BeforeWorldTranslucency);
     

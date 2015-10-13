@@ -14,6 +14,8 @@
 #include "SceneModelRenderableFilter.h"
 #include "DebugRenderer.h"
 
+#include "SceneModelTransformHelpers.h"
+
 
 #include <sys/time.h>
 
@@ -85,31 +87,13 @@ void LoadModelExample::Update(float dt)
 {
 	//let's put the vehicle in the air
 	m_interestLocation.SetAltitude(100.0f);
-
-	//put the vehicle at interest point
-    m_pModel->SetEcefPosition(m_interestLocation.ToECEF());
-
-	//up is relative to earth location, normal to tangent plane formed at surface below model
-    Eegeo::v3 up = m_pModel->GetEcefPosition().Norm().ToSingle();
-
-	//cross with north pole (0,1,0) for a right vector
-    Eegeo::v3 right = Eegeo::v3::Cross(up, Eegeo::v3(0.0f, 1.0f, 0.0f)).Norm();
     
-    // Calculate forward & recalculate up for the final correct axes.
-    Eegeo::v3 forward(Eegeo::v3::Cross(up, right).Norm());
-    up = Eegeo::v3::Cross(right, forward).Norm();
-
 	//set some big scale value so we can see the vehicle - vary between x20 and x70
     float scale = 20.0f + ((Eegeo::Math::Sin(m_elapsedTime)/ 2.0f + 0.5f) * 50.0f);
     Eegeo::m44 scaleMatrix;
     scaleMatrix.Scale(scale);
     
-    Eegeo::m44 basisMatrix;
-    basisMatrix.SetFromBasis(right, up, forward, Eegeo::v3::Zero());
-    
-    // And calculate and assign the final transform
-    Eegeo::m44::Mul(m_transform, basisMatrix, scaleMatrix);
-    m_pModel->GetRootNode().SetTransform(m_transform);
+    Eegeo::Rendering::SceneModels::SceneModelTransformHelpers::PositionOnEarthSurface(*m_pModel, m_interestLocation, 0.f, scaleMatrix);
 
 	// pulse the opacity of the disk material up and down over time.
     m_pDiscMaterialResource->GetMaterial()->SetAlpha(std::abs(Eegeo::Math::Sin(m_elapsedTime * 2)));
