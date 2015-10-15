@@ -76,7 +76,17 @@ AppLocationDelegate* m_pAppLocationDelegate;
     {
         float heading = static_cast<float>(newHeading.trueHeading);
         
-        if (m_pUIViewController.interfaceOrientation == UIInterfaceOrientationLandscapeLeft)
+        if(heading < 0.0f)
+        {
+            heading = static_cast<float>(newHeading.magneticHeading);
+            
+            if(heading < 0.0f)
+            {
+                m_piOSLocationService->FailedToGetHeading();
+                return;
+            }
+        }
+        else if (m_pUIViewController.interfaceOrientation == UIInterfaceOrientationLandscapeLeft)
         {
             heading -= 90.f;
         }
