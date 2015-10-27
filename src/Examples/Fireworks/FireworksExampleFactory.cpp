@@ -3,6 +3,7 @@
 #include "FireworksExampleFactory.h"
 #include "FireworksExample.h"
 #include "DefaultCameraControllerFactory.h"
+#include "CityThemesModule.h"
 
 namespace Examples
 {

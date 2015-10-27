@@ -133,6 +133,10 @@ AppHost::AppHost(
 	Eegeo::Config::PlatformConfig config = Eegeo::Android::AndroidPlatformConfigBuilder(deviceModel).Build();
 
 	config.OptionsConfig.GenerateCollisionForAllResources = true;
+	config.CityThemesConfig.EmbeddedThemeManifestFile = "embedded_manifest.txt";
+	config.CityThemesConfig.EmbeddedThemeTexturePath = "Textures";
+	config.CityThemesConfig.EmbeddedThemeNameContains = "Summer";
+	config.CityThemesConfig.EmbeddedThemeStateName = "DayDefault";
 
 	m_pWorld = new Eegeo::EegeoWorld(
 	    apiKey,
