@@ -33,6 +33,8 @@ RouteThicknessPolicyExample::RouteThicknessPolicyExample(RouteService& routeServ
 	    cameraInterestBasis);
 
 	pCameraController->SetView(cameraInterestBasis, 1374.298706f);
+    
+    m_linearAltitudeBasedRouteThicknessPolicy.SetScaleFactor(5.0f);
 }
 
 void RouteThicknessPolicyExample::Update(float dt)
@@ -116,6 +118,10 @@ void RouteThicknessPolicyExample::Update(float dt)
 
 	//Update our custom thickness policy to make it animate.
 	m_myScalingRouteThicknessPolicy.UpdateScale();
+    
+    // Update the altitude based scaler with the current camera's altitude.
+    float altitude = GetGlobeCameraController().GetRenderCamera().GetAltitude();
+    m_linearAltitudeBasedRouteThicknessPolicy.SetAltitude(altitude);
 }
 
 void RouteThicknessPolicyExample::MyScalingRouteThicknessPolicy::UpdateScale()
