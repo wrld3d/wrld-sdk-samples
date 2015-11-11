@@ -30,6 +30,8 @@
 	<true/>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
+	<key>UILaunchStoryboardName</key>
+	<string>MainStoryboard_iPad</string>
 	<key>UIMainStoryboardFile</key>
 	<string>MainStoryboard_iPhone</string>
 	<key>UIMainStoryboardFile~ipad</key>
@@ -50,5 +52,7 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 	</array>
+	<key>eeGeoAppBase</key>
+	<string>iOS-SDK</string>
 </dict>
 </plist>
