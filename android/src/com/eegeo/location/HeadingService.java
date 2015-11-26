@@ -104,8 +104,25 @@ public class HeadingService implements SensorEventListener
 			{
 				float smoothing = 0.6f;
 				float heading = event.values[0];
+	        	if (Float.isNaN(heading)) // Fix MPLY-4888
+	        	{
+	        		return;
+	        	}
 				float newAzimuth = adjustHeadingForDeviceOrientation(heading);
+				
+				if(Math.abs(newAzimuth - m_azimuthDegrees) >= 180)
+				{
+					if(newAzimuth > m_azimuthDegrees)
+					{
+						m_azimuthDegrees += 360.0f;
+					}
+					else
+					{
+						newAzimuth += 360.0f;
+					}
+				}
 				m_azimuthDegrees = (float) ((newAzimuth * smoothing) + (m_azimuthDegrees * (1.0 - smoothing)));     
+				m_azimuthDegrees %= 360.0f;
 				m_hasAzimuthAngle = true;
 				return;
 			}
