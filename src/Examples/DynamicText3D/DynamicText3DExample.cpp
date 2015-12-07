@@ -96,7 +96,8 @@ void DynamicText3DExample::CreateDynamic3DText(const std::string& str,
 
 	if (pPlaceNameView != NULL)
 	{
-		pPlaceNameView->GetConfig().UpdateColorAndScale(colour, 1.f);
+		pPlaceNameView->SetColor(colour);
+        pPlaceNameView->SetScale(1.f);
 		pPlaceNameView->SetAlpha(alpha);
 		m_views.push_back(pPlaceNameView);
 	}
