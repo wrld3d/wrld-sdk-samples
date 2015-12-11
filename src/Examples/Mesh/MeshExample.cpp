@@ -331,7 +331,7 @@ namespace Examples
             m_timer += dt;
             if (m_timer > m_config.secondsDelayBeforeTextureWebRequest)
             {
-                Eegeo::Web::IWebLoadRequest* webLoadRequest = m_webRequestFactory.CreateGet(m_config.asyncTextureUrl, m_webLoadCallback, NULL);
+                Eegeo::Web::IWebLoadRequest* webLoadRequest = m_webRequestFactory.Begin(Eegeo::Web::HttpVerbs::GET, m_config.asyncTextureUrl, m_webLoadCallback).Build();
                 webLoadRequest->Load();
                 m_madeTextureRequest = true;
             }
@@ -358,21 +358,21 @@ namespace Examples
         }
     }
     
-    void MeshExample::OnWebLoadCompleted(Eegeo::Web::IWebLoadRequest& webLoadRequest)
+    void MeshExample::OnWebLoadCompleted(Eegeo::Web::IWebResponse& webResponse)
     {
-        if (!webLoadRequest.IsSucceeded())
+        if (!webResponse.IsSucceeded())
         {
-            Eegeo_TTY("Failed to fetch texture %s", webLoadRequest.GetUrl().c_str());
+            Eegeo_TTY("Failed to fetch texture %s", webResponse.GetUrl().c_str());
             return;
         }
         
         const bool generateMipmaps = true;
-        std::string filenameExtension = webLoadRequest.GetUrl().substr(webLoadRequest.GetUrl().find_last_of("."));
+        std::string filenameExtension = webResponse.GetUrl().substr(webResponse.GetUrl().find_last_of("."));
         
-        bool success = m_textureFileLoader.LoadFromBuffer(m_asyncTextureInfo, filenameExtension, webLoadRequest.GetResourceData().data(), webLoadRequest.GetResourceData().size(), generateMipmaps);
+        bool success = m_textureFileLoader.LoadFromBuffer(m_asyncTextureInfo, filenameExtension, webResponse.GetBodyData().data(), webResponse.GetBodyData().size(), generateMipmaps);
         if (!success)
         {
-            Eegeo_TTY("Failed to load texture %s", webLoadRequest.GetUrl().c_str());
+            Eegeo_TTY("Failed to load texture %s", webResponse.GetUrl().c_str());
             return;
         }
     

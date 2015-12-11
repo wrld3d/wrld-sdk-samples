@@ -58,7 +58,7 @@ namespace Examples
         void EnqueueRenderables(const Eegeo::Rendering::RenderContext& renderContext, Eegeo::Rendering::RenderQueue& renderQueue);
         
     private:
-        void OnWebLoadCompleted(Eegeo::Web::IWebLoadRequest& webLoadRequest);
+        void OnWebLoadCompleted(Eegeo::Web::IWebResponse& webResponse);
     
         Eegeo::Modules::Core::RenderingModule& m_renderingModule;
         Eegeo::Helpers::ITextureFileLoader& m_textureFileLoader;

@@ -37,7 +37,7 @@ namespace Examples
         
         Eegeo::Web::TWebLoadRequestCompletionCallback<StencilAreaExample> m_handler;
         
-        void HandleRequest(Eegeo::Web::IWebLoadRequest& webLoadRequest);
+        void HandleRequest(Eegeo::Web::IWebResponse& webResponse);
         void HandleAlertBoxDismissed();
         
     public:

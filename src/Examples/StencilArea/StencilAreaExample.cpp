@@ -79,16 +79,16 @@ namespace Examples
         // Asynchronously fetch san francisco district polygons in GeoJSON format
         const std::string geoJsonURL = "https://eegeo-static.s3.amazonaws.com/mobile-sdk-harness-data/san-francisco-districts.geojson.gz";
     
-        Eegeo::Web::IWebLoadRequest* pRequest = m_webLoadRequestFactory.CreateGet(geoJsonURL, m_handler, NULL);
+        Eegeo::Web::IWebLoadRequest* pRequest = m_webLoadRequestFactory.Begin(Eegeo::Web::HttpVerbs::GET, geoJsonURL, m_handler).Build();
         m_pendingWebRequestsContainer.InsertRequest(*pRequest);
         pRequest->Load();
     }
     
-    void StencilAreaExample::HandleRequest(Eegeo::Web::IWebLoadRequest& webLoadRequest)
+    void StencilAreaExample::HandleRequest(Eegeo::Web::IWebResponse& webResponse)
     {
-        m_pendingWebRequestsContainer.RemoveRequest(webLoadRequest);
+        m_pendingWebRequestsContainer.RemoveRequest(webResponse);
         
-        if (!webLoadRequest.IsSucceeded())
+        if (!webResponse.IsSucceeded())
         {
             Eegeo_ASSERT(m_pAlertBoxDismissedHandler == NULL, "AlertBoxDismissedHandler not NULL");
             
@@ -101,8 +101,8 @@ namespace Examples
             return;
         }
         
-        size_t resultSize = webLoadRequest.GetResourceData().size();
-        std::string json( reinterpret_cast<char const*>(&(webLoadRequest.GetResourceData().front())), resultSize );
+        size_t resultSize = webResponse.GetBodyData().size();
+        std::string json( reinterpret_cast<char const*>(&(webResponse.GetBodyData().front())), resultSize );
         
         const std::string document(json);
         TDistricts districtOutlines;

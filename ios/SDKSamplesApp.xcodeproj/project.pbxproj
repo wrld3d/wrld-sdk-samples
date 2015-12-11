@@ -194,6 +194,14 @@
 		222E069B1948B08B0004FFD9 /* MainStoryboard_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7EE4820F168371460006E99B /* MainStoryboard_iPad.storyboard */; };
 		222E06CD1948B0B70004FFD9 /* libapps-on-maps-cpp11-sim.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 222E06CB1948B0B70004FFD9 /* libapps-on-maps-cpp11-sim.a */; };
 		222E06CE1948B0B70004FFD9 /* libapps-on-maps-cpp11.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 222E06CC1948B0B70004FFD9 /* libapps-on-maps-cpp11.a */; };
+		2C2022B71C1B1E89002C8BFF /* libcurl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C2022B51C1B1E89002C8BFF /* libcurl.a */; };
+		2C2022B81C1B1E89002C8BFF /* libuv.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C2022B61C1B1E89002C8BFF /* libuv.a */; };
+		2C2022BA1C1B2437002C8BFF /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C2022B91C1B2437002C8BFF /* Security.framework */; };
+		2C2022BB1C1B247F002C8BFF /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C2022B91C1B2437002C8BFF /* Security.framework */; };
+		2C2022BE1C1B2498002C8BFF /* libcurl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C2022B51C1B1E89002C8BFF /* libcurl.a */; };
+		2C2022BF1C1B2498002C8BFF /* libuv.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C2022B61C1B1E89002C8BFF /* libuv.a */; };
+		2C2022C01C1B2907002C8BFF /* embedded_manifest.txt in Resources */ = {isa = PBXBuildFile; fileRef = 2C23503F1BD933BD0098C48E /* embedded_manifest.txt */; };
+		2C2022C11C1B2907002C8BFF /* Textures in Resources */ = {isa = PBXBuildFile; fileRef = 2C2350401BD933BD0098C48E /* Textures */; };
 		2C2350411BD933BD0098C48E /* embedded_manifest.txt in Resources */ = {isa = PBXBuildFile; fileRef = 2C23503F1BD933BD0098C48E /* embedded_manifest.txt */; };
 		2C2350421BD933BD0098C48E /* Textures in Resources */ = {isa = PBXBuildFile; fileRef = 2C2350401BD933BD0098C48E /* Textures */; };
 		564A24E61BB28FC300D7B498 /* RemoveMapLayerExample.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 564A24E21BB28FC300D7B498 /* RemoveMapLayerExample.cpp */; };
@@ -451,6 +459,10 @@
 		222E06C91948B08B0004FFD9 /* SDKSamplesAppCpp11.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SDKSamplesAppCpp11.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		222E06CB1948B0B70004FFD9 /* libapps-on-maps-cpp11-sim.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libapps-on-maps-cpp11-sim.a"; path = "Include/libapps-on-maps-cpp11-sim.a"; sourceTree = "<group>"; };
 		222E06CC1948B0B70004FFD9 /* libapps-on-maps-cpp11.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libapps-on-maps-cpp11.a"; path = "Include/libapps-on-maps-cpp11.a"; sourceTree = "<group>"; };
+		2C2022B51C1B1E89002C8BFF /* libcurl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcurl.a; path = Include/libcurl.a; sourceTree = "<group>"; };
+		2C2022B61C1B1E89002C8BFF /* libuv.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libuv.a; path = Include/libuv.a; sourceTree = "<group>"; };
+		2C2022B91C1B2437002C8BFF /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		2C2022BC1C1B248B002C8BFF /* mobile-sdk-harness */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "mobile-sdk-harness"; path = ..; sourceTree = "<group>"; };
 		2C23503F1BD933BD0098C48E /* embedded_manifest.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = embedded_manifest.txt; sourceTree = "<group>"; };
 		2C2350401BD933BD0098C48E /* Textures */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Textures; sourceTree = "<group>"; };
 		564A24E21BB28FC300D7B498 /* RemoveMapLayerExample.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RemoveMapLayerExample.cpp; sourceTree = "<group>"; };
@@ -542,6 +554,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2C2022BE1C1B2498002C8BFF /* libcurl.a in Frameworks */,
+				2C2022BF1C1B2498002C8BFF /* libuv.a in Frameworks */,
+				2C2022BB1C1B247F002C8BFF /* Security.framework in Frameworks */,
 				222E06CD1948B0B70004FFD9 /* libapps-on-maps-cpp11-sim.a in Frameworks */,
 				222E06CE1948B0B70004FFD9 /* libapps-on-maps-cpp11.a in Frameworks */,
 				222E068C1948B08B0004FFD9 /* CoreLocation.framework in Frameworks */,
@@ -563,6 +578,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2C2022BA1C1B2437002C8BFF /* Security.framework in Frameworks */,
+				2C2022B71C1B1E89002C8BFF /* libcurl.a in Frameworks */,
+				2C2022B81C1B1E89002C8BFF /* libuv.a in Frameworks */,
 				182E453B18C92FA900F9DD92 /* libapps-on-maps-sim.a in Frameworks */,
 				182E453C18C92FA900F9DD92 /* libapps-on-maps.a in Frameworks */,
 				7EF5D8651737F9A40049D787 /* CoreLocation.framework in Frameworks */,
@@ -1108,6 +1126,10 @@
 		7EE481E916836F370006E99B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2C2022BC1C1B248B002C8BFF /* mobile-sdk-harness */,
+				2C2022B91C1B2437002C8BFF /* Security.framework */,
+				2C2022B51C1B1E89002C8BFF /* libcurl.a */,
+				2C2022B61C1B1E89002C8BFF /* libuv.a */,
 				222E06CB1948B0B70004FFD9 /* libapps-on-maps-cpp11-sim.a */,
 				222E06CC1948B0B70004FFD9 /* libapps-on-maps-cpp11.a */,
 				7EE48257168477CB0006E99B /* libz.dylib */,
@@ -1340,6 +1362,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2C2022C01C1B2907002C8BFF /* embedded_manifest.txt in Resources */,
+				2C2022C11C1B2907002C8BFF /* Textures in Resources */,
 				186D2936196D9E4B00E004E0 /* placeholder.pvr in Resources */,
 				186D2937196D9E4B00E004E0 /* FrankBold50_A8_icons_0.png in Resources */,
 				186D2938196D9E4B00E004E0 /* FrankBold50_A8_icons.fnt in Resources */,
@@ -1655,7 +1679,8 @@
 				INFOPLIST_FILE = "ExampleApp/SDKSamplesApp-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/Include\"",
+					"\"$(SRCROOT)/Include/\"",
+					"$(PROJECT_DIR)/Include/",
 				);
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
@@ -1685,7 +1710,8 @@
 				INFOPLIST_FILE = "ExampleApp/SDKSamplesApp-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/Include\"",
+					"\"$(SRCROOT)/Include/\"",
+					"$(PROJECT_DIR)/Include/",
 				);
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
@@ -1788,7 +1814,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/Include\"",
+					"\"$(SRCROOT)/Include/\"",
+					"$(PROJECT_DIR)/Include/",
 				);
 				PRODUCT_NAME = SDKSamplesApp;
 				PROVISIONING_PROFILE = "";
@@ -1818,7 +1845,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/Include\"",
+					"\"$(SRCROOT)/Include/\"",
+					"$(PROJECT_DIR)/Include/",
 				);
 				PRODUCT_NAME = SDKSamplesApp;
 				PROVISIONING_PROFILE = "";
