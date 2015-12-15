@@ -73,7 +73,6 @@ public:
 
 private:
 	bool m_isPaused;
-	Eegeo::Blitter* m_pBlitter;
     Eegeo::Helpers::Jpeg::IJpegLoader* m_pJpegLoader;
 	Eegeo::Android::AndroidLocationService* m_pAndroidLocationService;
 	Eegeo::EegeoWorld* m_pWorld;

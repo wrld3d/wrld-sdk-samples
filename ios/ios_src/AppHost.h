@@ -51,7 +51,6 @@ public:
 
 private:
     ViewController& m_viewController;
-	Eegeo::Blitter* m_pBlitter;
     Eegeo::Helpers::Jpeg::IJpegLoader* m_pJpegLoader;
 	Eegeo::iOS::iOSLocationService* m_piOSLocationService;
 	Eegeo::EegeoWorld* m_pWorld;

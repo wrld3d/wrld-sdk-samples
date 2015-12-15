@@ -6,7 +6,6 @@
 #include "EegeoWorld.h"
 #include "RenderContext.h"
 #include "AppInterface.h"
-#include "Blitter.h"
 #include "EffectHandler.h"
 #include "SearchServiceCredentials.h"
 #include "GlobeCameraController.h"
@@ -66,7 +65,6 @@ AppHost::AppHost(
                  const Eegeo::Rendering::ScreenProperties& screenProperties
                  )
     :m_viewController(viewController)
-	,m_pBlitter(NULL)
     ,m_pJpegLoader(NULL)
 	,m_piOSLocationService(NULL)
 	,m_pWorld(NULL)
@@ -86,10 +84,7 @@ AppHost::AppHost(
     m_piOSPlatformAbstractionModule = new Eegeo::iOS::iOSPlatformAbstractionModule(*m_pJpegLoader, apiKey);
 
 	Eegeo::EffectHandler::Initialise();
-	
-	m_pBlitter = new Eegeo::Blitter(1024 * 128, 1024 * 64, 1024 * 32);
-	m_pBlitter->Initialise();
-
+    
 	const Eegeo::EnvironmentCharacterSet::Type environmentCharacterSet = Eegeo::EnvironmentCharacterSet::Latin;
     
 	Eegeo::Config::PlatformConfig config = Eegeo::iOS::iOSPlatformConfigBuilder(App::GetDevice(), App::IsDeviceMultiCore(), App::GetMajorSystemVersion()).Build();
@@ -102,7 +97,6 @@ AppHost::AppHost(
                                      *m_pJpegLoader,
                                      screenProperties,
                                      *m_piOSLocationService,
-                                     *m_pBlitter,
                                      m_iOSNativeUIFactories,
                                      environmentCharacterSet,
                                      config,
@@ -150,9 +144,6 @@ AppHost::~AppHost()
 
 	Eegeo::EffectHandler::Reset();
 	Eegeo::EffectHandler::Shutdown();
-	m_pBlitter->Shutdown();
-	delete m_pBlitter;
-	m_pBlitter = NULL;
 }
 
 void AppHost::OnResume()

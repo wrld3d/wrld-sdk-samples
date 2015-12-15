@@ -6,7 +6,6 @@
 #include "EegeoWorld.h"
 #include "AppInterface.h"
 #include "JpegLoader.h"
-#include "Blitter.h"
 #include "EffectHandler.h"
 #include "SearchServiceCredentials.h"
 #include "AndroidThreadHelper.h"
@@ -76,7 +75,6 @@ AppHost::AppHost(
     EGLContext resourceBuildShareContext
 )
 	: m_isPaused(false)
-	,m_pBlitter(NULL)
 	,m_pJpegLoader(NULL)
 	,m_pAndroidLocationService(NULL)
 	,m_pWorld(NULL)
@@ -125,8 +123,6 @@ AppHost::AppHost(
 																							   customApplicationAssetDirectories);
 
 	Eegeo::EffectHandler::Initialise();
-	m_pBlitter = new Eegeo::Blitter(1024 * 128, 1024 * 64, 1024 * 32);
-	m_pBlitter->Initialise();;
 
 	const Eegeo::EnvironmentCharacterSet::Type environmentCharacterSet = Eegeo::EnvironmentCharacterSet::Latin;
 	std::string deviceModel = std::string(nativeState.deviceModel, strlen(nativeState.deviceModel));
@@ -144,7 +140,6 @@ AppHost::AppHost(
 	    *m_pJpegLoader,
 	    screenProperties,
 	    *m_pAndroidLocationService,
-	    *m_pBlitter,
 	    m_androidNativeUIFactories,
 	    environmentCharacterSet,
 	    config,
@@ -185,9 +180,6 @@ AppHost::~AppHost()
 
 	Eegeo::EffectHandler::Reset();
 	Eegeo::EffectHandler::Shutdown();
-	m_pBlitter->Shutdown();
-	delete m_pBlitter;
-	m_pBlitter = NULL;
 
 	delete m_pAndroidLocationService;
 	m_pAndroidLocationService = NULL;
