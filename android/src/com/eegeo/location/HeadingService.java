@@ -8,16 +8,21 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.util.Log;
+import android.view.OrientationEventListener;
 import android.view.Surface;
 import android.view.WindowManager;
 
 public class HeadingService implements SensorEventListener 
 {
 	private SensorManager m_sensorManager;
+	private OrientationEventListener m_orientationEventListener = null;
 	private Activity m_activity;
 	private boolean m_hasAzimuthAngle = false;
 	private boolean m_listeningForUpdates = false;
 
+	private int m_deviceRotation = 0;
+	
 	// The results from SensorManager.getOrientation appear to be worse than the results of 
 	// the deprecated Sensor.TYPE_ORIENTATION on the test device. To enable SensorManager.getOrientation
 	// using the results of the Sensor.TYPE_GRAVITY and Sensor.TYPE_MAGNETIC_FIELD sensors, set
@@ -78,6 +83,16 @@ public class HeadingService implements SensorEventListener
 		    m_sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_GAME);
 		    m_sensorManager.registerListener(this, magnetometer, SensorManager.SENSOR_DELAY_GAME);
 	    }
+	    
+	    m_orientationEventListener = new OrientationEventListener(m_activity, SensorManager.SENSOR_DELAY_NORMAL) 
+	    {
+	    	@Override
+	    	public void onOrientationChanged(int orientation) 
+	    	{
+	    		m_deviceRotation = ((WindowManager) m_activity.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getRotation();
+	    	}
+	    };
+	    m_orientationEventListener.enable();
     }
     
     public void stopListening()
@@ -85,7 +100,9 @@ public class HeadingService implements SensorEventListener
     	if(m_listeningForUpdates)
     	{
     		m_sensorManager.unregisterListener(this);
-    	}	
+    		
+  	    	m_orientationEventListener.disable();
+    	}
 	    m_listeningForUpdates = false;
     }
     
@@ -189,9 +206,7 @@ public class HeadingService implements SensorEventListener
 	
 	private float adjustHeadingForDeviceOrientation(float heading)
 	{
-		final int rotation = ((WindowManager) this.m_activity.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getRotation();
-		
-		switch (rotation) {
+		switch (m_deviceRotation) {
 		    case Surface.ROTATION_0:
 		        heading += 0.f;
 		        break;
@@ -199,7 +214,7 @@ public class HeadingService implements SensorEventListener
 		    	heading += 90.f;
 		        break;
 		    case Surface.ROTATION_180:
-		    	heading = 180.f;
+		    	heading += 180.f;
 		        break;
 		    default:
 		    	heading += 90.f;

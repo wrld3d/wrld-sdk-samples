@@ -1,7 +1,6 @@
 // Copyright eeGeo Ltd (2012-2014), All Rights Reserved
 
 #include "AppHost.h"
-#include "AndroidWebRequestService.hpp"
 #include "LatLongAltitude.h"
 #include "EegeoWorld.h"
 #include "AppInterface.h"
@@ -153,7 +152,6 @@ AppHost::AppHost(
     m_pCollisionVisualizationModule = CreateCollisionVisualizationModule(*m_pWorld);
     m_pBuildingFootprintsModule = CreateBuildingFootprintsModule(*m_pWorld, *m_pCollisionVisualizationModule);
 
-	m_pAndroidPlatformAbstractionModule->SetWebRequestServiceWorkPool(m_pWorld->GetWorkPool());
 	m_pInputProcessor = new Eegeo::Android::Input::AndroidInputProcessor(&m_inputHandler, screenProperties.GetScreenWidth(), screenProperties.GetScreenHeight());
 
 	ConfigureExamples(screenProperties);
