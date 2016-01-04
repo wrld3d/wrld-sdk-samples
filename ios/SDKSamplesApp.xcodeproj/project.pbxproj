@@ -208,6 +208,8 @@
 		564A24E71BB28FC300D7B498 /* RemoveMapLayerExample.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 564A24E21BB28FC300D7B498 /* RemoveMapLayerExample.cpp */; };
 		564A24E81BB28FC300D7B498 /* RemoveMapLayerExampleFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 564A24E41BB28FC300D7B498 /* RemoveMapLayerExampleFactory.cpp */; };
 		564A24E91BB28FC300D7B498 /* RemoveMapLayerExampleFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 564A24E41BB28FC300D7B498 /* RemoveMapLayerExampleFactory.cpp */; };
+		56EADA911C3A881B00947A79 /* DejaVuSansBold_0.png in Resources */ = {isa = PBXBuildFile; fileRef = 56EADA8F1C3A881B00947A79 /* DejaVuSansBold_0.png */; };
+		56EADA921C3A881B00947A79 /* DejaVuSansBold.fnt in Resources */ = {isa = PBXBuildFile; fileRef = 56EADA901C3A881B00947A79 /* DejaVuSansBold.fnt */; };
 		7E1A248F197FF827000ED126 /* CameraSplineExample.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7E1A248D197FF827000ED126 /* CameraSplineExample.cpp */; };
 		7E1A2490197FF827000ED126 /* CameraSplineExample.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7E1A248D197FF827000ED126 /* CameraSplineExample.cpp */; };
 		7E1A2493197FF84E000ED126 /* CameraSplineExampleFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7E1A2491197FF84E000ED126 /* CameraSplineExampleFactory.cpp */; };
@@ -469,6 +471,8 @@
 		564A24E31BB28FC300D7B498 /* RemoveMapLayerExample.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoveMapLayerExample.h; sourceTree = "<group>"; };
 		564A24E41BB28FC300D7B498 /* RemoveMapLayerExampleFactory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RemoveMapLayerExampleFactory.cpp; sourceTree = "<group>"; };
 		564A24E51BB28FC300D7B498 /* RemoveMapLayerExampleFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoveMapLayerExampleFactory.h; sourceTree = "<group>"; };
+		56EADA8F1C3A881B00947A79 /* DejaVuSansBold_0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DejaVuSansBold_0.png; sourceTree = "<group>"; };
+		56EADA901C3A881B00947A79 /* DejaVuSansBold.fnt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = DejaVuSansBold.fnt; sourceTree = "<group>"; };
 		7E1A248D197FF827000ED126 /* CameraSplineExample.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = CameraSplineExample.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		7E1A248E197FF827000ED126 /* CameraSplineExample.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CameraSplineExample.h; sourceTree = "<group>"; };
 		7E1A2491197FF84E000ED126 /* CameraSplineExampleFactory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = CameraSplineExampleFactory.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
@@ -1030,6 +1034,8 @@
 		18D1D363194A0EA000FAA1B9 /* platform_assets */ = {
 			isa = PBXGroup;
 			children = (
+				56EADA8F1C3A881B00947A79 /* DejaVuSansBold_0.png */,
+				56EADA901C3A881B00947A79 /* DejaVuSansBold.fnt */,
 				7E841E9919FE91A800D002A2 /* firework_01.png */,
 				E096AE1B19F6713300C3D04A /* SplashScreen-1024x768.png */,
 				18D1D34A194A057200FAA1B9 /* placeholder.pvr */,
@@ -1395,6 +1401,7 @@
 				7EE48211168371460006E99B /* MainStoryboard_iPad.storyboard in Resources */,
 				18D1D35D194A057200FAA1B9 /* route_simulation_animation_example in Resources */,
 				E0F9926C1A3090C900CBFA18 /* mesh_example in Resources */,
+				56EADA911C3A881B00947A79 /* DejaVuSansBold_0.png in Resources */,
 				18D1D35E194A057200FAA1B9 /* route_simulation_example in Resources */,
 				E096AE1A19F670F100C3D04A /* Images.xcassets in Resources */,
 				18D1D35C194A057200FAA1B9 /* pod_animation_example in Resources */,
@@ -1404,6 +1411,7 @@
 				18D1D358194A057200FAA1B9 /* pin_over_model_example in Resources */,
 				18D1D35B194A057200FAA1B9 /* placeholder.pvr in Resources */,
 				18D1D357194A057200FAA1B9 /* load_model_example in Resources */,
+				56EADA921C3A881B00947A79 /* DejaVuSansBold.fnt in Resources */,
 				18D1D355194A057200FAA1B9 /* FrankBold50_A8_icons.fnt in Resources */,
 				E096AE1C19F6713300C3D04A /* SplashScreen-1024x768.png in Resources */,
 				18D1D354194A057200FAA1B9 /* FrankBold50_A8_icons_0.png in Resources */,
