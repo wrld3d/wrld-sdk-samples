@@ -23,7 +23,7 @@ EnvironmentNotifierExample::EnvironmentNotifierExample(Eegeo::DebugRendering::De
 
 void EnvironmentNotifierExample::Start()
 {
-	m_pObserver = new EnvironmentNotifierExampleTerrainStreamObserver(m_spheres, m_debugRenderer);
+	m_pObserver = new EnvironmentNotifierExampleTerrainStreamObserver(m_spheres);
 	m_terrainStreaming.AddStreamingObserver(m_pObserver);
 }
 

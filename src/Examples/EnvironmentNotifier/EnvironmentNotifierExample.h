@@ -34,17 +34,16 @@ class EnvironmentNotifierExampleTerrainStreamObserver : public Eegeo::Streaming:
 {
 private:
 	TKeySphereMap& m_spheres;
-    Eegeo::DebugRendering::DebugRenderer& m_debugRenderer;
 
 	void AddSphere(const Eegeo::Streaming::MortonKey& key);
 public:
-	EnvironmentNotifierExampleTerrainStreamObserver(TKeySphereMap& spheres,
-                                                    Eegeo::DebugRendering::DebugRenderer& debugRenderer)
+	EnvironmentNotifierExampleTerrainStreamObserver(TKeySphereMap& spheres)
     : m_spheres(spheres)
-    , m_debugRenderer(debugRenderer)
 	{
 
 	}
+    
+    ~EnvironmentNotifierExampleTerrainStreamObserver() {}
 
 	void AddedStreamingResourceToSceneGraph(const Eegeo::Streaming::MortonKey& key);
 	void RemovedStreamingResourceFromSceneGraph(const Eegeo::Streaming::MortonKey& key);

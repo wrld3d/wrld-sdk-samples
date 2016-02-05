@@ -60,7 +60,6 @@ private:
 	Eegeo::Routes::Simulation::Camera::RouteSimulationGlobeCameraControllerFactory& m_routeSimulationGlobeCameraControllerFactory;
 	Eegeo::EegeoWorld& m_world;
     Eegeo::Rendering::SceneModels::SceneModelLoader& m_sceneModelLoader;
-    Eegeo::Rendering::Filters::SceneModelRenderableFilter& m_sceneModelRenderableFilter;
     
 	const IRouteSimulationExampleViewFactory& m_routeSimulationExampleViewFactory;
 	IRouteSimulationExampleView* m_pRouteSimulationView;
@@ -98,7 +97,6 @@ public:
 	                       Eegeo::Routes::Simulation::RouteSimulationService& routeSimulationService,
 	                       Eegeo::Routes::Simulation::View::RouteSimulationViewService& routeSimulationViewService,
 	                       Eegeo::Rendering::SceneModels::SceneModelLoader& sceneModelLoader,
-                           Eegeo::Rendering::Filters::SceneModelRenderableFilter& sceneModelRenderableFilter,
                            Eegeo::Camera::GlobeCamera::GlobeCameraController* pDefaultCameraController,
                            Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& defaultCameraTouchController,
 	                       Eegeo::Routes::Simulation::Camera::RouteSimulationGlobeCameraControllerFactory& routeSimulationGlobeCameraControllerFactory,

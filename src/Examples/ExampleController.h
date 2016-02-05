@@ -32,7 +32,6 @@ class ExampleController : private Eegeo::NonCopyable
 	UIActionHandler<ExampleController> m_nextExampleHandler;
 	UIActionHandler<ExampleController> m_previousExampleHandler;
     UIActionHandler<ExampleController> m_selectedExampleChangedHandler;
-    Examples::ScreenPropertiesProvider& m_screenPropertiesProvider;
 
 	void DestroyCurrentExample();
 
@@ -42,8 +41,7 @@ public:
 	ExampleController(Eegeo::EegeoWorld& world,
 	                  IExampleControllerView& view,
                       DefaultCameraControllerFactory& defaultCameraControllerFactory,
-                      Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController,
-                      Examples::ScreenPropertiesProvider& screenPropertiesProvider);
+                      Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController);
 
 	~ExampleController();
 

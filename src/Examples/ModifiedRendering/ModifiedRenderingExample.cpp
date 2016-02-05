@@ -23,9 +23,7 @@ using namespace Eegeo::Rendering;
 
 namespace Examples
 {
-ModifiedRenderingExample::ModifiedRenderingExample(Eegeo::Streaming::IStreamingVolume& visibleVolume,
-        Eegeo::Lighting::GlobalLighting& lighting,
-        Eegeo::Rendering::Scene::SceneElementRepository<Eegeo::Rendering::Renderables::PackedRenderable>& buildingRepository,
+ModifiedRenderingExample::ModifiedRenderingExample(Eegeo::Rendering::Scene::SceneElementRepository<Eegeo::Rendering::Renderables::PackedRenderable>& buildingRepository,
         Eegeo::Rendering::Filters::PackedRenderableFilter& buildingFilter,
         Eegeo::Rendering::RenderableFilters& renderableFilters,
         Eegeo::Rendering::Shaders::ShaderIdGenerator& shaderIdGenerator,
@@ -35,10 +33,8 @@ ModifiedRenderingExample::ModifiedRenderingExample(Eegeo::Streaming::IStreamingV
         Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
         Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController)
 	: GlobeCameraExampleBase(pCameraController, cameraTouchController)
-    , m_visibleVolume(visibleVolume)
 	,m_buildingRepository(buildingRepository)
 	,m_buildingFilter(buildingFilter)
-	,m_lighting(lighting)
 	,m_pCriteria(NULL)
 	,m_renderableFilters(renderableFilters)
 	,m_shaderIdGenerator(shaderIdGenerator)

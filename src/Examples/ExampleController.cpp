@@ -9,8 +9,7 @@ namespace Examples
 ExampleController::ExampleController(Eegeo::EegeoWorld& world,
                                      IExampleControllerView& view,
                                      DefaultCameraControllerFactory& defaultCameraControllerFactory,
-                                     Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController,
-                                     Examples::ScreenPropertiesProvider& screenPropertiesProvider)
+                                     Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController)
 	: m_world(world)
     , m_defaultCameraControllerFactory(defaultCameraControllerFactory)
     , m_globeCameraTouchController(globeCameraTouchController)
@@ -21,7 +20,6 @@ ExampleController::ExampleController(Eegeo::EegeoWorld& world,
 	, m_previousExampleHandler(this, &ExampleController::ActivatePrevious)
 	, m_selectedExampleChangedHandler(this, &ExampleController::UpdateSelectedExample)
 	, m_uiVisible(false)
-    , m_screenPropertiesProvider(screenPropertiesProvider)
 {
 	m_view.AddSelectNextExampleHandler(m_nextExampleHandler);
 	m_view.AddSelectPreviousExampleHandler(m_previousExampleHandler);

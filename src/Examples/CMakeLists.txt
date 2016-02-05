@@ -1,0 +1,57 @@
+set(headers ${headers} ../src/Examples
+)
+set(currsources
+  ../src/Examples/DefaultCameraControllerFactory.cpp
+  ../src/Examples/DefaultCameraControllerFactory.h
+  ../src/Examples/ExampleController.cpp
+  ../src/Examples/ExampleController.h
+  ../src/Examples/GlobeCameraExampleBase.cpp
+  ../src/Examples/GlobeCameraExampleBase.h
+  ../src/Examples/IExample.h
+  ../src/Examples/IExampleControllerView.h
+  ../src/Examples/IExampleFactory.h
+  ../src/Examples/ScreenPropertiesProvider.h
+)
+set(sources ${sources} ${currsources})
+source_group(\\src\\Examples FILES ${currsources})
+include(../src/Examples/BuildingHighlight/CMakeLists.txt)
+include(../src/Examples/BuildingSelection/CMakeLists.txt)
+include(../src/Examples/CameraSpline/CMakeLists.txt)
+include(../src/Examples/CameraTransition/CMakeLists.txt)
+include(../src/Examples/ControlCityThemes/CMakeLists.txt)
+include(../src/Examples/Data/CMakeLists.txt)
+include(../src/Examples/DebugPrimitiveRendering/CMakeLists.txt)
+include(../src/Examples/DynamicText3D/CMakeLists.txt)
+include(../src/Examples/EnvironmentFlattening/CMakeLists.txt)
+include(../src/Examples/EnvironmentNotifier/CMakeLists.txt)
+include(../src/Examples/EnvironmentRayCaster/CMakeLists.txt)
+include(../src/Examples/FileIO/CMakeLists.txt)
+include(../src/Examples/Fireworks/CMakeLists.txt)
+include(../src/Examples/Geofencing/CMakeLists.txt)
+include(../src/Examples/Heatmap/CMakeLists.txt)
+include(../src/Examples/LoadModel/CMakeLists.txt)
+include(../src/Examples/Mesh/CMakeLists.txt)
+include(../src/Examples/ModifiedRendering/CMakeLists.txt)
+include(../src/Examples/NavigationGraph/CMakeLists.txt)
+include(../src/Examples/Pick3DObject/CMakeLists.txt)
+include(../src/Examples/PinOverModel/CMakeLists.txt)
+include(../src/Examples/Pins/CMakeLists.txt)
+include(../src/Examples/PODAnimation/CMakeLists.txt)
+include(../src/Examples/PolyChart/CMakeLists.txt)
+include(../src/Examples/ReadHeading/CMakeLists.txt)
+include(../src/Examples/RemoveMapLayer/CMakeLists.txt)
+include(../src/Examples/RenderToTexture/CMakeLists.txt)
+include(../src/Examples/ResourceSpatialQuery/CMakeLists.txt)
+include(../src/Examples/RouteDrawing/CMakeLists.txt)
+include(../src/Examples/RouteMatching/CMakeLists.txt)
+include(../src/Examples/RouteSimulation/CMakeLists.txt)
+include(../src/Examples/RouteSimulationAnimation/CMakeLists.txt)
+include(../src/Examples/RouteThicknessPolicy/CMakeLists.txt)
+include(../src/Examples/ScreenPick/CMakeLists.txt)
+include(../src/Examples/ScreenUnproject/CMakeLists.txt)
+include(../src/Examples/SingleCity/CMakeLists.txt)
+include(../src/Examples/StencilArea/CMakeLists.txt)
+include(../src/Examples/ToggleTraffic/CMakeLists.txt)
+include(../src/Examples/TrafficCongestion/CMakeLists.txt)
+include(../src/Examples/UI/CMakeLists.txt)
+include(../src/Examples/WebRequest/CMakeLists.txt)

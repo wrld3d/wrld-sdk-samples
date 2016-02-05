@@ -88,8 +88,6 @@ private:
 
 	MyPoolFilterCriteria* m_pCriteria;
 
-	Eegeo::Lighting::GlobalLighting& m_lighting;
-	Eegeo::Streaming::IStreamingVolume& m_visibleVolume;
 	Eegeo::Rendering::Scene::SceneElementRepository<Eegeo::Rendering::Renderables::PackedRenderable>& m_buildingRepository;
 	Eegeo::Rendering::Filters::PackedRenderableFilter& m_buildingFilter;
 	Eegeo::Rendering::RenderableFilters& m_renderableFilters;
@@ -104,16 +102,12 @@ private:
 	typedef std::map<TSceneElementPtr, MyRenderable*> TSceneElementToRenderablePtrMap;
 	TSceneElementToRenderablePtrMap m_alternativeRenderables;
 
-	int m_counter;
-
 	bool IsToBeReplacedWithAlternative(const TSceneElement* pSceneElement)  const;
     void AddAlternativeRenderable(TSceneElement& sceneElement);
     void PopulateAlternativeRenderablesFromInitialSceneGraph();
 
 public:
-	ModifiedRenderingExample(Eegeo::Streaming::IStreamingVolume& visibleVolume,
-	                         Eegeo::Lighting::GlobalLighting& lighting,
-	                         Eegeo::Rendering::Scene::SceneElementRepository<Eegeo::Rendering::Renderables::PackedRenderable>& buildingRepository,
+	ModifiedRenderingExample(Eegeo::Rendering::Scene::SceneElementRepository<Eegeo::Rendering::Renderables::PackedRenderable>& buildingRepository,
 	                         Eegeo::Rendering::Filters::PackedRenderableFilter& buildingFilter,
 	                         Eegeo::Rendering::RenderableFilters& renderableFilters,
 	                         Eegeo::Rendering::Shaders::ShaderIdGenerator& shaderIdGenerator,

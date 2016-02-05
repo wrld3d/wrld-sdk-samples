@@ -53,7 +53,6 @@ IExample* RouteSimulationExampleFactory::CreateExample() const
 	        routesModule.GetRouteSimulationService(),
 	        routesModule.GetRouteSimulationViewService(),
             sceneModelsModule.GetLocalModelLoader(),
-            sceneModelsModule.GetSceneModelRenderableFilter(),
 	        m_defaultCameraControllerFactory.Create(),
             m_globeCameraTouchController,
 	        *m_pRouteSimulationGlobeCameraControllerFactory,

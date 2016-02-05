@@ -36,7 +36,6 @@ private:
     
 	Eegeo::Routes::Simulation::Camera::RouteSimulationGlobeCameraControllerFactory& m_routeSimulationGlobeCameraControllerFactory;
 	Eegeo::EegeoWorld& m_world;
-	float m_modelAnimationSpeed;
 	bool m_initialised;
     Eegeo::Rendering::SceneModels::SceneModel* m_pModel;
     Eegeo::Rendering::SceneModels::SceneModelLoader& m_sceneModelLoader;

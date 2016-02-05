@@ -44,7 +44,6 @@ RouteSimulationExample::RouteSimulationExample(RouteService& routeService,
         RouteSimulationService& routeSimulationService,
         RouteSimulationViewService& routeSimulationViewService,
         Eegeo::Rendering::SceneModels::SceneModelLoader& sceneModelLoader,
-        Eegeo::Rendering::Filters::SceneModelRenderableFilter& sceneModelRenderableFilter,
         Eegeo::Camera::GlobeCamera::GlobeCameraController* pDefaultCameraController,
         Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& defaultCameraTouchController,
         RouteSimulationGlobeCameraControllerFactory& routeSimulationGlobeCameraControllerFactory,
@@ -58,7 +57,6 @@ RouteSimulationExample::RouteSimulationExample(RouteService& routeService,
 	,m_routeSimulationGlobeCameraControllerFactory(routeSimulationGlobeCameraControllerFactory)
 	,m_world(world)
     ,m_sceneModelLoader(sceneModelLoader)
-    ,m_sceneModelRenderableFilter(sceneModelRenderableFilter)
 	,m_initialised(false)
 	,m_pRoute(NULL)
 	,m_usingFollowCamera(false)

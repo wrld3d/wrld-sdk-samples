@@ -43,8 +43,11 @@ using namespace Eegeo::iOS;
 {
     m_pAppRunner->Pause();
     
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wnonnull"
     GLKView* glkView = static_cast<GLKView*>(self.view);
     glkView.context = nil;
+#pragma clang diagnostic pop
 }
 
 - (void)onResume

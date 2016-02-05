@@ -135,8 +135,7 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     m_pExampleController = new Examples::ExampleController(*m_pWorld,
                                                            view,
                                                            *m_pCameraControllerFactory,
-                                                           *m_pCameraTouchController,
-                                                           m_screenPropertiesProvider);
+                                                           *m_pCameraTouchController);
 
 	//register all generic examples
 

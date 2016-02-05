@@ -34,7 +34,7 @@ fi
 
 if [ "$p" == "ios" ]; then
    srcPackageName="sdk.package.ios"
-   includeDestination="./ios/Include"
+   includeDestination="./ios/Include/eegeo"
    sdkDestination="sdk.package"
 elif [ "$p" == "android" ]; then
    srcPackageName="sdk.package.android"
@@ -57,6 +57,10 @@ if [ $statuscode -ne 0 ] ; then
     echo "Failed to download sdk package ${baseUrl}${srcPackageName}" >&2
     exit $statuscode
 fi   
+
+if [ ! -d `dirname "$includeDestination"` ]; then
+    mkdir -p `dirname "$includeDestination"`
+fi
 
 tar -zxvf $destPackageName
 rm -f ./$destPackageName

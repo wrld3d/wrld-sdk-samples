@@ -25,15 +25,11 @@ ModifiedRenderingExampleFactory::ModifiedRenderingExampleFactory(Eegeo::EegeoWor
 
 IExample* ModifiedRenderingExampleFactory::CreateExample() const
 {
-    Eegeo::Modules::Map::MapModule& mapModule = m_world.GetMapModule();
-    Eegeo::Modules::Core::LightingModule& lightingModule = m_world.GetLightingModule();
     Eegeo::Modules::Map::Layers::BuildingModelModule& buildingModelModule = m_world.GetBuildingModelModule();
     Eegeo::Modules::Map::Layers::BuildingPresentationModule& buildingPresentationModule = m_world.GetBuildingPresentationModule();
     Eegeo::Modules::Core::RenderingModule& renderingModule = m_world.GetRenderingModule();
     
 	return new Examples::ModifiedRenderingExample(
-	        mapModule.GetStreamingVolume(),
-	        lightingModule.GetGlobalLighting(),
 	        buildingModelModule.GetBuildingSceneElementRepository(),
 	        buildingPresentationModule.GetBuildingRenderableFilter(),
 	        renderingModule.GetRenderableFilters(),
