@@ -1,6 +1,6 @@
 #!/bin/bash
 
-usage() { echo "Usage: $0 -p android|ios [-c]"; echo "  -p -> platform, ios or android (required)"; echo "  -c -> cpp11 support"; 1>&2; exit 1; }
+usage() { echo "Usage: $0 -p android|ios [-c]"; echo "  -p -> platform, ios or android (required)"; echo "  -c -> cpp03 support"; 1>&2; exit 1; }
 
 baseUrl="http://s3.amazonaws.com/eegeo-static/"
 srcPackageName="INVALID"
@@ -19,7 +19,7 @@ while getopts "p:c" o; do
             fi
             ;;
         c)
-            c="cpp11"
+            c="cpp03"
             ;;
         *)
             usage
@@ -42,10 +42,10 @@ elif [ "$p" == "android" ]; then
    sdkDestination="sdk.package.android"
 fi
 
-if [ "$c" == "cpp11" ]; then
-   srcPackageName="$srcPackageName.cpp11.tar.gz"
-else
+if [ "$c" == "cpp03" ]; then
    srcPackageName="$srcPackageName.tar.gz"
+else
+   srcPackageName="$srcPackageName.cpp11.tar.gz"
 fi
 
 echo "Updating $p platform..."
