@@ -5,19 +5,26 @@ Additional documentation available at http://www.eegeo.com/developers/documentat
 
 iOS
 ===
+> Requirements:  
+\- [Xcode](https://developer.apple.com/xcode/) (version tested: 7.2)  
+\- [CMake](https://cmake.org/) (>= 3.1.1)
 
 * Run ./update.platform.sh -p ios to get the latest platform libraries and headers.
-* The accompanying project has no code signing, so run in the simulator (or provide your own credentials).
+* Within the ios directory, create a build directory for your project
+* Navigate to your build directory and generate the project with CMake: `cmake -G Xcode ..`  
+This is an 'out of source' build - all of the objects and binaries will be built inside of this directory. The `..` denotes that we're generating from source in the parent (in this case 'ios') directory.
+* Open the SDKSamplesApp.xcodeproj that CMake has generated
 * The platform needs an API key to operate. Sign up at https://www.eegeo.com/developers/ to get your API key and introduce it into the following line in ViewController.mm : 
-	const std::string API_KEY "OBTAIN API_KEY FROM https://www.eegeo.com/developers/ AND INSERT IT HERE".
+  const std::string API_KEY "OBTAIN API_KEY FROM https://www.eegeo.com/developers/ AND INSERT IT HERE".
 * Scroll between the examples using the Next and Previous buttons; the current example name is displayed at the top of the screen.
 * To build at the command line, run ./build -p ios from the repository root.
 
 Android
 =======
-Note - In order to run, your version of Android Developer Tools must be >= 22.6
-In order to support 64-bit ABIs, you must be using Android NDK revision 10d or later:
-http://developer.android.com/tools/sdk/ndk/index.html#Revisions
+> Requirements:  
+\- [Eclipse IDE for Java Developers](https://eclipse.org/downloads/)   
+\- [Android Developer Tools](http://developer.android.com/tools/help/adt.html) (>= 22.6)  
+\- [Android NDK](http://developer.android.com/tools/sdk/ndk/index.html) (>= r10d)
 
 * Install the Android SDK and NDK
 * Run ./update.platform.sh -p android to get the latest platform libraries and headers.
@@ -28,8 +35,9 @@ http://developer.android.com/tools/sdk/ndk/index.html#Revisions
     * ADT -> Preferences -> Android -> NDK : Set NDK location to the root of your NDK directory
     * Select imported activity -> Android Tools : 'Add native support'
     * Select jni directory -> New folder -> Advanced -> Linked folder : mobile-sdk-harness/src
+    * Pass COMPILE_CPP_11=1 to ndk-build to build cpp11
 * The platform needs an API key to operate. Sign up at https://www.eegeo.com/developers/ to get your API key and introduce it into the following line in jni/main.cpp : 
-	const std::string API_KEY "OBTAIN API_KEY FROM https://www.eegeo.com/developers/ AND INSERT IT HERE"
+  const std::string API_KEY "OBTAIN API_KEY FROM https://www.eegeo.com/developers/ AND INSERT IT HERE"
 * Build and debug from within ADT Eclipse
 * build.sh can be used to generate the native library if you want to manually package the .apk
 * Scroll between the examples using the Next and Previous buttons, or select the example from the drop-down list; the current example name is displayed at the top of the screen. 
@@ -40,20 +48,12 @@ http://developer.android.com/tools/sdk/ndk/index.html#Revisions
        * Removing the APP_ABI line will build and package for the default armeabi architecture. The armeabi architecture is backwards-compatible with armeabi-v7a, but will not run on devices 64-bit Arm instruction sets.
        * For further information about supporting multiple architectures see: http://developer.android.com/google/play/publishing/multiple-apks.html
 
-iOS c++11 support
+C++03 Only Builds
 =================
-* ./update.platform.sh -p ios -c will fetch c++11/libc++ ABI compatible versions of the SDK for libc++
-* ./build -p ios -c from the command line will build targeting c++11 / libc++
-* An additional target in the XCode project file is provided for c++11 support: SDKSamplesAppCpp11
-
-android c++11 support
-=====================
-* Android c++11 support is EXPERIMENTAL due to the experimental nature of c++11 support in the NDK (see https://developer.android.com/tools/sdk/ndk/index.html & https://gcc.gnu.org/gcc-4.8/cxx0x_status.html)
-* Only tested against Android NDK version r10d - https://developer.android.com/tools/sdk/ndk/index.html
-* Only tested against gcc 4.9 & gnu libstd++ (see android/jni/Application.mk for how to target these)
-* ./update.platform.sh -p android -c will fetch c++11/gnu libstdc++ ABI compatible versions of the SDK
-* ./build -p android -c from the command line will build targeting c++11
-* Pass COMPILE_CPP_11=1 to ndk-build to build cpp11
+It's possible to build C++03 only versions of the application. To do this, you'll need to pull down a C\++03 version of the SDK.
+* `./update.platform.sh -p [ios|android] -c` will fetch c\++03/libc++ ABI compatible versions of the SDK for libc++
+* `./build -p [ios|android] -c` from the command line will build targeting c\++03 / libc++
+* For Android builds, omit the COMPILE_CPP_11=1 flag from your ndkbuild command
 
 Staying up to date
 ==================
