@@ -1,6 +1,6 @@
 #!/bin/sh
 
-usage() { echo "Usage: $0 -p android [-c]"; echo "  -p -> platform, ios or android (required)"; echo "  -c -> cpp11 support"; 1>&2; exit 1; }
+usage() { echo "Usage: $0 -p android [-c]"; echo "  -p -> platform, ios or android (required)"; echo "  -c -> cpp03 support"; 1>&2; exit 1; }
 
 projectPath=$(pwd)/./
 ndkbuild_arguments=""
@@ -14,7 +14,7 @@ while getopts "p:c" o; do
             fi
             ;;
         c)
-            c="cpp11"
+            c="cpp03"
             ;;
         *)
             usage
@@ -29,7 +29,7 @@ fi
 
 ndkbuild_arguments=""
 
-if [ "$c" == "cpp11" ]; then
+if [ "$c" != "cpp03" ]; then
     echo "Building for cpp11"
     # note the leading space. on windows, ndk-build.cmd seems to tokenise on spaces    
     ndkbuild_arguments=" COMPILE_CPP_11=1"
