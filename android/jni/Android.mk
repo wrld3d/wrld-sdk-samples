@@ -69,6 +69,7 @@ ifdef COMPILE_CPP_11
   LOCAL_CPPFLAGS += -DCOMPILE_CPP_11=1 -std=c++11
 else
   $(info Configured for C++0x)
+  LOCAL_CPPFLAGS += -std=c++0x
 endif
 
 os_name:=$(shell uname -s)
