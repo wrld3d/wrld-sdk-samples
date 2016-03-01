@@ -53,7 +53,7 @@ C++03 Only Builds
 It's possible to build C++03 only versions of the application. To do this, you'll need to pull down a C\++03 version of the SDK.
 * `./update.platform.sh -p [ios|android] -c` will fetch c\++03/libc++ ABI compatible versions of the SDK for libc++
 * `./build -p [ios|android] -c` from the command line will build targeting c\++03 / libc++
-* For Android builds, omit the COMPILE_CPP_11=1 flag from your ndkbuild command
+* For Android builds, add `COMPILE_CPP_03=1` to your ndkbuild command
 * For CMake builds, add `DCOMPILE_CPP_03=1` to your cmake command. e.g. `cmake -G Xcode -DCOMPILE_CPP_03=1 ..`
 
 Staying up to date
