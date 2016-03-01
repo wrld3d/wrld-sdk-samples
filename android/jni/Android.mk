@@ -66,6 +66,7 @@ LOCAL_STATIC_LIBRARIES := eegeo-sdk-lib png-lib curl-lib uv-lib ssl-lib crypto-l
 
 ifdef COMPILE_CPP_03
   $(info Configured for C++0x)
+  LOCAL_CPPFLAGS += -std=c++0x
 else
   $(info Configured for C++11)
   LOCAL_CPPFLAGS += -DCOMPILE_CPP_11=1 -std=c++11
