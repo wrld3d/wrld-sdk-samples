@@ -29,7 +29,7 @@ When running the application, you can use the "Next" and "Previous" buttons to c
 
 There are 39 examples, each demonstrating a different feature of the SDK. You can find the source for them in the [src/Examples](https://github.com/eegeo/mobile-sdk-harness/tree/master/src/Examples) directory.
 
-For a demonstration of a complete application, the [eeGeo Example App](https://github.com/eegeo/mobile-example-app) demonstrates a variety of SDK features and is a good starting point to learn how the SDK works.
+For a demonstration of a complete application, see the [eeGeo Example App](https://github.com/eegeo/mobile-example-app). It displays a variety of SDK features and is a good starting point to learn how the SDK works.
 
 ## SDK Documentation
 
