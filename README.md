@@ -8,7 +8,7 @@
 * [SDK Examples](#sdk-examples)
 * [SDK Documentation](#sdk-documentation)
 * [Support](#support)
-* [License](#support)
+* [License](#license)
 
 The [eeGeo SDK](http://www.eegeo.com/developers/) is a cross-platform, OpenGL-based library for [beautiful and customisable 3D maps](http://www.eegeo.com).
 
@@ -16,7 +16,9 @@ This repository demonstrates a selection of individual features of the eeGeo SDK
 
 ## Getting Started
 
-See the links below for instructions for getting started on each platform.
+First, clone the repo: `git clone git@github.com:eegeo/mobile-sdk-harness.git`.
+
+Then see the links below for instructions for getting started on each platform.
 
 Platform            | Languages
 --------------------|-----------------
