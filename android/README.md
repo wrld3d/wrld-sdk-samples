@@ -2,7 +2,7 @@
     <img src="http://cdn2.eegeo.com/wp-content/uploads/2016/03/eegeo_logo_quite_big.png" alt="eeGeo Logo" title="eegeo" align="right" height="80px" />
 </a>
 
-# eeGeo Android Examples
+# eeGeo Android Samples
 
 ## Requirements
 
@@ -14,7 +14,7 @@
 
 In order to use the eeGeo 3D Maps SDK, you must sign up for a free developer account at https://www.eegeo.com/developers. After signing up, you'll be able to create an [API key](https://www.eegeo.com/developers/apikeys) for your apps.
 
-To run these examples, you must then place the API key in the [main.cpp](https://github.com/eegeo/mobile-sdk-harness/blob/master/android/jni/main.cpp#L15) file.
+To run these samples, you must then place the API key in the [main.cpp](https://github.com/eegeo/eegeo-sdk-samples/blob/master/android/jni/main.cpp#L15) file.
 
 ## Setup
 
@@ -50,7 +50,7 @@ The following steps will guide you through installing and setting up the Android
 3.  Go to `Eclipse > Preferences`, find `NDK Location` under `Android > NDK` and set it to wherever you installed the NDK to.
 4.  Right-click on the Package Explorer sidebar and choose `Import...`
 5.  Select `Android > Existing Android Code Into Workspace`
-6.  Select the `android` folder in the Example App and click `Finish`
+6.  Select the `android` folder in the repo and click `Finish`
 7.  Right click the project, and select `Android Tools > Add Native Support...`
 8.  To speed up compile times, see [this section below](#speeding-up-build-times) for compiling with multiple threads.
 9.	Ensure that you have set an eeGeo API key [as described above](#eegeo-api-key).
@@ -89,5 +89,5 @@ This will disable optimizations and generate debug symbols. See the [NDK documen
 2.  Reducing the number of architectures:
     
     -   By default, the project is compiled for three different architectures: **armeabi**, **armeabi-v7a**, and **arm64-v8a**.
-    -   If you do not need all of these, or you wish to quickly test on a single architecture, you can remove some of them from [this line in Application.mk](https://github.com/eegeo/mobile-sdk-harness/blob/master/android/jni/Application.mk#L4).
+    -   If you do not need all of these, or you wish to quickly test on a single architecture, you can remove some of them from [this line in Application.mk](https://github.com/eegeo/eegeo-sdk-samples/blob/master/android/jni/Application.mk#L4).
     -   For example: `APP_ABI := armeabi`

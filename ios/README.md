@@ -2,7 +2,7 @@
     <img src="http://cdn2.eegeo.com/wp-content/uploads/2016/03/eegeo_logo_quite_big.png" alt="eeGeo Logo" title="eegeo" align="right" height="80px" />
 </a>
 
-# eeGeo iOS Examples
+# eeGeo iOS Samples
 
 ## Requirements
 
@@ -13,7 +13,7 @@
 
 In order to use the eeGeo 3D Maps SDK, you must sign up for a free developer account at https://www.eegeo.com/developers. After signing up, you'll be able to create an [API key](https://www.eegeo.com/developers/apikeys) for your apps.
 
-To run these examples, you must then place the API key in the [ViewController.mm](https://github.com/eegeo/mobile-sdk-harness/blob/master/ios/ios_src/ViewController.mm#L6) file.
+To run these samples, you must then place the API key in the [ViewController.mm](https://github.com/eegeo/eegeo-sdk-samples/blob/master/ios/ios_src/ViewController.mm#L6) file.
 
 ## Setup
 
