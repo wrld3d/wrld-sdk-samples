@@ -34,7 +34,7 @@ RouteThicknessPolicyExample::RouteThicknessPolicyExample(RouteService& routeServ
 
 	pCameraController->SetView(cameraInterestBasis, 1374.298706f);
     
-    m_linearAltitudeBasedRouteThicknessPolicy.SetScaleFactor(5.0f);
+    m_linearAltitudeBasedRouteThicknessPolicy.SetScaleFactor(1.0f);
 }
 
 void RouteThicknessPolicyExample::Update(float dt)
