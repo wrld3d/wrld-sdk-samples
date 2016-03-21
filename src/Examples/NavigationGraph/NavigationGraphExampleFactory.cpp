@@ -3,6 +3,7 @@
 #include "NavigationGraphExampleFactory.h"
 #include "NavigationGraphExample.h"
 #include "DefaultCameraControllerFactory.h"
+#include "StreamingModule.h"
 #include "TransportModelModule.h"
 
 namespace Examples
@@ -24,7 +25,8 @@ IExample* NavigationGraphExampleFactory::CreateExample() const
     
 	return new Examples::NavigationGraphExample(transportModelModule.GetRoadNavigationGraphRepository(),
                                                 m_defaultCameraControllerFactory.Create(),
-                                                m_globeCameraTouchController);
+                                                m_globeCameraTouchController,
+                                                m_world.GetStreamingModule().GetStreamingController());
 }
 
 std::string NavigationGraphExampleFactory::ExampleName() const

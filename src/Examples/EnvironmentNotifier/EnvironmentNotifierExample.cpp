@@ -2,7 +2,7 @@
 
 #include "EnvironmentNotifierExample.h"
 #include "CubeMapCellInfo.h"
-
+#include "StreamingController.h"
 #include "DebugRenderer.h"
 
 #define SPHERE_HEIGHT_ABOVE_SEA 10.0
@@ -13,11 +13,13 @@ namespace Examples
 EnvironmentNotifierExample::EnvironmentNotifierExample(Eegeo::DebugRendering::DebugRenderer& debugRenderer,
                                                        Eegeo::Resources::Terrain::TerrainStreaming& terrainStreaming,
                                                        Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
-                        Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController)
+                                                       Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController,
+                                                       Eegeo::Streaming::StreamingController& streamingController)
     : GlobeCameraExampleBase(pCameraController, cameraTouchController)
 	, m_terrainStreaming(terrainStreaming)
 	, m_pObserver(NULL)
     , m_debugRenderer(debugRenderer)
+    , m_streamingController(streamingController)
 {
 }
 
@@ -25,6 +27,7 @@ void EnvironmentNotifierExample::Start()
 {
 	m_pObserver = new EnvironmentNotifierExampleTerrainStreamObserver(m_spheres);
 	m_terrainStreaming.AddStreamingObserver(m_pObserver);
+    m_streamingController.evictAllOnNextUpdate();
 }
 
 void EnvironmentNotifierExample::Suspend()

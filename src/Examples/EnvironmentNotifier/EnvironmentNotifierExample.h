@@ -55,6 +55,7 @@ private:
 	Eegeo::Resources::Terrain::TerrainStreaming& m_terrainStreaming;
 	EnvironmentNotifierExampleTerrainStreamObserver* m_pObserver;
     Eegeo::DebugRendering::DebugRenderer& m_debugRenderer;
+    Eegeo::Streaming::StreamingController& m_streamingController;
 
 	TKeySphereMap m_spheres;
 
@@ -63,7 +64,8 @@ public:
 	EnvironmentNotifierExample(Eegeo::DebugRendering::DebugRenderer& debugRenderer,
 	                           Eegeo::Resources::Terrain::TerrainStreaming& terrainStreaming,
 	                           Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
-                        Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController);
+                               Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController,
+                               Eegeo::Streaming::StreamingController& streamingController);
 
 	static std::string GetName()
 	{

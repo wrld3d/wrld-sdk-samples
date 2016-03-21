@@ -14,65 +14,67 @@
 
 namespace Examples
 {
-class NavigationGraphExample : public GlobeCameraExampleBase
-{
-private:
-	typedef std::map<const Eegeo::Resources::Roads::Navigation::NavigationGraph*, Eegeo::DebugRendering::DebugRenderable*> MapType;
-
-	struct Added : public Eegeo::Resources::Roads::Navigation::INavigationGraphAddedCallback
-	{
-		Added(NavigationGraphExample& example):m_example(example) {}
-		void operator()(const Eegeo::Resources::Roads::Navigation::NavigationGraph& navGraph)
-		{
-			m_example.HandleAddedGraph(navGraph);
-		}
+    class NavigationGraphExample : public GlobeCameraExampleBase
+    {
     private:
-        NavigationGraphExample& m_example;
-	};
-
-	struct Removed : public Eegeo::Resources::Roads::Navigation::INavigationGraphRemovalCallback
-	{
-		Removed(NavigationGraphExample& example):m_example(example) {}
-		void operator()(const Eegeo::Resources::Roads::Navigation::NavigationGraph& navGraph)
-		{
-			m_example.HandleRemovedGraph(navGraph);
-		}
-    private:
-        NavigationGraphExample& m_example;
-	};
-
-
-	void HandleAddedGraph(const Eegeo::Resources::Roads::Navigation::NavigationGraph& navGraph);
-	void HandleRemovedGraph(const Eegeo::Resources::Roads::Navigation::NavigationGraph& navGraph);
-
-    
-	Eegeo::Resources::Roads::Navigation::NavigationGraphRepository& m_navigationGraphRepository;
-
-	Added m_addedHandler;
-	Removed m_removedHandler;
-	MapType m_navGraphsToVisualisers;
-
-public:
-	NavigationGraphExample(Eegeo::Resources::Roads::Navigation::NavigationGraphRepository& navigationGraphRepository,
-	                       Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
-                        Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController);
-
-	static std::string GetName()
-	{
-		return "NavigationGraphExample";
-	}
-	std::string Name() const
-	{
-		return GetName();
-	}
-    
-	void Start();
-	void Update(float dt) {}
-	void Draw();
-	void Suspend();
-    
-    
-};
+        typedef std::map<const Eegeo::Resources::Roads::Navigation::NavigationGraph*, Eegeo::DebugRendering::DebugRenderable*> MapType;
+        
+        struct Added : public Eegeo::Resources::Roads::Navigation::INavigationGraphAddedCallback
+        {
+            Added(NavigationGraphExample& example):m_example(example) {}
+            void operator()(const Eegeo::Resources::Roads::Navigation::NavigationGraph& navGraph)
+            {
+                m_example.HandleAddedGraph(navGraph);
+            }
+        private:
+            NavigationGraphExample& m_example;
+        };
+        
+        struct Removed : public Eegeo::Resources::Roads::Navigation::INavigationGraphRemovalCallback
+        {
+            Removed(NavigationGraphExample& example):m_example(example) {}
+            void operator()(const Eegeo::Resources::Roads::Navigation::NavigationGraph& navGraph)
+            {
+                m_example.HandleRemovedGraph(navGraph);
+            }
+        private:
+            NavigationGraphExample& m_example;
+        };
+        
+        
+        void HandleAddedGraph(const Eegeo::Resources::Roads::Navigation::NavigationGraph& navGraph);
+        void HandleRemovedGraph(const Eegeo::Resources::Roads::Navigation::NavigationGraph& navGraph);
+        
+        
+        Eegeo::Resources::Roads::Navigation::NavigationGraphRepository& m_navigationGraphRepository;
+        Eegeo::Streaming::StreamingController& m_streamingController;
+        
+        Added m_addedHandler;
+        Removed m_removedHandler;
+        MapType m_navGraphsToVisualisers;
+        
+    public:
+        NavigationGraphExample(Eegeo::Resources::Roads::Navigation::NavigationGraphRepository& navigationGraphRepository,
+                               Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
+                               Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController,
+                               Eegeo::Streaming::StreamingController& streamingController);
+        
+        static std::string GetName()
+        {
+            return "NavigationGraphExample";
+        }
+        std::string Name() const
+        {
+            return GetName();
+        }
+        
+        void Start();
+        void Update(float dt) {}
+        void Draw();
+        void Suspend();
+        
+        
+    };
 }
 
 
