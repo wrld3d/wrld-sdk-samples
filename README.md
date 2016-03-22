@@ -20,10 +20,10 @@ This repository demonstrates a selection of individual features of the eeGeo SDK
 2.  Obtain an [eeGeo API key](https://www.eegeo.com/developers/apikeys) and place it in the [ApiKey.h](https://github.com/eegeo/eegeo-sdk-samples/blob/master/src/Examples/ApiKey.h#L10) file.
 3.  See table below to see detailed instructions for building the app.
 
-Platform                                | Languages
-----------------------------------------|-----------------
-[Getting started on Android](/android)  | C++, Java
-[Getting started on iOS](/ios)          | C++, Objective-C
+Platform                                		| Languages
+------------------------------------------------|-----------------
+[Getting started on Android](/android#readme) 	| C++, Java
+[Getting started on iOS](/ios#readme)           | C++, Objective-C
 
 ### eeGeo API Key 
 
