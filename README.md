@@ -4,15 +4,19 @@
 
 # eeGeo SDK Samples
 
+* [Support](#support)
 * [Getting Started](#getting-started)
 * [SDK Samples](#sdk-samples)
 * [SDK Documentation](#sdk-documentation)
-* [Support](#support)
 * [License](#license)
 
 The [eeGeo SDK](http://www.eegeo.com/developers/) is a cross-platform, OpenGL-based library for [beautiful and customisable 3D maps](http://www.eegeo.com).
 
 This repository demonstrates a selection of individual features of the eeGeo SDK on both iOS and Android.
+
+## Support
+
+If you have any questions, bug reports, or feature requests, feel free to submit to the [issue tracker](https://github.com/eegeo/eegeo-sdk-samples/issues) for this repository.
 
 ## Getting Started
 
@@ -44,10 +48,6 @@ For a demonstration of a complete application, see the [eeGeo Example App](https
 ## SDK Documentation
 
 See the [eeGeo API reference](http://cdn1.eegeo.com/docs/mobile-sdk/namespaces.html) for documentation on the individual SDK types.
-
-## Support
-
-If you have any questions, bug reports, or feature requests, feel free to submit to the [issue tracker](https://github.com/eegeo/eegeo-sdk-samples/issues) for this repository. Alternatively, you can contact us at [support@eegeo.com](mailto:support@eegeo.com).
 
 ## License
 
