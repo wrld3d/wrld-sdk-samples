@@ -16,20 +16,28 @@ This repository demonstrates a selection of individual features of the eeGeo SDK
 
 ## Getting Started
 
-First, clone the repo: `git clone git@github.com:eegeo/eegeo-sdk-samples.git`.
+1.  Clone this repo: `git clone https://github.com/eegeo/eegeo-sdk-samples.git`
+2.  Obtain an [eeGeo API key](https://www.eegeo.com/developers/apikeys) and place it in the [ApiKey.h](https://github.com/eegeo/eegeo-sdk-samples/blob/master/src/Examples/ApiKey.h#L10) file.
+3.  See table below to see detailed instructions for building the app.
 
-Then see the links below for instructions for getting started on each platform.
+Platform                                | Languages
+----------------------------------------|-----------------
+[Getting started on Android](/android)  | C++, Java
+[Getting started on iOS](/ios)          | C++, Objective-C
 
-Platform            | Languages
---------------------|-----------------
-[Android](/android) | C++, Java
-[iOS](/ios)         | C++, Objective-C
+### eeGeo API Key 
+
+In order to use the eeGeo 3D Maps SDK, you must sign up for a free developer account at https://www.eegeo.com/developers. After signing up, you'll be able to create an [API key](https://www.eegeo.com/developers/apikeys) for your apps. 
+
+To run this example app, you must place the API key in the [ApiKey.h](https://github.com/eegeo/eegeo-sdk-samples/blob/master/src/Examples/ApiKey.h#L10) file.
+
+If you are creating a new app, or integrating eeGeo 3D Maps into an existing app, the API key should be passed as the first argument to the constructor of [EegeoWorld](http://cdn1.eegeo.com/docs/mobile-sdk/class_eegeo_1_1_eegeo_world.html).
 
 ## SDK Samples
 
 When running the application, you can use the "Next" and "Previous" buttons to cycle through the samples, or tap the name of the example to open a drop-down menu.
 
-There are 39 samples, each demonstrating a different feature of the SDK. You can find the source for them in the [src/Examples](https://github.com/eegeo/eegeo-sdk-samples/tree/master/src/Examples) directory.
+Each example demonstrates a different feature of the SDK. You can find the source for them all in the [src/Examples](https://github.com/eegeo/eegeo-sdk-samples/tree/master/src/Examples) directory.
 
 For a demonstration of a complete application, see the [eeGeo Example App](https://github.com/eegeo/eegeo-example-app). It displays a variety of SDK features and is a good starting point to learn how the SDK works.
 

@@ -3,6 +3,7 @@
 #include <jni.h>
 #include "AppRunner.h"
 #include "main.h"
+#include "ApiKey.h"
 #include <android/native_window.h>
 #include <android/native_window_jni.h>
 #include <android/asset_manager.h>
@@ -11,8 +12,6 @@
 
 using namespace Eegeo::Android;
 using namespace Eegeo::Android::Input;
-
-const std::string ApiKey = "OBTAIN API_KEY FROM https://www.eegeo.com/developers/ AND INSERT IT HERE";
 
 AndroidNativeState g_nativeState;
 AppRunner* g_pAppRunner;
@@ -68,7 +67,7 @@ JNIEXPORT long JNICALL Java_com_eegeo_mobilesdkharness_NativeJniCalls_createNati
 	g_nativeState.assetManagerGlobalRef = jenv->NewGlobalRef(assetManager);
 	g_nativeState.assetManager = AAssetManager_fromJava(jenv, g_nativeState.assetManagerGlobalRef);
 
-	g_pAppRunner = Eegeo_NEW(AppRunner)(ApiKey, &g_nativeState);
+	g_pAppRunner = Eegeo_NEW(AppRunner)(Examples::ApiKey, &g_nativeState);
 
 	return ((long)g_pAppRunner);
 }

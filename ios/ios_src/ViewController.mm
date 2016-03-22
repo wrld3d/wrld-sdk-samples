@@ -2,8 +2,7 @@
 
 #include "ViewController.h"
 #include "AppLocationDelegate.h"
-
-const std::string ApiKey = "OBTAIN API_KEY FROM https://www.eegeo.com/developers/ AND INSERT IT HERE";
+#include "ApiKey.h"
 
 using namespace Eegeo::iOS;
 
@@ -26,7 +25,7 @@ using namespace Eegeo::iOS;
 	m_previousTimestamp = CFAbsoluteTimeGetCurrent();
 	self.preferredFramesPerSecond = 60;
     
-    m_pAppRunner = new AppRunner(ApiKey, *self);
+    m_pAppRunner = new AppRunner(Examples::ApiKey, *self);
     
     if ([self respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)]) {
         // iOS 7>=

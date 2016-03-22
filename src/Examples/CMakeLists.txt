@@ -1,6 +1,7 @@
 set(headers ${headers} ../src/Examples
 )
 set(currsources
+  ../src/Examples/ApiKey.h
   ../src/Examples/DefaultCameraControllerFactory.cpp
   ../src/Examples/DefaultCameraControllerFactory.h
   ../src/Examples/ExampleController.cpp
