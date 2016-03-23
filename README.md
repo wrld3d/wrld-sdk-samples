@@ -4,6 +4,8 @@
 
 # eeGeo SDK Samples
 
+![eeGeo](http://cdn2.eegeo.com/wp-content/uploads/2016/03/readme-banner.jpg)
+
 * [Support](#support)
 * [Getting Started](#getting-started)
 * [SDK Samples](#sdk-samples)
