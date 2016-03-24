@@ -12,7 +12,17 @@
 * [SDK Documentation](#sdk-documentation)
 * [License](#license)
 
-The [eeGeo SDK](http://www.eegeo.com/developers/) is a cross-platform, OpenGL-based library for [beautiful and customisable 3D maps](http://www.eegeo.com).
+The [eeGeo SDK](http://www.eegeo.com/) is a cross-platform, OpenGL-based library for displaying beautiful, engaging 3D maps.
+
+### What does the eeGeo mapping platform have to offer?
+
+* Detailed 3D coverage for the whole of Canada, Great Britain, the United States, and more
+* Indoor maps in full 3D
+* Flexible themes, allowing you to change the style of your map
+* Customisable pins and markers
+* Support for custom 3D models and animation
+* Compatibility with iOS, Android, Windows, and OS X
+* Continuous deployment, meaning you get the latest features as they're developed
 
 This repository demonstrates a selection of individual features of the eeGeo SDK on both iOS and Android.
 
