@@ -46,7 +46,7 @@ The following steps will guide you through installing and setting up the Android
 3.  In the Add Repository dialog that appears, enter "ADT Plugin" for the Name, and enter `https://dl-ssl.google.com/android/eclipse/` for the Location.
 4.  Click `OK`.
 5.  In the Available Software dialog, select the checkbox next to "Developer Tools" and click `Next`.
-6.  You'll see a lit of the tools to be downloaded. Click `Next` again.
+6.  You'll see a list of the tools to be downloaded. Click `Next` again.
 7.  Read and accept the license agreements, then click `Finish`.
 8.  Once the installation is complete, restart Eclipse.
 
