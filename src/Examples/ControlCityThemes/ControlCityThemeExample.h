@@ -6,10 +6,12 @@
 #include "GlobeCameraExampleBase.h"
 #include "CityThemes.h"
 #include "CityThemeData.h"
+#include "ICityThemeChangedObserver.h"
 
 namespace Examples
 {
-class ControlCityThemeExample : public GlobeCameraExampleBase
+    
+class ControlCityThemeExample : public GlobeCameraExampleBase, public Eegeo::Resources::CityThemes::ICityThemeChangedObserver
 {
 private:
 	Eegeo::Resources::CityThemes::ICityThemesService& m_themeService;
@@ -17,6 +19,8 @@ private:
 	Eegeo::Resources::CityThemes::ICityThemesUpdater& m_themeUpdater;
 	Eegeo::EegeoWorld& m_eegeoWorld;
 	bool m_themeChanged;
+    bool m_hasStreamedTheme;
+    
 	Eegeo::Resources::CityThemes::CityThemeData m_initialCityTheme;
 
 	void ChangeTheme();
@@ -29,6 +33,9 @@ public:
 	                        Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
                         Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController);
 
+    
+    ~ControlCityThemeExample();
+    
 	static std::string GetName()
 	{
 		return "ControlCityThemeExample";
@@ -38,12 +45,13 @@ public:
 		return GetName();
 	}
 
-	void Start() {}
+    void Start();
 	void Update(float dt);
 	void Draw() {}
 	void Suspend();
     
-    
+    void OnThemeRequested(const Eegeo::Resources::CityThemes::CityThemeData& newTheme){};
+    void OnThemeChanged(const Eegeo::Resources::CityThemes::CityThemeData& newTheme);
 };
 }
 

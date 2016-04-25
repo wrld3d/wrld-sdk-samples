@@ -56,8 +56,15 @@ namespace Examples
 	,m_eegeoWorld(eegeoWorld)
 	,m_themeChanged(false)
 	,m_initialCityTheme(themeService.GetCurrentTheme())
+    , m_hasStreamedTheme(false)
 {
+    m_themeService.RegisterThemeChangedObserver(*this);
 }
+    
+    ControlCityThemeExample::~ControlCityThemeExample()
+    {
+        m_themeService.UnregisterThemeChangedObserver(*this);
+    }
 
 void ControlCityThemeExample::Suspend()
 {
@@ -113,12 +120,18 @@ void ControlCityThemeExample::FindThemeByPointInPolygon()
 	EXAMPLE_LOG("No theme found that contains the Osaka point\n");
 }
 
+    void ControlCityThemeExample::Start()
+    {
+        m_hasStreamedTheme = !m_initialCityTheme.IsEmbeddedTheme;
+    }
+    
 void ControlCityThemeExample::Update(float dt)
 {
 	if (!m_themeChanged)
 	{
 		// This is required so that the theme manifest can be downloaded. Changing theme before EegeoWorld is Initialised will result in ICityThemeRepository being empty.
-		if (!m_eegeoWorld.Initialising())
+        
+		if (!m_eegeoWorld.Initialising() && m_hasStreamedTheme)
 		{
 			ChangeTheme();
 			FindThemeByPointInPolygon();
@@ -127,4 +140,8 @@ void ControlCityThemeExample::Update(float dt)
 	}
 }
 
+    void ControlCityThemeExample::OnThemeChanged(const Eegeo::Resources::CityThemes::CityThemeData& newTheme)
+    {
+        m_hasStreamedTheme = !newTheme.IsEmbeddedTheme;
+    }
 }
