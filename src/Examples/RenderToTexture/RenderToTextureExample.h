@@ -14,6 +14,7 @@ namespace Examples
     class RenderToTextureExample : public GlobeCameraExampleBase
     {
     private:
+        Eegeo::EegeoWorld& m_world;
         Eegeo::Rendering::VertexLayouts::VertexLayoutPool& m_vertexLayoutPool;
         Eegeo::Rendering::VertexLayouts::VertexBindingPool& m_vertexBindingPool;
         Eegeo::Rendering::Shaders::ShaderIdGenerator& m_shaderIdGenerator;
@@ -39,7 +40,8 @@ namespace Examples
         void HandleScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties);
         
     public:
-        RenderToTextureExample(Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
+        RenderToTextureExample(Eegeo::EegeoWorld& world,
+                               Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
                                Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController,
                                const Eegeo::Rendering::ScreenProperties& screenProperties,
                                Eegeo::Rendering::VertexLayouts::VertexLayoutPool& vertexLayoutPool,

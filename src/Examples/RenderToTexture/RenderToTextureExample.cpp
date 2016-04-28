@@ -17,13 +17,15 @@
 #include "Quad.h"
 #include "RenderToTextureExample.h"
 #include "ScreenProperties.h"
+#include "EegeoWorld.h"
 
 namespace Examples
 {
     //Give the effect a 10 frames per second intensity update to give it an old-timey movie vibe...
     const float RenderToTextureExample::SecondsBetweenEffectUpdates = 0.1f;
     
-    RenderToTextureExample::RenderToTextureExample(Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
+    RenderToTextureExample::RenderToTextureExample(Eegeo::EegeoWorld& world,
+                                                   Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
                                                    Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController,
                                                    const Eegeo::Rendering::ScreenProperties& screenProperties,
                                                    Eegeo::Rendering::VertexLayouts::VertexLayoutPool& vertexLayoutPool,
@@ -33,7 +35,8 @@ namespace Examples
                                                    Eegeo::Rendering::RenderableFilters& renderableFilters,
                                                    Eegeo::Rendering::GlBufferPool& glBufferPool)
     : GlobeCameraExampleBase(pCameraController, cameraTouchController)
-    , m_screenProperties(screenProperties)
+    ,m_world(world)
+    ,m_screenProperties(screenProperties)
     ,m_vertexLayoutPool(vertexLayoutPool)
     ,m_vertexBindingPool(vertexBindingPool)
     ,m_shaderIdGenerator(shaderIdGenerator)
@@ -127,8 +130,11 @@ namespace Examples
     
     void RenderToTextureExample::PreWorldDraw()
     {
-        // Before the world is rendered, we should switch to rendering into our texture...
-        m_pRenderTexture->BeginRendering();
+        if(m_world.Validated())
+        {
+            // Before the world is rendered, we should switch to rendering into our texture...
+            m_pRenderTexture->BeginRendering();
+        }
     }
     
     void RenderToTextureExample::Update(float dt)

@@ -23,7 +23,8 @@ namespace Examples
     {
         Eegeo::Modules::Core::RenderingModule& renderingModule = m_world.GetRenderingModule();
         
-        return new Examples::RenderToTextureExample(m_defaultCameraControllerFactory.Create(),
+        return new Examples::RenderToTextureExample(m_world,
+                                                    m_defaultCameraControllerFactory.Create(),
                                                     m_globeCameraTouchController,
                                                     m_screenPropertiesProvider.GetScreenProperties(),
                                                     renderingModule.GetVertexLayoutPool(),
