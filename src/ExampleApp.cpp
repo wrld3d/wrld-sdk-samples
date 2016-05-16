@@ -52,6 +52,7 @@
 #include "GeofenceExampleFactory.h"
 #include "BuildingSelectionExampleFactory.h"
 #include "RemoveMapLayerExampleFactory.h"
+#include "BillboardedSpriteExampleFactory.h"
 
 namespace
 {
@@ -138,7 +139,7 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
                                                            *m_pCameraTouchController);
 
 	//register all generic examples
-
+    m_pExampleController->RegisterCameraExample<Examples::BillboardedSpriteExampleFactory>();
     m_pExampleController->RegisterCameraExample<Examples::BuildingHighlightExampleFactory>();
     m_pExampleController->RegisterExample(Eegeo_NEW(Examples::BuildingSelectionExampleFactory)(World(),
                                                                                                *m_pCameraControllerFactory,

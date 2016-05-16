@@ -15,6 +15,7 @@ set(currsources
 )
 set(sources ${sources} ${currsources})
 source_group(\\src\\Examples FILES ${currsources})
+include(../src/Examples/BillboardedSprite/CMakeLists.txt)
 include(../src/Examples/BuildingHighlight/CMakeLists.txt)
 include(../src/Examples/BuildingSelection/CMakeLists.txt)
 include(../src/Examples/CameraSpline/CMakeLists.txt)
