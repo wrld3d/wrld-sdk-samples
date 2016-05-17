@@ -27,8 +27,6 @@ pushd app
 
 gradle assembleRelease
 
-popd
-
 resultcode=$?
 
 echo
@@ -37,5 +35,7 @@ if [ $resultcode = 0 ] ; then
 else
   echo "COMPILE ANDROID PROJECT FAILED"
 fi
+
+popd
 
 exit $resultcode
