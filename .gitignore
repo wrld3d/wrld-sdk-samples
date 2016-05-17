@@ -17,3 +17,4 @@ Include
 .settings/
 project.properties
 **/xcuserdata/
+.gradle

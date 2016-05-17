@@ -1,0 +1,98 @@
+apply plugin: 'com.android.model.application'
+apply from: "$rootDir/common-methods.gradle"
+
+model {
+    repositories {
+        libs(PrebuiltLibraries) {
+            eegeosdk {
+                binaries.withType(SharedLibraryBinary) {
+                    if (file("../../../android/libs/prebuilt/android-${targetPlatform.getName()}/libeegeo-sdk.so").exists()) {
+                        sharedLibraryFile = file("../../../android/libs/prebuilt/android-${targetPlatform.getName()}/libeegeo-sdk.so")
+                    }
+                }
+            }
+        }
+    }
+
+    android {
+        compileSdkVersion = 17
+        buildToolsVersion = "23.0.3"
+
+        defaultConfig.with {
+            applicationId = "com.eegeo.mobilesdkharness"
+            minSdkVersion.apiLevel      = 14
+            targetSdkVersion.apiLevel   = 15
+        }
+    }
+
+    android.ndk {
+        moduleName = "eegeo-sdk-samples"
+
+        ldLibs.addAll(["GLESv2", "EGL", "android", "log"])
+        platformVersion = 9
+        stl = "gnustl_static"
+
+        Set<String> includePaths = new HashSet<String>()
+        appendRecursiveHeaderPaths('../../libs/platform', includePaths)
+        appendRecursiveHeaderPaths('../../../src', includePaths)
+        appendRecursiveHeaderPaths('../src/main/jni', includePaths)
+
+        includePaths.add(file('../../../libs/rapidjson').absolutePath)
+
+        includePaths.each{ String path ->
+            String fullPath = new String("-I" + path)
+            cppFlags.add(fullPath)
+        }
+
+        cppFlags.add("-frtti")
+        cppFlags.add("-fexceptions")
+        cppFlags.add("-std=c++11")
+        cppFlags.add("-DCOMPILE_CPP_11=1")
+    }
+
+    android.sources {
+        main {
+            jni {
+                source {
+                    srcDirs '../../../src'
+                    srcDirs '../src/main/jni'
+                }
+
+                dependencies {
+                    library "eegeosdk"
+                }
+            }
+
+            jniLibs {
+                dependencies {
+                    library "eegeosdk"
+                }
+            }
+
+            java.source.srcDirs '../src/main/java'
+            assets.source.srcDirs '../src/main/assets'
+            res.source.srcDirs '../src/main/res'
+        }
+    }
+
+    android.buildTypes {
+        debug {
+            ndk.with {
+                debuggable = true
+            }
+
+            minifyEnabled = false
+            proguardFiles.add(file('proguard-rules.txt'))
+        }
+    }
+
+    android.productFlavors {
+        create("armeabi-v7a") {
+            ndk.abiFilters.add("armeabi-v7a")
+        }
+
+        create("armeabi") {
+            ndk.abiFilters.add("armeabi")
+        }
+    }
+}

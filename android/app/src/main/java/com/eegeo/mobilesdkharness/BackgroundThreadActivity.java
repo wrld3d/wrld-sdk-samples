@@ -20,6 +20,7 @@ public class BackgroundThreadActivity extends MainActivity
 	private Thread m_updater;
 
 	static {
+		System.loadLibrary("eegeo-sdk");
 		System.loadLibrary("eegeo-sdk-samples");
 	}
 	
