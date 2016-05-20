@@ -1,4 +1,5 @@
 set(resources ${resources}
+		Resources/billboarded_sprite_example
 		Resources/DejaVuSansBold.fnt
 		Resources/DejaVuSansBold_0.png
 		Resources/embedded_manifest.txt

@@ -52,6 +52,7 @@ void RouteDrawingExample::Update(float dt)
 		const Eegeo::v4 routeRed(1, 0, 0, 0.6f);
 		const Eegeo::v4 routeGreen(0, 1, 0, 0.6f);
 		const Eegeo::v4 routeBlue(0, 0, 1, 0.6f);
+        const Eegeo::v4 routeYellow(1, 1, 0, 0.6f);
 
 		//An arbitrarily selected altitude for the route visualisation.
 		const float altitudeMeters = 3.f;
@@ -149,6 +150,21 @@ void RouteDrawingExample::Update(float dt)
 		        .FinishRoute();
 
 		m_routes.push_back(m_routeService.CreateRoute(islandCircuitPoints, routeStyle, false));
+        
+        // this route crosses over the first route
+        std::vector<RouteVertex> fremontPoints = builder.Start(routeYellow, halfWidth, routeSpeedMetersPerSecond, Routes::Road)
+                .AddPoint(37.786786, -122.392086, altitudeMeters)
+                .AddPoint(37.788044, -122.393610, altitudeMeters)
+                .AddPoint(37.788579, -122.394260, altitudeMeters)
+                .AddPoint(37.789225, -122.395154, altitudeMeters)
+                .AddPoint(37.790449, -122.396722, altitudeMeters)
+                .AddPoint(37.791865, -122.398494, altitudeMeters)
+                .AddPoint(37.794652, -122.399060, altitudeMeters)
+                .AddPoint(37.795183, -122.399168, altitudeMeters)
+                .AddPoint(37.795513, -122.396825, altitudeMeters)
+                .FinishRoute();
+        
+        m_routes.push_back(m_routeService.CreateRoute(fremontPoints, routeStyle, false));
 
 		//We have created the routes so don't need to do so again.
 		m_createdRoutes = true;
