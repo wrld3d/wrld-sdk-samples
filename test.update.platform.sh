@@ -40,7 +40,7 @@ if [ "$p" == "ios" ]; then
    sdkDestination="sdk.package"
 elif [ "$p" == "android" ]; then
    srcPackageName="TEST_so.test.sdk.package.android.tar.gz"
-   includeDestination="./android/libs/eegeo"
+   includeDestination="./android/libs"
    sdkDestination="sdk.package.android"
 elif [ "$p" == "windows" ]; then
    srcPackageName="sdk.package.windows"
