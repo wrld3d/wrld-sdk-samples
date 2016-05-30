@@ -110,6 +110,7 @@ AppHost::AppHost(
 	customApplicationAssetDirectories.insert("pod_animation_example");
 	customApplicationAssetDirectories.insert("route_simulation_example");
 	customApplicationAssetDirectories.insert("route_simulation_animation_example");
+	customApplicationAssetDirectories.insert("billboarded_sprite_example");
 
 	m_pJpegLoader = new Eegeo::Helpers::Jpeg::JpegLoader();
 
