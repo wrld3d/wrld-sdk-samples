@@ -14,6 +14,8 @@
 * [Optional Steps](#optional-steps)
     * [Build for debugging](#build-for-debugging)
     * [Speeding up build times](#speeding-up-build-times)
+* [Troubleshooting](#troubleshooting)
+    * [Eclipse hangs adding native support](#eclipse-hangs-adding-native-support)
 
 Before you begin, ensure you have completed the initial steps as described in the [root of the repository](https://github.com/eegeo/eegeo-sdk-samples).
 
