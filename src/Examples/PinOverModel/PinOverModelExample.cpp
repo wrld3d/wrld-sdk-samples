@@ -9,6 +9,7 @@
 #include "RenderQueue.h"
 #include "NullMaterial.h"
 #include "NullMaterialFactory.h"
+#include "PinViewFactory.h"
 
 namespace Examples
 {
@@ -54,11 +55,12 @@ PinOverModelExample::PinOverModelExample(
 	int spriteWidthInMetres = 64;
 	int spriteHeightInMetres = 64;
 
-	// N.B. The implementation for PinModule is given in PinModule.h as a guide for Apps that
-	// require an alternate configuration of the various Pin related components.
+	Eegeo::Pins::PinViewFactory* pViewFactory = Eegeo_NEW(Eegeo::Pins::PinViewFactory)(spriteWidthInMetres, spriteHeightInMetres);
+
 	m_pPinsModule = Eegeo_NEW(Eegeo::Pins::PinsModule)(
 	                    m_pinIconsTexture.textureId,
 	                    *m_pPinIconsTexturePageLayout,
+						pViewFactory,
 	                    glBufferPool,
 	                    shaderIdGenerator,
 	                    materialIdGenerator,
@@ -66,8 +68,6 @@ PinOverModelExample::PinOverModelExample(
 	                    vertexLayoutPool,
 	                    renderableFilters,
 	                    terrainHeightProvider,
-	                    spriteWidthInMetres,
-	                    spriteHeightInMetres,
 	                    Eegeo::Rendering::LayerIds::PlaceNames,
 	                    environmentFlatteningService,
                         initialScreenProperties,

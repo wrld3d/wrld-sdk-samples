@@ -4,6 +4,7 @@
 #include "RegularTexturePageLayout.h"
 #include "MaterialIdGenerator.h"
 #include "GlobeCameraController.h"
+#include "PinViewFactory.h"
 
 namespace Examples
 {
@@ -42,11 +43,14 @@ PinsExample::PinsExample(
 	int spriteWidthInMetres = 64;
 	int spriteHeightInMetres = 64;
 
+	Eegeo::Pins::PinViewFactory* pViewFactory = Eegeo_NEW(Eegeo::Pins::PinViewFactory)(spriteWidthInMetres, spriteHeightInMetres);
+
 	// N.B. The implementation for PinModule is given in PinModule.h as a guide for Apps that
 	// require an alternate configuration of the various Pin related components.
 	m_pPinsModule = Eegeo_NEW(Eegeo::Pins::PinsModule)(
 	                    m_pinIconsTexture.textureId,
 	                    *m_pPinIconsTexturePageLayout,
+						pViewFactory,
 	                    glBufferPool,
 	                    shaderIdGenerator,
 	                    materialIdGenerator,
@@ -54,8 +58,6 @@ PinsExample::PinsExample(
 	                    vertexLayoutPool,
 	                    renderableFilters,
 	                    terrainHeightProvider,
-	                    spriteWidthInMetres,
-	                    spriteHeightInMetres,
 	                    Eegeo::Rendering::LayerIds::PlaceNames,
 	                    environmentFlatteningService,
                         initialScreenProperties,

@@ -7,6 +7,7 @@
 #include "Logger.h"
 #include "Geometry.h"
 #include "GlobeCameraController.h"
+#include "PinViewFactory.h"
 
 namespace Examples
 {
@@ -46,9 +47,12 @@ PinsWithAttachedJavaUIExample::PinsWithAttachedJavaUIExample(
 	int spriteWidthInMetres = 64;
 	int spriteHeightInMetres = 64;
 
+	Eegeo::Pins::PinViewFactory* pViewFactory = Eegeo_NEW(Eegeo::Pins::PinViewFactory)(spriteWidthInMetres, spriteHeightInMetres);
+
 	m_pPinsModule = Eegeo_NEW(Eegeo::Pins::PinsModule)(
 	                    m_pinIconsTexture.textureId,
 	                    *m_pPinIconsTexturePageLayout,
+						pViewFactory,
 	                    glBufferPool,
 	                    shaderIdGenerator,
 	                    materialIdGenerator,
@@ -56,8 +60,6 @@ PinsWithAttachedJavaUIExample::PinsWithAttachedJavaUIExample(
 	                    vertexLayoutPool,
 	                    renderableFilters,
 	                    terrainHeightProvider,
-	                    spriteWidthInMetres,
-	                    spriteHeightInMetres,
 	                    Eegeo::Rendering::LayerIds::PlaceNames,
 	                    environmentFlatteningService,
 	                    screenProperties,
