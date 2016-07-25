@@ -72,16 +72,9 @@ private:
 
 public:
 	PinOverModelExample(
-	    Eegeo::Helpers::ITextureFileLoader& textureLoader,
-	    Eegeo::Rendering::GlBufferPool& glBufferPool,
-	    Eegeo::Rendering::Shaders::ShaderIdGenerator& shaderIdGenerator,
-	    Eegeo::Rendering::Materials::MaterialIdGenerator& materialIdGenerator,
-	    Eegeo::Rendering::VertexLayouts::VertexBindingPool& vertexBindingPool,
-	    Eegeo::Rendering::VertexLayouts::VertexLayoutPool& vertexLayoutPool,
-	    Eegeo::Rendering::RenderableFilters& renderableFilters,
-	    Eegeo::Resources::Terrain::Heights::TerrainHeightProvider& terrainHeightProvider,
-	    Eegeo::Rendering::EnvironmentFlatteningService& environmentFlatteningService,
-	    Eegeo::Helpers::IFileIO& fileIO,
+        Eegeo::Modules::Core::RenderingModule& renderingModule,
+        Eegeo::Modules::IPlatformAbstractionModule& platformAbstractonModule,
+        Eegeo::Modules::Map::MapModule& mapModule,
 	    Eegeo::Rendering::AsyncTexturing::IAsyncTextureRequestor& textureRequestor,
 	    Eegeo::Lighting::GlobalFogging& fogging,
 	    Eegeo::Rendering::Materials::NullMaterialFactory& nullMaterialFactory,

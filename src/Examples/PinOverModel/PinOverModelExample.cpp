@@ -10,20 +10,16 @@
 #include "NullMaterial.h"
 #include "NullMaterialFactory.h"
 #include "PinViewFactory.h"
+#include "IPlatformAbstractionModule.h"
+#include "RenderingModule.h"
+#include "MapModule.h"
 
 namespace Examples
 {
 PinOverModelExample::PinOverModelExample(
-    Eegeo::Helpers::ITextureFileLoader& textureLoader,
-    Eegeo::Rendering::GlBufferPool& glBufferPool,
-    Eegeo::Rendering::Shaders::ShaderIdGenerator& shaderIdGenerator,
-    Eegeo::Rendering::Materials::MaterialIdGenerator& materialIdGenerator,
-    Eegeo::Rendering::VertexLayouts::VertexBindingPool& vertexBindingPool,
-    Eegeo::Rendering::VertexLayouts::VertexLayoutPool& vertexLayoutPool,
-    Eegeo::Rendering::RenderableFilters& renderableFilters,
-    Eegeo::Resources::Terrain::Heights::TerrainHeightProvider& terrainHeightProvider,
-    Eegeo::Rendering::EnvironmentFlatteningService& environmentFlatteningService,
-    Eegeo::Helpers::IFileIO& fileIO,
+    Eegeo::Modules::Core::RenderingModule& renderingModule,
+    Eegeo::Modules::IPlatformAbstractionModule& platformAbstractionModule,
+    Eegeo::Modules::Map::MapModule& mapModule,
     Eegeo::Rendering::AsyncTexturing::IAsyncTextureRequestor& textureRequestor,
     Eegeo::Lighting::GlobalFogging& fogging,
     Eegeo::Rendering::Materials::NullMaterialFactory& nullMaterialFactory,
@@ -34,14 +30,16 @@ PinOverModelExample::PinOverModelExample(
 	: GlobeCameraExampleBase(pCameraController, cameraTouchController)
     , m_pin0UserData("Pin Zero(0) User Data")
 	,m_pPin0(NULL)
-	,m_fileIO(fileIO)
+	,m_fileIO(platformAbstractionModule.GetFileIO())
 	,m_textureRequestor(textureRequestor)
 	,m_pModel(NULL)
 	,m_globalFogging(fogging)
-	,m_renderableFilters(renderableFilters)
+	,m_renderableFilters(renderingModule.GetRenderableFilters())
 	,m_nullMaterialFactory(nullMaterialFactory)
     ,m_pNullMaterial(NULL)
 {
+    Eegeo::Helpers::ITextureFileLoader& textureLoader = platformAbstractionModule.GetTextureFileLoader();
+
 	textureLoader.LoadTexture(m_pinIconsTexture, "pin_over_model_example/PinIconTexturePage.png", true);
 	Eegeo_ASSERT(m_pinIconsTexture.textureId != 0);
 
@@ -55,24 +53,19 @@ PinOverModelExample::PinOverModelExample(
 	int spriteWidthInMetres = 64;
 	int spriteHeightInMetres = 64;
 
-	Eegeo::Pins::PinViewFactory* pViewFactory = Eegeo_NEW(Eegeo::Pins::PinViewFactory)(spriteWidthInMetres, spriteHeightInMetres);
-
-	m_pPinsModule = Eegeo_NEW(Eegeo::Pins::PinsModule)(
-	                    m_pinIconsTexture.textureId,
-	                    *m_pPinIconsTexturePageLayout,
-						pViewFactory,
-	                    glBufferPool,
-	                    shaderIdGenerator,
-	                    materialIdGenerator,
-	                    vertexBindingPool,
-	                    vertexLayoutPool,
-	                    renderableFilters,
-	                    terrainHeightProvider,
-	                    Eegeo::Rendering::LayerIds::PlaceNames,
-	                    environmentFlatteningService,
-                        initialScreenProperties,
-                        false
-	                );
+	// N.B. The implementation for PinModule is given in PinModule.h as a guide for Apps that
+	// require an alternate configuration of the various Pin related components.
+    m_pPinsModule = Eegeo::Pins::PinsModule::Create(
+                                    renderingModule,
+                                    platformAbstractionModule,
+                                    mapModule,
+                                    m_pinIconsTexture.textureId,
+                                    *m_pPinIconsTexturePageLayout,
+                                    Eegeo::Rendering::LayerIds::PlaceNames,
+                                    spriteWidthInMetres,
+                                    spriteHeightInMetres,
+                                    initialScreenProperties,
+                                    false);
 
 	CreateExamplePins();
 }

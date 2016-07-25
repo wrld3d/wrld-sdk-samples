@@ -27,19 +27,13 @@ IExample* PinsExampleFactory::CreateExample() const
 {
     Eegeo::Modules::IPlatformAbstractionModule& platformAbstractioModule = m_world.GetPlatformAbstractionModule();
     Eegeo::Modules::Core::RenderingModule& renderingModule = m_world.GetRenderingModule();
-    Eegeo::Modules::Map::Layers::TerrainModelModule& terrainModelModule = m_world.GetTerrainModelModule();
     Eegeo::Modules::Map::MapModule& mapModule = m_world.GetMapModule();
     
     const Eegeo::Rendering::ScreenProperties& initialScreenProperties = m_screenPropertiesProvider.GetScreenProperties();
     
-	return new Examples::PinsExample(platformAbstractioModule.GetTextureFileLoader(),
-	                                 renderingModule.GetGlBufferPool(),
-	                                 renderingModule.GetShaderIdGenerator(),
-	                                 renderingModule.GetMaterialIdGenerator(),
-	                                 renderingModule.GetVertexBindingPool(),
-	                                 renderingModule.GetVertexLayoutPool(),
-	                                 renderingModule.GetRenderableFilters(),
-	                                 terrainModelModule.GetTerrainHeightProvider(),
+	return new Examples::PinsExample(renderingModule,
+                                     platformAbstractioModule,
+                                     mapModule,
 	                                 mapModule.GetEnvironmentFlatteningService(),
 	                                 m_defaultCameraControllerFactory.Create(),
                                      m_globeCameraTouchController,

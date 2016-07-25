@@ -39,14 +39,9 @@ private:
 
 public:
 	PinsExample(
-	    Eegeo::Helpers::ITextureFileLoader& textureLoader,
-	    Eegeo::Rendering::GlBufferPool& glBufferPool,
-	    Eegeo::Rendering::Shaders::ShaderIdGenerator& shaderIdGenerator,
-	    Eegeo::Rendering::Materials::MaterialIdGenerator& materialIdGenerator,
-	    Eegeo::Rendering::VertexLayouts::VertexBindingPool& vertexBindingPool,
-	    Eegeo::Rendering::VertexLayouts::VertexLayoutPool& vertexLayoutPool,
-	    Eegeo::Rendering::RenderableFilters& renderableFilters,
-	    Eegeo::Resources::Terrain::Heights::TerrainHeightProvider& terrainHeightProvider,
+        Eegeo::Modules::Core::RenderingModule& renderingModule,
+        Eegeo::Modules::IPlatformAbstractionModule& platformAbstractionModule,
+        Eegeo::Modules::Map::MapModule& mapModule,
 	    Eegeo::Rendering::EnvironmentFlatteningService& environmentFlatteningService,
 	    Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
         Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController,

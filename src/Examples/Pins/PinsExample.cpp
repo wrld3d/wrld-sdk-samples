@@ -4,19 +4,16 @@
 #include "RegularTexturePageLayout.h"
 #include "MaterialIdGenerator.h"
 #include "GlobeCameraController.h"
-#include "PinViewFactory.h"
+#include "IPlatformAbstractionModule.h"
+#include "RenderingModule.h"
+#include "MapModule.h"
 
 namespace Examples
 {
 PinsExample::PinsExample(
-    Eegeo::Helpers::ITextureFileLoader& textureLoader,
-    Eegeo::Rendering::GlBufferPool& glBufferPool,
-    Eegeo::Rendering::Shaders::ShaderIdGenerator& shaderIdGenerator,
-    Eegeo::Rendering::Materials::MaterialIdGenerator& materialIdGenerator,
-    Eegeo::Rendering::VertexLayouts::VertexBindingPool& vertexBindingPool,
-    Eegeo::Rendering::VertexLayouts::VertexLayoutPool& vertexLayoutPool,
-    Eegeo::Rendering::RenderableFilters& renderableFilters,
-    Eegeo::Resources::Terrain::Heights::TerrainHeightProvider& terrainHeightProvider,
+    Eegeo::Modules::Core::RenderingModule& renderingModule,
+    Eegeo::Modules::IPlatformAbstractionModule& platformAbstractionModule,
+    Eegeo::Modules::Map::MapModule& mapModule,
     Eegeo::Rendering::EnvironmentFlatteningService& environmentFlatteningService,
     Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
     Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController,
@@ -30,6 +27,8 @@ PinsExample::PinsExample(
 	, m_addRemoveTimer(0.0f)
 	, m_pPin0(NULL)
 {
+    Eegeo::Helpers::ITextureFileLoader& textureLoader = platformAbstractionModule.GetTextureFileLoader();
+    
 	textureLoader.LoadTexture(m_pinIconsTexture, "pins_example/PinIconTexturePage.png", true);
 	Eegeo_ASSERT(m_pinIconsTexture.textureId != 0);
 
@@ -43,26 +42,19 @@ PinsExample::PinsExample(
 	int spriteWidthInMetres = 64;
 	int spriteHeightInMetres = 64;
 
-	Eegeo::Pins::PinViewFactory* pViewFactory = Eegeo_NEW(Eegeo::Pins::PinViewFactory)(spriteWidthInMetres, spriteHeightInMetres);
-
 	// N.B. The implementation for PinModule is given in PinModule.h as a guide for Apps that
 	// require an alternate configuration of the various Pin related components.
-	m_pPinsModule = Eegeo_NEW(Eegeo::Pins::PinsModule)(
-	                    m_pinIconsTexture.textureId,
-	                    *m_pPinIconsTexturePageLayout,
-						pViewFactory,
-	                    glBufferPool,
-	                    shaderIdGenerator,
-	                    materialIdGenerator,
-	                    vertexBindingPool,
-	                    vertexLayoutPool,
-	                    renderableFilters,
-	                    terrainHeightProvider,
-	                    Eegeo::Rendering::LayerIds::PlaceNames,
-	                    environmentFlatteningService,
-                        initialScreenProperties,
-                        false
-	                );
+    m_pPinsModule = Eegeo::Pins::PinsModule::Create(
+        renderingModule,
+        platformAbstractionModule,
+        mapModule,
+        m_pinIconsTexture.textureId,
+        *m_pPinIconsTexturePageLayout,
+        Eegeo::Rendering::LayerIds::PlaceNames,
+        spriteWidthInMetres,
+        spriteHeightInMetres,
+        initialScreenProperties,
+        false);
 
 	CreateExamplePins();
 }
