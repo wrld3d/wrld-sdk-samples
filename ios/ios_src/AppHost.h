@@ -11,7 +11,6 @@
 #include "iOSKeyboardInputFactory.h"
 #include "iOSAlertBoxFactory.h"
 #include "NativeUIFactories.h"
-#include "Blitter.h"
 #include "AppInputDelegate.h"
 #include "AppLocationDelegate.h"
 #include "Modules.h"
