@@ -1,5 +1,11 @@
 set(resources ${resources}
 		Resources/billboarded_sprite_example
+		Resources/default_water_reflection_cube_map_negX.png
+		Resources/default_water_reflection_cube_map_negY.png
+		Resources/default_water_reflection_cube_map_negZ.png
+		Resources/default_water_reflection_cube_map_posX.png
+		Resources/default_water_reflection_cube_map_posY.png
+		Resources/default_water_reflection_cube_map_posZ.png
 		Resources/DejaVuSansBold.fnt
 		Resources/DejaVuSansBold_0.png
 		Resources/embedded_manifest.txt
