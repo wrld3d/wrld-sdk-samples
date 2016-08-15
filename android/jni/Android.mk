@@ -64,13 +64,7 @@ LOCAL_LDLIBS := -llog -landroid -lEGL -lGLESv2 -lz -lm
 LOCAL_LDLIBS += -fuse-ld=bfd -Wl,--stub-group-size=1000000
 LOCAL_STATIC_LIBRARIES := eegeo-sdk-lib png-lib curl-lib uv-lib ssl-lib crypto-lib http-parser-lib jpeg-lib turbojpeg-lib
 
-ifdef COMPILE_CPP_03
-  $(info Configured for C++0x)
-  LOCAL_CPPFLAGS += -std=c++0x
-else
-  $(info Configured for C++11)
-  LOCAL_CPPFLAGS += -DCOMPILE_CPP_11=1 -std=c++11
-endif
+LOCAL_CPPFLAGS += -std=c++11
 
 os_name:=$(shell uname -s)
 

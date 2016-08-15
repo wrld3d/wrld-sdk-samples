@@ -1,6 +1,6 @@
 #!/bin/sh
 
-usage() { echo "Usage: $0 -p ios [-c]"; echo "  -p -> platform, ios or android (required)"; echo "  -c -> cpp03 support"; 1>&2; exit 1; }
+usage() { echo "Usage: $0 -p ios"; echo "  -p -> platform, ios or android (required)"; 1>&2; exit 1; }
 
 projectPath=$(pwd)/./XcodeBuild
 rm -rf $projectPath
@@ -14,9 +14,6 @@ while getopts "p:c" o; do
             if [ "$p" != "ios" ]; then
                usage
             fi
-            ;;
-        c)
-            c="cpp03"
             ;;
         *)
             usage
@@ -33,13 +30,12 @@ targetName="SDKSamplesApp"
 
 mkdir -p $projectPath
 
-pushd $projectPath
-if [ "$c" == "cpp03" ] ; then
-    cmake -G Xcode -DCOMPILE_CPP_03=1 ..
-else
-    cmake -G Xcode ..
-fi
-popd
+(cd $projectPath && cmake -G Xcode ..)
+
+if [ $? -ne 0 ]; then
+  echo "FAILED TO GENERATE PROJECT"
+  exit $?
+fi 
 
 (cd $projectPath && xcodebuild -target $targetName -arch "i386" -sdk "iphonesimulator")
 resultcode=$?
