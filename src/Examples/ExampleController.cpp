@@ -54,6 +54,11 @@ std::vector<std::string> ExampleController::GetExampleNames() const
 	return result;
 }
 
+std::string ExampleController::GetCurrentExampleName() const
+{
+	return m_factories[m_currentExampleFactoryIndex]->ExampleName();
+}
+
 void ExampleController::RefreshExample()
 {
 	DestroyCurrentExample();
@@ -153,6 +158,10 @@ void ExampleController::Draw()
 	}
 }
 
+void ExampleController::UpdateCardboardProfile(float cardboardProfile[]){
+    m_pCurrentExample->UpdateCardboardProfile(cardboardProfile);
+}
+
 void ExampleController::RegisterExample(IExampleFactory* pFactory)
 {
 	Eegeo_ASSERT(pFactory != NULL);
@@ -167,6 +176,25 @@ void ExampleController::DestroyCurrentExample()
 		Eegeo_DELETE m_pCurrentExample;
 		m_pCurrentExample = NULL;
 	}
+}
+
+const Eegeo::m33& ExampleController::GetOrientation()
+{
+    return m_pCurrentExample->getCurrentCameraOrientation();
+}
+
+Eegeo::Camera::RenderCamera& ExampleController::GetRenderCamera(){
+    return m_pCurrentExample->GetRenderCamera();
+}
+
+Eegeo::Camera::CameraState ExampleController::GetCurrentLeftCameraState(float headTansform[]) const
+{
+    return m_pCurrentExample->GetCurrentLeftCameraState(headTansform);
+}
+
+Eegeo::Camera::CameraState ExampleController::GetCurrentRightCameraState(float headTansform[]) const
+{
+    return m_pCurrentExample->GetCurrentRightCameraState(headTansform);
 }
     
 Eegeo::Camera::CameraState ExampleController::GetCurrentCameraState() const

@@ -35,6 +35,7 @@
 #include "AndroidRouteMatchingExampleViewFactory.h"
 #include "AndroidRouteSimulationExampleViewFactory.h"
 #include "ExampleCameraJumpController.h"
+#include "AndroidVRModeTracker.h"
 
 class AppHost : protected Eegeo::NonCopyable
 {
@@ -50,8 +51,8 @@ public:
 	);
 	~AppHost();
 
-	void Update(float dt);
-	void Draw(float dt);
+	void Update(float dt, float headTansform[]);
+    void Draw(float dt, float headTansform[]);
 
 	void OnPause();
 	void OnResume();
@@ -59,6 +60,9 @@ public:
 	void NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties);
 
 	void HandleTouchInputEvent(const Eegeo::Android::Input::TouchInputEvent& event);
+
+	void UpdateCardboardProfile(float cardboardProfile[]);
+	void MagnetTriggered();
 
 	void SetEnvironmentFlatten(bool flattenState);
 	void SetCameraLocation(const Eegeo::Space::LatLongAltitude& interestPoint, double distanceToInterestPoint, double orientationInDegrees);
@@ -85,6 +89,7 @@ private:
 
 	ExampleApp* m_pApp;
 	Examples::AndroidExampleControllerView* m_pAndroidExampleControllerView;
+	Examples::AndroidVRModeTracker* m_pVRModeTracker;
 	Examples::AndroidRouteMatchingExampleViewFactory* m_pAndroidRouteMatchingExampleViewFactory;
 	Examples::AndroidRouteSimulationExampleViewFactory* m_pAndroidRouteSimulationExampleViewFactory;
 
@@ -92,7 +97,7 @@ private:
 
 	Eegeo::Android::AndroidPlatformAbstractionModule* m_pAndroidPlatformAbstractionModule;
 
-	void ConfigureExamples(const Eegeo::Rendering::ScreenProperties& screenProperties);
+	void ConfigureExamples(const Eegeo::Rendering::ScreenProperties& screenProperties, Eegeo::Config::DeviceSpec deviceSpecs);
 	void DestroyExamples();
 	void RegisterAndroidSpecificExamples();
 };
