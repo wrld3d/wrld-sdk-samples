@@ -8,6 +8,7 @@ namespace Examples
     class IVRModeTracker
     {
     public:
+        virtual ~IVRModeTracker(){}
         virtual void EnterVRMode() = 0;
         virtual void ExitVRMode() = 0;
     };

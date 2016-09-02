@@ -2,8 +2,15 @@
 
 #pragma once
 
-#include "IVRHead"
+#include "IVRModeTracker.h"
 namespace Examples
 {
-    class IosVRModeTracker :
+    class IosVRModeTracker : public IVRModeTracker
+    {
+    public:
+        IosVRModeTracker();
+        ~IosVRModeTracker();
+        void EnterVRMode();
+        void ExitVRMode();
+    };
 }

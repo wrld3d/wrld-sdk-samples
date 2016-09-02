@@ -21,6 +21,7 @@
 #include "ScreenProperties.h"
 #include "BuildingFootprintsModule.h"
 #include "CollisionVisualizationModule.h"
+#include "IosVRModeTracker.h"
 
 namespace
 {
@@ -76,6 +77,7 @@ AppHost::AppHost(
 	,m_pApp(NULL)
     ,m_pCollisionVisualizationModule(NULL)
     ,m_pBuildingFootprintsModule(NULL)
+    ,m_cardboardMagnetTriggerCallback(this, &AppHost::OnCardboardMagnetLinkTrigger)
 {
 	m_piOSLocationService = new iOSLocationService();
 	   
@@ -142,6 +144,8 @@ AppHost::~AppHost()
     delete m_pJpegLoader;
     m_pJpegLoader = NULL;
 
+    Eegeo_DELETE m_pVRModeTracker;
+    Eegeo_DELETE m_pCardBoardService;
 	Eegeo::EffectHandler::Reset();
 	Eegeo::EffectHandler::Shutdown();
 }
@@ -149,6 +153,7 @@ AppHost::~AppHost()
 void AppHost::OnResume()
 {
 	m_pApp->OnResume();
+    UpdateCardboarProfile();
 }
 
 void AppHost::OnPause()
@@ -164,7 +169,14 @@ void AppHost::NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProper
 {
     m_pApp->NotifyScreenPropertiesChanged(screenProperties);
 }
-
+void AppHost::UpdateCardboardProfile(float cardboardProfile[])
+{
+    m_pApp->UpdateCardboardProfile(cardboardProfile);
+}
+void AppHost::MagnetTriggered()
+{
+    m_pApp->MagnetTriggered();
+}
 void AppHost::Update(float dt)
 {
     Eegeo::Modules::Map::MapModule& mapModule = m_pWorld->GetMapModule();
@@ -172,26 +184,51 @@ void AppHost::Update(float dt)
     {
         mapModule.Start();
     }
-	m_pApp->Update(dt);
+    float headTansform[16];
+	m_pApp->Update(dt, headTansform);
 }
 
 void AppHost::Draw(float dt)
 {
-	m_pApp->Draw(dt);
+    float headTansform[16];
+	m_pApp->Draw(dt, headTansform);
 }
 
-void AppHost::ConfigureExamples(const Eegeo::Rendering::ScreenProperties& screenProperties)
+void AppHost::ConfigureExamples(const Eegeo::Rendering::ScreenProperties& screenProperties, Eegeo::Config::DeviceSpec deviceSpecs)
 {
 	m_piOSExampleControllerView = new Examples::iOSExampleControllerView([&m_viewController view]);
 
-	m_pApp = new ExampleApp(m_pWorld, *m_piOSExampleControllerView, screenProperties, *m_pCollisionVisualizationModule, *m_pBuildingFootprintsModule);
+    m_pVRModeTracker = Eegeo_NEW(Examples::IosVRModeTracker)();
+    m_pCardBoardService = Eegeo_NEW(Examples::CardboardSDKService)();
+    m_pCardBoardService->RegisterMagnetTrigreedCallBack(m_cardboardMagnetTriggerCallback);
+    
+    m_pApp = new ExampleApp(m_pWorld, deviceSpecs, *m_piOSExampleControllerView, *m_pVRModeTracker, screenProperties, *m_pCollisionVisualizationModule, *m_pBuildingFootprintsModule);
 
 	RegisteriOSSpecificExamples();
 
 	m_piOSExampleControllerView->PopulateExampleList(m_pApp->GetExampleController().GetExampleNames());
 
 	m_pApp->GetExampleController().ActivatePrevious();
+    UpdateCardboarProfile();
 }
+void AppHost::OnCardboardMagnetLinkTrigger()
+{
+    if (m_pApp != NULL)
+    {
+        m_pApp->MagnetTriggered();
+    }
+
+}
+void AppHost::UpdateCardboarProfile()
+{
+    if (m_pCardBoardService != NULL)
+    {
+        float profileValue[13];
+        m_pCardBoardService->UpdatedCardboardProfile(profileValue);
+        m_pApp->UpdateCardboardProfile(profileValue);
+    }
+}
+
 
 void AppHost::RegisteriOSSpecificExamples()
 {
@@ -219,7 +256,6 @@ void AppHost::DestroyExamples()
 {
 	delete m_piOSRouteMatchingExampleViewFactory;
 	delete m_piOSRouteSimulationExampleViewFactory;
-
 	delete m_piOSExampleControllerView;
 }
 

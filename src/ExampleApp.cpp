@@ -60,7 +60,6 @@
 #include "VRCardboardExampleFactory.h"
 
 #include "Modules/VRDistortionModule/VRCardboardDeviceProfile.h"
-#include <android/log.h>
 
 namespace
 {
