@@ -105,7 +105,7 @@ AppHost::AppHost(
     m_pCollisionVisualizationModule = CreateCollisionVisualizationModule(*m_pWorld);
     m_pBuildingFootprintsModule = CreateBuildingFootprintsModule(*m_pWorld, *m_pCollisionVisualizationModule);
     
-	ConfigureExamples(screenProperties);
+	ConfigureExamples(screenProperties, config.PerformanceConfig.DeviceSpecification);
     
     m_pAppInputDelegate = new AppInputDelegate(*m_pApp, m_viewController, screenProperties.GetScreenWidth(), screenProperties.GetScreenHeight(), screenProperties.GetPixelScale());
     m_pAppLocationDelegate = new AppLocationDelegate(*m_piOSLocationService, m_viewController);
