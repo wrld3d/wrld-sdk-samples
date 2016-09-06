@@ -15,9 +15,9 @@ namespace Examples
     void IosVRModeTracker::EnterVRMode()
     {
         UIDeviceOrientation currentOrientation = [[UIDevice currentDevice] orientation];
-        if (currentOrientation != UIDeviceOrientationLandscapeRight)
+        if (currentOrientation != UIDeviceOrientationLandscapeLeft)
         {
-            NSNumber *value = [NSNumber numberWithInt:UIDeviceOrientationLandscapeRight];
+            NSNumber *value = [NSNumber numberWithInt:UIDeviceOrientationLandscapeLeft];
             [[UIDevice currentDevice] setValue:value forKey:@"orientation"];
         }
     }

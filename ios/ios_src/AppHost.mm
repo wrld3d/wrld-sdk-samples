@@ -153,7 +153,7 @@ AppHost::~AppHost()
 void AppHost::OnResume()
 {
 	m_pApp->OnResume();
-    UpdateCardboarProfile();
+   // UpdateCardboarProfile();
 }
 
 void AppHost::OnPause()
@@ -184,14 +184,38 @@ void AppHost::Update(float dt)
     {
         mapModule.Start();
     }
-    float headTansform[16];
-	m_pApp->Update(dt, headTansform);
+    if (m_pVRModeTracker != NULL)
+    {
+        float items[16];
+        m_pCardBoardService->HeadViewValue(items);
+        m_pApp->Update(dt, items);
+    }
+    else
+    {
+        // identity matrix, this should be coming from head tracking.
+
+        float items[] = {1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1};
+        m_pApp->Update(dt, items);
+    }
+
 }
 
 void AppHost::Draw(float dt)
 {
-    float headTansform[16];
-	m_pApp->Draw(dt, headTansform);
+    
+    if (m_pVRModeTracker != NULL)
+    {
+        float items[16];
+        m_pCardBoardService->HeadViewValue(items);
+        m_pApp->Draw(dt,items);
+    }
+    else
+    {
+        // identity matrix, this should be coming from head tracking.
+
+        float items[] = {1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1};
+        m_pApp->Draw(dt,items);
+    }
 }
 
 void AppHost::ConfigureExamples(const Eegeo::Rendering::ScreenProperties& screenProperties, Eegeo::Config::DeviceSpec deviceSpecs)
@@ -209,7 +233,7 @@ void AppHost::ConfigureExamples(const Eegeo::Rendering::ScreenProperties& screen
 	m_piOSExampleControllerView->PopulateExampleList(m_pApp->GetExampleController().GetExampleNames());
 
 	m_pApp->GetExampleController().ActivatePrevious();
-    UpdateCardboarProfile();
+   // UpdateCardboarProfile();
 }
 void AppHost::OnCardboardMagnetLinkTrigger()
 {
