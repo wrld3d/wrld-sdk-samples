@@ -222,7 +222,11 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     m_pExampleController->RegisterCameraExample<Examples::TrafficCongestionExampleFactory>();
     m_pExampleController->RegisterCameraExample<Examples::WebRequestExampleFactory>();
     m_pExampleController->RegisterCameraControllerScreenPropertiesProviderExample<Examples::RenderToTextureExampleFactory>(m_screenPropertiesProvider);
+    
+#ifdef CARDBOARD
     m_pExampleController->RegisterScreenPropertiesProviderVRExample<Examples::VRCardboardExampleFactory>(m_screenPropertiesProvider);
+#endif
+
 }
 
 ExampleApp::~ExampleApp()

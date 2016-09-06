@@ -19,5 +19,7 @@ set(currsources
 set(sources ${sources} ${currsources})
 source_group(\\ios_src\\ FILES ${currsources})
 include(ios_src/Examples/CMakeLists.txt)
-include(ios_src/CardboardSDK/CMakeLists.txt)
+if(${CARDBOARD})
+  include(ios_src/CardboardSDK/CMakeLists.txt)
+endif(${CARDBOARD})
 endif(${IOS})

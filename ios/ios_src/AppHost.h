@@ -22,8 +22,13 @@
 #include "iOSExampleControllerView.h"
 #include "iOSRouteMatchingExampleViewFactory.h"
 #include "iOSRouteSimulationExampleViewFactory.h"
+
+
+#ifdef CARDBOARD
 #include "IVRModeTracker.h"
 #include "CardboardSDKService.h"
+#endif
+
 
 @class ViewController;
 class AppInputDelegate;
@@ -72,7 +77,11 @@ private:
 	Examples::iOSRouteMatchingExampleViewFactory* m_piOSRouteMatchingExampleViewFactory;
 	Examples::iOSRouteSimulationExampleViewFactory* m_piOSRouteSimulationExampleViewFactory;
     Examples::IVRModeTracker* m_pVRModeTracker;
-    Examples::CardboardSDKService *m_pCardBoardService;
+    
+    #ifdef CARDBOARD
+        Examples::CardboardSDKService *m_pCardBoardService;
+    #endif
+    
     Eegeo::Helpers::TCallback0<AppHost> m_cardboardMagnetTriggerCallback;
     
     void ConfigureExamples(const Eegeo::Rendering::ScreenProperties& screenProperties, Eegeo::Config::DeviceSpec deviceSpe);

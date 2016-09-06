@@ -10,5 +10,5 @@
 #define BUTTON_TYPE UIButtonTypeCustom
 
 #define IS_IPAD (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-
+//#define CARDBOARD
 #endif
