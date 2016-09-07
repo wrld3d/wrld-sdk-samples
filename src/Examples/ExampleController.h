@@ -3,18 +3,20 @@
 #ifndef __ExampleApp__ExampleController__
 #define __ExampleApp__ExampleController__
 
-#include "GlobeCameraExampleBase.h"
-#include "IExampleFactory.h"
-#include "Types.h"
-#include "EegeoWorld.h"
-#include "UIActionHandler.h"
-#include "IExampleControllerView.h"
-#include "Camera.h"
-#include "ScreenPropertiesProvider.h"
-#include "DefaultCameraControllerFactory.h"
-#include "CameraState.h"
-#include <vector>
+#include <Types.h>
 #include <string>
+#include <vector>
+
+#include "Camera.h"
+#include "CameraState.h"
+#include "DefaultCameraControllerFactory.h"
+#include "EegeoWorld.h"
+#include "GlobeCameraExampleBase.h"
+#include "IExampleControllerView.h"
+#include "IExampleFactory.h"
+#include "ScreenPropertiesProvider.h"
+#include "Types.h"
+#include "UIActionHandler.h"
 
 namespace Examples
 {
@@ -47,6 +49,8 @@ public:
 
 	std::vector<std::string> GetExampleNames() const;
 
+	std::string GetCurrentExampleName() const;
+
 	void UpdateSelectedExample();
 
 	void ActivatePrevious();
@@ -61,9 +65,17 @@ public:
     
 	void Draw();
 
+	void UpdateCardboardProfile(float cardboardProfile[]);
+
 	void RegisterExample(IExampleFactory* pFactory);
-    
-    Eegeo::Camera::CameraState GetCurrentCameraState() const;
+
+	const Eegeo::m33& GetOrientation();
+
+	Eegeo::Camera::RenderCamera& GetRenderCamera();
+
+	Eegeo::Camera::CameraState GetCurrentLeftCameraState(float headTansform[]) const;
+	Eegeo::Camera::CameraState GetCurrentRightCameraState(float headTansform[]) const;
+	Eegeo::Camera::CameraState GetCurrentCameraState() const;
     
     Eegeo::Streaming::IStreamingVolume& GetCurrentStreamingVolume() const;
     
@@ -87,6 +99,12 @@ public:
         m_factories.push_back(Eegeo_NEW((TExampleFactory)(m_world, m_defaultCameraControllerFactory, m_globeCameraTouchController, screenPropertiesProvider)));
     }
     
+    template <typename TExampleFactory>
+    void RegisterScreenPropertiesProviderVRExample(const ScreenPropertiesProvider& screenPropertiesProvider)
+    {
+    	m_factories.push_back(Eegeo_NEW((TExampleFactory)(m_world, m_defaultCameraControllerFactory, screenPropertiesProvider)));
+    }
+
     template <typename TExampleFactory>
     void RegisterScreenPropertiesProviderExample(const ScreenPropertiesProvider& screenPropertiesProvider)
     {

@@ -23,6 +23,13 @@
 #include "iOSRouteMatchingExampleViewFactory.h"
 #include "iOSRouteSimulationExampleViewFactory.h"
 
+
+#ifdef CARDBOARD
+#include "IVRModeTracker.h"
+#include "CardboardSDKService.h"
+#endif
+
+
 @class ViewController;
 class AppInputDelegate;
 class AppLocationDelegate;
@@ -39,6 +46,8 @@ public:
 
 	void Update(float dt);
 	void Draw(float dt);
+    void UpdateCardboardProfile(float cardboardProfile[]);
+    void MagnetTriggered();
 
 	void OnPause();
 	void OnResume();
@@ -67,10 +76,19 @@ private:
 	Examples::iOSExampleControllerView* m_piOSExampleControllerView;
 	Examples::iOSRouteMatchingExampleViewFactory* m_piOSRouteMatchingExampleViewFactory;
 	Examples::iOSRouteSimulationExampleViewFactory* m_piOSRouteSimulationExampleViewFactory;
+    Examples::IVRModeTracker* m_pVRModeTracker;
     
-    void ConfigureExamples(const Eegeo::Rendering::ScreenProperties& screenProperties);
+    #ifdef CARDBOARD
+        Examples::CardboardSDKService *m_pCardBoardService;
+    #endif
+    
+    Eegeo::Helpers::TCallback0<AppHost> m_cardboardMagnetTriggerCallback;
+    
+    void ConfigureExamples(const Eegeo::Rendering::ScreenProperties& screenProperties, Eegeo::Config::DeviceSpec deviceSpe);
 	void DestroyExamples();
 	void RegisteriOSSpecificExamples();
+    void UpdateCardboarProfile();
+    void OnCardboardMagnetLinkTrigger();
 };
 
 #endif

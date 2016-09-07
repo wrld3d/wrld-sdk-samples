@@ -50,7 +50,10 @@ set(ios_frameworks
   -framework Foundation 
   -framework CoreGraphics 
   -framework CoreData
-  -framework Security")
+  -framework Security
+  -framework CoreMotion
+  -framework QuartzCore   
+  ")
 
 set(linker_search_paths "-LInclude/eegeo")
 set(libs "${eegeo_sdk_libs} -lturbojpeg -lz -lcurl -luv")
@@ -91,7 +94,18 @@ set_xcode_property (${executable_name} COMBINE_HIDPI_IMAGES "No")
 set_xcode_property(${executable_name} GCC_PRECOMPILE_PREFIX_HEADER "YES")
 set_xcode_property(${executable_name} GCC_PREFIX_HEADER "ExampleApp/SDKSamplesApp-Prefix.pch")
 
-set_xcode_property(${executable_name} CLANG_CXX_LANGUAGE_STANDARD "c++11")
+#set_xcode_property(${executable_name} CLANG_CXX_LANGUAGE_STANDARD "c++11")
+set_xcode_property(${executable_name} CLANG_CXX_LANGUAGE_STANDARD "gnu++0x")
+
+
+if(${CARDBOARD})
+set(ios_preprocessors
+  "CARDBOARD
+  CMAKE_INTDIR=$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)"
+  )
+  set_xcode_property(${executable_name} GCC_PREPROCESSOR_DEFINITIONS ${ios_preprocessors})
+endif(${CARDBOARD})
+
 set_xcode_property(${executable_name} CLANG_CXX_LIBRARY "libc++")
 
 set_target_properties(${PROJECT_NAME} PROPERTIES XCODE_ATTRIBUTE_ONLY_ACTIVE_ARCH "YES")

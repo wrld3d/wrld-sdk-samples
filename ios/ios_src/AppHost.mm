@@ -21,6 +21,12 @@
 #include "ScreenProperties.h"
 #include "BuildingFootprintsModule.h"
 #include "CollisionVisualizationModule.h"
+#include "iOSUIHelpers.h"
+
+#ifdef CARDBOARD
+#include "IosVRModeTracker.h"
+#endif
+
 
 namespace
 {
@@ -64,18 +70,19 @@ AppHost::AppHost(
                  ViewController& viewController,
                  const Eegeo::Rendering::ScreenProperties& screenProperties
                  )
-    :m_viewController(viewController)
-    ,m_pJpegLoader(NULL)
-	,m_piOSLocationService(NULL)
-	,m_pWorld(NULL)
-	,m_iOSInputBoxFactory()
-	,m_iOSKeyboardInputFactory()
-	,m_iOSAlertBoxFactory()
-	,m_iOSNativeUIFactories(m_iOSAlertBoxFactory, m_iOSInputBoxFactory, m_iOSKeyboardInputFactory)
-    ,m_piOSPlatformAbstractionModule(NULL)
-	,m_pApp(NULL)
-    ,m_pCollisionVisualizationModule(NULL)
-    ,m_pBuildingFootprintsModule(NULL)
+        :m_viewController(viewController)
+        ,m_pJpegLoader(NULL)
+        ,m_piOSLocationService(NULL)
+        ,m_pWorld(NULL)
+        ,m_iOSInputBoxFactory()
+        ,m_iOSKeyboardInputFactory()
+        ,m_iOSAlertBoxFactory()
+        ,m_iOSNativeUIFactories(m_iOSAlertBoxFactory, m_iOSInputBoxFactory, m_iOSKeyboardInputFactory)
+        ,m_piOSPlatformAbstractionModule(NULL)
+        ,m_pApp(NULL)
+        ,m_pCollisionVisualizationModule(NULL)
+        ,m_pBuildingFootprintsModule(NULL)
+        ,m_cardboardMagnetTriggerCallback(this, &AppHost::OnCardboardMagnetLinkTrigger)
 {
 	m_piOSLocationService = new iOSLocationService();
 	   
@@ -105,7 +112,7 @@ AppHost::AppHost(
     m_pCollisionVisualizationModule = CreateCollisionVisualizationModule(*m_pWorld);
     m_pBuildingFootprintsModule = CreateBuildingFootprintsModule(*m_pWorld, *m_pCollisionVisualizationModule);
     
-	ConfigureExamples(screenProperties);
+	ConfigureExamples(screenProperties, config.PerformanceConfig.DeviceSpecification);
     
     m_pAppInputDelegate = new AppInputDelegate(*m_pApp, m_viewController, screenProperties.GetScreenWidth(), screenProperties.GetScreenHeight(), screenProperties.GetPixelScale());
     m_pAppLocationDelegate = new AppLocationDelegate(*m_piOSLocationService, m_viewController);
@@ -142,6 +149,12 @@ AppHost::~AppHost()
     delete m_pJpegLoader;
     m_pJpegLoader = NULL;
 
+    Eegeo_DELETE m_pVRModeTracker;
+    
+#ifdef CARDBOARD
+    Eegeo_DELETE m_pCardBoardService;
+#endif
+
 	Eegeo::EffectHandler::Reset();
 	Eegeo::EffectHandler::Shutdown();
 }
@@ -164,7 +177,14 @@ void AppHost::NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProper
 {
     m_pApp->NotifyScreenPropertiesChanged(screenProperties);
 }
-
+void AppHost::UpdateCardboardProfile(float cardboardProfile[])
+{
+    m_pApp->UpdateCardboardProfile(cardboardProfile);
+}
+void AppHost::MagnetTriggered()
+{
+    m_pApp->MagnetTriggered();
+}
 void AppHost::Update(float dt)
 {
     Eegeo::Modules::Map::MapModule& mapModule = m_pWorld->GetMapModule();
@@ -172,19 +192,61 @@ void AppHost::Update(float dt)
     {
         mapModule.Start();
     }
-	m_pApp->Update(dt);
+#ifdef CARDBOARD
+    if (m_pCardBoardService != NULL)
+    {
+        float items[16];
+        m_pCardBoardService->HeadViewValue(items);
+        m_pApp->Update(dt, items);
+    }
+    else
+    {
+        // identity matrix, this should be coming from head tracking.
+        
+    }
+#else
+    float items[] = {1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1};
+    m_pApp->Update(dt, items);
+#endif
+
 }
 
 void AppHost::Draw(float dt)
 {
-	m_pApp->Draw(dt);
+#ifdef CARDBOARD
+    
+    if (m_pCardBoardService != NULL)
+    {
+        float items[16];
+        m_pCardBoardService->HeadViewValue(items);
+        m_pApp->Draw(dt,items);
+    }
+    else
+    {
+        // identity matrix, this should be coming from head tracking.
+        
+        float items[] = {1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1};
+        m_pApp->Draw(dt,items);
+    }
+#else
+    float items[] = {1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1};
+    m_pApp->Draw(dt,items);
+#endif
+
 }
 
-void AppHost::ConfigureExamples(const Eegeo::Rendering::ScreenProperties& screenProperties)
+void AppHost::ConfigureExamples(const Eegeo::Rendering::ScreenProperties& screenProperties, Eegeo::Config::DeviceSpec deviceSpecs)
 {
 	m_piOSExampleControllerView = new Examples::iOSExampleControllerView([&m_viewController view]);
 
-	m_pApp = new ExampleApp(m_pWorld, *m_piOSExampleControllerView, screenProperties, *m_pCollisionVisualizationModule, *m_pBuildingFootprintsModule);
+#ifdef CARDBOARD
+    m_pVRModeTracker = Eegeo_NEW(Examples::IosVRModeTracker)();
+    m_pCardBoardService = Eegeo_NEW(Examples::CardboardSDKService)();
+    m_pCardBoardService->RegisterMagnetTrigreedCallBack(m_cardboardMagnetTriggerCallback);
+#endif
+
+    
+    m_pApp = new ExampleApp(m_pWorld, deviceSpecs, *m_piOSExampleControllerView, *m_pVRModeTracker, screenProperties, *m_pCollisionVisualizationModule, *m_pBuildingFootprintsModule);
 
 	RegisteriOSSpecificExamples();
 
@@ -192,6 +254,27 @@ void AppHost::ConfigureExamples(const Eegeo::Rendering::ScreenProperties& screen
 
 	m_pApp->GetExampleController().ActivatePrevious();
 }
+void AppHost::OnCardboardMagnetLinkTrigger()
+{
+    if (m_pApp != NULL)
+    {
+        m_pApp->MagnetTriggered();
+    }
+
+}
+void AppHost::UpdateCardboarProfile()
+{
+#ifdef CARDBOARD
+    if (m_pCardBoardService != NULL)
+    {
+        float profileValue[13];
+        m_pCardBoardService->UpdatedCardboardProfile(profileValue);
+        m_pApp->UpdateCardboardProfile(profileValue);
+    }
+#endif
+
+}
+
 
 void AppHost::RegisteriOSSpecificExamples()
 {
@@ -219,7 +302,6 @@ void AppHost::DestroyExamples()
 {
 	delete m_piOSRouteMatchingExampleViewFactory;
 	delete m_piOSRouteSimulationExampleViewFactory;
-
 	delete m_piOSExampleControllerView;
 }
 

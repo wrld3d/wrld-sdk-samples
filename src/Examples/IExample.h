@@ -14,6 +14,7 @@ namespace Examples
 {
     class IExample
     {
+    	Eegeo::Camera::RenderCamera m_RenderCamera;
     public:
         virtual ~IExample() { }
 
@@ -27,9 +28,21 @@ namespace Examples
         virtual void Suspend()= 0;
         virtual void AfterCameraUpdate() { }
         
+        virtual const Eegeo::m33& getCurrentCameraOrientation(){return *(new Eegeo::m33());}
+        virtual const Eegeo::m33& GetBaseOrientation(){return *(new Eegeo::m33());}
+        virtual const Eegeo::m33& GetHeadTrackerOrientation(){return *(new Eegeo::m33());}
+
+        virtual void UpdateCardboardProfile(float cardboardProfile[]){}
+
         virtual void NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties) = 0;
         
+        // TODO: All examples should be returing a RenderCamera used by example, temporaray hack to make it work with VR example.
+        virtual Eegeo::Camera::RenderCamera& GetRenderCamera(){return m_RenderCamera;}
+
         virtual Eegeo::Camera::CameraState GetCurrentCameraState() const = 0;
+        virtual Eegeo::Camera::CameraState GetCurrentLeftCameraState(float headTansform[]) const {return GetCurrentCameraState();}
+        virtual Eegeo::Camera::CameraState GetCurrentRightCameraState(float headTansform[]) const{return GetCurrentCameraState();}
+
 
         virtual void NotifyViewNeedsLayout() = 0;
         

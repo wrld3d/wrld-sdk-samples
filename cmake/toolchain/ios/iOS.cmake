@@ -36,6 +36,7 @@ set (UNIX True)
 set (WINDOWS False)
 set (APPLE True)
 set (IOS True)
+set (CARDBOARD True)
 set (SDKROOT iphone)
 
 # Required as of cmake 2.8.10
