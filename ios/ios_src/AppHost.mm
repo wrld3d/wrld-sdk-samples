@@ -70,19 +70,19 @@ AppHost::AppHost(
                  ViewController& viewController,
                  const Eegeo::Rendering::ScreenProperties& screenProperties
                  )
-    :m_viewController(viewController)
-    ,m_pJpegLoader(NULL)
-	,m_piOSLocationService(NULL)
-	,m_pWorld(NULL)
-	,m_iOSInputBoxFactory()
-	,m_iOSKeyboardInputFactory()
-	,m_iOSAlertBoxFactory()
-	,m_iOSNativeUIFactories(m_iOSAlertBoxFactory, m_iOSInputBoxFactory, m_iOSKeyboardInputFactory)
-    ,m_piOSPlatformAbstractionModule(NULL)
-	,m_pApp(NULL)
-    ,m_pCollisionVisualizationModule(NULL)
-    ,m_pBuildingFootprintsModule(NULL)
-    ,m_cardboardMagnetTriggerCallback(this, &AppHost::OnCardboardMagnetLinkTrigger)
+        :m_viewController(viewController)
+        ,m_pJpegLoader(NULL)
+        ,m_piOSLocationService(NULL)
+        ,m_pWorld(NULL)
+        ,m_iOSInputBoxFactory()
+        ,m_iOSKeyboardInputFactory()
+        ,m_iOSAlertBoxFactory()
+        ,m_iOSNativeUIFactories(m_iOSAlertBoxFactory, m_iOSInputBoxFactory, m_iOSKeyboardInputFactory)
+        ,m_piOSPlatformAbstractionModule(NULL)
+        ,m_pApp(NULL)
+        ,m_pCollisionVisualizationModule(NULL)
+        ,m_pBuildingFootprintsModule(NULL)
+        ,m_cardboardMagnetTriggerCallback(this, &AppHost::OnCardboardMagnetLinkTrigger)
 {
 	m_piOSLocationService = new iOSLocationService();
 	   
@@ -162,7 +162,6 @@ AppHost::~AppHost()
 void AppHost::OnResume()
 {
 	m_pApp->OnResume();
-   // UpdateCardboarProfile();
 }
 
 void AppHost::OnPause()
@@ -254,7 +253,6 @@ void AppHost::ConfigureExamples(const Eegeo::Rendering::ScreenProperties& screen
 	m_piOSExampleControllerView->PopulateExampleList(m_pApp->GetExampleController().GetExampleNames());
 
 	m_pApp->GetExampleController().ActivatePrevious();
-   // UpdateCardboarProfile();
 }
 void AppHost::OnCardboardMagnetLinkTrigger()
 {
