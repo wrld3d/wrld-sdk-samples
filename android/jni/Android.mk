@@ -107,6 +107,8 @@ endif
 
 LOCAL_C_INCLUDES += ./libs/eegeo/rapidjson
 
+LOCAL_CFLAGS    := -DCARDBOARD
+
 $(info LOCAL_C_INCLUDES is $(LOCAL_C_INCLUDES))
 
 include $(BUILD_SHARED_LIBRARY)

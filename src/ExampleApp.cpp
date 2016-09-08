@@ -132,14 +132,6 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     const float interestPointAltitudeMeters = 2.7f;
     const float cameraControllerOrientationDegrees = 0.0f;
     const float cameraControllerDistanceFromInterestPointMeters = 1781.0f;
-    
-    m_pStreamingVolume = Eegeo_NEW(Eegeo::Streaming::CameraFrustumStreamingVolume)(mapModule.GetResourceCeilingProvider(),
-    Eegeo::Config::LodRefinementConfig::GetLodRefinementAltitudesForDeviceSpec(deviceSpecs),
-    Eegeo::Streaming::QuadTreeCube::MAX_DEPTH_TO_VISIT,
-    mapModule.GetEnvironmentFlatteningService());
-
-    m_pStreamingVolume->setDeepestLevelForAltitudeLodRefinement(11);
-    m_pStreamingVolume->SetForceMaximumRefinement(true);
 
     m_pCameraControllerFactory = new Examples::DefaultCameraControllerFactory(
     terrainModelModule,
@@ -161,6 +153,16 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     *m_pCameraControllerFactory,
     *m_pCameraTouchController);
 
+
+	#ifdef CARDBOARD
+	m_pStreamingVolume = Eegeo_NEW(Eegeo::Streaming::CameraFrustumStreamingVolume)(mapModule.GetResourceCeilingProvider(),
+	Eegeo::Config::LodRefinementConfig::GetLodRefinementAltitudesForDeviceSpec(deviceSpecs),
+	Eegeo::Streaming::QuadTreeCube::MAX_DEPTH_TO_VISIT,
+	mapModule.GetEnvironmentFlatteningService());
+
+	m_pStreamingVolume->setDeepestLevelForAltitudeLodRefinement(11);
+	m_pStreamingVolume->SetForceMaximumRefinement(true);
+
     Eegeo::Modules::Core::RenderingModule& renderingModule = m_pWorld->GetRenderingModule();
     m_pVRDistortion = Eegeo_NEW(Eegeo::VR::Distortion::VRDistortionModule)(m_screenPropertiesProvider.GetScreenProperties(),
     renderingModule.GetVertexLayoutPool(),
@@ -171,12 +173,13 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     renderingModule.GetGlBufferPool());
     m_pVRDistortion->Initialize();
 
-    m_pVRSkybox = Eegeo_NEW(Eegeo::Skybox::SkyboxModule)(renderingModule,
-    renderingModule.GetGlBufferPool(),
-    renderingModule.GetVertexBindingPool(),
-    renderingModule.GetVertexLayoutPool(),
-    renderingModule.GetRenderableFilters()
-    );
+	m_pVRSkybox = Eegeo_NEW(Eegeo::Skybox::SkyboxModule)(renderingModule,
+	    renderingModule.GetGlBufferPool(),
+	    renderingModule.GetVertexBindingPool(),
+	    renderingModule.GetVertexLayoutPool(),
+	    renderingModule.GetRenderableFilters()
+	    );
+	#endif
 
     //register all generic examples
     m_pExampleController->RegisterCameraExample<Examples::BillboardedSpriteExampleFactory>();
@@ -223,7 +226,9 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     m_pExampleController->RegisterCameraExample<Examples::TrafficCongestionExampleFactory>();
     m_pExampleController->RegisterCameraExample<Examples::WebRequestExampleFactory>();
     m_pExampleController->RegisterCameraControllerScreenPropertiesProviderExample<Examples::RenderToTextureExampleFactory>(m_screenPropertiesProvider);
+	#ifdef CARDBOARD
     m_pExampleController->RegisterScreenPropertiesProviderVRExample<Examples::VRCardboardExampleFactory>(m_screenPropertiesProvider);
+	#endif
 }
 
 ExampleApp::~ExampleApp()
@@ -231,11 +236,12 @@ ExampleApp::~ExampleApp()
     delete m_pCameraTouchController;
     delete m_pLoadingScreen;
     delete m_pExampleController;
-
+	#ifdef CARDBOARD
     Eegeo_DELETE m_pVRSkybox;
     Eegeo_DELETE m_pVRDistortion;
 
     Eegeo_DELETE m_pStreamingVolume;
+	#endif
 }
 
 void ExampleApp::OnPause()
@@ -285,11 +291,13 @@ void ExampleApp::Draw (float dt, float headTansform[])
     {
         if(eegeoWorld.Validated())
         {
+			#ifdef CARDBOARD
             m_pVRDistortion->BeginRendering();
             DrawLeftEye(dt, headTansform, eegeoWorld);
             m_pVRDistortion->RegisterRenderable();
             DrawRightEye(dt, headTansform, eegeoWorld);
             m_pVRDistortion->UnRegisterRenderable();
+			#endif
         }
     }
     else
@@ -356,8 +364,10 @@ void ExampleApp::DrawEyeFromCameraState(float dt, const Eegeo::Camera::CameraSta
 
 void ExampleApp::UpdateCardboardProfile(float cardboardProfile[])
 {
+	#ifdef CARDBOARD
     m_pExampleController->UpdateCardboardProfile(cardboardProfile);
     m_pVRDistortion->UpdateCardboardProfile(cardboardProfile);
+	#endif
 }
 
 void ExampleApp::MagnetTriggered()
@@ -367,12 +377,13 @@ void ExampleApp::MagnetTriggered()
 
 void ExampleApp::AppUpdate(float dt, const Eegeo::Camera::CameraState& cameraState, Eegeo::EegeoWorld& eegeoWorld)
 {
+	#ifdef CARDBOARD
     if(m_pVRSkybox->IsShowing())
     {
         m_pVRSkybox->Stop();
     }
     m_vrModeTracker.ExitVRMode();
-
+	#endif
     Eegeo::Streaming::IStreamingVolume& streamingVolume(m_pExampleController->GetCurrentStreamingVolume());
 
     Eegeo::EegeoUpdateParameters updateParameters(dt,
@@ -387,6 +398,7 @@ void ExampleApp::AppUpdate(float dt, const Eegeo::Camera::CameraState& cameraSta
 
 void ExampleApp::VRUpdate(float dt, const Eegeo::Camera::CameraState& cameraState, Eegeo::EegeoWorld& eegeoWorld)
 {
+	#ifdef CARDBOARD
     if(!m_pVRSkybox->IsShowing())
     {
         m_pVRSkybox->Start();
@@ -415,11 +427,12 @@ void ExampleApp::VRUpdate(float dt, const Eegeo::Camera::CameraState& cameraStat
     *m_pStreamingVolume,
     m_screenPropertiesProvider.GetScreenProperties());
     eegeoWorld.Update(updateParameters);
-
+	#endif
 }
 
 void ExampleApp::UpdateNightTParam(float dt)
 {
+	#ifdef CARDBOARD
     m_nightTParam += dt;
     if(m_nightTParam>1.0f)
     m_nightTParam = 0.99f;
@@ -428,6 +441,7 @@ void ExampleApp::UpdateNightTParam(float dt)
     m_currentClearColor = Eegeo::v3::Lerp(m_startClearColor, m_destClearColor, m_nightTParam);
 
     m_pVRSkybox->UpdateSkyColor(m_currentClearColor);
+	#endif
 }
 
 void ExampleApp::NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties)
@@ -440,7 +454,9 @@ void ExampleApp::NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenPro
     }
     
     m_pExampleController->NotifyScreenPropertiesChanged(screenProperties);
+	#ifdef CARDBOARD
     m_pVRDistortion->NotifyScreenPropertiesChanged(screenProperties);
+	#endif
 }
 
 void ExampleApp::UpdateLoadingScreen(float dt)

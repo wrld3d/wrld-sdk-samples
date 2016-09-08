@@ -25,11 +25,12 @@ class ExampleApp : private Eegeo::NonCopyable
         Examples::ExampleController* m_pExampleController;
         Examples::ScreenPropertiesProvider m_screenPropertiesProvider;
         Examples::IVRModeTracker& m_vrModeTracker;
-
+		#ifdef CARDBOARD
         Eegeo::Streaming::CameraFrustumStreamingVolume* m_pStreamingVolume;
 
         Eegeo::VR::Distortion::VRDistortionModule* m_pVRDistortion;
         Eegeo::Skybox::SkyboxModule *m_pVRSkybox;
+		#endif
 
         float m_nightTParam;
 
