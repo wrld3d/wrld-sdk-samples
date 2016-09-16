@@ -42,12 +42,11 @@ public class PlaceJumpMenu
 
 					final Spinner spinner = (Spinner)m_view.findViewById(R.id.places);
 
-					String items[] = new String[5];
+					String items[] = new String[4];
 					items[0] = "NYC";
 					items[1] = "London";
 					items[2] = "SF";
-					items[3] = "Kyoto";
-					items[4] = "Melbourne";
+					items[3] = "Melbourne";
 					ArrayAdapter<String> adapter = new ArrayAdapter<String>(m_activity, android.R.layout.simple_spinner_item, items);
 					spinner.setAdapter(adapter);
 

@@ -22,7 +22,6 @@ ShowJavaPlaceJumpUIExample::ShowJavaPlaceJumpUIExample(
 	m_locations["NYC"] = ViewLocation(40.703762, -74.013733, 0, 240.0f, 1800.0f);
 	m_locations["London"] = ViewLocation(51.506172,-0.118915, 0, 351.0f, 2731.0f);
 	m_locations["SF"] = ViewLocation(37.7858,-122.401, 0.0, 0.0, 1781.0);
-	m_locations["Kyoto"] = ViewLocation(34.9977166,135.755402, 0, 0.0f, 1500.0f);
 	m_locations["Melbourne"] = ViewLocation(-37.815005, 144.964415, 0, 0.0f, 1500.0f);
 }
 
