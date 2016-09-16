@@ -8,7 +8,7 @@ set(resources ${resources}
 		Resources/default_water_reflection_cube_map_posZ.png
 		Resources/DejaVuSansBold.fnt
 		Resources/DejaVuSansBold_0.png
-		Resources/embedded_manifest.txt
+		Resources/embedded_manifest.bin
 		Resources/firework_01.png
 		Resources/FrankBold50_A8_icons.fnt
 		Resources/FrankBold50_A8_icons_0.png
