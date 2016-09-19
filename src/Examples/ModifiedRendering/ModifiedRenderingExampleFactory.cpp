@@ -28,6 +28,7 @@ IExample* ModifiedRenderingExampleFactory::CreateExample() const
     Eegeo::Modules::Map::Layers::BuildingModelModule& buildingModelModule = m_world.GetBuildingModelModule();
     Eegeo::Modules::Map::Layers::BuildingPresentationModule& buildingPresentationModule = m_world.GetBuildingPresentationModule();
     Eegeo::Modules::Core::RenderingModule& renderingModule = m_world.GetRenderingModule();
+    Eegeo::Rendering::AsyncTexturing::IAsyncTexture& placeHolderTexture = m_world.GetAsyncLoadersModule().GetPlaceholderTexture();
     
 	return new Examples::ModifiedRenderingExample(
 	        buildingModelModule.GetBuildingSceneElementRepository(),
@@ -36,7 +37,7 @@ IExample* ModifiedRenderingExampleFactory::CreateExample() const
 	        renderingModule.GetShaderIdGenerator(),
 	        renderingModule.GetMaterialIdGenerator(),
             renderingModule.GetVertexBindingPool(),
-	        m_world.GetEnvironmentPlaceholderTexture(),
+	        placeHolderTexture,
 	        m_defaultCameraControllerFactory.Create(),
             m_globeCameraTouchController);
 }

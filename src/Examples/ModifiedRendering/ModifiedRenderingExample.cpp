@@ -29,7 +29,7 @@ ModifiedRenderingExample::ModifiedRenderingExample(Eegeo::Rendering::Scene::Scen
         Eegeo::Rendering::Shaders::ShaderIdGenerator& shaderIdGenerator,
         Eegeo::Rendering::Materials::MaterialIdGenerator& materialIdGenerator,
         Eegeo::Rendering::VertexLayouts::VertexBindingPool& vertexBindingPool,
-        const Eegeo::Helpers::GLHelpers::TextureInfo& placeHolderTexture,
+        Eegeo::Rendering::AsyncTexturing::IAsyncTexture& placeHolderTexture,
         Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
         Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController)
 	: GlobeCameraExampleBase(pCameraController, cameraTouchController)
@@ -68,7 +68,7 @@ void ModifiedRenderingExample::Start()
 	                             "ExampleMaterial",
 	                             *m_pAlternativeShader,
 	                             *m_pAlternativeLighting,
-	                             m_placeHolderTexture.textureId,
+	                             m_placeHolderTexture,
 	                             Eegeo::Rendering::TextureMinify_NearestMipmap_Linear,
 	                             false,
 	                             false);
@@ -80,7 +80,7 @@ void ModifiedRenderingExample::Suspend()
 {
 	Eegeo_DELETE(m_pAlternativeMaterial);
 	Eegeo_DELETE(m_pAlternativeShader);
-	Eegeo_DELETE(m_pAlternativeLighting);
+    Eegeo_DELETE(m_pAlternativeLighting);
 
 	// unregister for rendering.
 	m_renderableFilters.RemoveRenderableFilter(*this);

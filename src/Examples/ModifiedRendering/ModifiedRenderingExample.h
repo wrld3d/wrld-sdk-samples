@@ -94,7 +94,7 @@ private:
 	Eegeo::Rendering::Shaders::ShaderIdGenerator& m_shaderIdGenerator;
 	Eegeo::Rendering::Materials::MaterialIdGenerator& m_materialIdGenerator;
     Eegeo::Rendering::VertexLayouts::VertexBindingPool& m_vertexBindingPool;
-	const Eegeo::Helpers::GLHelpers::TextureInfo& m_placeHolderTexture;
+    Eegeo::Rendering::AsyncTexturing::IAsyncTexture& m_placeHolderTexture;
 
 	Eegeo::Lighting::GlobalLighting* m_pAlternativeLighting;
 	Eegeo::Rendering::Shaders::PackedDiffuseShader* m_pAlternativeShader;
@@ -107,22 +107,22 @@ private:
     void PopulateAlternativeRenderablesFromInitialSceneGraph();
 
 public:
-	ModifiedRenderingExample(Eegeo::Rendering::Scene::SceneElementRepository<Eegeo::Rendering::Renderables::PackedRenderable>& buildingRepository,
-	                         Eegeo::Rendering::Filters::PackedRenderableFilter& buildingFilter,
-	                         Eegeo::Rendering::RenderableFilters& renderableFilters,
-	                         Eegeo::Rendering::Shaders::ShaderIdGenerator& shaderIdGenerator,
-	                         Eegeo::Rendering::Materials::MaterialIdGenerator& materialIdGenerator,
+    ModifiedRenderingExample(Eegeo::Rendering::Scene::SceneElementRepository<Eegeo::Rendering::Renderables::PackedRenderable>& buildingRepository,
+                             Eegeo::Rendering::Filters::PackedRenderableFilter& buildingFilter,
+                             Eegeo::Rendering::RenderableFilters& renderableFilters,
+                             Eegeo::Rendering::Shaders::ShaderIdGenerator& shaderIdGenerator,
+                             Eegeo::Rendering::Materials::MaterialIdGenerator& materialIdGenerator,
                              Eegeo::Rendering::VertexLayouts::VertexBindingPool& vertexBindingPool,
-	                         const Eegeo::Helpers::GLHelpers::TextureInfo& placeHolderTexture,
-	                         Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
-	                         Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController
-	                        );
-
-	//ISceneElementObserver interface.
-	typedef Eegeo::Rendering::Scene::SceneElement<Eegeo::Rendering::Renderables::PackedRenderable> TMySceneElement;
-	void OnSceneElementAdded(TMySceneElement& sceneElement);
-	void OnSceneElementRemoved(TMySceneElement& sceneElement);
-
+                             Eegeo::Rendering::AsyncTexturing::IAsyncTexture& placeHolderTexture,
+                             Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
+                             Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController
+                             );
+    
+    //ISceneElementObserver interface.
+    typedef Eegeo::Rendering::Scene::SceneElement<Eegeo::Rendering::Renderables::PackedRenderable> TMySceneElement;
+    void OnSceneElementAdded(TMySceneElement& sceneElement);
+    void OnSceneElementRemoved(TMySceneElement& sceneElement);
+    
 	//IRenderableFilter interface.
 	void EnqueueRenderables(const Eegeo::Rendering::RenderContext& renderContext, Eegeo::Rendering::RenderQueue& renderQueue);
 

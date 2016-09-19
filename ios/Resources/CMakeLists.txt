@@ -1,11 +1,11 @@
 set(resources ${resources}
 		Resources/billboarded_sprite_example
-		Resources/default_water_reflection_cube_map_negX.png
-		Resources/default_water_reflection_cube_map_negY.png
-		Resources/default_water_reflection_cube_map_negZ.png
-		Resources/default_water_reflection_cube_map_posX.png
-		Resources/default_water_reflection_cube_map_posY.png
-		Resources/default_water_reflection_cube_map_posZ.png
+		Resources/placeholder_cube_negX.png
+		Resources/placeholder_cube_negY.png
+		Resources/placeholder_cube_negZ.png
+		Resources/placeholder_cube_posX.png
+		Resources/placeholder_cube_posY.png
+		Resources/placeholder_cube_posZ.png
 		Resources/DejaVuSansBold.fnt
 		Resources/DejaVuSansBold_0.png
 		Resources/embedded_manifest.bin
@@ -22,6 +22,6 @@ set(resources ${resources}
 		Resources/route_simulation_animation_example
 		Resources/route_simulation_example
 		Resources/SplashScreen-1024x768.png
-		Resources/Textures
+		Resources/EmbeddedTheme
 		ExampleApp/Images.xcassets
 )
