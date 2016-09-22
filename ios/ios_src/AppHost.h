@@ -22,6 +22,7 @@
 #include "iOSExampleControllerView.h"
 #include "iOSRouteMatchingExampleViewFactory.h"
 #include "iOSRouteSimulationExampleViewFactory.h"
+#include "iOSRoutingServiceExampleViewFactory.h"
 
 @class ViewController;
 class AppInputDelegate;
@@ -67,6 +68,7 @@ private:
 	Examples::iOSExampleControllerView* m_piOSExampleControllerView;
 	Examples::iOSRouteMatchingExampleViewFactory* m_piOSRouteMatchingExampleViewFactory;
 	Examples::iOSRouteSimulationExampleViewFactory* m_piOSRouteSimulationExampleViewFactory;
+    Examples::iOSRoutingServiceExampleViewFactory* m_piOSRoutingServiceExampleViewFactory;
     
     void ConfigureExamples(const Eegeo::Rendering::ScreenProperties& screenProperties);
 	void DestroyExamples();

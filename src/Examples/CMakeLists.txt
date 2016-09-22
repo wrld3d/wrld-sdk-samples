@@ -1,4 +1,4 @@
-set(headers ${headers} ../src/Examples
+set(headers ${headers} ../src/Examples/
 )
 set(currsources
   ../src/Examples/ApiKey.h
@@ -49,6 +49,7 @@ include(../src/Examples/RouteMatching/CMakeLists.txt)
 include(../src/Examples/RouteSimulation/CMakeLists.txt)
 include(../src/Examples/RouteSimulationAnimation/CMakeLists.txt)
 include(../src/Examples/RouteThicknessPolicy/CMakeLists.txt)
+include(../src/Examples/RoutingService/CMakeLists.txt)
 include(../src/Examples/ScreenPick/CMakeLists.txt)
 include(../src/Examples/ScreenUnproject/CMakeLists.txt)
 include(../src/Examples/SingleCity/CMakeLists.txt)
@@ -57,3 +58,5 @@ include(../src/Examples/ToggleTraffic/CMakeLists.txt)
 include(../src/Examples/TrafficCongestion/CMakeLists.txt)
 include(../src/Examples/UI/CMakeLists.txt)
 include(../src/Examples/WebRequest/CMakeLists.txt)
+
+include(../src/Examples/Interiors/CMakeLists.txt)

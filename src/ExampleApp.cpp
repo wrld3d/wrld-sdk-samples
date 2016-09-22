@@ -38,6 +38,7 @@
 #include "RouteDrawingExampleFactory.h"
 #include "RouteSimulationAnimationExampleFactory.h"
 #include "RouteThicknessPolicyExampleFactory.h"
+#include "RoutingServiceExampleFactory.h"
 #include "ScreenPickExampleFactory.h"
 #include "ScreenUnprojectExampleFactory.h"
 #include "SingleCityExampleFactory.h"
@@ -53,6 +54,12 @@
 #include "BuildingSelectionExampleFactory.h"
 #include "RemoveMapLayerExampleFactory.h"
 #include "BillboardedSpriteExampleFactory.h"
+#include "RoutingServiceExampleFactory.h"
+#include "GlobeCameraControllerFactory.h"
+#include "InteriorsCameraConfiguration.h"
+#include "InteriorsCameraControllerFactory.h"
+#include "InteriorsCameraController.h"
+#include "InteriorSelectionModel.h"
 
 namespace
 {
@@ -84,9 +91,6 @@ namespace
     }
 }
 
-
-
-
 ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
                        Examples::IExampleControllerView& view,
                        const Eegeo::Rendering::ScreenProperties& screenProperties,
@@ -110,7 +114,7 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
 
     Eegeo::Modules::Map::MapModule& mapModule = eegeoWorld.GetMapModule();
     Eegeo::Modules::Map::Layers::TerrainModelModule& terrainModelModule = eegeoWorld.GetTerrainModelModule();
-    
+        
     const bool twoFingerPanTiltEnabled = true;
     const float interestPointLatitudeDegrees = 37.7858f;
     const float interestPointLongitudeDegrees = -122.401f;
@@ -137,6 +141,36 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
                                                            view,
                                                            *m_pCameraControllerFactory,
                                                            *m_pCameraTouchController);
+    
+    Eegeo::Modules::Map::Layers::InteriorsPresentationModule& interiorsPresentationModule = mapModule.GetInteriorsPresentationModule();
+    
+    
+    m_pGlobeCameraControllerFactory = new Eegeo::Camera::GlobeCamera::GlobeCameraControllerFactory(mapModule.GetTerrainModelModule().GetTerrainHeightProvider(),
+                                                                                                          mapModule.GetEnvironmentFlatteningService(),
+                                                                                                          mapModule.GetResourceCeilingProvider());
+    
+    const Eegeo::Resources::Interiors::InteriorsCameraConfiguration& interiorsCameraConfig = Eegeo::Resources::Interiors::InteriorsCameraController::CreateDefaultConfig();
+    const Eegeo::Camera::GlobeCamera::GlobeCameraControllerConfiguration& globeCameraConfig = Eegeo::Resources::Interiors::InteriorsCameraControllerFactory::DefaultGlobeCameraControllerConfiguration();
+    const Eegeo::Camera::GlobeCamera::GlobeCameraTouchControllerConfiguration& globeCameraTouchConfig = Eegeo::Resources::Interiors::InteriorsCameraControllerFactory::DefaultGlobeCameraTouchControllerConfiguration();
+    
+    m_pInteriorCameraControllerFactory = new Eegeo::Resources::Interiors::InteriorsCameraControllerFactory(interiorsCameraConfig,
+                                                                                                                  globeCameraConfig,
+                                                                                                                  globeCameraTouchConfig,
+                                                                                                                  *m_pGlobeCameraControllerFactory,
+                                                                                                                  screenProperties,
+                                                                                                                  interiorsPresentationModule.GetInteriorInteractionModel(),
+                                                                                                                  interiorsPresentationModule.GetInteriorViewModel(),
+                                                                                                                  mapModule.GetEnvironmentFlatteningService(),
+                                                                                                                  false );
+    
+    m_pInteriorModule = new Eegeo::Interiors::ExampleInteriorModule(
+                                  mapModule.GetInteriorsModelModule(),
+                                  mapModule.GetInteriorsPresentationModule(),
+                                  *m_pInteriorCameraControllerFactory,
+                                  mapModule.GetStreamingVolume(),
+                                  m_screenPropertiesProvider.GetScreenProperties());
+    
+    m_pInteriorModule->UpdateScreenProperties(screenProperties);
 
 	//register all generic examples
     m_pExampleController->RegisterCameraExample<Examples::BillboardedSpriteExampleFactory>();
@@ -190,6 +224,9 @@ ExampleApp::~ExampleApp()
 	delete m_pCameraTouchController;
     delete m_pLoadingScreen;
     delete m_pExampleController;
+    delete m_pGlobeCameraControllerFactory;
+    delete m_pInteriorCameraControllerFactory;
+    delete m_pInteriorModule;
 }
 
 void ExampleApp::OnPause()
@@ -206,14 +243,15 @@ void ExampleApp::OnResume()
 
 void ExampleApp::Update (float dt)
 {
-	Eegeo::EegeoWorld& eegeoWorld = World();
+    Eegeo::EegeoWorld& eegeoWorld = World();
     
     m_pCameraTouchController->Update(dt);
 
 	eegeoWorld.EarlyUpdate(dt);
     
-	m_pExampleController->EarlyUpdate(dt);
+    m_pExampleController->EarlyUpdate(dt);
     
+    m_pInteriorModule->Update(dt);
     Eegeo::Camera::CameraState cameraState(m_pExampleController->GetCurrentCameraState());
     Eegeo::Streaming::IStreamingVolume& streamingVolume(m_pExampleController->GetCurrentStreamingVolume());
     
@@ -266,6 +304,7 @@ void ExampleApp::NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenPro
     }
     
     m_pExampleController->NotifyScreenPropertiesChanged(screenProperties);
+    m_pInteriorModule->UpdateScreenProperties(screenProperties);
 }
 
 void ExampleApp::UpdateLoadingScreen(float dt)

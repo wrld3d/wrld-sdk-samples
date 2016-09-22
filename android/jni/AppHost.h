@@ -34,6 +34,7 @@
 #include "AndroidSharedGlContext.h"
 #include "AndroidRouteMatchingExampleViewFactory.h"
 #include "AndroidRouteSimulationExampleViewFactory.h"
+#include "AndroidRoutingServiceExampleViewFactory.h"
 #include "ExampleCameraJumpController.h"
 
 class AppHost : protected Eegeo::NonCopyable
@@ -87,6 +88,7 @@ private:
 	Examples::AndroidExampleControllerView* m_pAndroidExampleControllerView;
 	Examples::AndroidRouteMatchingExampleViewFactory* m_pAndroidRouteMatchingExampleViewFactory;
 	Examples::AndroidRouteSimulationExampleViewFactory* m_pAndroidRouteSimulationExampleViewFactory;
+	Examples::AndroidRoutingServiceExampleViewFactory* m_pAndroidRoutingServiceExampleViewFactory;
 
 	Eegeo::Android::Input::AndroidInputProcessor* m_pInputProcessor;
 

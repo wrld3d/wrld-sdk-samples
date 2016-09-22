@@ -21,6 +21,7 @@
 #include "ScreenProperties.h"
 #include "BuildingFootprintsModule.h"
 #include "CollisionVisualizationModule.h"
+#include "RoutingServiceExampleFactory.h"
 
 namespace
 {
@@ -195,6 +196,14 @@ void AppHost::ConfigureExamples(const Eegeo::Rendering::ScreenProperties& screen
 
 void AppHost::RegisteriOSSpecificExamples()
 {
+    m_piOSRoutingServiceExampleViewFactory = new Examples::iOSRoutingServiceExampleViewFactory([&m_viewController view]);
+    
+    m_pApp->GetExampleController().RegisterExample(new Examples::RoutingServiceExampleFactory(
+                                                                                              *m_pWorld,
+                                                                                              m_pApp->GetDefaultCameraControllerFactory(),
+                                                                                              m_pApp->GetTouchController(),
+                                                                                              *m_piOSRoutingServiceExampleViewFactory));
+    
 	m_piOSRouteMatchingExampleViewFactory = new Examples::iOSRouteMatchingExampleViewFactory([&m_viewController view]);
 
 
@@ -219,6 +228,7 @@ void AppHost::DestroyExamples()
 {
 	delete m_piOSRouteMatchingExampleViewFactory;
 	delete m_piOSRouteSimulationExampleViewFactory;
+    delete m_piOSRoutingServiceExampleViewFactory;
 
 	delete m_piOSExampleControllerView;
 }

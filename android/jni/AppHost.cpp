@@ -16,6 +16,7 @@
 #include "AndroidLocationService.h"
 #include "RouteMatchingExampleFactory.h"
 #include "RouteSimulationExampleFactory.h"
+#include "RoutingServiceExampleFactory.h"
 #include "JavaHudCrossThreadCommunicationExampleFactory.h"
 #include "PinsWithAttachedJavaUIExampleFactory.h"
 #include "PositionJavaPinButtonExampleFactory.h"
@@ -266,6 +267,16 @@ void AppHost::RegisterAndroidSpecificExamples()
 	        m_pApp->GetTouchController(),
 	        m_pApp->GetScreenPropertiesProvider(),
 	        *m_pAndroidRouteSimulationExampleViewFactory));
+
+	m_pAndroidRoutingServiceExampleViewFactory = new Examples::AndroidRoutingServiceExampleViewFactory(
+		    m_nativeState);
+
+	exampleController.RegisterExample(new Examples::RoutingServiceExampleFactory(
+			*m_pWorld,
+			m_pApp->GetDefaultCameraControllerFactory(),
+			m_pApp->GetTouchController(),
+			*m_pAndroidRoutingServiceExampleViewFactory));
+
 
 	exampleController.RegisterExample(new Examples::JavaHudCrossThreadCommunicationExampleFactory(
 			*m_pWorld,

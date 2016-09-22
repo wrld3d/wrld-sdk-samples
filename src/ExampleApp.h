@@ -9,7 +9,7 @@
 #include "ScreenProperties.h"
 #include "DefaultCameraControllerFactory.h"
 #include "Modules.h"
-
+#include "ExampleInteriorModule.h"
 
 class ExampleApp : private Eegeo::NonCopyable
 {
@@ -20,7 +20,9 @@ private:
     Eegeo::Rendering::LoadingScreen* m_pLoadingScreen;
 	Examples::ExampleController* m_pExampleController;
     Examples::ScreenPropertiesProvider m_screenPropertiesProvider;
-    
+    Eegeo::Interiors::ExampleInteriorModule* m_pInteriorModule;
+    Eegeo::Resources::Interiors::InteriorsCameraControllerFactory* m_pInteriorCameraControllerFactory;
+    Eegeo::Camera::GlobeCamera::GlobeCameraControllerFactory* m_pGlobeCameraControllerFactory;
 
 	Eegeo::EegeoWorld& World()
 	{

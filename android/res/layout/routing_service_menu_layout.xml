@@ -1,0 +1,36 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/example_ui_menu">
+
+    <RelativeLayout
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    android:paddingTop="16dp"
+	    android:paddingLeft="16dp"
+	    android:paddingRight="16dp" >
+	    
+	    <Button
+	        android:id="@+id/move_down"
+	        android:layout_width="96dp"
+	        android:layout_height="wrap_content"
+	        android:text="Move Down"
+      		android:layout_alignParentLeft="true"
+     		android:layout_alignParentBottom="true" />
+	    <Button
+	        android:id="@+id/move_up"
+	        android:layout_width="96dp"
+	        android:layout_height="wrap_content"
+	        android:layout_above="@+id/move_down"
+	        android:text="Move Up" />
+	    <Button
+	        android:id="@+id/get_route"
+	        android:layout_width="96dp"
+	        android:layout_height="wrap_content"
+	        android:layout_above="@+id/move_up"
+	        android:text="Get Route" />
+
+	</RelativeLayout>
+	
+</RelativeLayout>
