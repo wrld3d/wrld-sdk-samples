@@ -3,82 +3,99 @@
 #ifndef __ExampleApp__ExampleApp__
 #define __ExampleApp__ExampleApp__
 
-#include "GlobeCamera.h"
+#include "DefaultCameraControllerFactory.h"
 #include "EegeoWorld.h"
 #include "ExampleController.h"
-#include "ScreenProperties.h"
-#include "DefaultCameraControllerFactory.h"
+#include "GlobeCamera.h"
 #include "Modules.h"
 #include "ExampleInteriorModule.h"
+#include "VRCardboardController.h"
+#include "ScreenProperties.h"
+#include "IVRModeTracker.h"
 
 class ExampleApp : private Eegeo::NonCopyable
 {
-private:
-    Examples::DefaultCameraControllerFactory* m_pCameraControllerFactory;
-	Eegeo::Camera::GlobeCamera::GlobeCameraTouchController* m_pCameraTouchController;
-	Eegeo::EegeoWorld* m_pWorld;
-    Eegeo::Rendering::LoadingScreen* m_pLoadingScreen;
-	Examples::ExampleController* m_pExampleController;
-    Examples::ScreenPropertiesProvider m_screenPropertiesProvider;
-    Eegeo::Interiors::ExampleInteriorModule* m_pInteriorModule;
-    Eegeo::Resources::Interiors::InteriorsCameraControllerFactory* m_pInteriorCameraControllerFactory;
-    Eegeo::Camera::GlobeCamera::GlobeCameraControllerFactory* m_pGlobeCameraControllerFactory;
+    private:
 
-	Eegeo::EegeoWorld& World()
-	{
-		return * m_pWorld;
-	}
+        Examples::DefaultCameraControllerFactory* m_pCameraControllerFactory;
+        Eegeo::Camera::GlobeCamera::GlobeCameraTouchController* m_pCameraTouchController;
+        Eegeo::EegeoWorld* m_pWorld;
+        Eegeo::Rendering::LoadingScreen* m_pLoadingScreen;
+        Examples::ExampleController* m_pExampleController;
+        Examples::ScreenPropertiesProvider m_screenPropertiesProvider;
+        Eegeo::Interiors::ExampleInteriorModule* m_pInteriorModule;
+        Eegeo::Resources::Interiors::InteriorsCameraControllerFactory* m_pInteriorCameraControllerFactory;
+        Eegeo::Camera::GlobeCamera::GlobeCameraControllerFactory* m_pGlobeCameraControllerFactory;
+        Examples::IVRModeTracker& m_vrModeTracker;
+        Eegeo::VR::VRCardboardController* m_vrCardboardController;
+
+
+        int m_lastMenuItemSelected;
+        int m_worldMenuItemSelected;
+
+        Eegeo::EegeoWorld& World()
+        {
+            return * m_pWorld;
+        }
+
+        void UpdateLoadingScreen(float dt);
     
-    void UpdateLoadingScreen(float dt);
+    public:
 
-public:
-	ExampleApp(Eegeo::EegeoWorld* pWorld,
-	           Examples::IExampleControllerView& view,
-               const Eegeo::Rendering::ScreenProperties& screenProperties,
-               Eegeo::Modules::CollisionVisualizationModule& collisionVisualizationModule,
-               Eegeo::Modules::BuildingFootprintsModule& buildingFootprintsModule);
+        ExampleApp(Eegeo::EegeoWorld* pWorld,
+        Eegeo::Config::DeviceSpec deviceSpecs,
+        Examples::IExampleControllerView& view,
+        Examples::IVRModeTracker& vrModeTracker,
+        const Eegeo::Rendering::ScreenProperties& screenProperties,
+        Eegeo::Modules::CollisionVisualizationModule& collisionVisualizationModule,
+        Eegeo::Modules::BuildingFootprintsModule& buildingFootprintsModule);
 
-	~ExampleApp();
+        ~ExampleApp();
 
-	void OnPause();
+        void OnPause();
 
-	void OnResume();
+        void OnResume();
 
-	void Update (float dt);
+        void Update (float dt, float headTransform[]);
 
-	void Draw (float dt);
-    
-    void NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties);
-    
-    Examples::ExampleController& GetExampleController() const { return *m_pExampleController; }
-    
-    Examples::DefaultCameraControllerFactory& GetDefaultCameraControllerFactory() const { return *m_pCameraControllerFactory; }
+        void Draw (float dt);
 
-	Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& GetTouchController()
-	{
-		return *m_pCameraTouchController;
-	}
-    
-    const Examples::IScreenPropertiesProvider& GetScreenPropertiesProvider() const { return m_screenPropertiesProvider; }
+        void AppUpdate(float dt, const Eegeo::Camera::CameraState& cameraState, Eegeo::EegeoWorld& eegeoWorld);
+        void UpdateCardboardProfile(const float cardboardProfile[]);
+        void MagnetTriggered();
+        void DrawLoadingScreen ();
 
-	void Event_TouchRotate 			(const AppInterface::RotateData& data);
-	void Event_TouchRotate_Start	(const AppInterface::RotateData& data);
-	void Event_TouchRotate_End 		(const AppInterface::RotateData& data);
+        void NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties);
 
-	void Event_TouchPinch 			(const AppInterface::PinchData& data);
-	void Event_TouchPinch_Start 	(const AppInterface::PinchData& data);
-	void Event_TouchPinch_End 		(const AppInterface::PinchData& data);
+        Examples::ExampleController& GetExampleController() const { return *m_pExampleController; }
 
-	void Event_TouchPan				(const AppInterface::PanData& data);
-	void Event_TouchPan_Start		(const AppInterface::PanData& data);
-	void Event_TouchPan_End 		(const AppInterface::PanData& data);
+        Examples::DefaultCameraControllerFactory& GetDefaultCameraControllerFactory() const { return *m_pCameraControllerFactory; }
 
-	void Event_TouchTap 			(const AppInterface::TapData& data);
-	void Event_TouchDoubleTap		(const AppInterface::TapData& data);
+        Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& GetTouchController()
+        {
+            return *m_pCameraTouchController;
+        }
 
-	void Event_TouchDown 			(const AppInterface::TouchData& data);
-	void Event_TouchMove 			(const AppInterface::TouchData& data);
-	void Event_TouchUp 				(const AppInterface::TouchData& data);
+        const Examples::IScreenPropertiesProvider& GetScreenPropertiesProvider() const { return m_screenPropertiesProvider; }
+
+        void Event_TouchRotate 			(const AppInterface::RotateData& data);
+        void Event_TouchRotate_Start	(const AppInterface::RotateData& data);
+        void Event_TouchRotate_End 		(const AppInterface::RotateData& data);
+
+        void Event_TouchPinch 			(const AppInterface::PinchData& data);
+        void Event_TouchPinch_Start 	(const AppInterface::PinchData& data);
+        void Event_TouchPinch_End 		(const AppInterface::PinchData& data);
+
+        void Event_TouchPan				(const AppInterface::PanData& data);
+        void Event_TouchPan_Start		(const AppInterface::PanData& data);
+        void Event_TouchPan_End 		(const AppInterface::PanData& data);
+
+        void Event_TouchTap 			(const AppInterface::TapData& data);
+        void Event_TouchDoubleTap		(const AppInterface::TapData& data);
+
+        void Event_TouchDown 			(const AppInterface::TouchData& data);
+        void Event_TouchMove 			(const AppInterface::TouchData& data);
+        void Event_TouchUp 				(const AppInterface::TouchData& data);
 };
 
 #endif /* defined(__ExampleApp__ExampleApp__) */

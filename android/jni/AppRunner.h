@@ -20,9 +20,12 @@ public:
 	void Pause();
 	void Resume();
 	void ActivateSurface();
-	void Update(float deltaSeconds);
+	void Update(float deltaSeconds, float headTransform[]);
 
 	void HandleTouchEvent(const Eegeo::Android::Input::TouchInputEvent& message);
+
+	void UpdateCardboardProfile(float cardboardProfile[]);
+	void MagnetTriggered();
 
 private:
 	const std::string& m_apiKey;
