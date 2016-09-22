@@ -153,6 +153,10 @@ void ExampleController::Draw()
 	}
 }
 
+void ExampleController::UpdateCardboardProfile(const float cardboardProfile[]){
+    m_pCurrentExample->UpdateCardboardProfile(cardboardProfile);
+}
+
 void ExampleController::RegisterExample(IExampleFactory* pFactory)
 {
 	Eegeo_ASSERT(pFactory != NULL);
@@ -168,7 +172,12 @@ void ExampleController::DestroyCurrentExample()
 		m_pCurrentExample = NULL;
 	}
 }
-    
+
+Eegeo::Camera::RenderCamera& ExampleController::GetRenderCamera()
+{
+    return m_pCurrentExample->GetRenderCamera();
+}
+
 Eegeo::Camera::CameraState ExampleController::GetCurrentCameraState() const
 {
     return m_pCurrentExample->GetCurrentCameraState();

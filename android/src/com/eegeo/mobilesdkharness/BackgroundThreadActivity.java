@@ -2,13 +2,17 @@
 
 package com.eegeo.mobilesdkharness;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
 import android.util.DisplayMetrics;
 import android.view.SurfaceHolder;
-import android.app.Activity;
+import android.view.View;
+import android.view.WindowManager;
 
 
 public class BackgroundThreadActivity extends MainActivity
@@ -18,6 +22,8 @@ public class BackgroundThreadActivity extends MainActivity
 	private long m_nativeAppWindowPtr;
 	private ThreadedUpdateRunner m_threadedRunner;
 	private Thread m_updater;
+	private boolean m_isInVRMode;
+	private VRModule m_vrModule;
 
 	static {
 		System.loadLibrary("eegeo-sdk-samples");
@@ -33,6 +39,8 @@ public class BackgroundThreadActivity extends MainActivity
 		m_surfaceView = (EegeoSurfaceView)findViewById(R.id.surface);
 		m_surfaceView.getHolder().addCallback(this);
 		m_surfaceView.setActivity(this);
+
+		m_vrModule = new VRModule(this);
 
 		DisplayMetrics dm = getResources().getDisplayMetrics();
 		final float dpi = dm.ydpi;
@@ -57,6 +65,37 @@ public class BackgroundThreadActivity extends MainActivity
 			}
 		});
 	}
+	
+	@SuppressLint("InlinedApi") 
+	private void setScreenSettings(){
+		
+			getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+		if(android.os.Build.VERSION.SDK_INT<16)
+			getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+		else if(android.os.Build.VERSION.SDK_INT<19)
+			getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_FULLSCREEN);
+		else
+			getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY | View.SYSTEM_UI_FLAG_FULLSCREEN);
+		
+	}
+	
+	public void enterVRMode()
+	{
+		if(!m_isInVRMode)
+		{
+			this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+			m_isInVRMode = true;
+		}
+	}
+	
+	public void exitVRMode()
+	{
+		if(m_isInVRMode)
+		{
+			this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+			m_isInVRMode = false;
+		}
+	}
 
 	public void runOnNativeThread(Runnable runnable)
 	{
@@ -68,6 +107,8 @@ public class BackgroundThreadActivity extends MainActivity
 	{
 		super.onResume();
 		
+		setScreenSettings();
+		
 		runOnNativeThread(new Runnable()
 		{
 			public void run()
@@ -78,6 +119,7 @@ public class BackgroundThreadActivity extends MainActivity
 				if(m_surfaceHolder != null && m_surfaceHolder.getSurface() != null)
 				{
 					NativeJniCalls.setNativeSurface(m_surfaceHolder.getSurface());
+					NativeJniCalls.updateCardboardProfile(m_vrModule.getUpdatedCardboardProfile());
 				}
 			}
 		});
@@ -102,7 +144,7 @@ public class BackgroundThreadActivity extends MainActivity
 	protected void onDestroy()
 	{
 		super.onDestroy();
-		
+		m_vrModule.stopTracker();
 		runOnNativeThread(new Runnable()
 		{
 			public void run()
@@ -150,6 +192,7 @@ public class BackgroundThreadActivity extends MainActivity
 				{
 					NativeJniCalls.setNativeSurface(m_surfaceHolder.getSurface());
 					m_threadedRunner.start();
+					NativeJniCalls.updateCardboardProfile(m_vrModule.getUpdatedCardboardProfile());
 				}
 			}
 		});
@@ -222,7 +265,7 @@ public class BackgroundThreadActivity extends MainActivity
 						{
 							if(m_running)
 							{
-								NativeJniCalls.updateNativeCode(deltaSeconds);
+								m_vrModule.updateNativeCode(deltaSeconds);
 							}
 							else
 							{
@@ -239,5 +282,6 @@ public class BackgroundThreadActivity extends MainActivity
 				Looper.loop();
 			}
 		}
+		
 	}
 }

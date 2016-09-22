@@ -12,5 +12,7 @@ public class NativeJniCalls
 	public static native void pauseNativeCode();
 	public static native void resumeNativeCode();
 	public static native void setNativeSurface(Surface surface);
-	public static native void updateNativeCode(float deltaTimeSeconds);
+	public static native void updateNativeCode(float deltaTimeSeconds, float[] headTransform);
+	public static native void updateCardboardProfile(float[] profileParams);
+	public static native void magnetTriggered();
 }

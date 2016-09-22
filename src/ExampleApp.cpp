@@ -60,12 +60,14 @@
 #include "InteriorsCameraControllerFactory.h"
 #include "InteriorsCameraController.h"
 #include "InteriorSelectionModel.h"
+#include "VRCardboardExampleFactory.h"
 
 namespace
 {
     Eegeo::Rendering::LoadingScreen* CreateLoadingScreen(const Eegeo::Rendering::ScreenProperties& screenProperties,
                                                          const Eegeo::Modules::Core::RenderingModule& renderingModule,
-                                                         const Eegeo::Modules::IPlatformAbstractionModule& platformAbstractionModule)
+                                                         const Eegeo::Modules::IPlatformAbstractionModule&
+platformAbstractionModule)
     {
         Eegeo::Rendering::LoadingScreenConfig loadingScreenConfig;
         loadingScreenConfig.loadingBarBackgroundColor = Eegeo::v4(0.45f, 0.7f, 1.0f, 1.0f);
@@ -75,7 +77,6 @@ namespace
         loadingScreenConfig.backgroundColor = Eegeo::v4(132.f/255.f, 203.f/255.f, 235.f/255.f, 1.f);
         loadingScreenConfig.loadingBarOffset = Eegeo::v2(0.5f, 0.1f);
         loadingScreenConfig.layout = Eegeo::Rendering::LoadingScreenLayout::Centred;
-       
         
         Eegeo::Rendering::LoadingScreen* loadingScreen = Eegeo::Rendering::LoadingScreen::Create(
             "SplashScreen-1024x768.png",
@@ -86,31 +87,34 @@ namespace
             renderingModule.GetVertexLayoutPool(),
             renderingModule.GetVertexBindingPool(),
             platformAbstractionModule.GetTextureFileLoader());
-            
+
         return loadingScreen;
     }
 }
 
 ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
-                       Examples::IExampleControllerView& view,
-                       const Eegeo::Rendering::ScreenProperties& screenProperties,
-                       Eegeo::Modules::CollisionVisualizationModule& collisionVisualizationModule,
-                       Eegeo::Modules::BuildingFootprintsModule& buildingFootprintsModule)
+		Eegeo::Config::DeviceSpec deviceSpecs,
+		Examples::IExampleControllerView& view,
+		Examples::IVRModeTracker& vrModeTracker,
+		const Eegeo::Rendering::ScreenProperties& screenProperties,
+		Eegeo::Modules::CollisionVisualizationModule& collisionVisualizationModule,
+		Eegeo::Modules::BuildingFootprintsModule& buildingFootprintsModule)
 	: m_pCameraControllerFactory(NULL)
 	, m_pCameraTouchController(NULL)
 	, m_pWorld(pWorld)
-    , m_pLoadingScreen(NULL)
+	, m_vrModeTracker(vrModeTracker)
+	, m_pLoadingScreen(NULL)
 	, m_pExampleController(NULL)
-    , m_screenPropertiesProvider(screenProperties)
+	, m_screenPropertiesProvider(screenProperties)
 {
-	Eegeo::EegeoWorld& eegeoWorld = *pWorld;
+    Eegeo::EegeoWorld& eegeoWorld = *pWorld;
 
-	Eegeo::Camera::GlobeCamera::GlobeCameraTouchControllerConfiguration touchControllerConfig = Eegeo::Camera::GlobeCamera::GlobeCameraTouchControllerConfiguration::CreateDefault();
+    Eegeo::Camera::GlobeCamera::GlobeCameraTouchControllerConfiguration touchControllerConfig = Eegeo::Camera::GlobeCamera::GlobeCameraTouchControllerConfiguration::CreateDefault();
 
-	m_pCameraTouchController = new Eegeo::Camera::GlobeCamera::GlobeCameraTouchController(touchControllerConfig, m_screenPropertiesProvider.GetScreenProperties());
+    m_pCameraTouchController = new Eegeo::Camera::GlobeCamera::GlobeCameraTouchController(touchControllerConfig, m_screenPropertiesProvider.GetScreenProperties());
 
-	const bool useLowSpecSettings = false;
-	Eegeo::Camera::GlobeCamera::GlobeCameraControllerConfiguration globeCameraControllerConfig = Eegeo::Camera::GlobeCamera::GlobeCameraControllerConfiguration::CreateDefault(useLowSpecSettings);
+    const bool useLowSpecSettings = false;
+    Eegeo::Camera::GlobeCamera::GlobeCameraControllerConfiguration globeCameraControllerConfig = Eegeo::Camera::GlobeCamera::GlobeCameraControllerConfiguration::CreateDefault(useLowSpecSettings);
 
     Eegeo::Modules::Map::MapModule& mapModule = eegeoWorld.GetMapModule();
     Eegeo::Modules::Map::Layers::TerrainModelModule& terrainModelModule = eegeoWorld.GetTerrainModelModule();
@@ -121,19 +125,19 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     const float interestPointAltitudeMeters = 2.7f;
     const float cameraControllerOrientationDegrees = 0.0f;
     const float cameraControllerDistanceFromInterestPointMeters = 1781.0f;
-    
+
     m_pCameraControllerFactory = new Examples::DefaultCameraControllerFactory(
-                                                                    terrainModelModule,
-                                                                    mapModule,
-                                                                    *m_pCameraTouchController,
-                                                                    m_screenPropertiesProvider,
-                                                                    globeCameraControllerConfig,
-                                                                    twoFingerPanTiltEnabled,
-                                                                    interestPointLatitudeDegrees,
-                                                                    interestPointLongitudeDegrees,
-                                                                    interestPointAltitudeMeters,
-                                                                    cameraControllerOrientationDegrees,
-                                                                    cameraControllerDistanceFromInterestPointMeters);
+    		terrainModelModule,
+			mapModule,
+			*m_pCameraTouchController,
+			m_screenPropertiesProvider,
+			globeCameraControllerConfig,
+			twoFingerPanTiltEnabled,
+			interestPointLatitudeDegrees,
+			interestPointLongitudeDegrees,
+			interestPointAltitudeMeters,
+			cameraControllerOrientationDegrees,
+			cameraControllerDistanceFromInterestPointMeters);
     
     m_pLoadingScreen = CreateLoadingScreen(screenProperties, eegeoWorld.GetRenderingModule(), eegeoWorld.GetPlatformAbstractionModule());
     
@@ -172,126 +176,153 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     
     m_pInteriorModule->UpdateScreenProperties(screenProperties);
 
-	//register all generic examples
+	m_vrCardboardController = new Eegeo::VR::VRCardboardController(m_pWorld, m_screenPropertiesProvider, mapModule, deviceSpecs, m_pExampleController);
+
+    //register all generic examples
     m_pExampleController->RegisterCameraExample<Examples::BillboardedSpriteExampleFactory>();
     m_pExampleController->RegisterCameraExample<Examples::BuildingHighlightExampleFactory>();
     m_pExampleController->RegisterExample(Eegeo_NEW(Examples::BuildingSelectionExampleFactory)(World(),
-                                                                                               *m_pCameraControllerFactory,
-                                                                                               *m_pCameraTouchController,
-                                                                                               collisionVisualizationModule,
-                                                                                               buildingFootprintsModule));
+    *m_pCameraControllerFactory,
+    *m_pCameraTouchController,
+    collisionVisualizationModule,
+    buildingFootprintsModule));
     m_pExampleController->RegisterScreenPropertiesProviderExample<Examples::CameraSplineExampleFactory>(m_screenPropertiesProvider);
     m_pExampleController->RegisterCameraExample<Examples::CameraTransitionExampleFactory>();
     m_pExampleController->RegisterCameraExample<Examples::ControlCityThemeExampleFactory>();
     m_pExampleController->RegisterCameraExample<Examples::DebugPrimitiveRenderingExampleFactory>();
     // TODO: Completely remove DebugSphere example as we should be using DebugRenderer now
-	//m_pExampleController->RegisterCameraExample<Examples::DebugSphereExampleFactory>();
-	m_pExampleController->RegisterCameraExample<Examples::DynamicText3DExampleFactory>();
-	m_pExampleController->RegisterCameraExample<Examples::EnvironmentFlatteningExampleFactory>();
-	m_pExampleController->RegisterCameraExample<Examples::EnvironmentNotifierExampleFactory>();
+    //m_pExampleController->RegisterCameraExample<Examples::DebugSphereExampleFactory>();
+    m_pExampleController->RegisterCameraExample<Examples::DynamicText3DExampleFactory>();
+    m_pExampleController->RegisterCameraExample<Examples::EnvironmentFlatteningExampleFactory>();
+    m_pExampleController->RegisterCameraExample<Examples::EnvironmentNotifierExampleFactory>();
     m_pExampleController->RegisterCameraExample<Examples::EnvironmentRayCasterExampleFactory>();
-	m_pExampleController->RegisterCameraExample<Examples::FileIOExampleFactory>();
+    m_pExampleController->RegisterCameraExample<Examples::FileIOExampleFactory>();
     m_pExampleController->RegisterCameraExample<Examples::FireworksExampleFactory>();
     m_pExampleController->RegisterCameraExample<Examples::GeofenceExampleFactory>();
     m_pExampleController->RegisterCameraExample<Examples::HeatmapExampleFactory>();
-	m_pExampleController->RegisterCameraExample<Examples::LoadModelExampleFactory>();
+    m_pExampleController->RegisterCameraExample<Examples::LoadModelExampleFactory>();
     m_pExampleController->RegisterCameraExample<Examples::MeshExampleFactory>();
-	m_pExampleController->RegisterCameraExample<Examples::ModifiedRenderingExampleFactory>();
-	m_pExampleController->RegisterCameraExample<Examples::NavigationGraphExampleFactory>();
-	m_pExampleController->RegisterCameraExample<Examples::Pick3DObjectExampleFactory>();
-	m_pExampleController->RegisterCameraControllerScreenPropertiesProviderExample<Examples::PinsExampleFactory>(m_screenPropertiesProvider);
-	m_pExampleController->RegisterCameraControllerScreenPropertiesProviderExample<Examples::PinOverModelExampleFactory>(m_screenPropertiesProvider  );
-	m_pExampleController->RegisterCameraExample<Examples::PODAnimationExampleFactory>();
+    m_pExampleController->RegisterCameraExample<Examples::ModifiedRenderingExampleFactory>();
+    m_pExampleController->RegisterCameraExample<Examples::NavigationGraphExampleFactory>();
+    m_pExampleController->RegisterCameraExample<Examples::Pick3DObjectExampleFactory>();
+    m_pExampleController->RegisterCameraControllerScreenPropertiesProviderExample<Examples::PinsExampleFactory>(m_screenPropertiesProvider);
+    m_pExampleController->RegisterCameraControllerScreenPropertiesProviderExample<Examples::PinOverModelExampleFactory>(m_screenPropertiesProvider  );
+    m_pExampleController->RegisterCameraExample<Examples::PODAnimationExampleFactory>();
     m_pExampleController->RegisterCameraExample<Examples::PolyChartExampleFactory>();
-	m_pExampleController->RegisterCameraExample<Examples::ReadHeadingExampleFactory>();
+    m_pExampleController->RegisterCameraExample<Examples::ReadHeadingExampleFactory>();
     m_pExampleController->RegisterCameraExample<Examples::RemoveMapLayerExampleFactory>();
-	m_pExampleController->RegisterCameraExample<Examples::ResourceSpatialQueryExampleFactory>();
-	m_pExampleController->RegisterCameraExample<Examples::RouteDrawingExampleFactory>();
-	m_pExampleController->RegisterCameraControllerScreenPropertiesProviderExample<Examples::RouteSimulationAnimationExampleFactory>(m_screenPropertiesProvider);
-	m_pExampleController->RegisterCameraExample<Examples::RouteThicknessPolicyExampleFactory>();
-	m_pExampleController->RegisterCameraExample<Examples::ScreenPickExampleFactory>();
-	m_pExampleController->RegisterCameraExample<Examples::ScreenUnprojectExampleFactory>();
-	m_pExampleController->RegisterCameraExample<Examples::SingleCityExampleFactory>();
+    m_pExampleController->RegisterCameraExample<Examples::ResourceSpatialQueryExampleFactory>();
+    m_pExampleController->RegisterCameraExample<Examples::RouteDrawingExampleFactory>();
+    m_pExampleController->RegisterCameraControllerScreenPropertiesProviderExample<Examples::RouteSimulationAnimationExampleFactory>(m_screenPropertiesProvider);
+    m_pExampleController->RegisterCameraExample<Examples::RouteThicknessPolicyExampleFactory>();
+    m_pExampleController->RegisterCameraExample<Examples::ScreenPickExampleFactory>();
+    m_pExampleController->RegisterCameraExample<Examples::ScreenUnprojectExampleFactory>();
+    m_pExampleController->RegisterCameraExample<Examples::SingleCityExampleFactory>();
     m_pExampleController->RegisterCameraExample<Examples::StencilAreaExampleFactory>();
-	m_pExampleController->RegisterCameraExample<Examples::ToggleTrafficExampleFactory>();
-	m_pExampleController->RegisterCameraExample<Examples::TrafficCongestionExampleFactory>();
-	m_pExampleController->RegisterCameraExample<Examples::WebRequestExampleFactory>();
+    m_pExampleController->RegisterCameraExample<Examples::ToggleTrafficExampleFactory>();
+    m_pExampleController->RegisterCameraExample<Examples::TrafficCongestionExampleFactory>();
+    m_pExampleController->RegisterCameraExample<Examples::WebRequestExampleFactory>();
     m_pExampleController->RegisterCameraControllerScreenPropertiesProviderExample<Examples::RenderToTextureExampleFactory>(m_screenPropertiesProvider);
+	#ifdef CARDBOARD
+    m_pExampleController->RegisterScreenPropertiesProviderVRExample<Examples::VRCardboardExampleFactory>(m_screenPropertiesProvider);
+	#endif
 }
 
 ExampleApp::~ExampleApp()
 {
-	delete m_pCameraTouchController;
+    delete m_pCameraTouchController;
     delete m_pLoadingScreen;
     delete m_pExampleController;
     delete m_pGlobeCameraControllerFactory;
     delete m_pInteriorCameraControllerFactory;
     delete m_pInteriorModule;
+    delete m_vrCardboardController;
 }
 
 void ExampleApp::OnPause()
 {
-	Eegeo::EegeoWorld& eegeoWorld = World();
-	eegeoWorld.OnPause();
+    Eegeo::EegeoWorld& eegeoWorld = World();
+    eegeoWorld.OnPause();
 }
 
 void ExampleApp::OnResume()
 {
-	Eegeo::EegeoWorld& eegeoWorld = World();
-	eegeoWorld.OnResume();
+    Eegeo::EegeoWorld& eegeoWorld = World();
+    eegeoWorld.OnResume();
 }
 
-void ExampleApp::Update (float dt)
+void ExampleApp::Update (float dt, float headTransform[])
 {
-    Eegeo::EegeoWorld& eegeoWorld = World();
-    
+    Eegeo::EegeoWorld& eegeoWorld(World());
+    eegeoWorld.EarlyUpdate(dt);
+    Eegeo::Camera::CameraState cameraState(m_pExampleController->GetCurrentCameraState());
+
     m_pCameraTouchController->Update(dt);
 
-	eegeoWorld.EarlyUpdate(dt);
-    
     m_pExampleController->EarlyUpdate(dt);
-    
-    m_pInteriorModule->Update(dt);
-    Eegeo::Camera::CameraState cameraState(m_pExampleController->GetCurrentCameraState());
-    Eegeo::Streaming::IStreamingVolume& streamingVolume(m_pExampleController->GetCurrentStreamingVolume());
-    
-    Eegeo::EegeoUpdateParameters updateParameters(dt,
-                                                  cameraState.LocationEcef(),
-                                                  cameraState.InterestPointEcef(),
-                                                  cameraState.ViewMatrix(),
-                                                  cameraState.ProjectionMatrix(),
-                                                  streamingVolume,
-                                                  m_screenPropertiesProvider.GetScreenProperties());
-    
-	eegeoWorld.Update(updateParameters);
-    
-    m_pExampleController->Update(dt);
-    
+
+    if(m_pExampleController->IsVRExample())
+    {
+        m_pExampleController->SetVRCameraState(headTransform);
+        m_vrCardboardController->VRUpdate(dt, cameraState, eegeoWorld, m_vrModeTracker);
+    }
+    else
+    {
+        AppUpdate(dt, cameraState, eegeoWorld);
+    }
+
+    if(m_pLoadingScreen==NULL || m_pLoadingScreen->IsDismissed())
+    {
+        m_pExampleController->Update(dt);
+    }
+
     UpdateLoadingScreen(dt);
 }
 
 void ExampleApp::Draw (float dt)
 {
-    m_pExampleController->PreWorldDraw();
-    
     Eegeo::EegeoWorld& eegeoWorld = World();
-    
-    Eegeo::Camera::CameraState cameraState(m_pExampleController->GetCurrentCameraState());
-    
-    Eegeo::EegeoDrawParameters drawParameters(cameraState.LocationEcef(),
-                                              cameraState.InterestPointEcef(),
-                                              cameraState.ViewMatrix(),
-                                              cameraState.ProjectionMatrix(),
-                                              m_screenPropertiesProvider.GetScreenProperties());
-    
-    eegeoWorld.Draw(drawParameters);
-    
-    m_pExampleController->Draw();
-    
-    if (m_pLoadingScreen != NULL)
+
+    if(m_pExampleController->IsVRExample())
     {
-        m_pLoadingScreen->Draw();
+        m_vrCardboardController->Draw(dt, eegeoWorld);
     }
+    else
+    {
+        m_pExampleController->PreWorldDraw();
+
+        Eegeo::Camera::CameraState cameraState(m_pExampleController->GetCurrentCameraState());
+
+        Eegeo::EegeoDrawParameters drawParameters(cameraState.LocationEcef(),
+        cameraState.InterestPointEcef(),
+        cameraState.ViewMatrix(),
+        cameraState.ProjectionMatrix(),
+        m_screenPropertiesProvider.GetScreenProperties());
+
+        eegeoWorld.Draw(drawParameters);
+
+        m_pExampleController->Draw();
+
+        if (m_pLoadingScreen != NULL)
+        {
+            m_pLoadingScreen->Draw();
+        }
+    }
+}
+
+void ExampleApp::AppUpdate(float dt, const Eegeo::Camera::CameraState& cameraState, Eegeo::EegeoWorld& eegeoWorld)
+{
+    m_vrCardboardController->StopSkybox(m_vrModeTracker);
+    Eegeo::Streaming::IStreamingVolume& streamingVolume(m_pExampleController->GetCurrentStreamingVolume());
+
+    Eegeo::EegeoUpdateParameters updateParameters(dt,
+    cameraState.LocationEcef(),
+    cameraState.InterestPointEcef(),
+    cameraState.ViewMatrix(),
+    cameraState.ProjectionMatrix(),
+    streamingVolume,
+    m_screenPropertiesProvider.GetScreenProperties());
+    eegeoWorld.Update(updateParameters);
 }
 
 void ExampleApp::NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties)
@@ -305,6 +336,7 @@ void ExampleApp::NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenPro
     
     m_pExampleController->NotifyScreenPropertiesChanged(screenProperties);
     m_pInteriorModule->UpdateScreenProperties(screenProperties);
+    m_vrCardboardController->NotifyScreenPropertiesChanged(screenProperties);
 }
 
 void ExampleApp::UpdateLoadingScreen(float dt)
@@ -330,144 +362,154 @@ void ExampleApp::UpdateLoadingScreen(float dt)
     }
 }
 
+void ExampleApp::UpdateCardboardProfile(const float cardboardProfile[])
+{
+	m_vrCardboardController->UpdateCardboardProfile(cardboardProfile);
+}
+
+void ExampleApp::MagnetTriggered()
+{
+	m_vrCardboardController->MagnetTriggered();
+}
+
 void ExampleApp::Event_TouchRotate(const AppInterface::RotateData& data)
 {
-	if(World().Initialising())
-	{
-		return;
-	}
+    if(World().Initialising())
+    {
+        return;
+    }
 
-	m_pExampleController->Event_TouchRotate(data);
+    m_pExampleController->Event_TouchRotate(data);
 
 }
 
 void ExampleApp::Event_TouchRotate_Start(const AppInterface::RotateData& data)
 {
     if(World().Initialising())
-	{
-		return;
-	}
+    {
+        return;
+    }
     
-	m_pExampleController->Event_TouchRotate_Start(data);
+    m_pExampleController->Event_TouchRotate_Start(data);
 }
 
 void ExampleApp::Event_TouchRotate_End(const AppInterface::RotateData& data)
 {
     if(World().Initialising())
-	{
-		return;
-	}
+    {
+        return;
+    }
     
-	m_pExampleController->Event_TouchRotate_End(data);
+    m_pExampleController->Event_TouchRotate_End(data);
 }
 
 void ExampleApp::Event_TouchPinch(const AppInterface::PinchData& data)
 {
     if(World().Initialising())
-	{
-		return;
-	}
+    {
+        return;
+    }
     
-	m_pExampleController->Event_TouchPinch(data);
+    m_pExampleController->Event_TouchPinch(data);
 }
 
 void ExampleApp::Event_TouchPinch_Start(const AppInterface::PinchData& data)
 {
     if(World().Initialising())
-	{
-		return;
-	}
+    {
+        return;
+    }
     
-	m_pExampleController->Event_TouchPinch_Start(data);
+    m_pExampleController->Event_TouchPinch_Start(data);
 }
 
 void ExampleApp::Event_TouchPinch_End(const AppInterface::PinchData& data)
 {
     if(World().Initialising())
-	{
-		return;
-	}
+    {
+        return;
+    }
     
-	m_pExampleController->Event_TouchPinch_End(data);
+    m_pExampleController->Event_TouchPinch_End(data);
 }
 
 void ExampleApp::Event_TouchPan(const AppInterface::PanData& data)
 {
     if(World().Initialising())
-	{
-		return;
-	}
+    {
+        return;
+    }
     
-	m_pExampleController->Event_TouchPan(data);
+    m_pExampleController->Event_TouchPan(data);
 }
 
 void ExampleApp::Event_TouchPan_Start(const AppInterface::PanData& data)
 {
     if(World().Initialising())
-	{
-		return;
-	}
+    {
+        return;
+    }
     
-	m_pExampleController->Event_TouchPan_Start(data);
+    m_pExampleController->Event_TouchPan_Start(data);
 }
 
 void ExampleApp::Event_TouchPan_End(const AppInterface::PanData& data)
 {
     if(World().Initialising())
-	{
-		return;
-	}
+    {
+        return;
+    }
     
-	m_pExampleController->Event_TouchPan_End(data);
+    m_pExampleController->Event_TouchPan_End(data);
 }
 
 void ExampleApp::Event_TouchTap(const AppInterface::TapData& data)
 {
     if(World().Initialising())
-	{
-		return;
-	}
+    {
+        return;
+    }
     
-	m_pExampleController->Event_TouchTap(data);
+    m_pExampleController->Event_TouchTap(data);
 }
 
 void ExampleApp::Event_TouchDoubleTap(const AppInterface::TapData& data)
 {
     if(World().Initialising())
-	{
-		return;
-	}
+    {
+        return;
+    }
     
-	m_pExampleController->Event_TouchDoubleTap(data);
+    m_pExampleController->Event_TouchDoubleTap(data);
 }
 
 void ExampleApp::Event_TouchDown(const AppInterface::TouchData& data)
 {
     if(World().Initialising())
-	{
-		return;
-	}
+    {
+        return;
+    }
     
-	m_pExampleController->Event_TouchDown(data);
+    m_pExampleController->Event_TouchDown(data);
 }
 
 void ExampleApp::Event_TouchMove(const AppInterface::TouchData& data)
 {
     if(World().Initialising())
-	{
-		return;
-	}
+    {
+        return;
+    }
     
-	m_pExampleController->Event_TouchMove(data);
+    m_pExampleController->Event_TouchMove(data);
 }
 
 void ExampleApp::Event_TouchUp(const AppInterface::TouchData& data)
 {
     if(World().Initialising())
-	{
-		return;
-	}
+    {
+        return;
+    }
     
-	m_pExampleController->Event_TouchUp(data);
+    m_pExampleController->Event_TouchUp(data);
 }
 
