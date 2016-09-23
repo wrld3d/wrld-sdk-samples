@@ -5,7 +5,7 @@ package com.eegeo.mobilesdkharness;
 import android.view.SurfaceHolder;
 import android.app.Activity;
 
-public abstract class MainActivity extends Activity implements SurfaceHolder.Callback, INativeMessageRunner
+public abstract class MainActivity extends Activity implements SurfaceHolder.Callback, INativeMessageRunner, IVRModeTracker
 {
 
 }

@@ -10,6 +10,8 @@
 #include "DefaultCameraControllerFactory.h"
 #include "Modules.h"
 #include "ExampleInteriorModule.h"
+#include "VRCardboardController.h"
+#include "IVRModeTracker.h"
 
 class ExampleApp : private Eegeo::NonCopyable
 {
@@ -23,6 +25,8 @@ private:
     Eegeo::Interiors::ExampleInteriorModule* m_pInteriorModule;
     Eegeo::Resources::Interiors::InteriorsCameraControllerFactory* m_pInteriorCameraControllerFactory;
     Eegeo::Camera::GlobeCamera::GlobeCameraControllerFactory* m_pGlobeCameraControllerFactory;
+    Examples::IVRModeTracker& m_vrModeTracker;
+    Eegeo::VR::VRCardboardController* m_pVRCardboardController;
 
 	Eegeo::EegeoWorld& World()
 	{
@@ -32,19 +36,25 @@ private:
     void UpdateLoadingScreen(float dt);
 
 public:
-	ExampleApp(Eegeo::EegeoWorld* pWorld,
-	           Examples::IExampleControllerView& view,
-               const Eegeo::Rendering::ScreenProperties& screenProperties,
-               Eegeo::Modules::CollisionVisualizationModule& collisionVisualizationModule,
-               Eegeo::Modules::BuildingFootprintsModule& buildingFootprintsModule);
 
-	~ExampleApp();
+    ExampleApp(Eegeo::EegeoWorld* pWorld,
+    		const Eegeo::Config::DeviceSpec& deviceSpecs,
+			Examples::IExampleControllerView& view,
+			Examples::IVRModeTracker& vrModeTracker,
+			const Eegeo::Rendering::ScreenProperties& screenProperties,
+			Eegeo::Modules::CollisionVisualizationModule& collisionVisualizationModule,
+			Eegeo::Modules::BuildingFootprintsModule& buildingFootprintsModule);
 
 	void OnPause();
+    ~ExampleApp();
 
 	void OnResume();
 
-	void Update (float dt);
+    void Update (float dt, const float headTransform[]);
+    void AppUpdate(float dt, const Eegeo::Camera::CameraState& cameraState, Eegeo::EegeoWorld& eegeoWorld);
+    void UpdateCardboardProfile(const float cardboardProfile[]);
+    void MagnetTriggered();
+    void DrawLoadingScreen ();
 
 	void Draw (float dt);
     

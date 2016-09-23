@@ -20,10 +20,12 @@ public:
 	void Pause();
 	void Resume();
 	void ActivateSurface();
-	void Update(float deltaSeconds);
+	void Update(float deltaSeconds, const float headTransform[]);
 
 	void HandleTouchEvent(const Eegeo::Android::Input::TouchInputEvent& message);
 
+	void UpdateCardboardProfile(const float cardboardProfile[]);
+	void MagnetTriggered();
 private:
 	const std::string& m_apiKey;
 	AndroidNativeState* m_pNativeState;

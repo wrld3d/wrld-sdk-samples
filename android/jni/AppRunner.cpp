@@ -84,6 +84,22 @@ void AppRunner::HandleTouchEvent(const Eegeo::Android::Input::TouchInputEvent& e
 	}
 }
 
+void AppRunner::UpdateCardboardProfile(const float cardboardProfile[])
+{
+    if(m_pAppHost != NULL)
+    {
+        m_pAppHost->UpdateCardboardProfile(cardboardProfile);
+    }
+}
+
+void AppRunner::MagnetTriggered()
+{
+    if(m_pAppHost != NULL)
+    {
+        m_pAppHost->MagnetTriggered();
+    }
+}
+
 void AppRunner::ReleaseDisplay()
 {
 	if(m_displayService.IsDisplayAvailable())
@@ -115,11 +131,12 @@ bool AppRunner::TryBindDisplay()
 	return false;
 }
 
-void AppRunner::Update(float deltaSeconds)
+void AppRunner::Update(float deltaSeconds, const float headTransform[])
 {
 	if(m_pAppHost != NULL && m_displayService.IsDisplayAvailable())
 	{
-		m_pAppHost->Update(deltaSeconds);
+		m_pAppHost->Update(deltaSeconds, headTransform);
+		Eegeo_GL(glClearColor(0.0f, 0.0f, 0.0f, 1.0f));
 
 		Eegeo_GL(eglSwapBuffers(m_displayService.GetDisplay(), m_displayService.GetSurface()));
 		Eegeo::Helpers::GLHelpers::ClearBuffers();

@@ -5,7 +5,7 @@ $(info TARGET_ARCH_ABI is $(TARGET_ARCH_ABI))
 
 $(info LOCAL_PATH is $(LOCAL_PATH))
 
-PREBUILT_LIBS := ./libs/prebuilt/android-$(TARGET_ARCH_ABI)
+PREBUILT_LIBS := ./libs/eegeo/prebuilt/android-$(TARGET_ARCH_ABI)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := eegeo-sdk-lib
@@ -15,19 +15,19 @@ include $(PREBUILT_STATIC_LIBRARY)
 include $(CLEAR_VARS)
 LOCAL_MODULE := png-lib
 LOCAL_SRC_FILES := ../$(PREBUILT_LIBS)/libpng.a
-LOCAL_EXPORT_C_INCLUDES := ./libs/png
+LOCAL_EXPORT_C_INCLUDES := ./libs/eegeo/png
 include $(PREBUILT_STATIC_LIBRARY)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := curl-lib
 LOCAL_SRC_FILES := ../$(PREBUILT_LIBS)/libcurl.a
-LOCAL_EXPORT_C_INCLUDES := ./libs/curl/android-$(TARGET_ARCH_ABI) 
+LOCAL_EXPORT_C_INCLUDES := ./libs/eegeo/curl/android-$(TARGET_ARCH_ABI) 
 include $(PREBUILT_STATIC_LIBRARY)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := uv-lib
 LOCAL_SRC_FILES := ../$(PREBUILT_LIBS)/libuv.a
-LOCAL_EXPORT_C_INCLUDES := ./libs/uv/android-$(TARGET_ARCH_ABI) 
+LOCAL_EXPORT_C_INCLUDES := ./libs/eegeo/uv/android-$(TARGET_ARCH_ABI) 
 include $(PREBUILT_STATIC_LIBRARY)
 
 include $(CLEAR_VARS)
@@ -43,7 +43,7 @@ include $(PREBUILT_STATIC_LIBRARY)
 include $(CLEAR_VARS)
 LOCAL_MODULE := http-parser-lib
 LOCAL_SRC_FILES := ../$(PREBUILT_LIBS)/libhttp-parser.a
-LOCAL_EXPORT_C_INCLUDES := ./libs/http-parser 
+LOCAL_EXPORT_C_INCLUDES := ./libs/eegeo/http-parser 
 include $(PREBUILT_STATIC_LIBRARY)
 
 include $(CLEAR_VARS)
@@ -54,7 +54,7 @@ include $(PREBUILT_STATIC_LIBRARY)
 include $(CLEAR_VARS)
 LOCAL_MODULE := turbojpeg-lib
 LOCAL_SRC_FILES := ../$(PREBUILT_LIBS)/libturbojpeg.a
-LOCAL_EXPORT_C_INCLUDES := ./libs/jpeg-turbo 
+LOCAL_EXPORT_C_INCLUDES := ./libs/eegeo/jpeg-turbo 
 include $(PREBUILT_STATIC_LIBRARY)
 
 include $(CLEAR_VARS)
@@ -75,7 +75,7 @@ ifeq ($(os_name),Darwin)
 	shared_example_cpp_files := $(shell cd jni; find ./../../src/ -type f  -iname "*.cpp")
 	LOCAL_SRC_FILES += $(shared_example_cpp_files:$(LOCAL_PATH)/%=%)
 
-	platformincludes := $(shell find ./libs/platform -type d ! -path "*/OSX/*" ! -path "*/iOS/*")
+	platformincludes := $(shell find ./libs/eegeo/platform -type d ! -path "*/OSX/*" ! -path "*/iOS/*")
 	LOCAL_C_INCLUDES := $(platformincludes:$(LOCAL_PATH)/%=%)
 
 	exampleincludes := $(shell find ./libs/../../src -type d)
@@ -94,7 +94,7 @@ else
 	
 	platformincludes := $(shell dir .\libs\platform /ad-h /s /b)
 	LOCAL_C_INCLUDES := $(platformincludes:$(LOCAL_PATH)/%=%)
-	LOCAL_C_INCLUDES += ./libs/platform 
+	LOCAL_C_INCLUDES += ./libs/eegeo/platform 
 
 	exampleincludes := $(shell dir .\libs\..\..\src /ad-h /s /b)
 	LOCAL_C_INCLUDES += $(exampleincludes:$(LOCAL_PATH)/%=%)
@@ -105,7 +105,9 @@ else
 	LOCAL_C_INCLUDES += .\jni\Examples
 endif 
 
-LOCAL_C_INCLUDES += ./libs/rapidjson
+LOCAL_C_INCLUDES += ./libs/eegeo/rapidjson
+
+LOCAL_CFLAGS    := -DCARDBOARD
 
 $(info LOCAL_C_INCLUDES is $(LOCAL_C_INCLUDES))
 

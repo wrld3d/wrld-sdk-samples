@@ -151,7 +151,7 @@ AppHost::AppHost(
 
 	m_pInputProcessor = new Eegeo::Android::Input::AndroidInputProcessor(&m_inputHandler, screenProperties.GetScreenWidth(), screenProperties.GetScreenHeight());
 
-	ConfigureExamples(screenProperties);
+	ConfigureExamples(screenProperties, config.PerformanceConfig.DeviceSpecification);
 
 	m_pAppInputDelegate = new AppInputDelegate(*m_pApp);
 	m_inputHandler.AddDelegateInputHandler(m_pAppInputDelegate);
@@ -222,10 +222,19 @@ void AppHost::HandleTouchInputEvent(const Eegeo::Android::Input::TouchInputEvent
 	m_pInputProcessor->HandleInput(event);
 }
 
-void AppHost::Update(float dt)
+void AppHost::UpdateCardboardProfile(const float cardboardProfile[])
+{
+    m_pApp->UpdateCardboardProfile(cardboardProfile);
+}
+
+void AppHost::MagnetTriggered(){
+    m_pApp->MagnetTriggered();
+}
+
+void AppHost::Update(float dt, const float headTransform[])
 {
 	m_pInputProcessor->Update(dt);
-	m_pApp->Update(dt);
+	m_pApp->Update(dt, headTransform);
 }
 
 void AppHost::Draw(float dt)
@@ -233,11 +242,13 @@ void AppHost::Draw(float dt)
 	m_pApp->Draw(dt);
 }
 
-void AppHost::ConfigureExamples(const Eegeo::Rendering::ScreenProperties& screenProperties)
+void AppHost::ConfigureExamples(const Eegeo::Rendering::ScreenProperties& screenProperties, const Eegeo::Config::DeviceSpec& deviceSpecs)
 {
 	m_pAndroidExampleControllerView = new Examples::AndroidExampleControllerView(m_nativeState);
 
-	m_pApp = new ExampleApp(m_pWorld, *m_pAndroidExampleControllerView, screenProperties, *m_pCollisionVisualizationModule, *m_pBuildingFootprintsModule);
+	m_pVRModeTracker = new Examples::AndroidVRModeTracker(m_nativeState);
+
+	m_pApp = new ExampleApp(m_pWorld, deviceSpecs, *m_pAndroidExampleControllerView, *m_pVRModeTracker, screenProperties, *m_pCollisionVisualizationModule, *m_pBuildingFootprintsModule);
 
 	RegisterAndroidSpecificExamples();
 
@@ -308,6 +319,7 @@ void AppHost::DestroyExamples()
 	delete m_pAndroidRouteMatchingExampleViewFactory;
 	delete m_pAndroidRouteSimulationExampleViewFactory;
 
+	delete m_pVRModeTracker;
 	delete m_pAndroidExampleControllerView;
 }
 

@@ -96,9 +96,11 @@ JNIEXPORT void JNICALL Java_com_eegeo_mobilesdkharness_NativeJniCalls_resumeNati
 	g_pAppRunner->Resume();
 }
 
-JNIEXPORT void JNICALL Java_com_eegeo_mobilesdkharness_NativeJniCalls_updateNativeCode(JNIEnv* jenv, jobject obj, jfloat deltaSeconds)
+JNIEXPORT void JNICALL Java_com_eegeo_mobilesdkharness_NativeJniCalls_updateNativeCode(JNIEnv* jenv, jobject obj, jfloat deltaSeconds, jfloatArray headTransform)
 {
-	g_pAppRunner->Update((float)deltaSeconds);
+    jfloat* hT = jenv->GetFloatArrayElements(headTransform, 0);
+	g_pAppRunner->Update((float)deltaSeconds, hT);
+    jenv->ReleaseFloatArrayElements(headTransform, hT, 0);
 }
 
 JNIEXPORT void JNICALL Java_com_eegeo_mobilesdkharness_NativeJniCalls_setNativeSurface(JNIEnv* jenv, jobject obj, jobject surface)
@@ -118,6 +120,18 @@ JNIEXPORT void JNICALL Java_com_eegeo_mobilesdkharness_NativeJniCalls_setNativeS
 			g_pAppRunner->ActivateSurface();
 		}
 	}
+}
+
+JNIEXPORT void JNICALL Java_com_eegeo_mobilesdkharness_NativeJniCalls_updateCardboardProfile(JNIEnv* jenv, jobject obj, jfloatArray cardboardProfile)
+{
+    jfloat* cbProfile = jenv->GetFloatArrayElements(cardboardProfile, 0);
+    g_pAppRunner->UpdateCardboardProfile(cbProfile);
+    jenv->ReleaseFloatArrayElements(cardboardProfile, cbProfile, 0);
+}
+
+JNIEXPORT void JNICALL Java_com_eegeo_mobilesdkharness_NativeJniCalls_magnetTriggered(JNIEnv* jenv, jobject obj)
+{
+    g_pAppRunner->MagnetTriggered();
 }
 
 JNIEXPORT void JNICALL Java_com_eegeo_mobilesdkharness_EegeoSurfaceView_processNativePointerDown(JNIEnv* jenv, jobject obj,
