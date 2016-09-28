@@ -175,11 +175,16 @@ void ExampleController::DestroyCurrentExample()
 }
     
 
-Eegeo::Camera::RenderCamera& ExampleController::GetRenderCamera()
+void ExampleController::UpdateWorld(float dt, Examples::ScreenPropertiesProvider& screenPropertyProvider)
 {
-    return m_pCurrentExample->GetRenderCamera();
+	m_pCurrentExample->UpdateWorld(dt, m_world, m_pCurrentExample->GetCurrentCameraState(), screenPropertyProvider, GetCurrentStreamingVolume());
 }
 
+void ExampleController::DrawWorld(Examples::ScreenPropertiesProvider& screenPropertyProvider)
+{
+	m_pCurrentExample->DrawWorld(m_world, m_pCurrentExample->GetCurrentCameraState(), screenPropertyProvider);
+}
+    
 Eegeo::Camera::CameraState ExampleController::GetCurrentCameraState() const
 {
     return m_pCurrentExample->GetCurrentCameraState();

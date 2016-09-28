@@ -61,4 +61,3 @@ include(../src/Examples/VRCardboard/CMakeLists.txt)
 include(../src/Examples/WebRequest/CMakeLists.txt)
 
 include(../src/Examples/Interiors/CMakeLists.txt)
-include(../src/Examples/SkyboxModule/CMakeLists.txt)

@@ -25,8 +25,6 @@ private:
     Eegeo::Interiors::ExampleInteriorModule* m_pInteriorModule;
     Eegeo::Resources::Interiors::InteriorsCameraControllerFactory* m_pInteriorCameraControllerFactory;
     Eegeo::Camera::GlobeCamera::GlobeCameraControllerFactory* m_pGlobeCameraControllerFactory;
-    Examples::IVRModeTracker& m_vrModeTracker;
-    Eegeo::VR::VRCardboardController* m_pVRCardboardController;
 
 	Eegeo::EegeoWorld& World()
 	{
@@ -51,7 +49,6 @@ public:
 	void OnResume();
 
     void Update (float dt, const float headTransform[]);
-    void AppUpdate(float dt, const Eegeo::Camera::CameraState& cameraState, Eegeo::EegeoWorld& eegeoWorld);
     void UpdateCardboardProfile(const float cardboardProfile[]);
     void MagnetTriggered();
     void DrawLoadingScreen ();

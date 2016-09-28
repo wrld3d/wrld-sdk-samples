@@ -104,10 +104,8 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
 	, m_pCameraTouchController(NULL)
 	, m_pWorld(pWorld)
     , m_pLoadingScreen(NULL)
-	, m_vrModeTracker(vrModeTracker)
 	, m_pExampleController(NULL)
     , m_screenPropertiesProvider(screenProperties)
-	, m_pVRCardboardController(NULL)
 {
 	Eegeo::EegeoWorld& eegeoWorld = *pWorld;
 
@@ -178,7 +176,6 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     
     m_pInteriorModule->UpdateScreenProperties(screenProperties);
 
-    m_pVRCardboardController = Eegeo_NEW((Eegeo::VR::VRCardboardController)(m_pWorld, m_screenPropertiesProvider, mapModule, deviceSpecs, m_pExampleController));
 
     //register all generic examples
     m_pExampleController->RegisterCameraExample<Examples::BillboardedSpriteExampleFactory>();
@@ -226,7 +223,7 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
 	m_pExampleController->RegisterCameraExample<Examples::WebRequestExampleFactory>();
     m_pExampleController->RegisterCameraControllerScreenPropertiesProviderExample<Examples::RenderToTextureExampleFactory>(m_screenPropertiesProvider);
 	#ifdef CARDBOARD
-    m_pExampleController->RegisterScreenPropertiesProviderVRExample<Examples::VRCardboardExampleFactory>(m_screenPropertiesProvider);
+    m_pExampleController->RegisterScreenPropertiesProviderVRExample<Examples::VRCardboardExampleFactory>(m_screenPropertiesProvider, deviceSpecs, vrModeTracker);
 	#endif
 }
 
@@ -238,7 +235,6 @@ ExampleApp::~ExampleApp()
     delete m_pGlobeCameraControllerFactory;
     delete m_pInteriorCameraControllerFactory;
     delete m_pInteriorModule;
-    Eegeo_DELETE m_pVRCardboardController;
 }
 
 void ExampleApp::OnPause()
@@ -258,27 +254,19 @@ void ExampleApp::Update (float dt, const float headTransform[])
     Eegeo::EegeoWorld& eegeoWorld = World();
     
     eegeoWorld.EarlyUpdate(dt);
-    Eegeo::Camera::CameraState cameraState(m_pExampleController->GetCurrentCameraState());
 
     m_pCameraTouchController->Update(dt);
 
     m_pExampleController->EarlyUpdate(dt);
 
-    if(m_pExampleController->IsVRExample())
-    {
-        m_pExampleController->SetVRCameraState(headTransform);
-        m_pVRCardboardController->Update(dt, cameraState, eegeoWorld, m_vrModeTracker);
-    }
-    else
-    {
-        AppUpdate(dt, cameraState, eegeoWorld);
-    }
+    m_pExampleController->SetVRCameraState(headTransform);
 
     if(m_pLoadingScreen==NULL || m_pLoadingScreen->IsDismissed())
     {
         m_pExampleController->Update(dt);
     }
 
+    m_pExampleController->UpdateWorld(dt, m_screenPropertiesProvider);
     UpdateLoadingScreen(dt);
 }
 
@@ -286,46 +274,15 @@ void ExampleApp::Draw (float dt)
 {
     Eegeo::EegeoWorld& eegeoWorld = World();
 
-    if(m_pExampleController->IsVRExample())
-    {
-        m_pVRCardboardController->Draw(dt, eegeoWorld);
-    }
-    else
-    {
         m_pExampleController->PreWorldDraw();
 
-        Eegeo::Camera::CameraState cameraState(m_pExampleController->GetCurrentCameraState());
-
-        Eegeo::EegeoDrawParameters drawParameters(cameraState.LocationEcef(),
-        cameraState.InterestPointEcef(),
-        cameraState.ViewMatrix(),
-        cameraState.ProjectionMatrix(),
-        m_screenPropertiesProvider.GetScreenProperties());
-
-        eegeoWorld.Draw(drawParameters);
-
         m_pExampleController->Draw();
+        m_pExampleController->DrawWorld(m_screenPropertiesProvider);
 
         if (m_pLoadingScreen != NULL)
         {
             m_pLoadingScreen->Draw();
         }
-    }
-}
-
-void ExampleApp::AppUpdate(float dt, const Eegeo::Camera::CameraState& cameraState, Eegeo::EegeoWorld& eegeoWorld)
-{
-    m_pVRCardboardController->StopSkybox(m_vrModeTracker);
-    Eegeo::Streaming::IStreamingVolume& streamingVolume(m_pExampleController->GetCurrentStreamingVolume());
-
-    Eegeo::EegeoUpdateParameters updateParameters(dt,
-    cameraState.LocationEcef(),
-    cameraState.InterestPointEcef(),
-    cameraState.ViewMatrix(),
-    cameraState.ProjectionMatrix(),
-    streamingVolume,
-    m_screenPropertiesProvider.GetScreenProperties());
-    eegeoWorld.Update(updateParameters);
 }
 
 void ExampleApp::NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties)
@@ -339,7 +296,6 @@ void ExampleApp::NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenPro
     
     m_pExampleController->NotifyScreenPropertiesChanged(screenProperties);
     m_pInteriorModule->UpdateScreenProperties(screenProperties);
-    m_pVRCardboardController->NotifyScreenPropertiesChanged(screenProperties);
 }
 
 void ExampleApp::UpdateLoadingScreen(float dt)
@@ -367,12 +323,12 @@ void ExampleApp::UpdateLoadingScreen(float dt)
 
 void ExampleApp::UpdateCardboardProfile(const float cardboardProfile[])
 {
-	m_pVRCardboardController->UpdateCardboardProfile(cardboardProfile);
+	m_pExampleController->UpdateCardboardProfile(cardboardProfile);
 }
 
 void ExampleApp::MagnetTriggered()
 {
-	m_pVRCardboardController->MagnetTriggered();
+
 }
 
 void ExampleApp::Event_TouchRotate(const AppInterface::RotateData& data)

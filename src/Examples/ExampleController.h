@@ -16,6 +16,7 @@
 #include <vector>
 #include <string>
 #include "VRCameraState.h"
+#include "IVRModeTracker.h"
 
 namespace Examples
 {
@@ -66,11 +67,10 @@ public:
     
     Eegeo::Camera::CameraState GetCurrentCameraState() const;
 	void UpdateCardboardProfile(const float cardboardProfile[]);
-	Eegeo::Camera::RenderCamera& GetRenderCamera();
-	const Eegeo::VR::VRCameraState& GetVRCameraState(){return m_pCurrentExample->GetVRCameraState();};
 	void SetVRCameraState(const float headTransform[]){m_pCurrentExample->SetVRCameraState(headTransform);};
 
-	bool IsVRExample(){m_pCurrentExample->IsVRExample();};
+	void UpdateWorld(float dt, Examples::ScreenPropertiesProvider& screenPropertyProvider);
+	void DrawWorld(Examples::ScreenPropertiesProvider& screenPropertyProvider);
     
     Eegeo::Streaming::IStreamingVolume& GetCurrentStreamingVolume() const;
     
@@ -95,9 +95,9 @@ public:
     }
     
     template <typename TExampleFactory>
-    void RegisterScreenPropertiesProviderVRExample(const ScreenPropertiesProvider& screenPropertiesProvider)
+    void RegisterScreenPropertiesProviderVRExample(const ScreenPropertiesProvider& screenPropertiesProvider, const Eegeo::Config::DeviceSpec& deviceSpecs, Examples::IVRModeTracker& vrModeTracker)
     {
-    	m_factories.push_back(Eegeo_NEW((TExampleFactory)(m_world, m_defaultCameraControllerFactory, screenPropertiesProvider)));
+    	m_factories.push_back(Eegeo_NEW((TExampleFactory)(m_world, deviceSpecs, m_defaultCameraControllerFactory, screenPropertiesProvider, vrModeTracker)));
     }
 
     template <typename TExampleFactory>

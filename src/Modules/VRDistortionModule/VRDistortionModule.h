@@ -9,6 +9,7 @@
 #include "VRDistortionIncludes.h"
 #include "VRDistortionTransitionModel.h"
 #include "IVRCardboardDeviceProfileFactory.h"
+#include "Types.h"
 
 namespace Eegeo
 {

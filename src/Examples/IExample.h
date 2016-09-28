@@ -9,14 +9,14 @@
 #include "RenderCamera.h"
 #include "CameraState.h"
 #include <string>
-#include "VRCameraState.h"
+#include "ScreenPropertiesProvider.h"
+#include "EegeoUpdateParameters.h"
+#include "EegeoWorld.h"
 
 namespace Examples
 {
     class IExample
     {
-    	Eegeo::Camera::RenderCamera m_renderCamera;
-    	Eegeo::VR::VRCameraState m_vrCameraState;
     public:
         virtual ~IExample() { }
 
@@ -33,12 +33,30 @@ namespace Examples
         virtual void UpdateCardboardProfile(const float cardboardProfile[]){}
         virtual void NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties) = 0;
         
-        // TODO: All examples should be returing a RenderCamera used by example, temporaray hack to make it work with VR example.
-        virtual Eegeo::Camera::RenderCamera& GetRenderCamera(){return m_renderCamera;}
         virtual Eegeo::Camera::CameraState GetCurrentCameraState() const = 0;
-        virtual const Eegeo::VR::VRCameraState& GetVRCameraState(){return m_vrCameraState;};
         virtual void SetVRCameraState(const float headTransform[]){};
-        virtual bool IsVRExample(){return false;};
+        virtual void UpdateWorld(float dt, Eegeo::EegeoWorld& world, Eegeo::Camera::CameraState cameraState, Examples::ScreenPropertiesProvider& screenPropertyProvider, Eegeo::Streaming::IStreamingVolume& streamingVolume)
+        {
+        	Eegeo::EegeoUpdateParameters updateParameters(dt,
+        		    									  cameraState.LocationEcef(),
+														  cameraState.InterestPointEcef(),
+														  cameraState.ViewMatrix(),
+														  cameraState.ProjectionMatrix(),
+														  streamingVolume,
+														  screenPropertyProvider.GetScreenProperties());
+        	world.Update(updateParameters);
+        }
+
+        virtual void DrawWorld(Eegeo::EegeoWorld& world, Eegeo::Camera::CameraState cameraState, Examples::ScreenPropertiesProvider& screenPropertyProvider)
+        {
+        	Eegeo::EegeoDrawParameters drawParameters(cameraState.LocationEcef(),
+        	        							      cameraState.InterestPointEcef(),
+        											  cameraState.ViewMatrix(),
+        											  cameraState.ProjectionMatrix(),
+													  screenPropertyProvider.GetScreenProperties());
+
+        	world.Draw(drawParameters);
+        }
 
         virtual void NotifyViewNeedsLayout() = 0;
         

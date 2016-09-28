@@ -20,21 +20,26 @@ namespace Examples
 {
 
 	VRCardboardExample::VRCardboardExample(Eegeo::EegeoWorld& eegeoWorld,
+                                           const Eegeo::Config::DeviceSpec& deviceSpecs,
                                            Eegeo::Streaming::ResourceCeilingProvider& resourceCeilingProvider,
                                            Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
-                                           const Eegeo::Rendering::ScreenProperties& initialScreenProperties)
+                                           const IScreenPropertiesProvider& initialScreenProperties,
+										   Examples::IVRModeTracker& vrModeTracker)
     : m_world(eegeoWorld)
+    , m_pVRCardboardController(NULL)
     {
-        NotifyScreenPropertiesChanged(initialScreenProperties);
         Eegeo::m44 projectionMatrix = Eegeo::m44(pCameraController->GetRenderCamera().GetProjectionMatrix());
-        m_pCameraController = new Eegeo::VR::VRCameraController(initialScreenProperties.GetScreenWidth(), initialScreenProperties.GetScreenHeight());
+        m_pCameraController = new Eegeo::VR::VRCameraController(initialScreenProperties.GetScreenProperties().GetScreenWidth(), initialScreenProperties.GetScreenProperties().GetScreenHeight());
         m_pCameraController->GetCamera().SetProjectionMatrix(projectionMatrix);
         m_eyeDistance = 0.03f;
+        m_pVRCardboardController = Eegeo_NEW((Eegeo::VR::VRCardboardController)(m_world, initialScreenProperties, m_world.GetMapModule(), deviceSpecs, *m_pCameraController, vrModeTracker));
+        NotifyScreenPropertiesChanged(initialScreenProperties.GetScreenProperties());
     }
     
 	VRCardboardExample::~VRCardboardExample()
 	{
 		delete m_pCameraController;
+	    Eegeo_DELETE m_pVRCardboardController;
     }
     
     void VRCardboardExample::Start()
@@ -46,7 +51,17 @@ namespace Examples
     
     void VRCardboardExample::Suspend()
     {
+    	m_pVRCardboardController->StopSkybox();
+    }
 
+    void VRCardboardExample::UpdateWorld(float dt, Eegeo::EegeoWorld& world, Eegeo::Camera::CameraState cameraState, Examples::ScreenPropertiesProvider& screenPropertyProvider, Eegeo::Streaming::IStreamingVolume& streamingVolume)
+    {
+    	m_pVRCardboardController->Update(dt, GetCurrentCameraState(), m_world);
+    }
+
+    void VRCardboardExample::DrawWorld(Eegeo::EegeoWorld& world,  Eegeo::Camera::CameraState cameraState, Examples::ScreenPropertiesProvider& screenPropertyProvider)
+    {
+    	m_pVRCardboardController->Draw(m_world, m_vrCameraState);
     }
     
     void VRCardboardExample::UpdateCardboardProfile(const float cardboardProfile[])
@@ -63,12 +78,9 @@ namespace Examples
     
     void VRCardboardExample::NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties)
     {
+    	m_pVRCardboardController->NotifyScreenPropertiesChanged(screenProperties);
     }
     
-    const Eegeo::VR::VRCameraState& VRCardboardExample::GetVRCameraState()
-    {
-    	return m_vrCameraState;
-    }
     
     void VRCardboardExample::SetVRCameraState(const float headTransform[])
     {
@@ -95,10 +107,6 @@ namespace Examples
         return m_pCameraController->GetHeadTrackerOrientation();
     }
     
-    Eegeo::Camera::RenderCamera& VRCardboardExample::GetRenderCamera()
-    {
-        return m_pCameraController->GetCamera();
-    }
     
     Eegeo::Camera::CameraState VRCardboardExample::GetCurrentLeftCameraState(const float headTransform[]) const
     {

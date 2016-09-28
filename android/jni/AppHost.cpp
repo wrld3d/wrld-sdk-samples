@@ -127,13 +127,13 @@ AppHost::AppHost(
 
 	const Eegeo::EnvironmentCharacterSet::Type environmentCharacterSet = Eegeo::EnvironmentCharacterSet::Latin;
 	std::string deviceModel = std::string(nativeState.deviceModel, strlen(nativeState.deviceModel));
-	Eegeo::Config::PlatformConfig config = Eegeo::Android::AndroidPlatformConfigBuilder(deviceModel).Build();
+	m_config = Eegeo::Android::AndroidPlatformConfigBuilder(deviceModel).Build();
 
-	config.OptionsConfig.GenerateCollisionForAllResources = true;
-	config.CityThemesConfig.EmbeddedThemeManifestFile = "embedded_manifest.bin";
-	config.CityThemesConfig.EmbeddedThemeTexturePath = "Textures";
-	config.CityThemesConfig.EmbeddedThemeNameContains = "Summer";
-	config.CityThemesConfig.EmbeddedThemeStateName = "DayDefault";
+	m_config.OptionsConfig.GenerateCollisionForAllResources = true;
+	m_config.CityThemesConfig.EmbeddedThemeManifestFile = "embedded_manifest.bin";
+	m_config.CityThemesConfig.EmbeddedThemeTexturePath = "Textures";
+	m_config.CityThemesConfig.EmbeddedThemeNameContains = "Summer";
+	m_config.CityThemesConfig.EmbeddedThemeStateName = "DayDefault";
 
 	m_pWorld = new Eegeo::EegeoWorld(
 	    apiKey,
@@ -143,7 +143,7 @@ AppHost::AppHost(
 	    *m_pAndroidLocationService,
 	    m_androidNativeUIFactories,
 	    environmentCharacterSet,
-	    config,
+		m_config,
 	    NULL);
 
     m_pCollisionVisualizationModule = CreateCollisionVisualizationModule(*m_pWorld);
@@ -151,7 +151,7 @@ AppHost::AppHost(
 
 	m_pInputProcessor = new Eegeo::Android::Input::AndroidInputProcessor(&m_inputHandler, screenProperties.GetScreenWidth(), screenProperties.GetScreenHeight());
 
-	ConfigureExamples(screenProperties, config.PerformanceConfig.DeviceSpecification);
+	ConfigureExamples(screenProperties, m_config.PerformanceConfig.DeviceSpecification);
 
 	m_pAppInputDelegate = new AppInputDelegate(*m_pApp);
 	m_inputHandler.AddDelegateInputHandler(m_pAppInputDelegate);

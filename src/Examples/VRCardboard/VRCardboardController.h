@@ -14,6 +14,8 @@
 #include "VRCameraState.h"
 #include "Types.h"
 #include "VRCardboardV1ProfileFactory.h"
+#include "VRCameraController.h"
+#include "VRCameraState.h"
 
 namespace Eegeo
 {
@@ -22,9 +24,10 @@ namespace Eegeo
         class VRCardboardController
         {
         private:
-        	Examples::ExampleController* m_pExampleController;
-        	const Examples::ScreenPropertiesProvider& m_screenPropertiesProvider;
+        	const Examples::IScreenPropertiesProvider& m_screenPropertiesProvider;
 			#ifdef CARDBOARD
+        	Examples::IVRModeTracker& m_vrModeTracker;
+        	Eegeo::VR::VRCameraController& m_cameraController;
 			Eegeo::Streaming::CameraFrustumStreamingVolume* m_pStreamingVolume;
 			Eegeo::VR::Distortion::VRDistortionModule* m_pVRDistortion;
 			Eegeo::Skybox::SkyboxModule *m_pVRSkybox;
@@ -36,24 +39,25 @@ namespace Eegeo
 			Eegeo::v3 m_destClearColor;
 
         public:
-			VRCardboardController(Eegeo::EegeoWorld* pWorld,
-								  const Examples::ScreenPropertiesProvider& screenPropertiesProvider,
+			VRCardboardController(Eegeo::EegeoWorld& world,
+								  const Examples::IScreenPropertiesProvider& screenPropertiesProvider,
 								  Eegeo::Modules::Map::MapModule& mapModule,
 								  const Eegeo::Config::DeviceSpec& deviceSpecs,
-								  Examples::ExampleController* exampleController);
+								  Eegeo::VR::VRCameraController& cameraController,
+								  Examples::IVRModeTracker& vrModeTracker);
 			~VRCardboardController();
-			void Update(float dt, const Eegeo::Camera::CameraState& cameraState, Eegeo::EegeoWorld& eegeoWorld, Examples::IVRModeTracker& vrModeTracker);
+			void Update(float dt, const Eegeo::Camera::CameraState cameraState, Eegeo::EegeoWorld& eegeoWorld);
 			void UpdateNightTParam(float dt);
 			void ToggleNight();
 		    void UpdateFogging();
 		    void UpdateCardboardProfile(const float cardboardProfile[]);
 		    void MagnetTriggered();
 		    void NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties);
-		    void DrawLeftEye (float dt, Eegeo::EegeoWorld& eegeoWorld);
-		    void DrawRightEye (float dt, Eegeo::EegeoWorld& eegeoWorld);
-		    void DrawEyeFromCameraState(float dt, const Eegeo::Camera::CameraState& cameraState, Eegeo::EegeoWorld& eegeoWorld);
-		    void Draw (float dt, Eegeo::EegeoWorld& eegeoWorld);
-		    void StopSkybox(Examples::IVRModeTracker& vrModeTracker);
+		    void DrawLeftEye (Eegeo::EegeoWorld& eegeoWorld, const Eegeo::VR::VRCameraState& vrCameraState);
+		    void DrawRightEye (Eegeo::EegeoWorld& eegeoWorld, const Eegeo::VR::VRCameraState& vrCameraState);
+		    void DrawEyeFromCameraState(const Eegeo::Camera::CameraState& cameraState, Eegeo::EegeoWorld& eegeoWorld, const Eegeo::VR::VRCameraState& vrCameraState);
+		    void Draw (Eegeo::EegeoWorld& eegeoWorld, const Eegeo::VR::VRCameraState& vrCameraState);
+		    void StopSkybox();
         };
     }
 }

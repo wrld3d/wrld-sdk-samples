@@ -20,8 +20,8 @@ namespace Eegeo
             VRCameraController(float screenWidth,
             				   float screenHeight)
             : m_ecefPosition(0.0, 0.0, 0.0)
-            , m_pTerrainHeightProvider(NULL)
             , m_nearMultiplier(0.1f)
+            , m_pRenderCamera(NULL)
             {
                 m_pRenderCamera = new Camera::RenderCamera();
                 m_orientation.Identity();
@@ -31,7 +31,7 @@ namespace Eegeo
                 m_pRenderCamera->SetProjection(0.7, 0.1, 4000);
             }
             
-            ~VRCameraController() { };
+            ~VRCameraController() { delete m_pRenderCamera; };
             
             Eegeo::dv3 GetEcefInterestPoint() const;
             double GetAltitudeAboveSeaLevel() const;
@@ -52,7 +52,6 @@ namespace Eegeo
                         
             void Update(float dt);
             
-            void SetTerrainHeightProvider(Eegeo::Resources::Terrain::Heights::TerrainHeightProvider * pTerrainHeightProvider) { m_pTerrainHeightProvider = pTerrainHeightProvider;}
             
             Camera::CameraState GetCameraState() const;
             
@@ -62,7 +61,6 @@ namespace Eegeo
         private:
             
             Eegeo::Camera::RenderCamera* m_pRenderCamera;
-            Eegeo::Resources::Terrain::Heights::TerrainHeightProvider * m_pTerrainHeightProvider;
 
             
             

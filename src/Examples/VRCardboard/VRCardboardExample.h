@@ -9,7 +9,11 @@
 #include "Streaming.h"
 #include "GlobeCamera.h"
 #include "ICallback.h"
-#include "VRCameraState.h"
+#include "ConfigSections.h"
+#include "VRCardboardController.h"
+#include "IVRModeTracker.h"
+#include "ScreenPropertiesProvider.h"
+#include "Types.h"
 
 namespace Examples
 {
@@ -23,13 +27,16 @@ namespace Examples
 
 		Eegeo::VR::VRCameraController* m_pCameraController;
 		Eegeo::VR::VRCameraState m_vrCameraState;
+		Eegeo::VR::VRCardboardController* m_pVRCardboardController;
 
 	public:
 
 		VRCardboardExample(Eegeo::EegeoWorld& eegeoWorld,
+						   const Eegeo::Config::DeviceSpec& deviceSpecs,
 						   Eegeo::Streaming::ResourceCeilingProvider& resourceCeilingProvider,
 						   Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
-						   const Eegeo::Rendering::ScreenProperties& initialScreenProperties);
+						   const IScreenPropertiesProvider& initialScreenProperties,
+						   Examples::IVRModeTracker& vrModeTracker);
 
 		virtual ~VRCardboardExample();
 
@@ -53,12 +60,12 @@ namespace Examples
 		const Eegeo::m33& GetCurrentCameraOrientation();
 		const Eegeo::m33& GetBaseOrientation();
 		const Eegeo::m33& GetHeadTrackerOrientation();
-		virtual const Eegeo::VR::VRCameraState& GetVRCameraState();
 		virtual void SetVRCameraState(const float headTransform[]);
 
+		virtual void UpdateWorld(float dt, Eegeo::EegeoWorld& world, Eegeo::Camera::CameraState cameraState, Examples::ScreenPropertiesProvider& screenPropertyProvider, Eegeo::Streaming::IStreamingVolume& streamingVolume);
+		virtual void DrawWorld(Eegeo::EegeoWorld& world,  Eegeo::Camera::CameraState cameraState, Examples::ScreenPropertiesProvider& screenPropertyProvider);
 		void UpdateCardboardProfile(const float cardboardProfile[]);
 
-		virtual Eegeo::Camera::RenderCamera& GetRenderCamera();
 		virtual Eegeo::Camera::CameraState GetCurrentLeftCameraState(const float headTransform[]) const;
 		virtual Eegeo::Camera::CameraState GetCurrentRightCameraState(const float headTransform[]) const;
 		virtual Eegeo::Camera::CameraState GetCurrentCameraState() const;

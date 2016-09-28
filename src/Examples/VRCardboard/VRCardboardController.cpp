@@ -7,13 +7,15 @@ namespace Eegeo
 {
     namespace VR
     {
-		VRCardboardController::VRCardboardController(Eegeo::EegeoWorld* pWorld,
-													 const Examples::ScreenPropertiesProvider& screenPropertiesProvider,
+		VRCardboardController::VRCardboardController(Eegeo::EegeoWorld& world,
+													 const Examples::IScreenPropertiesProvider& screenPropertiesProvider,
 													 Eegeo::Modules::Map::MapModule& mapModule,
 													 const Eegeo::Config::DeviceSpec& deviceSpecs,
-													 Examples::ExampleController* exampleController)
-		: m_pExampleController(exampleController)
-		, m_screenPropertiesProvider(screenPropertiesProvider)
+													 Eegeo::VR::VRCameraController& cameraController,
+													 Examples::IVRModeTracker& vrModeTracker)
+		: m_screenPropertiesProvider(screenPropertiesProvider)
+		, m_cameraController(cameraController)
+		, m_vrModeTracker(vrModeTracker)
 		, m_nightTParam(0.0f)
 		, m_currentClearColor(135.f/255.0f, 206.f/255.0f, 235.f/255.0f)
 		, m_startClearColor(0.f/255.f,24.f/255.f,72.f/255.f)
@@ -22,14 +24,14 @@ namespace Eegeo
 			#ifdef CARDBOARD
 			m_pVRCardboardV1ProfileFactory = Eegeo_NEW(Eegeo::VR::Distortion::VRCardboardV1ProfileFactory)();
 			m_pStreamingVolume = Eegeo_NEW(Eegeo::Streaming::CameraFrustumStreamingVolume)(mapModule.GetResourceCeilingProvider(),
-			Eegeo::Config::LodRefinementConfig::GetLodRefinementAltitudesForDeviceSpec(deviceSpecs),
-			Eegeo::Streaming::QuadTreeCube::MAX_DEPTH_TO_VISIT,
-			mapModule.GetEnvironmentFlatteningService());
+																						   Eegeo::Config::LodRefinementConfig::GetLodRefinementAltitudesForDeviceSpec(deviceSpecs),
+																						   Eegeo::Streaming::QuadTreeCube::MAX_DEPTH_TO_VISIT,
+																						   mapModule.GetEnvironmentFlatteningService());
 
 			m_pStreamingVolume->setDeepestLevelForAltitudeLodRefinement(11);
 			m_pStreamingVolume->SetForceMaximumRefinement(true);
 
-			Eegeo::Modules::Core::RenderingModule& renderingModule = pWorld->GetRenderingModule();
+			Eegeo::Modules::Core::RenderingModule& renderingModule = world.GetRenderingModule();
 			m_pVRDistortion = Eegeo_NEW(Eegeo::VR::Distortion::VRDistortionModule)(m_screenPropertiesProvider.GetScreenProperties(),
 																				   renderingModule.GetVertexLayoutPool(),
 																				   renderingModule.GetVertexBindingPool(),
@@ -41,16 +43,17 @@ namespace Eegeo
 			m_pVRDistortion->Initialize();
 
 			m_pVRSkybox = Eegeo_NEW(Eegeo::Skybox::SkyboxModule)(renderingModule,
-			renderingModule.GetGlBufferPool(),
-			renderingModule.GetVertexBindingPool(),
-			renderingModule.GetVertexLayoutPool(),
-			renderingModule.GetRenderableFilters());
+																 renderingModule.GetGlBufferPool(),
+																 renderingModule.GetVertexBindingPool(),
+																 renderingModule.GetVertexLayoutPool(),
+																 renderingModule.GetRenderableFilters());
 			#endif
 		}
 
 		VRCardboardController::~VRCardboardController()
 		{
 			#ifdef CARDBOARD
+			m_pVRDistortion->Suspend();
 			Eegeo_DELETE m_pVRSkybox;
 			Eegeo_DELETE m_pVRDistortion;
 			Eegeo_DELETE m_pStreamingVolume;
@@ -58,16 +61,16 @@ namespace Eegeo
 			#endif
 		}
 
-		void VRCardboardController::Update(float dt, const Eegeo::Camera::CameraState& cameraState, Eegeo::EegeoWorld& eegeoWorld, Examples::IVRModeTracker& vrModeTracker)
+		void VRCardboardController::Update(float dt, const Eegeo::Camera::CameraState cameraState, Eegeo::EegeoWorld& eegeoWorld)
 		{
 			#ifdef CARDBOARD
 		    if(!m_pVRSkybox->IsShowing())
 		    {
 		        m_pVRSkybox->Start();
 		    }
-		    vrModeTracker.EnterVRMode();
+		    m_vrModeTracker.EnterVRMode();
 
-		    Eegeo::Camera::RenderCamera& renderCamera = m_pExampleController->GetRenderCamera();
+		    Eegeo::Camera::RenderCamera& renderCamera = m_cameraController.GetCamera();
 
 
 		    std::vector<Eegeo::Geometry::Plane> frustumPlanes(Eegeo::Geometry::Frustum::PLANES_COUNT);
@@ -88,19 +91,19 @@ namespace Eegeo
 		    											 cameraState.ProjectionMatrix(),
 		    											 *m_pStreamingVolume,
 		    											 m_screenPropertiesProvider.GetScreenProperties());
-		    											 eegeoWorld.Update(updateParameters);
+		    eegeoWorld.Update(updateParameters);
 			#endif
 		}
 
-		void VRCardboardController::Draw (float dt, Eegeo::EegeoWorld& eegeoWorld)
+		void VRCardboardController::Draw (Eegeo::EegeoWorld& eegeoWorld, const Eegeo::VR::VRCameraState& vrCameraState)
 		{
 			#ifdef CARDBOARD
 			if(eegeoWorld.Validated())
 			{
 				m_pVRDistortion->BeginRendering();
-				DrawLeftEye(dt, eegeoWorld);
+				DrawLeftEye(eegeoWorld, vrCameraState);
 				m_pVRDistortion->RegisterRenderable();
-				DrawRightEye(dt, eegeoWorld);
+				DrawRightEye(eegeoWorld, vrCameraState);
 				m_pVRDistortion->UnRegisterRenderable();
 			}
 			#endif
@@ -122,44 +125,39 @@ namespace Eegeo
 			#endif
 		}
 
-		void VRCardboardController::DrawLeftEye (float dt, Eegeo::EegeoWorld& eegeoWorld)
+		void VRCardboardController::DrawLeftEye (Eegeo::EegeoWorld& eegeoWorld, const Eegeo::VR::VRCameraState& vrCameraState)
 		{
-		    m_pExampleController->PreWorldDraw();
 
 		    glViewport(0, 0, m_screenPropertiesProvider.GetScreenProperties().GetScreenWidth()/2.0f, m_screenPropertiesProvider.GetScreenProperties().GetScreenHeight());
+		    Eegeo::Camera::CameraState cameraState(vrCameraState.GetCurrentLeftCameraState());
 
-		    Eegeo::Camera::CameraState cameraState(m_pExampleController->GetVRCameraState().GetCurrentLeftCameraState());
-
-		    DrawEyeFromCameraState(dt, cameraState, eegeoWorld);
+		    DrawEyeFromCameraState(cameraState, eegeoWorld, vrCameraState);
 
 		}
 
-		void VRCardboardController::DrawRightEye (float dt, Eegeo::EegeoWorld& eegeoWorld)
+		void VRCardboardController::DrawRightEye (Eegeo::EegeoWorld& eegeoWorld, const Eegeo::VR::VRCameraState& vrCameraState)
 		{
-		    m_pExampleController->PreWorldDraw();
 
 		    glViewport(m_screenPropertiesProvider.GetScreenProperties().GetScreenWidth()/2.0f, 0, m_screenPropertiesProvider.GetScreenProperties().GetScreenWidth()/2.0f, m_screenPropertiesProvider.GetScreenProperties().GetScreenHeight());
 
-		    Eegeo::Camera::CameraState cameraState(m_pExampleController->GetVRCameraState().GetCurrentRightCameraState());
+		    Eegeo::Camera::CameraState cameraState(vrCameraState.GetCurrentRightCameraState());
 
-		    DrawEyeFromCameraState(dt, cameraState, eegeoWorld);
+		    DrawEyeFromCameraState(cameraState, eegeoWorld, vrCameraState);
 
 		}
 
-		void VRCardboardController::DrawEyeFromCameraState(float dt, const Eegeo::Camera::CameraState& cameraState, Eegeo::EegeoWorld& eegeoWorld)
+		void VRCardboardController::DrawEyeFromCameraState(const Eegeo::Camera::CameraState& cameraState, Eegeo::EegeoWorld& eegeoWorld, const Eegeo::VR::VRCameraState& vrCameraState)
 		{
 		    Eegeo::EegeoDrawParameters drawParameters(cameraState.LocationEcef(),
-		    cameraState.InterestPointEcef(),
-		    cameraState.ViewMatrix(),
-		    cameraState.ProjectionMatrix(),
-		    m_screenPropertiesProvider.GetScreenProperties());
+		    										  cameraState.InterestPointEcef(),
+													  cameraState.ViewMatrix(),
+													  cameraState.ProjectionMatrix(),
+													  m_screenPropertiesProvider.GetScreenProperties());
 
-		    Eegeo::v3 forward(m_pExampleController->GetVRCameraState().GetBaseOrientation().GetRow(2));
+		    Eegeo::v3 forward(vrCameraState.GetBaseOrientation().GetRow(2));
 		    Eegeo::dv3 position(cameraState.LocationEcef() + (forward*50));
 
 		    eegeoWorld.Draw(drawParameters);
-
-		    m_pExampleController->Draw();
 		}
 
 		void VRCardboardController::NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties)
@@ -172,7 +170,6 @@ namespace Eegeo
 		void VRCardboardController::UpdateCardboardProfile(const float cardboardProfile[])
 		{
 			#ifdef CARDBOARD
-		    m_pExampleController->UpdateCardboardProfile(cardboardProfile);
 		    m_pVRDistortion->UpdateCardboardProfile(cardboardProfile);
 			#endif
 		}
@@ -182,14 +179,14 @@ namespace Eegeo
 
 		}
 
-		void VRCardboardController::StopSkybox(Examples::IVRModeTracker& vrModeTracker)
+		void VRCardboardController::StopSkybox()
 		{
 			#ifdef CARDBOARD
 			if(m_pVRSkybox->IsShowing())
 			{
 				m_pVRSkybox->Stop();
 			}
-			vrModeTracker.ExitVRMode();
+			m_vrModeTracker.ExitVRMode();
 			#endif
 		}
     }

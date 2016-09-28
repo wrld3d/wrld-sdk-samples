@@ -103,6 +103,7 @@ namespace Eegeo
                 Eegeo_DELETE m_pTransitionModel;
 
                 Eegeo_DELETE m_pCardboardProfile;
+                Eegeo_DELETE m_pPositionUvVertexLayout;
             }
 
             Eegeo::Rendering::Mesh* CreateUnlitDistortionMesh(float width, float height, const Eegeo::Rendering::VertexLayouts::VertexLayout& vertexLayout, Eegeo::Rendering::GlBufferPool& glBufferPool, VRCardboardDeviceProfile& cardboardProfile)

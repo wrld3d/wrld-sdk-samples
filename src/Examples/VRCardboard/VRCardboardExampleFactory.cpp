@@ -11,11 +11,15 @@ namespace Examples
 {
 
 	VRCardboardExampleFactory::VRCardboardExampleFactory(Eegeo::EegeoWorld& world,
+                                                         const Eegeo::Config::DeviceSpec& deviceSpecs,
                                                          DefaultCameraControllerFactory&defaultCameraControllerFactory,
-                                                         const IScreenPropertiesProvider& screenPropertiesProvider)
+                                                         const IScreenPropertiesProvider& screenPropertiesProvider,
+														 Examples::IVRModeTracker& vrModeTracker)
     : m_world(world)
+    , m_deviceSpecs(deviceSpecs)
     , m_screenPropertiesProvider(screenPropertiesProvider)
     , m_defaultCameraControllerFactory(defaultCameraControllerFactory)
+	, m_vrModeTracker(vrModeTracker)
 	{
     
 	}
@@ -24,12 +28,12 @@ namespace Examples
 	{
 	    Eegeo::Modules::Map::MapModule& mapModule = m_world.GetMapModule();
 
-	    const Eegeo::Rendering::ScreenProperties& initialScreenProperties = m_screenPropertiesProvider.GetScreenProperties();
-
 	    return new Examples::VRCardboardExample(m_world,
+	                                            m_deviceSpecs,
 	                                            mapModule.GetResourceCeilingProvider(),
 	                                            m_defaultCameraControllerFactory.Create(),
-	                                            initialScreenProperties);
+												m_screenPropertiesProvider,
+												m_vrModeTracker);
 	}
 
 	std::string VRCardboardExampleFactory::ExampleName() const
