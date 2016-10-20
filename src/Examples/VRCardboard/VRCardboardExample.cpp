@@ -44,7 +44,7 @@ namespace Examples
     
     void VRCardboardExample::Start()
     {
-        Eegeo::Space::LatLongAltitude eyePosLla = Eegeo::Space::LatLongAltitude::FromDegrees(40.763647, -73.973468, 35);
+        Eegeo::Space::LatLongAltitude eyePosLla = Eegeo::Space::LatLongAltitude::FromDegrees(37.795185, -122.402780, 305);
         m_pCameraController->SetStartLatLongAltitude(eyePosLla);
         
     }
