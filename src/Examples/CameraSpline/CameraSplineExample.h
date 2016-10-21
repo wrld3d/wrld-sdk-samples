@@ -3,7 +3,7 @@
 #ifndef __ExampleApp__CameraSplineExample__
 #define __ExampleApp__CameraSplineExample__
 
-#include "IExample.h"
+#include "ExampleHandler.h"
 #include "Camera.h"
 #include "Geometry.h"
 #include "Streaming.h"
@@ -13,7 +13,7 @@ namespace Examples
 /*!
  *  CameraSplineExample demonstrates a camera controller that can animate the camera along a spline
  */
-class CameraSplineExample : public IExample, Eegeo::NonCopyable
+class CameraSplineExample : public ExampleHandler, Eegeo::NonCopyable
 {
 private:
 	

@@ -28,35 +28,15 @@ namespace Examples
         virtual void PreWorldDraw() = 0;
         virtual void Draw() = 0;
         virtual void Suspend()= 0;
-        virtual void AfterCameraUpdate() { }
+        virtual void AfterCameraUpdate()= 0;
         
-        virtual void UpdateCardboardProfile(const float cardboardProfile[]){}
+        virtual void UpdateCardboardProfile(const float cardboardProfile[]) = 0;
         virtual void NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties) = 0;
         
         virtual Eegeo::Camera::CameraState GetCurrentCameraState() const = 0;
-        virtual void SetVRCameraState(const float headTransform[]){};
-        virtual void UpdateWorld(float dt, Eegeo::EegeoWorld& world, Eegeo::Camera::CameraState cameraState, Examples::ScreenPropertiesProvider& screenPropertyProvider, Eegeo::Streaming::IStreamingVolume& streamingVolume)
-        {
-        	Eegeo::EegeoUpdateParameters updateParameters(dt,
-        		    									  cameraState.LocationEcef(),
-														  cameraState.InterestPointEcef(),
-														  cameraState.ViewMatrix(),
-														  cameraState.ProjectionMatrix(),
-														  streamingVolume,
-														  screenPropertyProvider.GetScreenProperties());
-        	world.Update(updateParameters);
-        }
-
-        virtual void DrawWorld(Eegeo::EegeoWorld& world, Eegeo::Camera::CameraState cameraState, Examples::ScreenPropertiesProvider& screenPropertyProvider)
-        {
-        	Eegeo::EegeoDrawParameters drawParameters(cameraState.LocationEcef(),
-        	        							      cameraState.InterestPointEcef(),
-        											  cameraState.ViewMatrix(),
-        											  cameraState.ProjectionMatrix(),
-													  screenPropertyProvider.GetScreenProperties());
-
-        	world.Draw(drawParameters);
-        }
+        virtual void SetVRCameraState(const float headTransform[]) = 0;
+        virtual void UpdateWorld(float dt, Eegeo::EegeoWorld& world, Eegeo::Camera::CameraState cameraState, Examples::ScreenPropertiesProvider& screenPropertyProvider, Eegeo::Streaming::IStreamingVolume& streamingVolume) = 0;
+        virtual void DrawWorld(Eegeo::EegeoWorld& world, Eegeo::Camera::CameraState cameraState, Examples::ScreenPropertiesProvider& screenPropertyProvider) = 0;
 
         virtual void NotifyViewNeedsLayout() = 0;
         

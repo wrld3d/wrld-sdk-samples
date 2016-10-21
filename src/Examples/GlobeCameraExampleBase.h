@@ -2,14 +2,14 @@
 
 #pragma once
 
-#include "IExample.h"
+#include "ExampleHandler.h"
 #include "RenderCamera.h"
 #include "GlobeCamera.h"
 #include "Rendering.h"
 
 namespace Examples
 {
-    class GlobeCameraExampleBase : public IExample, Eegeo::NonCopyable
+    class GlobeCameraExampleBase : public ExampleHandler, Eegeo::NonCopyable
     {
     public:
         GlobeCameraExampleBase(Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,

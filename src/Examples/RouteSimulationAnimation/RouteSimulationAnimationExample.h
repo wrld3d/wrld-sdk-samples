@@ -4,7 +4,7 @@
 #define __ExampleApp__RouteSimulationAnimationExample__
 
 #include <vector>
-#include "IExample.h"
+#include "ExampleHandler.h"
 #include "RouteService.h"
 #include "RouteBuilder.h"
 #include "Route.h"
@@ -27,7 +27,7 @@
 
 namespace Examples
 {
-class RouteSimulationAnimationExample : public IExample, Eegeo::NonCopyable
+class RouteSimulationAnimationExample : public ExampleHandler, Eegeo::NonCopyable
 {
 private:
 	Eegeo::Routes::RouteService& m_routeService;

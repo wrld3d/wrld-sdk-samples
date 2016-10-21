@@ -12,6 +12,7 @@ set(currsources
   ../src/Examples/IExampleControllerView.h
   ../src/Examples/IExampleFactory.h
   ../src/Examples/ScreenPropertiesProvider.h
+  ../src/Examples/ExampleHandler.h
 )
 set(sources ${sources} ${currsources})
 source_group(\\src\\Examples FILES ${currsources})

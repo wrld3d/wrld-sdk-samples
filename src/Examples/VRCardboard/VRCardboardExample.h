@@ -3,7 +3,7 @@
 #pragma once
 
 #include "VRCameraController.h"
-#include "IExample.h"
+#include "ExampleHandler.h"
 #include "Camera.h"
 #include "Geometry.h"
 #include "Streaming.h"
@@ -18,7 +18,7 @@
 namespace Examples
 {
 
-	class VRCardboardExample : public IExample, Eegeo::NonCopyable
+	class VRCardboardExample : public ExampleHandler, Eegeo::NonCopyable
 	{
 	private:
 
@@ -69,7 +69,6 @@ namespace Examples
 		virtual Eegeo::Camera::CameraState GetCurrentLeftCameraState(const float headTransform[]) const;
 		virtual Eegeo::Camera::CameraState GetCurrentRightCameraState(const float headTransform[]) const;
 		virtual Eegeo::Camera::CameraState GetCurrentCameraState() const;
-		virtual bool IsVRExample(){return true;}
 
 		virtual void NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties);
 
