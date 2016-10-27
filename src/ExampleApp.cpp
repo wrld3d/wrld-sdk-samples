@@ -36,6 +36,7 @@
 #include "RenderToTextureExampleFactory.h"
 #include "ResourceSpatialQueryExampleFactory.h"
 #include "RouteDrawingExampleFactory.h"
+#include "RouteSelectionExampleFactory.h"
 #include "RouteSimulationAnimationExampleFactory.h"
 #include "RouteThicknessPolicyExampleFactory.h"
 #include "RoutingServiceExampleFactory.h"
@@ -207,6 +208,7 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     m_pExampleController->RegisterCameraExample<Examples::RemoveMapLayerExampleFactory>();
 	m_pExampleController->RegisterCameraExample<Examples::ResourceSpatialQueryExampleFactory>();
 	m_pExampleController->RegisterCameraExample<Examples::RouteDrawingExampleFactory>();
+    m_pExampleController->RegisterCameraExample<Examples::RouteSelectionExampleFactory>();
 	m_pExampleController->RegisterCameraControllerScreenPropertiesProviderExample<Examples::RouteSimulationAnimationExampleFactory>(m_screenPropertiesProvider);
 	m_pExampleController->RegisterCameraExample<Examples::RouteThicknessPolicyExampleFactory>();
 	m_pExampleController->RegisterCameraExample<Examples::ScreenPickExampleFactory>();
