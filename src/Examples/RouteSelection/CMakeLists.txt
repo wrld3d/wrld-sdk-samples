@@ -1,8 +1,6 @@
 set(headers ${headers} ../src/Examples/RouteSelection
 )
 set(currsources
-  ../src/Examples/RouteSelection/RouteSelectionHelper.cpp
-  ../src/Examples/RouteSelection/RouteSelectionHelper.h
   ../src/Examples/RouteSelection/RouteSelectionExample.cpp
   ../src/Examples/RouteSelection/RouteSelectionExample.h
   ../src/Examples/RouteSelection/RouteSelectionExampleFactory.cpp
