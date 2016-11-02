@@ -58,7 +58,7 @@ public:
 
 	void Update(const Eegeo::Rendering::RenderContext& renderContext)
 	{
-		m_originalRenderable.CalcUnpackMVP(renderContext, 1.0f);
+		m_originalRenderable.Update(renderContext, 1.0f);
 		m_originalRenderable.SetVisible();
 	}
                                        
