@@ -50,7 +50,7 @@ RoutingServiceExample::RoutingServiceExample(Eegeo::Routes::RouteService& routeS
     m_pInteriorSelectionModel = &interiorsPresentationModule.GetInteriorSelectionModel();
     m_pInteriorInteractionModel = &interiorsPresentationModule.GetInteriorInteractionModel();
 
-    m_routeThicknessPolicy.SetScaleFactor(0.1f);
+    m_routeThicknessPolicy.SetScaleFactor(1.7f);
 }
     
 void RoutingServiceExample::EnterInterior(const Eegeo::Resources::Interiors::InteriorId& interiorId)
