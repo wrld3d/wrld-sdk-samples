@@ -15,6 +15,8 @@ set(resources ${resources}
 		Resources/heatmap_example
 		Resources/load_model_example
 		Resources/mesh_example
+		Resources/opensans_semibold_sdf.fnt
+		Resources/opensans_semibold_sdf_0.png
 		Resources/pin_over_model_example
 		Resources/pins_example
 		Resources/placeholder.pvr
@@ -23,5 +25,7 @@ set(resources ${resources}
 		Resources/route_simulation_example
 		Resources/SplashScreen-1024x768.png
 		Resources/EmbeddedTheme
+		Resources/Labels
+        Resources/Labels/label_style_sheet.json
 		ExampleApp/Images.xcassets
 )

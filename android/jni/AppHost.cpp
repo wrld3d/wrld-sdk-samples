@@ -125,11 +125,15 @@ AppHost::AppHost(
 
 	Eegeo::EffectHandler::Initialise();
 
-	const Eegeo::EnvironmentCharacterSet::Type environmentCharacterSet = Eegeo::EnvironmentCharacterSet::Latin;
 	std::string deviceModel = std::string(nativeState.deviceModel, strlen(nativeState.deviceModel));
 	Eegeo::Config::PlatformConfig config = Eegeo::Android::AndroidPlatformConfigBuilder(deviceModel).Build();
 
 	config.OptionsConfig.GenerateCollisionForAllResources = true;
+	config.OptionsConfig.EnableLabels = true;
+    config.MapLayersConfig.FontsModuleConfig.EnvironmentFontFilename = "opensans_semibold_sdf.fnt";
+    config.MapLayersConfig.Interiors.UseLegacyLabels = false;
+    config.MapLayersConfig.LabelsModuleConfig.StyleSheetPath = "Labels/label_style_sheet.json";
+
 	config.CityThemesConfig.EmbeddedThemeManifestFile = "embedded_manifest.bin";
 	config.CityThemesConfig.EmbeddedThemeTexturePath = "Textures";
 	config.CityThemesConfig.EmbeddedThemeNameContains = "Summer";
@@ -142,7 +146,7 @@ AppHost::AppHost(
 	    screenProperties,
 	    *m_pAndroidLocationService,
 	    m_androidNativeUIFactories,
-	    environmentCharacterSet,
+	    Eegeo::EnvironmentCharacterSet::UseFontModuleConfig,
 	    config,
 	    NULL);
 
