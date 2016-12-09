@@ -26,6 +26,7 @@
 #include "ScreenProperties.h"
 #include "BuildingFootprintsModule.h"
 #include "CollisionVisualizationModule.h"
+#include "AndroidImageNameHelper.h"
 
 namespace
 {
@@ -126,13 +127,19 @@ AppHost::AppHost(
 	Eegeo::EffectHandler::Initialise();
 
 	std::string deviceModel = std::string(nativeState.deviceModel, strlen(nativeState.deviceModel));
-	Eegeo::Config::PlatformConfig config = Eegeo::Android::AndroidPlatformConfigBuilder(deviceModel).Build();
+    Eegeo::Android::AndroidImageNameHelper imageHelper(&nativeState);
+	Eegeo::Config::PlatformConfig config = Eegeo::Android::AndroidPlatformConfigBuilder(deviceModel,
+                                                                                        imageHelper.GetImageResolutionSuffix(),
+                                                                                        imageHelper.GetImageResolutionScale()).Build();
 
 	config.OptionsConfig.GenerateCollisionForAllResources = true;
 	config.OptionsConfig.EnableLabels = true;
     config.MapLayersConfig.FontsModuleConfig.EnvironmentFontFilename = "opensans_semibold_sdf.fnt";
     config.MapLayersConfig.Interiors.UseLegacyLabels = false;
     config.MapLayersConfig.LabelsModuleConfig.StyleSheetPath = "Labels/label_style_sheet.json";
+    config.MapLayersConfig.LabelsModuleConfig.CategoryIconMapPath = "Labels/label_category_icon_map.json";
+    config.MapLayersConfig.IconsModuleConfig.IconsEnabled = true;
+    config.MapLayersConfig.IconsModuleConfig.IconSetManifestPath = "pin_sheet.json";
 
 	config.CityThemesConfig.EmbeddedThemeManifestFile = "embedded_manifest.bin";
 	config.CityThemesConfig.EmbeddedThemeTexturePath = "Textures";

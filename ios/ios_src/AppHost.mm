@@ -94,6 +94,9 @@ AppHost::AppHost(
     config.MapLayersConfig.FontsModuleConfig.EnvironmentFontFilename = "opensans_semibold_sdf.fnt";
     config.MapLayersConfig.Interiors.UseLegacyLabels = false;
     config.MapLayersConfig.LabelsModuleConfig.StyleSheetPath = "Labels/label_style_sheet.json";
+    config.MapLayersConfig.LabelsModuleConfig.CategoryIconMapPath = "Labels/label_category_icon_map.json";
+    config.MapLayersConfig.IconsModuleConfig.IconsEnabled = true;
+    config.MapLayersConfig.IconsModuleConfig.IconSetManifestPath = "pin_sheet.json";
     
 	m_pWorld = new Eegeo::EegeoWorld(apiKey,
                                      *m_piOSPlatformAbstractionModule,

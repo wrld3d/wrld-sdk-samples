@@ -6,6 +6,10 @@ set(resources ${resources}
 		Resources/placeholder_cube_posX.png
 		Resources/placeholder_cube_posY.png
 		Resources/placeholder_cube_posZ.png
+        Resources/pin_sheet.json
+        Resources/pin_sheet_0.png
+        Resources/pin_sheet_0@2x.png
+        Resources/pin_sheet_0@3x.png
 		Resources/DejaVuSansBold.fnt
 		Resources/DejaVuSansBold_0.png
 		Resources/embedded_manifest.bin
@@ -27,5 +31,6 @@ set(resources ${resources}
 		Resources/EmbeddedTheme
 		Resources/Labels
         Resources/Labels/label_style_sheet.json
+        Resources/Labels/label_category_icon_map.json
 		ExampleApp/Images.xcassets
 )
