@@ -1,7 +1,6 @@
 // Copyright eeGeo Ltd (2012-2014), All Rights Reserved
 
-#ifndef __ExampleApp__PinsExampleFactory__
-#define __ExampleApp__PinsExampleFactory__
+#pragma once
 
 #include "IExampleFactory.h"
 #include "GlobeCameraExampleBase.h"
@@ -10,7 +9,7 @@
 
 namespace Examples
 {
-class PinsExampleFactory : public IExampleFactory
+class MarkersExampleFactory : public IExampleFactory
 {
 	Eegeo::EegeoWorld& m_world;
     DefaultCameraControllerFactory& m_defaultCameraControllerFactory;
@@ -18,7 +17,7 @@ class PinsExampleFactory : public IExampleFactory
     const IScreenPropertiesProvider& m_screenPropertiesProvider;
 
 public:
-	PinsExampleFactory(Eegeo::EegeoWorld& world,
+	MarkersExampleFactory(Eegeo::EegeoWorld& world,
                        DefaultCameraControllerFactory& defaultCameraControllerFactory,
                        Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController,
                        const IScreenPropertiesProvider& screenPropertiesProvider);
@@ -28,6 +27,3 @@ public:
 	IExample* CreateExample() const;
 };
 }
-
-
-#endif /* defined(__ExampleApp__PinsExampleFactory__) */

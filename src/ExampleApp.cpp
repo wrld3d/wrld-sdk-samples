@@ -29,8 +29,7 @@
 #include "ModifiedRenderingExampleFactory.h"
 #include "NavigationGraphExampleFactory.h"
 #include "Pick3DObjectExampleFactory.h"
-#include "PinOverModelExampleFactory.h"
-#include "PinsExampleFactory.h"
+#include "MarkersExampleFactory.h"
 #include "PODAnimationExampleFactory.h"
 #include "PolyChartExampleFactory.h"
 #include "RenderToTextureExampleFactory.h"
@@ -195,13 +194,12 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     m_pExampleController->RegisterCameraExample<Examples::FireworksExampleFactory>();
     m_pExampleController->RegisterCameraExample<Examples::GeofenceExampleFactory>();
     m_pExampleController->RegisterCameraExample<Examples::HeatmapExampleFactory>();
-	m_pExampleController->RegisterCameraExample<Examples::LoadModelExampleFactory>();
+    m_pExampleController->RegisterCameraExample<Examples::LoadModelExampleFactory>();
+    m_pExampleController->RegisterCameraControllerScreenPropertiesProviderExample<Examples::MarkersExampleFactory>(m_screenPropertiesProvider);
     m_pExampleController->RegisterCameraExample<Examples::MeshExampleFactory>();
 	m_pExampleController->RegisterCameraExample<Examples::ModifiedRenderingExampleFactory>();
 	m_pExampleController->RegisterCameraExample<Examples::NavigationGraphExampleFactory>();
 	m_pExampleController->RegisterCameraExample<Examples::Pick3DObjectExampleFactory>();
-	m_pExampleController->RegisterCameraControllerScreenPropertiesProviderExample<Examples::PinsExampleFactory>(m_screenPropertiesProvider);
-	m_pExampleController->RegisterCameraControllerScreenPropertiesProviderExample<Examples::PinOverModelExampleFactory>(m_screenPropertiesProvider  );
 	m_pExampleController->RegisterCameraExample<Examples::PODAnimationExampleFactory>();
     m_pExampleController->RegisterCameraExample<Examples::PolyChartExampleFactory>();
 	m_pExampleController->RegisterCameraExample<Examples::ReadHeadingExampleFactory>();

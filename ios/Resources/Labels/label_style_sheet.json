@@ -439,6 +439,26 @@
         "halo_color_rgba": "3A3A3A",
         "masked_glyph_color_rgba": "E0E0E0A0",
         "masked_halo_color_rgba": "00000080"
+    },
+    {
+        "name": "marker_default",
+        "label_resource_font_binding": "markers",
+        "size_px": 9.5,
+        "apply_projection_scale": false,
+        "glyph_color_rgba": "FFFFFFFF",
+        "halo_color_rgba": "3A3A3AFF",
+        "halo_width": 2.0,
+        "halo_hardness": 1.0
+    },
+    {
+        "name": "marker_alternate",
+        "label_resource_font_binding": "markers",
+        "size_px": 14.5,
+        "apply_projection_scale": false,
+        "glyph_color_rgba": "FF0000FF",
+        "halo_color_rgba": "000000FF",
+        "halo_width": 4.0,
+        "halo_hardness": 1.0
     }
     ],
     "LabelIconStyles":[
@@ -447,7 +467,13 @@
         "size_px": 28,
         "color": "FFFFFFFF",
         "masked_color": "F0F0F080"
-	}
+	},
+    {
+        "name": "marker_default",
+        "size_px": 28,
+        "color": "FFFFFFFF",
+        "masked_color": "F0F0F080"
+    }
 	],
 	"LabelStyles": [{
 		"name": "road_default",
@@ -833,6 +859,31 @@
         "constraint_radius_scale": 1.0,
         "stencil_mode": "always",
         "priority": 2
+    },
+    {
+        "name": "marker_default",
+        "label_text_style_name": "marker_default",
+        "label_icon_style_name": "marker_default",
+        "label_orientation": "screen",
+        "label_horizontal_alignment": "left",
+        "label_vertical_alignment": "middle",
+        "constraint_radius_scale": 0.0,
+        "stencil_mode": "always",
+        "pickable": true,
+        "fade_duration": 0.25,
+        "priority": 0
+    },
+    {
+        "name": "marker_alternate",
+        "label_text_style_name": "marker_alternate",
+        "label_icon_style_name": "",
+        "label_orientation": "screen",
+        "label_horizontal_alignment": "center",
+        "label_vertical_alignment": "middle",
+        "constraint_radius_scale": 0.0,
+        "stencil_mode": "always",
+        "pickable": true,
+        "priority": 0
     }
     ],
 	"LabelStyleBindings": [{
