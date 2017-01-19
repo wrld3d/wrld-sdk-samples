@@ -1,17 +1,17 @@
 // Copyright eeGeo Ltd (2012-2014), All Rights Reserved
 
-#ifndef PINSWITHATTACHEDUIEXAMPLEFACTORY_H_
-#define PINSWITHATTACHEDUIEXAMPLEFACTORY_H_
+#pragma once
 
 #include "IExampleFactory.h"
 #include "IExample.h"
 #include "EegeoWorld.h"
 #include "AndroidNativeState.h"
 #include "ScreenPropertiesProvider.h"
+#include <string>
 
 namespace Examples
 {
-class PinsWithAttachedJavaUIExampleFactory : public IExampleFactory
+class MarkersWithAttachedJavaUIExampleFactory : public IExampleFactory
 {
 	Eegeo::EegeoWorld& m_world;
 	AndroidNativeState& m_nativeState;
@@ -20,7 +20,7 @@ class PinsWithAttachedJavaUIExampleFactory : public IExampleFactory
     const IScreenPropertiesProvider& m_screenPropertiesProvider;
 
 public:
-	PinsWithAttachedJavaUIExampleFactory(
+    MarkersWithAttachedJavaUIExampleFactory(
 	    Eegeo::EegeoWorld& world,
 	    AndroidNativeState& nativeState,
         DefaultCameraControllerFactory& defaultCameraControllerFactory,
@@ -32,6 +32,3 @@ public:
 	IExample* CreateExample() const;
 };
 }
-
-
-#endif /* PINSWITHATTACHEDUIEXAMPLEFACTORY_H_ */

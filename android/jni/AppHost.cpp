@@ -18,7 +18,6 @@
 #include "RouteSimulationExampleFactory.h"
 #include "RoutingServiceExampleFactory.h"
 #include "JavaHudCrossThreadCommunicationExampleFactory.h"
-#include "PinsWithAttachedJavaUIExampleFactory.h"
 #include "PositionJavaPinButtonExampleFactory.h"
 #include "ExampleCameraJumpController.h"
 #include "ShowJavaPlaceJumpUIExampleFactory.h"
@@ -27,6 +26,7 @@
 #include "BuildingFootprintsModule.h"
 #include "CollisionVisualizationModule.h"
 #include "AndroidImageNameHelper.h"
+#include "MarkersWithAttachedJavaUIExampleFactory.h"
 
 namespace
 {
@@ -295,7 +295,7 @@ void AppHost::RegisterAndroidSpecificExamples()
 			m_pApp->GetDefaultCameraControllerFactory(),
 			m_pApp->GetTouchController()));
 
-	exampleController.RegisterExample(new Examples::PinsWithAttachedJavaUIExampleFactory(
+	exampleController.RegisterExample(new Examples::MarkersWithAttachedJavaUIExampleFactory(
 			*m_pWorld,
 			m_nativeState,
 			m_pApp->GetDefaultCameraControllerFactory(),
