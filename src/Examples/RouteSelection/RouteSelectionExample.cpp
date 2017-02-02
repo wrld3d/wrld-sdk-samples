@@ -124,7 +124,7 @@ void RouteSelectionExample::CreateRoutes()
 {
     const float halfWidth = 5.f;
     const float routeSpeedMetersPerSecond = 40.f;
-    Eegeo::Routes::Style::RouteStyle routeStyle(&m_routeThicknessPolicy, Eegeo::Routes::Style::RouteStyle::DebugStyleNone);
+    Eegeo::Routes::Style::RouteStyle routeStyle(&m_routeThicknessPolicy, Eegeo::Routes::Style::RouteStyle::DebugStyleNone, Eegeo::Rendering::LayerIds::BeforeWorldTranslucency, true);
     
     RouteBuilder builder;
     

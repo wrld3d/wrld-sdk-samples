@@ -24,7 +24,7 @@
 #include "GlobeCameraController.h"
 #include "EegeoWorld.h"
 #include "IInterestPointProvider.h"
-#include "IdentityRouteThicknessPolicy.h"
+#include "ExampleRouteThicknessPolicy.h"
 #include "IRouteSimulationSessionObserver.h"
 #include "IRouteSimulationExampleViewFactory.h"
 #include "IRouteSimulationExampleView.h"
@@ -76,7 +76,7 @@ private:
     Eegeo::Rendering::SceneModels::SceneModel* m_pVehicleModel2;
     std::vector<Eegeo::Rendering::SceneModels::SceneModel*> m_switchableVehicleModels;
 	Eegeo::Routes::Route* m_pRoute;
-	Eegeo::Routes::Style::Thickness::IdentityRouteThicknessPolicy m_routeThicknessPolicy;
+	ExampleRouteThicknessPolicy m_routeThicknessPolicy;
 
 	Eegeo::Routes::Simulation::RouteSimulationSession* m_pSessionCycle;
 	Eegeo::Routes::Simulation::RouteSimulationSession* m_pSessionAlternatingSpeedChanger;

@@ -9,7 +9,7 @@
 #include "RouteRepository.h"
 #include "Route.h"
 #include "EegeoWorld.h"
-#include "IdentityRouteThicknessPolicy.h"
+#include "ExampleRouteThicknessPolicy.h"
 
 namespace Examples
 {
@@ -22,7 +22,7 @@ private:
 
 	bool m_createdRoutes;
 	std::vector<Eegeo::Routes::Route*> m_routes;
-	Eegeo::Routes::Style::Thickness::IdentityRouteThicknessPolicy m_routeThicknessPolicy;
+	ExampleRouteThicknessPolicy m_routeThicknessPolicy;
     Eegeo::Resources::Terrain::Collision::TerrainRayPicker* m_pRayPicker;
 
     std::vector<std::vector<Eegeo::Space::LatLongAltitude>> m_sourceRoutePts;

@@ -73,7 +73,7 @@ void RoutingServiceExample::RouteReceivedCallback(Eegeo::Web::IWebResponse& webR
     Eegeo_DELETE responseData;
     
     Eegeo::Routes::Webservice::JsonRouteParser resultParser(m_world.GetWorkPool());
-    Eegeo::Routes::Style::RouteStyle routeStyle(&m_routeThicknessPolicy, Eegeo::Routes::Style::RouteStyle::DebugStyleNone, Eegeo::Rendering::LayerIds::InteriorEntities);
+    Eegeo::Routes::Style::RouteStyle routeStyle(&m_routeThicknessPolicy, Eegeo::Routes::Style::RouteStyle::DebugStyleNone, Eegeo::Rendering::LayerIds::InteriorEntities, true);
     // this will asynchronously parse the result and add the resulting route to m_routeService
     resultParser.CreateRouteFromJSON(responseString, m_routeService, routeStyle, *m_pInteriorInteractionModel);
 }

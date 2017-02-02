@@ -34,7 +34,7 @@ RouteThicknessPolicyExample::RouteThicknessPolicyExample(RouteService& routeServ
 
 	pCameraController->SetView(cameraInterestBasis, 1374.298706f);
     
-    m_linearAltitudeBasedRouteThicknessPolicy.SetScaleFactor(1.0f);
+    m_linearAltitudeBasedRouteThicknessPolicy.SetScaleFactor(5.0f);
 }
 
 void RouteThicknessPolicyExample::Update(float dt)
@@ -75,7 +75,7 @@ void RouteThicknessPolicyExample::Update(float dt)
 		        .AddPoint(37.793707,-122.392578, altitudeMeters)
 		        .FinishRoute();
 
-		Eegeo::Routes::Style::RouteStyle transamericaPyramidStyle(&m_myScalingRouteThicknessPolicy, Eegeo::Routes::Style::RouteStyle::DebugStyleNone);
+		Eegeo::Routes::Style::RouteStyle transamericaPyramidStyle(&m_myScalingRouteThicknessPolicy, Eegeo::Routes::Style::RouteStyle::DebugStyleNone, Eegeo::Rendering::LayerIds::BeforeWorldTranslucency, true);
 		Route* transamericaPyramidRoute = m_routeService.CreateRoute(transamericaPyramidRoutePoints, transamericaPyramidStyle, false);
 		m_routes.push_back(transamericaPyramidRoute);
 
