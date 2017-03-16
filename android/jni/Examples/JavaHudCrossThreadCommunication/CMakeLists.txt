@@ -1,0 +1,12 @@
+set(headers ${headers} jni/Examples/JavaHudCrossThreadCommunication
+)
+set(currsources
+jni/Examples/JavaHudCrossThreadCommunication/CMakeLists.txt
+jni/Examples/JavaHudCrossThreadCommunication/JavaHudCrossThreadCommunicationExample.cpp
+jni/Examples/JavaHudCrossThreadCommunication/JavaHudCrossThreadCommunicationExample.h
+jni/Examples/JavaHudCrossThreadCommunication/JavaHudCrossThreadCommunicationExampleFactory.cpp
+jni/Examples/JavaHudCrossThreadCommunication/JavaHudCrossThreadCommunicationExampleFactory.h
+jni/Examples/JavaHudCrossThreadCommunication/JavaHudCrossThreadCommunicationProxy.cpp
+jni/Examples/JavaHudCrossThreadCommunication/JavaHudCrossThreadCommunicationProxy.h
+)
+set(sources ${sources} ${currsources})

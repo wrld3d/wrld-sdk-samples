@@ -6,7 +6,7 @@
 #include "Modules.h"
 #include "Rendering.h"
 #include "ITextureFileLoader.h"
-#include "GlHelpers.h"
+#include "GLHelpers.h"
 #include "IRenderableFilter.h"
 #include "Bounds.h"
 

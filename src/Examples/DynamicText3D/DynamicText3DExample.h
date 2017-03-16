@@ -11,7 +11,7 @@
 #include "EnvironmentFlatteningService.h"
 #include "PlaceNameView.h"
 #include "PlaceNameViewBuilder.h"
-#include "GlState.h"
+#include "GLState.h"
 #include "EegeoWorld.h"
 #include "IRenderableFilter.h"
 

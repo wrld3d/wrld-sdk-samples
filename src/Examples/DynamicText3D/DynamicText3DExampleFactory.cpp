@@ -4,7 +4,7 @@
 #include "DynamicText3DExample.h"
 #include "RenderContext.h"
 #include "DefaultCameraControllerFactory.h"
-#include "PlacenamesStreamingModule.h"
+#include "PlaceNamesStreamingModule.h"
 #include "MapModule.h"
 #include "RenderingModule.h"
 

@@ -17,3 +17,7 @@ Include
 .settings/
 project.properties
 **/xcuserdata/
+.gradle
+**/.externalNativeBuild
+**/.externalToolBuilders
+.vscode
