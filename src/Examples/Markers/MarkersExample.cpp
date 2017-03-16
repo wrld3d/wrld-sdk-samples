@@ -122,8 +122,9 @@ void MarkersExample::Event_TouchTap(const AppInterface::TapData& data)
 	Eegeo::v2 screenTapPoint = Eegeo::v2(data.point.GetX(), data.point.GetY());
     Eegeo_TTY("Searching for Pins intersecting tap point %d,%d...", (int) screenTapPoint.GetX(), (int) screenTapPoint.GetY());
     
+    // Avoid repositioning the Wobbly Marker as its position is being updated in the Update function
     int pickedMarkerId = -1;
-    if(m_markerService.TryPick(screenTapPoint, pickedMarkerId))
+    if(m_markerService.TryPick(screenTapPoint, pickedMarkerId) && pickedMarkerId != m_markerId3)
     {
         Eegeo::Markers::IMarker& pickedMarker = m_markerService.Get(pickedMarkerId);
         Eegeo_TTY("Picked marker: %s", pickedMarker.GetEntityName().c_str());
