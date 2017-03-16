@@ -1,5 +1,12 @@
 apply plugin: 'com.android.application'
 
+def keystoreProperties = new Properties()
+if (project.hasProperty('keyStorePropertiesFile')) {
+    def keystorePropertiesFile = project.getProperty('keyStorePropertiesFile')
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+    keystoreProperties['storeFile'] = project.getProperty('keyStoreFile')
+}
+
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
@@ -42,10 +49,24 @@ android {
         }
     }
 
+    if (project.hasProperty('keyStorePropertiesFile')) {
+        signingConfigs {
+            release {
+                keyAlias keystoreProperties['keyAlias']
+                keyPassword keystoreProperties['keyPassword']
+                storeFile file(keystoreProperties['storeFile'])
+                storePassword keystoreProperties['storePassword']
+            }
+        }
+    }
+
     buildTypes {
         release {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            if (project.hasProperty('keyStorePropertiesFile')) {
+                signingConfig signingConfigs.release
+            }
         }
 
         debug {
