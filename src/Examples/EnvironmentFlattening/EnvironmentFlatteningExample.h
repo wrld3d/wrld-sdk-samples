@@ -12,9 +12,7 @@ class EnvironmentFlatteningExample : public GlobeCameraExampleBase
 {
 private:
 	long long m_lastToggle;
-	bool m_scaleUp;
 	Eegeo::Rendering::EnvironmentFlatteningService& m_environmentFlatteningService;
-	float m_initialEnvironmentScale;
 
 public:
 	EnvironmentFlatteningExample(Eegeo::Rendering::EnvironmentFlatteningService& environmentFlatteningService,

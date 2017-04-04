@@ -52,7 +52,7 @@ namespace Examples
         void Update(float dt);
 
         void Draw() {}
-        void Suspend() {}
+        void Suspend();
         
         // IRenderableFilter interface
         void EnqueueRenderables(const Eegeo::Rendering::RenderContext& renderContext, Eegeo::Rendering::RenderQueue& renderQueue);

@@ -12,7 +12,6 @@ namespace Examples
 {
 
 const int ENVIRONMENT_FLATTEN_DIRECTION_SWITCH_DELAY_MILLISECONDS = 5000;
-const float MINIMUM_ENVIRONMENT_SCALE = 0.015f;
 
 EnvironmentFlatteningExample::EnvironmentFlatteningExample(Eegeo::Rendering::EnvironmentFlatteningService& environmentFlatteningService,
                                                            Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
@@ -20,16 +19,12 @@ EnvironmentFlatteningExample::EnvironmentFlatteningExample(Eegeo::Rendering::Env
     : GlobeCameraExampleBase(pCameraController, cameraTouchController)
 	, m_environmentFlatteningService(environmentFlatteningService)
 	,m_lastToggle(MillisecondsSinceEpoch())
-	,m_scaleUp(true)
-	,m_initialEnvironmentScale(environmentFlatteningService.GetCurrentScale())
 {
 }
 
 void EnvironmentFlatteningExample::Suspend()
 {
-	m_environmentFlatteningService.SetCurrentScale(m_initialEnvironmentScale);
-    
-    
+	m_environmentFlatteningService.SetIsFlattened(false);
 }
 
 void EnvironmentFlatteningExample::Update(float dt)
@@ -41,18 +36,10 @@ void EnvironmentFlatteningExample::Update(float dt)
 	{
 		m_lastToggle = ms;
 		delta -= ENVIRONMENT_FLATTEN_DIRECTION_SWITCH_DELAY_MILLISECONDS;
-		m_scaleUp = !m_scaleUp;
+        
+        m_environmentFlatteningService.SetIsFlattened(!m_environmentFlatteningService.IsFlattened());
 	}
 
-	float scale = (float)delta/ENVIRONMENT_FLATTEN_DIRECTION_SWITCH_DELAY_MILLISECONDS;
-
-	if(!m_scaleUp)
-	{
-		scale = 1.f - scale;
-	}
-    
-    scale = MINIMUM_ENVIRONMENT_SCALE + (1-MINIMUM_ENVIRONMENT_SCALE)*scale;
-	m_environmentFlatteningService.SetCurrentScale(scale);
 }
 
 }

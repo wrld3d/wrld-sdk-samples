@@ -163,13 +163,9 @@ namespace Examples
             return ecefOrientation;
         }
         
-        float CalcFlatteningParam(float phase)
+        bool ShouldFlatten(float phase)
         {
-            const float threshold = 0.8f;
-            float clippedSine = 1.0f - ((std::max(std::sin(phase), threshold) - threshold) / (1.f - threshold));
-            const float minFlatteningScale = 0.2f;
-            float flatteningParam = Eegeo::Math::Lerp(minFlatteningScale, 1.f, clippedSine);
-            return flatteningParam;
+            return phase > Eegeo::Math::kPI;
         }
         
         const float revsPerMinuteToRadiansPerSecond = Eegeo::Math::kPI*2.f/60.f;
@@ -317,8 +313,8 @@ namespace Examples
         m_phaseB += dt*revsPerMinuteToRadiansPerSecond*m_config.revsPerMinuteB;
         m_phaseB = std::fmod(m_phaseB, Eegeo::Math::kPI*2);
         
-        float flatteningParam = CalcFlatteningParam(m_environmentFlatteningPhase);
-        m_environmentFlatteningService.SetCurrentScale(flatteningParam);
+        const bool desiredFlattened = ShouldFlatten(m_environmentFlatteningPhase);
+        m_environmentFlatteningService.SetIsFlattened(desiredFlattened);
 
         ExampleMeshRenderable& southWestRenderable = *m_renderables.front();
         southWestRenderable.SetOrientationEcef(MakeEcefOrientation(m_phaseA, m_basisToEcef));
@@ -387,6 +383,11 @@ namespace Examples
         ExampleMeshRenderable& southWestRenderable = *m_renderables.front();
         southWestRenderable.SetMaterial(m_pAsyncTextureMaterial, m_renderingModule.GetVertexBindingPool());
 
+    }
+    
+    void MeshExample::Suspend()
+    {
+        m_environmentFlatteningService.SetIsFlattened(false);
     }
 
 }
