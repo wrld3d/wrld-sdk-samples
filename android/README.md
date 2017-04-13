@@ -4,7 +4,7 @@
 
 # Getting Started on Android
 
-![eeGeo](http://cdn2.eegeo.com/wp-content/uploads/2016/03/readme-banner.jpg)
+![WRLD](http://cdn2.eegeo.com/wp-content/uploads/2016/03/readme-banner.jpg)
 
 * [Requirements](#requirements)
 * [Setup](#setup)
@@ -18,7 +18,7 @@
     * [Eclipse hangs adding native support](#eclipse-hangs-adding-native-support)
     * [Eclipse hangs during first build](#eclipse-hangs-during-first-build)
 
-Before you begin, ensure you have completed the initial steps as described in the [root of the repository](https://github.com/eegeo/eegeo-sdk-samples).
+Before you begin, ensure you have completed the initial steps as described in the [root of the repository](https://github.com/wrld3d/wrld-sdk-samples).
 
 ## Requirements
 
@@ -28,7 +28,7 @@ Before you begin, ensure you have completed the initial steps as described in th
 
 ## Setup
 
-First, download the latest eeGeo Android SDK by running the following command in the root of the repository:
+First, download the latest WRLD Android SDK by running the following command in the root of the repository:
 
 *   `./update.platform.sh -p android`
     *   We recommend you run this step frequently to keep your SDK version up to date.
@@ -65,7 +65,7 @@ The following steps will guide you through installing and setting up the Android
 8.  Right click the project, and select `Android Tools > Add Native Support...`
 9.  Add the cross-platform source by right-clicking the `jni` folder and selecting `New > Folder`.
 10. Click `Advanced` and select the `Linked to alternate location` radio button. 
-11. Click `Browse..` and select the [src](https://github.com/eegeo/eegeo-sdk-samples/tree/master/src) directory. 
+11. Click `Browse..` and select the [src](https://github.com/wrld3d/wrld-sdk-samples/tree/master/src) directory. 
 12. To speed up compile times, see [this section below](#speeding-up-build-times) for compiling with multiple threads.
 13. To run the project, right-click it and select `Run As > Android Application`  
 
