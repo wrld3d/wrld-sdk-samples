@@ -50,7 +50,7 @@ RoutingServiceExample::RoutingServiceExample(Eegeo::Routes::RouteService& routeS
     m_pInteriorSelectionModel = &interiorsPresentationModule.GetInteriorSelectionModel();
     m_pInteriorInteractionModel = &interiorsPresentationModule.GetInteriorInteractionModel();
 
-    m_routeThicknessPolicy.SetScaleFactor(1.7f);
+    m_routeThicknessPolicy.SetScaleFactor(0.25f);
 }
     
 void RoutingServiceExample::EnterInterior(const Eegeo::Resources::Interiors::InteriorId& interiorId)
@@ -110,6 +110,10 @@ void RoutingServiceExample::Update(float dt)
         EnterInterior(interiorId);
         CreateAndBindUI();
     }
+    
+    // Update the altitude based scaler with the current camera's altitude.
+    float altitude = GetGlobeCameraController().GetRenderCamera().GetAltitude();
+    m_routeThicknessPolicy.SetAltitude(altitude);
 }
 
 void RoutingServiceExample::Suspend()
