@@ -160,8 +160,7 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
                                                                                                                   screenProperties,
                                                                                                                   interiorsPresentationModule.GetInteriorInteractionModel(),
                                                                                                                   interiorsPresentationModule.GetInteriorViewModel(),
-                                                                                                                  mapModule.GetEnvironmentFlatteningService(),
-                                                                                                                  false );
+                                                                                                                  mapModule.GetEnvironmentFlatteningService());
     
     m_pInteriorModule = new Eegeo::Interiors::ExampleInteriorModule(
                                   mapModule.GetInteriorsModelModule(),

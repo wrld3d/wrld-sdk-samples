@@ -20,7 +20,7 @@ namespace Examples
     {
         return new Examples::GeofenceExample(m_defaultCameraControllerFactory.Create(),
                                              m_globeCameraTouchController,
-                                             m_world.GetDataModule().GetGeofenceModule().GetController());
+                                             m_world.GetDataModule().GetGeofenceModule().GetGeofenceService());
 
     }
     

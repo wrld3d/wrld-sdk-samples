@@ -3,54 +3,46 @@
 #include <CameraHelpers.h>
 #include "GeofenceExample.h"
 #include "LatLongAltitude.h"
-#include "GeofenceModel.h"
-#include "GeofenceRenderer.h"
-#include "GeofenceViewFactory.h"
-#include "GeofenceController.h"
+#include "IGeofenceModel.h"
+#include "IGeofenceService.h"
 #include "GlobeCameraController.h"
+#include "GeofenceBuilder.h"
 
 namespace Examples
 {
     namespace
     {
-        Eegeo::Data::Geofencing::GeofenceModel* CreateGeofence()
+        Eegeo::Data::Geofencing::IGeofenceModel* CreateGeofence(Eegeo::Data::Geofencing::IGeofenceService& geofenceService)
         {
-            const size_t BL = 0;
-            const size_t BR = 1;
-            const size_t TR = 2;
-            const size_t TL = 3;
+            Eegeo::Data::Geofencing::GeofenceBuilder builder;
+            builder
+                .SetOuterRing({
+                    Eegeo::Space::LatLong::FromDegrees(37.803424, -122.431638),
+                    Eegeo::Space::LatLong::FromDegrees(37.804280, -122.425287),
+                    Eegeo::Space::LatLong::FromDegrees(37.806552, -122.425716),
+                    Eegeo::Space::LatLong::FromDegrees(37.805535, -122.432089)
+                })
+                .AddInnerRing({
+                    Eegeo::Space::LatLong::FromDegrees(37.804050, -122.430454),
+                    Eegeo::Space::LatLong::FromDegrees(37.804531, -122.426647),
+                    Eegeo::Space::LatLong::FromDegrees(37.805926, -122.426900),
+                    Eegeo::Space::LatLong::FromDegrees(37.805284, -122.430729)
+                })
+                .SetPolygonColor({1.0f, 0.0f, 0.0f, 0.5f})
+                .SetElevation(20.f);
 
-            std::vector<Eegeo::Space::LatLongAltitude> extVerts;
-            extVerts.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(37.803424, -122.431638, 0.0));
-            extVerts.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(37.804280, -122.425287, 0.0));
-            extVerts.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(37.806552, -122.425716, 0.0));
-            extVerts.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(37.805535, -122.432089, 0.0));
-
-            // Lerp between the opposite corners to form an (optional) ring that will not be included in the geofence
-            std::vector<Eegeo::Space::LatLongAltitude> intVerts;
-            intVerts.push_back(Eegeo::Space::LatLongAltitude::Lerp(extVerts[BL], extVerts[TR], 0.2f));
-            intVerts.push_back(Eegeo::Space::LatLongAltitude::Lerp(extVerts[BR], extVerts[TL], 0.2f));
-            intVerts.push_back(Eegeo::Space::LatLongAltitude::Lerp(extVerts[BL], extVerts[TR], 1.0f - 0.2f));
-            intVerts.push_back(Eegeo::Space::LatLongAltitude::Lerp(extVerts[BR], extVerts[TL], 1.0f - 0.2f));
-
-            const Eegeo::v4 polygonColor(1.0f, 0.0f, 0.0f, 0.5f);
-
-            return Eegeo::Data::Geofencing::GeofenceModel::GeofenceBuilder(
-                    "sf_test",
-                    polygonColor,
-                    extVerts)
-                    .AddInteriorRing(intVerts)
-                    .AltitudeOffset(20.0f)
-                    .Build();
+            const Eegeo::Data::Geofencing::IGeofenceModel::IdType geofenceId = geofenceService.Create(builder.Build());
+            
+            return &geofenceService.Get(geofenceId);
         }
     }
 
     GeofenceExample::GeofenceExample(
             Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
             Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController,
-            Eegeo::Data::Geofencing::GeofenceController& geofenceController)
+            Eegeo::Data::Geofencing::IGeofenceService& geofenceService)
     : GlobeCameraExampleBase(pCameraController, cameraTouchController)
-    , m_geofenceController(geofenceController)
+    , m_geofenceService(geofenceService)
     , m_elapsedTime(0.0f)
     {
         Eegeo::Space::EcefTangentBasis cameraInterestBasis;
@@ -67,16 +59,14 @@ namespace Examples
     {
         if(m_pGeofence != NULL)
         {
-            m_geofenceController.Remove(*m_pGeofence);
-            Eegeo_DELETE m_pGeofence;
+            m_geofenceService.Destroy(m_pGeofence->GetId());
             m_pGeofence = NULL;
         }
     }
     
     void GeofenceExample::Start()
     {
-        m_pGeofence = CreateGeofence();
-        m_geofenceController.Add(*m_pGeofence);
+        m_pGeofence = CreateGeofence(m_geofenceService);
     }
     
     void GeofenceExample::Update(float dt)

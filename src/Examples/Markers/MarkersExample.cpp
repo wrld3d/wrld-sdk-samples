@@ -57,8 +57,8 @@ void MarkersExample::CreateExampleMarkers()
                                                                         .SetLabelText("Marker with altitude")
                                                                         .SetLabelIcon("airport")
                                                                         .SetLocation(37.795207, -122.402760)
-                                                                        .SetAnchorHeight(280.0f)
-                                                                        .SetAnchorHeightMode(Eegeo::Markers::AnchorHeight::HeightAboveGround)
+                                                                        .SetElevation(280.0f)
+                                                                        .SetElevationMode(Eegeo::Positioning::ElevationMode::HeightAboveGround)
                                                                         .Build());
     
     // This one will have its position changed in update();
