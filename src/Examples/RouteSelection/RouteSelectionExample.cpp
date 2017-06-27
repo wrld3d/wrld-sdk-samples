@@ -42,74 +42,72 @@ RouteSelectionExample::RouteSelectionExample(Eegeo::Routes::RouteService& routeS
 	pCameraController->SetView(cameraInterestBasis, 1374.298706f);
     m_pRayPicker = new Eegeo::Resources::Terrain::Collision::TerrainRayPicker(terrainHeightProvider, collisionMeshResourceProvider);
 
-    //An arbitrarily selected altitude for the route visualisation.
-    const float altitudeMeters = 3.f;
-    std::vector<Eegeo::Space::LatLongAltitude> route1Pts =
+    std::vector<Eegeo::Space::LatLong> route1Pts =
     {
-        Space::LatLongAltitude::FromDegrees(37.788567128006434, -122.40233566664128, altitudeMeters),
-        Space::LatLongAltitude::FromDegrees(37.789290007482009, -122.40145482447454, altitudeMeters),
-        Space::LatLongAltitude::FromDegrees(37.790119971492516, -122.40047234667318, altitudeMeters),
-        Space::LatLongAltitude::FromDegrees(37.790682199880564, -122.3996931401411,  altitudeMeters),
-        Space::LatLongAltitude::FromDegrees(37.791030243881721, -122.39925271905773, altitudeMeters),
-        Space::LatLongAltitude::FromDegrees(37.791753099261179, -122.39827024125637, altitudeMeters),
-        Space::LatLongAltitude::FromDegrees(37.792475947568853, -122.39738939908965, altitudeMeters),
-        Space::LatLongAltitude::FromDegrees(37.79335941923005 , -122.39630528565367, altitudeMeters),
-        Space::LatLongAltitude::FromDegrees(37.794082251822473, -122.39552607912158, altitudeMeters),
-        Space::LatLongAltitude::FromDegrees(37.794751534954337, -122.3946791154997,  altitudeMeters),
-        Space::LatLongAltitude::FromDegrees(37.795420812023117, -122.39393378751247, altitudeMeters),
-        Space::LatLongAltitude::FromDegrees(37.796063312304966, -122.39464523695486, altitudeMeters),
-        Space::LatLongAltitude::FromDegrees(37.796812888904768, -122.39525505076259, altitudeMeters),
-        Space::LatLongAltitude::FromDegrees(37.797375066363401, -122.39579710748055, altitudeMeters),
-        Space::LatLongAltitude::FromDegrees(37.798017549648918, -122.39644079983316, altitudeMeters),
-        Space::LatLongAltitude::FromDegrees(37.79857971793993 , -122.39701673509603, altitudeMeters),
-        Space::LatLongAltitude::FromDegrees(37.799141881952686, -122.39749103472427, altitudeMeters),
-        Space::LatLongAltitude::FromDegrees(37.799837888612402, -122.39813472707688, altitudeMeters)
+        Space::LatLong::FromDegrees(37.788567128006434, -122.40233566664128),
+        Space::LatLong::FromDegrees(37.789290007482009, -122.40145482447454),
+        Space::LatLong::FromDegrees(37.790119971492516, -122.40047234667318),
+        Space::LatLong::FromDegrees(37.790682199880564, -122.3996931401411),
+        Space::LatLong::FromDegrees(37.791030243881721, -122.39925271905773),
+        Space::LatLong::FromDegrees(37.791753099261179, -122.39827024125637),
+        Space::LatLong::FromDegrees(37.792475947568853, -122.39738939908965),
+        Space::LatLong::FromDegrees(37.79335941923005 , -122.39630528565367),
+        Space::LatLong::FromDegrees(37.794082251822473, -122.39552607912158),
+        Space::LatLong::FromDegrees(37.794751534954337, -122.3946791154997),
+        Space::LatLong::FromDegrees(37.795420812023117, -122.39393378751247),
+        Space::LatLong::FromDegrees(37.796063312304966, -122.39464523695486),
+        Space::LatLong::FromDegrees(37.796812888904768, -122.39525505076259),
+        Space::LatLong::FromDegrees(37.797375066363401, -122.39579710748055),
+        Space::LatLong::FromDegrees(37.798017549648918, -122.39644079983316),
+        Space::LatLong::FromDegrees(37.79857971793993 , -122.39701673509603),
+        Space::LatLong::FromDegrees(37.799141881952686, -122.39749103472427),
+        Space::LatLong::FromDegrees(37.799837888612402, -122.39813472707688)
     };
     
-    std::vector<Eegeo::Space::LatLongAltitude> route2Pts =
+    std::vector<Eegeo::Space::LatLong> route2Pts =
     {
-        Space::LatLongAltitude::FromDegrees(37.788567128006434, -122.40233566664128, altitudeMeters),
-        Space::LatLongAltitude::FromDegrees(37.789290007482009, -122.40145482447454, altitudeMeters),
-        Space::LatLongAltitude::FromDegrees(37.790119971492516, -122.40047234667318, altitudeMeters),
-        Space::LatLongAltitude::FromDegrees(37.790682199880564, -122.3996931401411,  altitudeMeters),
-        Space::LatLongAltitude::FromDegrees(37.792101138218008, -122.39982865432059, altitudeMeters),
-        Space::LatLongAltitude::FromDegrees(37.793252332318616, -122.40009968267958, altitudeMeters),
-        Space::LatLongAltitude::FromDegrees(37.794162566118423, -122.40023519685907, altitudeMeters),
-        Space::LatLongAltitude::FromDegrees(37.79512633085983 , -122.40043846812831, altitudeMeters),
-        Space::LatLongAltitude::FromDegrees(37.796009770828235, -122.40057398230782, altitudeMeters),
-        Space::LatLongAltitude::FromDegrees(37.796812888904768, -122.40074337503219, altitudeMeters),
-        Space::LatLongAltitude::FromDegrees(37.797749848959029, -122.40091276775655, altitudeMeters),
-        Space::LatLongAltitude::FromDegrees(37.798660027346543, -122.40108216048094, altitudeMeters),
-        Space::LatLongAltitude::FromDegrees(37.798767106419547, -122.39989641141034, altitudeMeters),
-        Space::LatLongAltitude::FromDegrees(37.798900955042512, -122.39871066233974, altitudeMeters),
-        Space::LatLongAltitude::FromDegrees(37.799141881952686, -122.39749103472427, altitudeMeters),
-        Space::LatLongAltitude::FromDegrees(37.799837888612402, -122.39813472707688, altitudeMeters)
+        Space::LatLong::FromDegrees(37.788567128006434, -122.40233566664128),
+        Space::LatLong::FromDegrees(37.789290007482009, -122.40145482447454),
+        Space::LatLong::FromDegrees(37.790119971492516, -122.40047234667318),
+        Space::LatLong::FromDegrees(37.790682199880564, -122.3996931401411),
+        Space::LatLong::FromDegrees(37.792101138218008, -122.39982865432059),
+        Space::LatLong::FromDegrees(37.793252332318616, -122.40009968267958),
+        Space::LatLong::FromDegrees(37.794162566118423, -122.40023519685907),
+        Space::LatLong::FromDegrees(37.79512633085983 , -122.40043846812831),
+        Space::LatLong::FromDegrees(37.796009770828235, -122.40057398230782),
+        Space::LatLong::FromDegrees(37.796812888904768, -122.40074337503219),
+        Space::LatLong::FromDegrees(37.797749848959029, -122.40091276775655),
+        Space::LatLong::FromDegrees(37.798660027346543, -122.40108216048094),
+        Space::LatLong::FromDegrees(37.798767106419547, -122.39989641141034),
+        Space::LatLong::FromDegrees(37.798900955042512, -122.39871066233974),
+        Space::LatLong::FromDegrees(37.799141881952686, -122.39749103472427),
+        Space::LatLong::FromDegrees(37.799837888612402, -122.39813472707688)
     };
     
-    std::vector<Eegeo::Space::LatLongAltitude> route3Pts =
+    std::vector<Eegeo::Space::LatLong> route3Pts =
     {
-        Space::LatLongAltitude::FromDegrees(37.788567128006434, -122.40233566664128, altitudeMeters),
-        Space::LatLongAltitude::FromDegrees(37.787576503906507, -122.40352141571185, altitudeMeters),
-        Space::LatLongAltitude::FromDegrees(37.788941955283917, -122.40372468698109, altitudeMeters),
-        Space::LatLongAltitude::FromDegrees(37.789879015159492, -122.40389407970548, altitudeMeters),
-        Space::LatLongAltitude::FromDegrees(37.790869608392583, -122.40413122951961, altitudeMeters),
-        Space::LatLongAltitude::FromDegrees(37.791753099261179, -122.40419898660936, altitudeMeters),
-        Space::LatLongAltitude::FromDegrees(37.792716895433223, -122.40443613642348, altitudeMeters),
-        Space::LatLongAltitude::FromDegrees(37.793627135829595, -122.40470716478245, altitudeMeters),
-        Space::LatLongAltitude::FromDegrees(37.794483822429157, -122.40487655750685, altitudeMeters),
-        Space::LatLongAltitude::FromDegrees(37.795474353926693, -122.40501207168633, altitudeMeters),
-        Space::LatLongAltitude::FromDegrees(37.796223936502336, -122.40521534295557, altitudeMeters),
-        Space::LatLongAltitude::FromDegrees(37.797053822625188, -122.40538473567995, altitudeMeters),
-        Space::LatLongAltitude::FromDegrees(37.797990779623589, -122.40552024985945, altitudeMeters),
-        Space::LatLongAltitude::FromDegrees(37.798124629653245, -122.40470716478245, altitudeMeters),
-        Space::LatLongAltitude::FromDegrees(37.798231709502339, -122.40386020116061, altitudeMeters),
-        Space::LatLongAltitude::FromDegrees(37.798392328984953, -122.40297935899387, altitudeMeters),
-        Space::LatLongAltitude::FromDegrees(37.7984726385953  , -122.40220015246176, altitudeMeters),
-        Space::LatLongAltitude::FromDegrees(37.798660027346543, -122.40108216048094, altitudeMeters),
-        Space::LatLongAltitude::FromDegrees(37.798767106419547, -122.39989641141034, altitudeMeters),
-        Space::LatLongAltitude::FromDegrees(37.798900955042512, -122.39871066233974, altitudeMeters),
-        Space::LatLongAltitude::FromDegrees(37.799141881952686, -122.39749103472427, altitudeMeters),
-        Space::LatLongAltitude::FromDegrees(37.799837888612402, -122.39813472707688, altitudeMeters)
+        Space::LatLong::FromDegrees(37.788567128006434, -122.40233566664128),
+        Space::LatLong::FromDegrees(37.787576503906507, -122.40352141571185),
+        Space::LatLong::FromDegrees(37.788941955283917, -122.40372468698109),
+        Space::LatLong::FromDegrees(37.789879015159492, -122.40389407970548),
+        Space::LatLong::FromDegrees(37.790869608392583, -122.40413122951961),
+        Space::LatLong::FromDegrees(37.791753099261179, -122.40419898660936),
+        Space::LatLong::FromDegrees(37.792716895433223, -122.40443613642348),
+        Space::LatLong::FromDegrees(37.793627135829595, -122.40470716478245),
+        Space::LatLong::FromDegrees(37.794483822429157, -122.40487655750685),
+        Space::LatLong::FromDegrees(37.795474353926693, -122.40501207168633),
+        Space::LatLong::FromDegrees(37.796223936502336, -122.40521534295557),
+        Space::LatLong::FromDegrees(37.797053822625188, -122.40538473567995),
+        Space::LatLong::FromDegrees(37.797990779623589, -122.40552024985945),
+        Space::LatLong::FromDegrees(37.798124629653245, -122.40470716478245),
+        Space::LatLong::FromDegrees(37.798231709502339, -122.40386020116061),
+        Space::LatLong::FromDegrees(37.798392328984953, -122.40297935899387),
+        Space::LatLong::FromDegrees(37.7984726385953  , -122.40220015246176),
+        Space::LatLong::FromDegrees(37.798660027346543, -122.40108216048094),
+        Space::LatLong::FromDegrees(37.798767106419547, -122.39989641141034),
+        Space::LatLong::FromDegrees(37.798900955042512, -122.39871066233974),
+        Space::LatLong::FromDegrees(37.799141881952686, -122.39749103472427),
+        Space::LatLong::FromDegrees(37.799837888612402, -122.39813472707688)
     };
     
 

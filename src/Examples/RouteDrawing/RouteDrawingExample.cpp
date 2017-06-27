@@ -54,9 +54,6 @@ void RouteDrawingExample::Update(float dt)
 		const Eegeo::v4 routeBlue(0, 0, 1, 0.6f);
         const Eegeo::v4 routeYellow(1, 1, 0, 0.6f);
 
-		//An arbitrarily selected altitude for the route visualisation.
-		const float altitudeMeters = 3.f;
-
 		//The route builder helper object provides a fluent interface to make building a route simpler.
 		RouteBuilder builder;
 
@@ -68,31 +65,31 @@ void RouteDrawingExample::Update(float dt)
 		//The color can be changed arbitrarily along the route.
 		//
 		std::vector<RouteVertex> points = builder.Start(routeRed, halfWidth, routeSpeedMetersPerSecond, Routes::Road)
-		                                  .AddPoint(37.795729,-122.401698, altitudeMeters)
-		                                  .AddPoint(37.794873,-122.401516, altitudeMeters)
-		                                  .AddPoint(37.794728,-122.403179, altitudeMeters)
+		                                  .AddPoint(37.795729,-122.401698)
+		                                  .AddPoint(37.794873,-122.401516)
+		                                  .AddPoint(37.794728,-122.403179)
 		                                  .ChangeColor(routeGreen)
-                                          .AddPoint(37.794728,-122.403179, altitudeMeters)
-		                                  .AddPoint(37.794483,-122.404863, altitudeMeters)
-		                                  .AddPoint(37.793618,-122.404670, altitudeMeters)
-		                                  .AddPoint(37.793813,-122.403007, altitudeMeters)
+                                          .AddPoint(37.794728,-122.403179)
+		                                  .AddPoint(37.794483,-122.404863)
+		                                  .AddPoint(37.793618,-122.404670)
+		                                  .AddPoint(37.793813,-122.403007)
 		                                  .ChangeColor(routeRed)
-                                          .AddPoint(37.793813,-122.403007, altitudeMeters)
-		                                  .AddPoint(37.792940,-122.402825, altitudeMeters)
-		                                  .AddPoint(37.793109,-122.401108, altitudeMeters)
-		                                  .AddPoint(37.792143,-122.400990, altitudeMeters)
-		                                  .AddPoint(37.790303,-122.400603, altitudeMeters)
+                                          .AddPoint(37.793813,-122.403007)
+		                                  .AddPoint(37.792940,-122.402825)
+		                                  .AddPoint(37.793109,-122.401108)
+		                                  .AddPoint(37.792143,-122.400990)
+		                                  .AddPoint(37.790303,-122.400603)
                                           .ChangeSpeed(44.32f)
-                                          .AddPoint(37.790303,-122.400603, altitudeMeters)
-		                                  .AddPoint(37.790324,-122.400126, altitudeMeters)
-		                                  .AddPoint(37.794449,-122.394906, altitudeMeters)
+                                          .AddPoint(37.790303,-122.400603)
+		                                  .AddPoint(37.790324,-122.400126)
+		                                  .AddPoint(37.794449,-122.394906)
                                           .ChangeSpeed(900.2f)
 		                                  .ChangeColor(routeBlue)
-                                          .AddPoint(37.794449,-122.394906, altitudeMeters)
-		                                  .AddPoint(37.793253,-122.393238, altitudeMeters)
+                                          .AddPoint(37.794449,-122.394906)
+		                                  .AddPoint(37.793253,-122.393238)
 		                                  .ChangeColor(routeRed)
-                                          .AddPoint(37.793253,-122.393238, altitudeMeters)
-		                                  .AddPoint(37.793707,-122.392578, altitudeMeters)
+                                          .AddPoint(37.793253,-122.393238)
+		                                  .AddPoint(37.793707,-122.392578)
 		                                  .FinishRoute(); //Calling FinishRoute returns to us the set of points...
 
 		// A route thickness scaling policy should be provided; this informs the route how it should modify its thickness
@@ -117,51 +114,51 @@ void RouteDrawingExample::Update(float dt)
 		//doubles back on itself (to produce exactly opposing poly-line segments)
 		//and has a duplicated point, but still renders.
 		std::vector<RouteVertex> otherPoints = builder.Start(routeBlue, halfWidth/2.f, routeSpeedMetersPerSecond, Routes::Road)
-		                                       .AddPoint(37.779483,-122.388609,altitudeMeters)
-		                                       .AddPoint(37.779916,-122.389317,altitudeMeters)
+		                                       .AddPoint(37.779483,-122.388609)
+		                                       .AddPoint(37.779916,-122.389317)
 		                                       .ChangeColor(routeGreen)
 		                                       //a nasty bit with a duplicated point and a parallel line
-		                                       .AddPoint(37.777957,-122.391785,altitudeMeters)
-		                                       .AddPoint(37.779916,-122.389317,altitudeMeters)
-		                                       .AddPoint(37.777957,-122.391785,altitudeMeters)
-		                                       .AddPoint(37.777957,-122.391785,altitudeMeters)
+		                                       .AddPoint(37.777957,-122.391785)
+		                                       .AddPoint(37.779916,-122.389317)
+		                                       .AddPoint(37.777957,-122.391785)
+		                                       .AddPoint(37.777957,-122.391785)
 		                                       .ChangeColor(routeRed)
-		                                       .AddPoint(37.777126,-122.390551,altitudeMeters)
-		                                       .AddPoint(37.776134,-122.389972,altitudeMeters)
+		                                       .AddPoint(37.777126,-122.390551)
+		                                       .AddPoint(37.776134,-122.389972)
 		                                       .ChangeColor(routeBlue)
-		                                       .AddPoint(37.776397,-122.387922,altitudeMeters)
+		                                       .AddPoint(37.776397,-122.387922)
 		                                       .FinishRoute();
 
 		m_routes.push_back(m_routeService.CreateRoute(otherPoints, routeStyle, false));
 
 		//this route curves around entirely on itself, and traces the bounds of treasure island
 		std::vector<RouteVertex> islandCircuitPoints = builder.Start(routeGreen, halfWidth, routeSpeedMetersPerSecond, Routes::Road)
-		        .AddPoint(37.826701,-122.379162, altitudeMeters)
-		        .AddPoint(37.830429,-122.377531, altitudeMeters)
-		        .AddPoint(37.832328,-122.373368, altitudeMeters)
-		        .AddPoint(37.831209,-122.368605, altitudeMeters)
-		        .AddPoint(37.822633,-122.362983, altitudeMeters)
-		        .AddPoint(37.818768,-122.364313, altitudeMeters)
-		        .AddPoint(37.816158,-122.371480, altitudeMeters)
-		        .AddPoint(37.818294,-122.373368, altitudeMeters)
-		        .AddPoint(37.816938,-122.375128, altitudeMeters)
-		        .AddPoint(37.820226,-122.374742, altitudeMeters)
-		        .AddPoint(37.824158,-122.377574, altitudeMeters)
+		        .AddPoint(37.826701,-122.379162)
+		        .AddPoint(37.830429,-122.377531)
+		        .AddPoint(37.832328,-122.373368)
+		        .AddPoint(37.831209,-122.368605)
+		        .AddPoint(37.822633,-122.362983)
+		        .AddPoint(37.818768,-122.364313)
+		        .AddPoint(37.816158,-122.371480)
+		        .AddPoint(37.818294,-122.373368)
+		        .AddPoint(37.816938,-122.375128)
+		        .AddPoint(37.820226,-122.374742)
+		        .AddPoint(37.824158,-122.377574)
 		        .FinishRoute();
 
 		m_routes.push_back(m_routeService.CreateRoute(islandCircuitPoints, routeStyle, false));
         
         // this route crosses over the first route
         std::vector<RouteVertex> fremontPoints = builder.Start(routeYellow, halfWidth, routeSpeedMetersPerSecond, Routes::Road)
-                .AddPoint(37.786786, -122.392086, altitudeMeters)
-                .AddPoint(37.788044, -122.393610, altitudeMeters)
-                .AddPoint(37.788579, -122.394260, altitudeMeters)
-                .AddPoint(37.789225, -122.395154, altitudeMeters)
-                .AddPoint(37.790449, -122.396722, altitudeMeters)
-                .AddPoint(37.791865, -122.398494, altitudeMeters)
-                .AddPoint(37.794652, -122.399060, altitudeMeters)
-                .AddPoint(37.795183, -122.399168, altitudeMeters)
-                .AddPoint(37.795513, -122.396825, altitudeMeters)
+                .AddPoint(37.786786, -122.392086)
+                .AddPoint(37.788044, -122.393610)
+                .AddPoint(37.788579, -122.394260)
+                .AddPoint(37.789225, -122.395154)
+                .AddPoint(37.790449, -122.396722)
+                .AddPoint(37.791865, -122.398494)
+                .AddPoint(37.794652, -122.399060)
+                .AddPoint(37.795183, -122.399168)
+                .AddPoint(37.795513, -122.396825)
                 .FinishRoute();
         
         m_routes.push_back(m_routeService.CreateRoute(fremontPoints, routeStyle, false));

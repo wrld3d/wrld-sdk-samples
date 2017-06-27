@@ -25,7 +25,7 @@ private:
 	ExampleRouteThicknessPolicy m_routeThicknessPolicy;
     Eegeo::Resources::Terrain::Collision::TerrainRayPicker* m_pRayPicker;
 
-    std::vector<std::vector<Eegeo::Space::LatLongAltitude>> m_sourceRoutePts;
+    std::vector<std::vector<Eegeo::Space::LatLong>> m_sourceRoutePts;
     std::vector<int> m_displayedRouteToSourceRouteMap;
     std::vector<Eegeo::v4> m_routeColors;
     int m_selectedRoute;

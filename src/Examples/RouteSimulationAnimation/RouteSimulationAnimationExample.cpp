@@ -174,25 +174,24 @@ Route* RouteSimulationAnimationExample::BuildRoute()
 	const float routeSpeedMetersPerSecond = 30.f;
 
 	const Eegeo::v4 routeColor(1, 0, 1, 0.6f);
-	const float altitudeMeters = 3.f;
 
 	RouteBuilder builder;
 
 	std::vector<RouteVertex> points = builder.Start(routeColor, halfWidth, routeSpeedMetersPerSecond, Routes::Road)
-	                                  .AddPoint(37.795729,-122.401698, altitudeMeters)
-	                                  .AddPoint(37.794873,-122.401516, altitudeMeters)
-	                                  .AddPoint(37.794728,-122.403179, altitudeMeters)
-	                                  .AddPoint(37.794483,-122.404863, altitudeMeters)
-	                                  .AddPoint(37.793618,-122.404670, altitudeMeters)
-	                                  .AddPoint(37.793813,-122.403007, altitudeMeters)
-	                                  .AddPoint(37.792940,-122.402825, altitudeMeters)
-	                                  .AddPoint(37.793109,-122.401108, altitudeMeters)
-	                                  .AddPoint(37.792143,-122.400990, altitudeMeters)
-	                                  .AddPoint(37.790303,-122.400603, altitudeMeters)
-	                                  .AddPoint(37.790324,-122.400126, altitudeMeters)
-	                                  .AddPoint(37.794449,-122.394906, altitudeMeters)
-	                                  .AddPoint(37.793253,-122.393238, altitudeMeters)
-	                                  .AddPoint(37.793707,-122.392578, altitudeMeters)
+	                                  .AddPoint(37.795729,-122.401698)
+	                                  .AddPoint(37.794873,-122.401516)
+	                                  .AddPoint(37.794728,-122.403179)
+	                                  .AddPoint(37.794483,-122.404863)
+	                                  .AddPoint(37.793618,-122.404670)
+	                                  .AddPoint(37.793813,-122.403007)
+	                                  .AddPoint(37.792940,-122.402825)
+	                                  .AddPoint(37.793109,-122.401108)
+	                                  .AddPoint(37.792143,-122.400990)
+	                                  .AddPoint(37.790303,-122.400603)
+	                                  .AddPoint(37.790324,-122.400126)
+	                                  .AddPoint(37.794449,-122.394906)
+	                                  .AddPoint(37.793253,-122.393238)
+	                                  .AddPoint(37.793707,-122.392578)
 	                                  .FinishRoute();
 
 	const Eegeo::Routes::Style::RouteStyle routeStyle(&m_routeThicknessPolicy, Eegeo::Routes::Style::RouteStyle::DebugStyleNone, Eegeo::Rendering::LayerIds::BeforeWorldTranslucency, true);
