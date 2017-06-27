@@ -35,6 +35,7 @@ RoutingServiceExample::RoutingServiceExample(Eegeo::Routes::RouteService& routeS
     , m_moveUpHandler(this, &RoutingServiceExample::MoveUp)
     , m_moveDownHandler(this, &RoutingServiceExample::MoveDown)
     , m_getRouteHandler(this, &RoutingServiceExample::GetRoute)
+    , m_toggleExpandedHandler(this, &RoutingServiceExample::ToggleExpand)
 {
 	Eegeo::Space::EcefTangentBasis cameraInterestBasis;
 
@@ -131,8 +132,14 @@ void RoutingServiceExample::CreateAndBindUI()
     m_pRoutingServiceView->AddGetRouteHandler(m_getRouteHandler);
     m_pRoutingServiceView->AddMoveUpHandler(m_moveUpHandler);
     m_pRoutingServiceView->AddMoveDownHandler(m_moveDownHandler);
+    m_pRoutingServiceView->AddToggleExpandedHandler(m_toggleExpandedHandler);
 }
     
+void RoutingServiceExample::ToggleExpand()
+{
+    m_pInteriorInteractionModel->ToggleExpanded();
+}
+
 void RoutingServiceExample::MoveUp()
 {
     const Eegeo::Resources::Interiors::InteriorsModel* model = m_pInteriorInteractionModel->GetInteriorModel();

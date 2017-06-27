@@ -9,6 +9,7 @@
 static Examples::iOSRoutingServiceExampleView* m_pExample;
 
 static UIView* m_pRoutingServiceExampleView;
+static UIButton* m_pToggleExpandButton;
 static UIButton* m_pMoveUpButton;
 static UIButton* m_pMoveDownButton;
 static UIButton* m_pGetRouteButton;
@@ -34,6 +35,10 @@ static UIButton* CreateMenuButton(NSString * title)
         m_pExample = pExample;
         m_pRoutingServiceExampleView = pView;
        
+        m_pToggleExpandButton = CreateMenuButton(@"Toggle Expanded");
+        [m_pToggleExpandButton addTarget:self action:@selector(toggleExpanded) forControlEvents:UIControlEventTouchDown];
+        [m_pRoutingServiceExampleView addSubview:m_pToggleExpandButton];
+        
         m_pMoveUpButton = CreateMenuButton(@"Move Up!");
         [m_pMoveUpButton addTarget:self action:@selector(moveUp) forControlEvents:UIControlEventTouchDown];
         [m_pRoutingServiceExampleView addSubview:m_pMoveUpButton];
@@ -98,6 +103,14 @@ static UIButton* CreateMenuButton(NSString * title)
     
     m_pMoveUpButton.frame = CGRectMake(margin, buttonY, buttonWidth, buttonHeight);
     buttonY -= buttonGridHeight;
+    
+    m_pToggleExpandButton.frame = CGRectMake(margin, buttonY, buttonWidth, buttonHeight);
+    buttonY -= buttonGridHeight;
+}
+
+-(void) toggleExpanded
+{
+    m_pExample->ToggleExpanded();
 }
 
 -(void) moveUp
@@ -130,6 +143,21 @@ namespace Examples
         m_pBinding = nil;
     }
 
+    void iOSRoutingServiceExampleView::AddToggleExpandedHandler(IUIActionHandler& handler)
+    {
+        m_toggleExpandedHandlers.push_back(&handler);
+    }
+    
+    void iOSRoutingServiceExampleView::RemoveToggleExpandedHandler(IUIActionHandler& handler)
+    {
+        RemoveFrom(m_toggleExpandedHandlers, &handler);
+    }
+    
+    void iOSRoutingServiceExampleView::ToggleExpanded()
+    {
+        InvokeAllHandlers(m_toggleExpandedHandlers);
+    }
+    
     void iOSRoutingServiceExampleView::AddMoveUpHandler(IUIActionHandler& handler)
     {
         m_moveUpHandlers.push_back(&handler);

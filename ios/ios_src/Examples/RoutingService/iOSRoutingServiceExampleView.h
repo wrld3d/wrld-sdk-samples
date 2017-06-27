@@ -16,6 +16,7 @@ class iOSRoutingServiceExampleView;
 @interface IRoutingServiceExampleBinding : NSObject
 
 -(instancetype) initWith:(Examples::iOSRoutingServiceExampleView*)pExample :(UIView*)pView;
+-(void) toggleExpanded;
 -(void) moveUp;
 -(void) moveDown;
 -(void) exit;
@@ -27,6 +28,7 @@ namespace Examples
 {
 class iOSRoutingServiceExampleView : public IRoutingServiceExampleView, private Eegeo::NonCopyable
 {
+    std::vector<IUIActionHandler*> m_toggleExpandedHandlers;
 	std::vector<IUIActionHandler*> m_moveUpHandlers;
 	std::vector<IUIActionHandler*> m_moveDownHandlers;
 	std::vector<IUIActionHandler*> m_getRouteHandlers;
@@ -39,6 +41,12 @@ public:
 
 	~iOSRoutingServiceExampleView();
 
+    void AddToggleExpandedHandler(IUIActionHandler& handler);
+    
+    void RemoveToggleExpandedHandler(IUIActionHandler& handler);
+    
+    void ToggleExpanded();
+    
 	void AddMoveUpHandler(IUIActionHandler& handler);
 
 	void RemoveMoveUpHandler(IUIActionHandler& handler);

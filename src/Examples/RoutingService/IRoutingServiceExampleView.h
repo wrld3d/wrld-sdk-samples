@@ -13,6 +13,12 @@ class IRoutingServiceExampleView
 public:
 
 	virtual ~IRoutingServiceExampleView() { }
+    
+    virtual void AddToggleExpandedHandler(IUIActionHandler& handler)=0;
+    
+    virtual void RemoveToggleExpandedHandler(IUIActionHandler& handler)=0;
+    
+    virtual void ToggleExpanded()=0;
 
 	virtual void AddMoveUpHandler(IUIActionHandler& handler)=0;
 

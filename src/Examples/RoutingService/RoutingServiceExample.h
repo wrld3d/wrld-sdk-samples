@@ -37,6 +37,7 @@ private:
     UIActionHandler<RoutingServiceExample> m_moveUpHandler;
     UIActionHandler<RoutingServiceExample> m_moveDownHandler;
     UIActionHandler<RoutingServiceExample> m_getRouteHandler;
+    UIActionHandler<RoutingServiceExample> m_toggleExpandedHandler;
 
     bool m_enteredInterior;
 	std::vector<Eegeo::Routes::Route*> m_routes;
@@ -47,6 +48,7 @@ private:
     void ExitInterior();
     void CreateAndBindUI();
     
+    void ToggleExpand();
     void MoveUp();
     void MoveDown();
     void GetRoute();
