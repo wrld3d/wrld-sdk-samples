@@ -374,11 +374,10 @@ Route* RouteSimulationExample::BuildRoute() const
 	const float halfWidth = 5.f;
 	const float routeSpeedMetersPerSecond = 20.f;
 	const Eegeo::v4 routeColor(1, 0, 1, 0.6f);
-	const float altitudeMeters = 3.f;
 
 	RouteBuilder builder;
 
-	std::vector<RouteVertex> points = builder.Start(routeColor, halfWidth, routeSpeedMetersPerSecond, Routes::Road)
+	const std::vector<RouteVertex>& points = builder.Start(routeColor, halfWidth, routeSpeedMetersPerSecond, Routes::Road)
 	                                  .AddPoint(37.795729,-122.401698)
 	                                  .AddPoint(37.794873,-122.401516)
 	                                  .AddPoint(37.794728,-122.403179)
