@@ -18,6 +18,10 @@ extern "C"
 	JNIEXPORT void JNICALL Java_com_eegeo_examples_routingservice_RoutingServiceJniMethods_GetRoute(
 	    JNIEnv* jenv, jobject obj,
 	    jlong nativeObjectPtr);
+
+	JNIEXPORT void JNICALL Java_com_eegeo_examples_routingservice_RoutingServiceJniMethods_ToggleExpanded(
+		JNIEnv* jenv, jobject obj,
+		jlong nativeObjectPtr);
 }
 
 #endif /* ANDROIDROUTESIMULATIONPROXY_H_ */

@@ -51,6 +51,21 @@ AndroidRoutingServiceExampleView::~AndroidRoutingServiceExampleView()
 	env->DeleteGlobalRef(m_routingServiceExampleHudClass);
 }
 
+void AndroidRoutingServiceExampleView::AddToggleExpandedHandler(IUIActionHandler& handler)
+{
+	m_toggleExpandedHandlers.push_back(&handler);
+}
+
+void AndroidRoutingServiceExampleView::RemoveToggleExpandedHandler(IUIActionHandler& handler)
+{
+	RemoveFrom(m_toggleExpandedHandlers, &handler);
+}
+
+void AndroidRoutingServiceExampleView::ToggleExpanded()
+{
+	InvokeAllHandlers(m_toggleExpandedHandlers);
+}
+
 void AndroidRoutingServiceExampleView::AddMoveUpHandler(IUIActionHandler& handler)
 {
 	m_moveUpHandlers.push_back(&handler);

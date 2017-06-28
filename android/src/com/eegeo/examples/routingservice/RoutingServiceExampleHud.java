@@ -13,14 +13,21 @@ public class RoutingServiceExampleHud
 {
 	private MainActivity m_activity;
 	private View m_view;
+	private ToggleExpandedOnClickListener m_toggleExpandedOnClickListener;
 	private MoveUpOnClickListener m_moveUpOnClickListener;
 	private MoveDownOnClickListener m_moveDownOnClickListener;
 	private GetRouteOnClickListener m_getRouteOnClickListener;
+
 	
 	public RoutingServiceExampleHud(MainActivity activity, long nativeCallerPointer)
 	{
 		m_activity = activity;
 		m_view = null;
+
+		m_toggleExpandedOnClickListener = new ToggleExpandedOnClickListener(
+				m_activity,
+				nativeCallerPointer
+		);
 
 		m_moveUpOnClickListener = new MoveUpOnClickListener(
 				m_activity,
@@ -51,10 +58,12 @@ public class RoutingServiceExampleHud
 					final RelativeLayout uiRoot = (RelativeLayout)m_activity.findViewById(R.id.ui_container);
 					m_view = m_activity.getLayoutInflater().inflate(R.layout.routing_service_menu_layout, uiRoot, false);
 
+					final Button toggleExpanded = (Button)m_view.findViewById(R.id.toggle_expanded);
 					final Button moveUp = (Button)m_view.findViewById(R.id.move_up);
 					final Button moveDown = (Button)m_view.findViewById(R.id.move_down);
 					final Button getRoute = (Button)m_view.findViewById(R.id.get_route);
-					
+
+					toggleExpanded.setOnClickListener(m_toggleExpandedOnClickListener);
 					moveUp.setOnClickListener(m_moveUpOnClickListener);
 					moveDown.setOnClickListener(m_moveDownOnClickListener);
 					getRoute.setOnClickListener(m_getRouteOnClickListener);

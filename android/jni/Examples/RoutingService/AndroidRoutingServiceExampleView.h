@@ -13,6 +13,7 @@ namespace Examples
 {
 class AndroidRoutingServiceExampleView : public IRoutingServiceExampleView, private Eegeo::NonCopyable
 {
+	std::vector<IUIActionHandler*> m_toggleExpandedHandlers;
 	std::vector<IUIActionHandler*> m_moveUpHandlers;
 	std::vector<IUIActionHandler*> m_moveDownHandlers;
 	std::vector<IUIActionHandler*> m_getRouteHandlers;
@@ -26,6 +27,12 @@ public:
 	    AndroidNativeState& androidNativeState);
 
 	~AndroidRoutingServiceExampleView();
+
+	void AddToggleExpandedHandler(IUIActionHandler& handler);
+
+	void RemoveToggleExpandedHandler(IUIActionHandler& handler);
+
+	void ToggleExpanded();
 
 	void AddMoveUpHandler(IUIActionHandler& handler);
 
