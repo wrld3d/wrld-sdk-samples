@@ -58,6 +58,12 @@ static UIButton* CreateMenuButton(NSString * title)
 
 - (void)dealloc
 {
+    if (m_pToggleExpandButton != nil)
+    {
+        [m_pToggleExpandButton removeFromSuperview];
+        m_pToggleExpandButton = nil;
+    }
+    
     if (m_pMoveUpButton != nil)
     {
         [m_pMoveUpButton removeFromSuperview];
