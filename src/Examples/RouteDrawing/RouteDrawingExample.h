@@ -8,7 +8,7 @@
 #include "RouteService.h"
 #include "Route.h"
 #include "EegeoWorld.h"
-#include "ExampleRouteThicknessPolicy.h"
+#include "IdentityRouteThicknessPolicy.h"
 
 namespace Examples
 {
@@ -20,7 +20,7 @@ private:
 
 	bool m_createdRoutes;
 	std::vector<Eegeo::Routes::Route*> m_routes;
-	ExampleRouteThicknessPolicy m_routeThicknessPolicy;
+	Eegeo::Routes::Style::Thickness::IdentityRouteThicknessPolicy m_routeThicknessPolicy;
     
 
 public:

@@ -52,7 +52,7 @@ void RouteMatchingExample::CreateRoutes(bool shouldMatchToNavigationGraph)
 	const Eegeo::v4 routeGreen(0, 1, 0, 0.6f);
 	const Eegeo::v4 routeBlue(0, 0, 1, 0.6f);
 
-	Eegeo::Routes::Style::RouteStyle routeStyle(&m_routeThicknessPolicy, Eegeo::Routes::Style::RouteStyle::DebugStyleNone, Eegeo::Rendering::LayerIds::BeforeWorldTranslucency, true);
+	Eegeo::Routes::Style::RouteStyle routeStyle(&m_routeThicknessPolicy, Eegeo::Routes::Style::RouteStyle::DebugStyleNone, Eegeo::Rendering::LayerIds::BeforeWorldTranslucency);
 
 	RouteBuilder builder;
 

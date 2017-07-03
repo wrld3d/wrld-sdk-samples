@@ -20,7 +20,7 @@
 #include "ITextureFileLoader.h"
 #include "GlobeCameraController.h"
 #include "EegeoWorld.h"
-#include "ExampleRouteThicknessPolicy.h"
+#include "IdentityRouteThicknessPolicy.h"
 #include "GlobeCameraController.h"
 #include "ScreenPropertiesProvider.h"
 #include "Rendering.h"
@@ -41,7 +41,7 @@ private:
     Eegeo::Rendering::SceneModels::SceneModelLoader& m_sceneModelLoader;
     Eegeo::Rendering::SceneModels::SceneModelAnimator* m_pSceneModelAnimator;
 	Eegeo::Routes::Route* m_pRoute;
-	ExampleRouteThicknessPolicy m_routeThicknessPolicy;
+    Eegeo::Routes::Style::Thickness::IdentityRouteThicknessPolicy m_routeThicknessPolicy;
 	Eegeo::Routes::Simulation::RouteSimulationSession* m_pRouteSimulationSession;
     Eegeo::Routes::Simulation::View::RouteSimulationModelBinding* m_pViewBindingForCameraSession;
     Eegeo::Routes::Simulation::Camera::RouteSimulationGlobeCameraController* m_pRouteSessionFollowCameraController;

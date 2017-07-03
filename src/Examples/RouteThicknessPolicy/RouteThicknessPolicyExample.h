@@ -8,7 +8,7 @@
 #include "RouteService.h"
 #include "Route.h"
 #include "EegeoWorld.h"
-#include "ExampleRouteThicknessPolicy.h"
+#include "IdentityRouteThicknessPolicy.h"
 #include "LinearAltitudeBasedRouteThicknessPolicy.h"
 #include "FittedRoute.h"
 
@@ -32,7 +32,7 @@ private:
 
 	bool m_createdRoutes;
 	std::vector<Eegeo::Routes::Route*> m_routes;
-	ExampleRouteThicknessPolicy m_identityRouteThicknessPolicy;
+	Eegeo::Routes::Style::Thickness::IdentityRouteThicknessPolicy m_identityRouteThicknessPolicy;
 	Eegeo::Routes::Style::Thickness::LinearAltitudeBasedRouteThicknessPolicy m_linearAltitudeBasedRouteThicknessPolicy;
 	MyScalingRouteThicknessPolicy m_myScalingRouteThicknessPolicy;
     

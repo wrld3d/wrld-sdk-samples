@@ -97,7 +97,7 @@ void RouteDrawingExample::Update(float dt)
 		// IdentityRouteThicknessPolicy and the LinearAltitudeScaleBasedRouteThicknessPolicy. For this example we use the
 		// identity policy which will not modify the thickness of the route. The style accepts a const reference, so it
 		// does not take ownership over the thickness policy.
-		Eegeo::Routes::Style::RouteStyle routeStyle(&m_routeThicknessPolicy, Eegeo::Routes::Style::RouteStyle::DebugStyleNone, Eegeo::Rendering::LayerIds::BeforeWorldTranslucency, true);
+		Eegeo::Routes::Style::RouteStyle routeStyle(&m_routeThicknessPolicy, Eegeo::Routes::Style::RouteStyle::DebugStyleNone, Eegeo::Rendering::LayerIds::BeforeWorldTranslucency);
 
 		//We can now create a route from this set of points.
 		//

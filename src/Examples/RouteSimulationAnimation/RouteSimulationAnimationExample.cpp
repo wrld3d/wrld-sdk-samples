@@ -194,7 +194,7 @@ Route* RouteSimulationAnimationExample::BuildRoute()
 	                                  .AddPoint(37.793707,-122.392578)
 	                                  .FinishRoute();
 
-	const Eegeo::Routes::Style::RouteStyle routeStyle(&m_routeThicknessPolicy, Eegeo::Routes::Style::RouteStyle::DebugStyleNone, Eegeo::Rendering::LayerIds::BeforeWorldTranslucency, true);
+	const Eegeo::Routes::Style::RouteStyle routeStyle(&m_routeThicknessPolicy, Eegeo::Routes::Style::RouteStyle::DebugStyleNone, Eegeo::Rendering::LayerIds::BeforeWorldTranslucency);
 	return m_routeService.CreateRoute(points, routeStyle, false);
 }
 

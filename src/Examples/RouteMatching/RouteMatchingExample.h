@@ -8,7 +8,7 @@
 #include "RouteService.h"
 #include "Route.h"
 #include "EegeoWorld.h"
-#include "ExampleRouteThicknessPolicy.h"
+#include "IdentityRouteThicknessPolicy.h"
 #include "IRouteMatchingExampleViewFactory.h"
 #include "IRouteMatchingExampleView.h"
 #include "UIActionHandler.h"
@@ -24,13 +24,11 @@ private:
 	const IRouteMatchingExampleViewFactory& m_routeMatchingViewFactory;
 	UIActionHandler<RouteMatchingExample> m_toggleRouteMatchingHandler;
 	IRouteMatchingExampleView* m_pRouteMatchingView;
-    
-    
 
 	bool m_createdRoutes;
 	bool m_routesMatchedToNavigationGraph;
 	std::vector<Eegeo::Routes::Route*> m_routes;
-	ExampleRouteThicknessPolicy m_routeThicknessPolicy;
+    Eegeo::Routes::Style::Thickness::IdentityRouteThicknessPolicy m_routeThicknessPolicy;
 
 	void CreateRoutes(bool shouldMatchToNavigationGraph);
 	void DestroyRoutes();
