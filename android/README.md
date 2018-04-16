@@ -15,7 +15,7 @@
 
 ## Requirements
 
-- [Android Studio](https://developer.android.com/studio/index.html).
+- [Android Studio](https://developer.android.com/studio/index.html). v3.1.1 or later.
 
 ## Setup
 
@@ -29,7 +29,7 @@ First, download the latest WRLD Android SDK by running the following command in 
 1. Open Android Studio and if prompted about a missing SDK, (minimally) install the `SDK` and `SDK Platform`.
 2. Select `Open an existing Android Studio project`
 3. Navigate to the [wrld-sdk-samples](https://github.com/wrld3d/wrld-sdk-samples/tree/master) directory and hit `Ok`.
-4. Once project configuration completes, Open the `Build Variants` pane using the button on the lower-left side, and from the `Build Variant` dropdown, ensure `normalDebug` is selected.
+4. Once project configuration completes, Open the `Build Variants` pane using the button on the lower-left side, and from the `Build Variant` dropdown, ensure `debug` is selected.
 
 ## Speeding up build times
 

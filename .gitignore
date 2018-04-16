@@ -21,3 +21,5 @@ project.properties
 **/.externalNativeBuild
 **/.externalToolBuilders
 .vscode
+*.iml
+/local.properties
