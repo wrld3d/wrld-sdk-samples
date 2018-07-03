@@ -85,7 +85,7 @@ void WebRequestExample::Start()
         .SetUserData(new int(3))
         .Build()->Load();
     
-    m_webRequestFactory.Begin(Eegeo::Web::HttpVerbs::GET, "http://d2xvsc8j92rfya.cloudfront.net/non_existent_resource.hcff", externalGetHandler.GetRequestHandler())
+    m_webRequestFactory.Begin(Eegeo::Web::HttpVerbs::GET, "https://cdn-resources.wrld3d.com/non_existent_resource.hcff", externalGetHandler.GetRequestHandler())
         .SetUserData(new int(4))
         .Build()->Load();
 
