@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.12)
 
 set(CMAKE_TOOLCHAIN_FILE "../cmake/toolchain/ios/iOS.cmake")
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/../cmake/templates/ios)
@@ -32,8 +32,6 @@ set(EEGEO_PLIST_BUNDLE_DISPLAY_NAME "SDK Samples")
 set(EEGEO_PLIST_BUNDLE_NAME "\${PRODUCT_NAME}")
 
 # compiler/linker settings
-set(CMAKE_XCODE_EFFECTIVE_PLATFORMS "-iphoneos;-iphonesimulator")
-set(CMAKE_OSX_ARCHITECTURES "armv7;arm64;i386")
 set(IOS_WARNING_FLAGS "-Wmost -Wno-four-char-constants -Wno-unknown-pragmas -Wno-reorder")
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -x objective-c++ ${IOS_WARNING_FLAGS}")
@@ -81,7 +79,7 @@ set_xcode_property (${executable_name} DEBUG_INFORMATION_FORMAT[variant=Release]
 set_xcode_property (${executable_name} GCC_TREAT_WARNINGS_AS_ERRORS "NO")
 set_xcode_property (${executable_name} CODE_SIGN_IDENTITY "iPhone Developer")
 set_xcode_property (${executable_name} DEVELOPMENT_TEAM "QBCVJ28BRW")
-set_xcode_property (${executable_name} IPHONEOS_DEPLOYMENT_TARGET "7.0")
+set_xcode_property (${executable_name} IPHONEOS_DEPLOYMENT_TARGET "8.0")
 set_xcode_property (${executable_name} TARGETED_DEVICE_FAMILY "1,2")
 set_xcode_property (${executable_name} ENABLE_BITCODE "No")
 
