@@ -43,7 +43,7 @@ public:
 
 	}
     
-    ~EnvironmentNotifierExampleTerrainStreamObserver() {}
+    virtual ~EnvironmentNotifierExampleTerrainStreamObserver() {}
 
 	void AddedStreamingResourceToSceneGraph(const Eegeo::Streaming::MortonKey& key);
 	void RemovedStreamingResourceFromSceneGraph(const Eegeo::Streaming::MortonKey& key);

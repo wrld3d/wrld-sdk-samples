@@ -10,8 +10,7 @@ namespace Examples
 CameraTransitionExampleFactory::CameraTransitionExampleFactory(Eegeo::EegeoWorld& world,
         DefaultCameraControllerFactory& defaultCameraControllerFactory,
         Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController)
-	: m_world(world)
-	, m_defaultCameraControllerFactory(defaultCameraControllerFactory)
+	: m_defaultCameraControllerFactory(defaultCameraControllerFactory)
     , m_globeCameraTouchController(globeCameraTouchController)
 {
 

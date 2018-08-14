@@ -19,7 +19,6 @@ class iOSRoutingServiceExampleView;
 -(void) toggleExpanded;
 -(void) moveUp;
 -(void) moveDown;
--(void) exit;
 -(void) layoutViews;
 
 @end

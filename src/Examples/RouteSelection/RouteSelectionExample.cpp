@@ -127,7 +127,7 @@ void RouteSelectionExample::CreateRoutes()
     RouteBuilder builder;
     
     // Draw unselected routes
-    for (size_t i=0; i<m_sourceRoutePts.size(); i++)
+    for (int i=0; i<m_sourceRoutePts.size(); i++)
     {
         if (m_selectedRoute == i)
         {
@@ -135,7 +135,7 @@ void RouteSelectionExample::CreateRoutes()
         }
 
         builder.Start(m_routeColors[i], halfWidth, routeSpeedMetersPerSecond, Routes::Road);
-        for (size_t j = 0; j < m_sourceRoutePts[i].size(); j++)
+        for (int j = 0; j < m_sourceRoutePts[i].size(); j++)
         {
             builder.AddPoint(m_sourceRoutePts[i][j]);
         }

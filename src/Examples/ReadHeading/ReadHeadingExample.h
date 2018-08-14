@@ -14,7 +14,6 @@ class ReadHeadingExample : public GlobeCameraExampleBase
 {
 private:
 
-    Eegeo::EegeoWorld& m_world;
 	Eegeo::DebugRendering::DebugRenderer& m_debugRenderer;
     Eegeo::Location::ILocationService& m_locationService;
     

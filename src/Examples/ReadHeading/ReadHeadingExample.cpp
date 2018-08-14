@@ -19,8 +19,7 @@ namespace Examples
                                            Eegeo::DebugRendering::DebugRenderer& debugRenderer,
                                            Eegeo::Location::ILocationService& locationService)
     : GlobeCameraExampleBase(pCameraController, cameraTouchController)
-    , m_world(eegeoWorld)
-	, m_debugRenderer(debugRenderer)
+    , m_debugRenderer(debugRenderer)
     , m_locationService(locationService)
     {
     }

@@ -23,9 +23,7 @@ RouteSimulationAnimationExampleFactory::RouteSimulationAnimationExampleFactory(E
                                                                                Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController,
                                                                                const IScreenPropertiesProvider& screenPropertiesProvider)
 	: m_world(world)
-	, m_defaultCameraControllerFactory(defaultCameraControllerFactory)
-    , m_globeCameraTouchController(globeCameraTouchController)
-    , m_screenPropertiesProvider(screenPropertiesProvider)
+	, m_screenPropertiesProvider(screenPropertiesProvider)
 	, m_pRouteSimulationGlobeCameraControllerFactory(NULL)
 {
     Eegeo::Modules::Map::MapModule& mapModule = m_world.GetMapModule();

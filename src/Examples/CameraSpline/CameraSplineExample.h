@@ -17,7 +17,6 @@ class CameraSplineExample : public IExample, Eegeo::NonCopyable
 {
 private:
 	
-    Eegeo::EegeoWorld& m_world;
     Eegeo::Streaming::ResourceCeilingProvider& m_resourceCeilingProvider;
     
     Eegeo::Geometry::CatmullRomSpline* m_pPositionSpline;

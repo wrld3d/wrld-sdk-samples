@@ -10,6 +10,9 @@ endif(NOT ${IOS})
 project(SDKSamplesApp)
 set(executable_name SDKSamplesApp)
 
+
+
+
 if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/Include/eegeo/CMakeLists.txt")
   include("${CMAKE_CURRENT_SOURCE_DIR}/Include/eegeo/CMakeLists.txt")
 else(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/Include/eegeo/CMakeLists.txt")
@@ -31,28 +34,34 @@ set(EEGEO_PLIST_BUNDLE_SHORT_VERSION_STRING "\${PRODUCT_VERSION}")
 set(EEGEO_PLIST_BUNDLE_DISPLAY_NAME "SDK Samples")
 set(EEGEO_PLIST_BUNDLE_NAME "\${PRODUCT_NAME}")
 
+
 # compiler/linker settings
 set(IOS_WARNING_FLAGS "-Wmost -Wno-four-char-constants -Wno-unknown-pragmas -Wno-reorder")
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -x objective-c++ ${IOS_WARNING_FLAGS}")
-set(eegeo_sdk_libs "-lapps-on-maps-cpp11 -lapps-on-maps-cpp11-sim")
 
-set(ios_frameworks 
-  "-framework CoreLocation
-  -framework MobileCoreServices 
-  -framework SystemConfiguration 
-  -framework CFNetwork 
-  -framework GLKit 
-  -framework OpenGLES 
-  -framework UIKit 
-  -framework Foundation 
-  -framework CoreGraphics 
-  -framework CoreData
-  -framework Security")
+set(ios_frameworks   
+  CoreLocation
+  MobileCoreServices 
+  SystemConfiguration 
+  CFNetwork 
+  GLKit 
+  OpenGLES 
+  UIKit
+  Foundation
+  CoreGraphics 
+  CoreData
+  Security
+  )
 
-set(linker_search_paths "-LInclude/eegeo")
-set(libs "${eegeo_sdk_libs} -lturbojpeg -lz -lcurl -luv")
-set(CMAKE_EXE_LINKER_FLAGS "${ios_frameworks} ${linker_search_paths} ${libs}")
+set(static_libs 
+  apps-on-maps-cpp11 
+  apps-on-maps-cpp11-sim 
+  turbojpeg 
+  z 
+  curl 
+  uv
+  )
 
 include_directories(${headers})
 
@@ -70,13 +79,30 @@ PROPERTIES
 RESOURCE "${allresources}"
 )
 
+
+foreach (FRAMEWORK_NAME ${ios_frameworks})
+  list(APPEND linked_ios_frameworks "-framework ${FRAMEWORK_NAME}")
+endforeach (FRAMEWORK_NAME)
+
+foreach (LIB_NAME ${static_libs})
+  list(APPEND linked_static_libs "-l${LIB_NAME}")
+endforeach (LIB_NAME)
+
+
+target_link_libraries(${executable_name} ${linked_static_libs})
+target_link_libraries(${executable_name} ${linked_ios_frameworks})
+
+
+
+set_xcode_property(${executable_name} LIBRARY_SEARCH_PATHS "Include/eegeo")
+
 # project settings
 set_xcode_property (${executable_name} DEBUG_INFORMATION_FORMAT[variant=Debug] "dwarf")
 set_xcode_property (${executable_name} DEBUG_INFORMATION_FORMAT[variant=MinSizeRel] "dwarf-with-dsym")
 set_xcode_property (${executable_name} DEBUG_INFORMATION_FORMAT[variant=RelWithDebInfo] "dwarf-with-dsym")
 set_xcode_property (${executable_name} DEBUG_INFORMATION_FORMAT[variant=Release] "dwarf-with-dsym")
 
-set_xcode_property (${executable_name} GCC_TREAT_WARNINGS_AS_ERRORS "NO")
+set_xcode_property (${executable_name} GCC_TREAT_WARNINGS_AS_ERRORS "YES")
 set_xcode_property (${executable_name} CODE_SIGN_IDENTITY "iPhone Developer")
 set_xcode_property (${executable_name} DEVELOPMENT_TEAM "QBCVJ28BRW")
 set_xcode_property (${executable_name} IPHONEOS_DEPLOYMENT_TARGET "8.0")
@@ -93,5 +119,8 @@ set_xcode_property(${executable_name} GCC_PREFIX_HEADER "ExampleApp/SDKSamplesAp
 set_xcode_property(${executable_name} CLANG_CXX_LANGUAGE_STANDARD "c++11")
 set_xcode_property(${executable_name} CLANG_CXX_LIBRARY "libc++")
 
-set_target_properties(${PROJECT_NAME} PROPERTIES XCODE_ATTRIBUTE_ONLY_ACTIVE_ARCH "YES")
-set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_BINARY_DIR}/build/Debug-iphoneos/ RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}/build/Release-iphoneos/)
+set_xcode_property(${executable_name} ONLY_ACTIVE_ARCH "YES")
+
+
+
+

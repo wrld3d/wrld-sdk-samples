@@ -72,6 +72,8 @@ AppLocationDelegate* m_pAppLocationDelegate;
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateHeading:(CLHeading *)newHeading
 {
+    UIInterfaceOrientation currentOrientation = [UIApplication sharedApplication].statusBarOrientation;
+    
     if (newHeading.headingAccuracy >= 0)
     {
         float heading = static_cast<float>(newHeading.trueHeading);
@@ -86,15 +88,15 @@ AppLocationDelegate* m_pAppLocationDelegate;
                 return;
             }
         }
-        else if (m_pUIViewController.interfaceOrientation == UIInterfaceOrientationLandscapeLeft)
+        else if (currentOrientation == UIInterfaceOrientationLandscapeLeft)
         {
             heading -= 90.f;
         }
-        else if (m_pUIViewController.interfaceOrientation == UIInterfaceOrientationLandscapeRight)
+        else if (currentOrientation == UIInterfaceOrientationLandscapeRight)
         {
             heading += 90.f;
         }
-        else if (m_pUIViewController.interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown)
+        else if (currentOrientation == UIInterfaceOrientationPortraitUpsideDown)
         {
             heading += 180.f;
         }
