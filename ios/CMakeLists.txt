@@ -121,6 +121,9 @@ set_xcode_property(${executable_name} CLANG_CXX_LIBRARY "libc++")
 
 set_xcode_property(${executable_name} ONLY_ACTIVE_ARCH "YES")
 
+set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_BINARY_DIR}/build/Debug-iphoneos/)
+set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}/build/Release-iphoneos/)
+
 
 
 
