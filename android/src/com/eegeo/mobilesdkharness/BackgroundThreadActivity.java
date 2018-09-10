@@ -74,7 +74,7 @@ public class BackgroundThreadActivity extends MainActivity
 			{
 				NativeJniCalls.resumeNativeCode();
 				m_threadedRunner.start();
-				
+
 				if(m_surfaceHolder != null && m_surfaceHolder.getSurface() != null)
 				{
 					NativeJniCalls.setNativeSurface(m_surfaceHolder.getSurface());
@@ -159,7 +159,7 @@ public class BackgroundThreadActivity extends MainActivity
 	{
 		private long m_endOfLastFrameNano;
 		private boolean m_running;
-		private Handler m_nativeThreadHandler;
+		private volatile Handler m_nativeThreadHandler;
 		private float m_frameThrottleDelaySeconds;
 		private boolean m_destroyed;
 
