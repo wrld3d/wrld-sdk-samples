@@ -13,23 +13,21 @@ android {
     defaultConfig {
         applicationId "com.eegeo.mobilesdkharness"
         minSdkVersion 19
-        targetSdkVersion 24
+        targetSdkVersion 25
         multiDexEnabled true
         versionCode 1
         versionName "1.0"
-		
+
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         externalNativeBuild {
             cmake {
-                cppFlags "-Wall", "-Wno-unknown-pragmas", "-Wno-sign-compare", "-Wno-format-security",
-                         "-Wno-reorder", "-Wno-expansion-to-defined", "-frtti", "-fexceptions", "-std=c++11",
-                         "-D__STDC_FORMAT_MACROS"
-                arguments "-DANDROID=1", "-DANDROID_TOOLCHAIN=clang", "-DANDROID_ARM_MODE=arm"
+                cppFlags "-std=c++11 -fexceptions -frtti -Werror -Wall -Wno-reorder"
+                arguments "-DANDROID=1", "-DANDROID_ARM_MODE=arm", "-DANDROID_STL=gnustl_static"
             }
 
             ndk {
-                abiFilters "armeabi", "armeabi-v7a", "arm64-v8a"
+                abiFilters "armeabi-v7a", "arm64-v8a"
             }
         }
     }
@@ -69,18 +67,9 @@ android {
         }
 
         debug {
-            externalNativeBuild {
-                cmake {
-                    cppFlags "-g"
-                    arguments "-DDEBUG=1"
-                }
-            }
-
             jniDebuggable true
             debuggable true
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            testProguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 

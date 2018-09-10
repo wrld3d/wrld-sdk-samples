@@ -21,8 +21,6 @@ link_directories(
 list(REMOVE_ITEM headers libs/eegeo/eegeo-api-host)
 list(REMOVE_ITEM headers libs/eegeo/eegeo-api-host/Android)
 
-set(CMAKE_SHARED_LINKER_FLAGS  "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--stub-group-size=2085000")
-
 include_directories(${headers})
 link_directories(${linker_search_paths})
 

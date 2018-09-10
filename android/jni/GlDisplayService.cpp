@@ -157,7 +157,7 @@ bool DefaultEGLChooser(EGLDisplay disp, u32 requestedSurfaceType, EGLConfig& bes
 
 bool GlDisplayService::TryBindDisplay(ANativeWindow& window)
 {
-	EGLint w, h, dummy, format;
+	EGLint w, h, format;
 	EGLConfig config;
 	EGLSurface surface;
 
