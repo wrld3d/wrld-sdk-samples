@@ -30,21 +30,25 @@ if [ -z "${p}" ]; then
 fi
 
 if [ "$p" == "ios" ]; then
-   srcPackageName="sdk.package.ios"
+   srcPackageName="sdk.package.ios.cpp11.tar.gz"
    includeDestination="./ios/Include/eegeo"
    sdkDestination="sdk.package"
 elif [ "$p" == "android" ]; then
-   srcPackageName="sdk.package.android"
+   srcPackageName="sdk.package.android.cpp11.c++_static.tar.gz"
    includeDestination="./android/libs/eegeo"
    sdkDestination="sdk.package.android"
 fi
 
-srcPackageName="$srcPackageName.cpp11.tar.gz"
+
 
 echo "Updating $p platform..."
 rm -f ./$destPackageName
 rm -rf $includeDestination
-curl $baseUrl$srcPackageName > ./$destPackageName
+
+src_url=$(echo $baseUrl$srcPackageName | sed "s:+:%2B:g")
+echo "fetching $src_url"
+
+curl $src_url > ./$destPackageName
 
 statuscode=$?
 if [ $statuscode -ne 0 ] ; then

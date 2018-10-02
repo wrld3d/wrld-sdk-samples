@@ -8,12 +8,12 @@ if (project.hasProperty('keyStorePropertiesFile')) {
 }
 
 android {
-    compileSdkVersion 25
+    compileSdkVersion 28
 
     defaultConfig {
         applicationId "com.eegeo.mobilesdkharness"
         minSdkVersion 19
-        targetSdkVersion 25
+        targetSdkVersion 28
         multiDexEnabled true
         versionCode 1
         versionName "1.0"
@@ -23,7 +23,7 @@ android {
         externalNativeBuild {
             cmake {
                 cppFlags "-std=c++11 -fexceptions -frtti -Werror -Wall -Wno-reorder"
-                arguments "-DANDROID=1", "-DANDROID_ARM_MODE=arm", "-DANDROID_STL=gnustl_static"
+                arguments "-DANDROID_ARM_MODE=arm", "-DANDROID_STL=c++_static"
             }
 
             ndk {
