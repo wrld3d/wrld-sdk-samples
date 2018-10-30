@@ -102,6 +102,12 @@ set_xcode_property (${executable_name} DEBUG_INFORMATION_FORMAT[variant=MinSizeR
 set_xcode_property (${executable_name} DEBUG_INFORMATION_FORMAT[variant=RelWithDebInfo] "dwarf-with-dsym")
 set_xcode_property (${executable_name} DEBUG_INFORMATION_FORMAT[variant=Release] "dwarf-with-dsym")
 
+add_custom_command(
+  TARGET ${executable_name}
+  COMMENT "Touching Info.plist to ensure properties set from xcodebuild params appear correctly in app bundle in incremental builds."
+  PRE_BUILD COMMAND touch "\${INFOPLIST_FILE}"
+)
+
 set_xcode_property (${executable_name} GCC_TREAT_WARNINGS_AS_ERRORS "YES")
 set_xcode_property (${executable_name} CODE_SIGN_IDENTITY "iPhone Developer")
 set_xcode_property (${executable_name} DEVELOPMENT_TEAM "QBCVJ28BRW")
@@ -121,8 +127,6 @@ set_xcode_property(${executable_name} CLANG_CXX_LIBRARY "libc++")
 
 set_xcode_property(${executable_name} ONLY_ACTIVE_ARCH "YES")
 
-set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_BINARY_DIR}/build/Debug-iphoneos/)
-set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}/build/Release-iphoneos/)
 
 
 
