@@ -15,6 +15,7 @@
 #include "CameraState.h"
 #include <vector>
 #include <string>
+#include "IInteriorMarkerPickingService.h"
 
 namespace Examples
 {
@@ -27,6 +28,7 @@ class ExampleController : private Eegeo::NonCopyable
 	bool m_uiVisible;
   	DefaultCameraControllerFactory& m_defaultCameraControllerFactory;
     Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& m_globeCameraTouchController;
+	Eegeo::Resources::Interiors::Markers::IInteriorMarkerPickingService& m_interiorMarkerPickingService;
 
 	IExampleControllerView& m_view;
 	UIActionHandler<ExampleController> m_nextExampleHandler;

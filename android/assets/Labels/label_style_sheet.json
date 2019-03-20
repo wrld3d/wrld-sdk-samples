@@ -441,23 +441,23 @@
         "masked_halo_color_rgba": "00000080"
     },
     {
-        "name": "marker_default",
-        "label_resource_font_binding": "markers",
-        "size_px": 9.5,
-        "apply_projection_scale": false,
-        "glyph_color_rgba": "FFFFFFFF",
-        "halo_color_rgba": "3A3A3AFF",
-        "halo_width": 2.0,
+        "name": "indoor_map_marker",
+        "label_resource_font_binding": "interiors",
+        "size_px": 10,
+        "glyph_color_rgba": "F2F2F2",
+        "halo_color_rgba": "1040A0",
+        "masked_glyph_color_rgba": "F2F2F2",
+        "masked_halo_color_rgba": "1040A0",
+        "halo_width": 3.0,
         "halo_hardness": 1.0
     },
     {
-        "name": "marker_alternate",
+        "name": "marker_default",
         "label_resource_font_binding": "markers",
-        "size_px": 14.5,
-        "apply_projection_scale": false,
-        "glyph_color_rgba": "FF0000FF",
-        "halo_color_rgba": "000000FF",
-        "halo_width": 4.0,
+        "size_px": 9.5,
+        "glyph_color_rgba": "FFFFFFFF",
+        "halo_color_rgba": "3A3A3AFF",
+        "halo_width": 2.0,
         "halo_hardness": 1.0
     }
     ],
@@ -468,6 +468,12 @@
         "color": "FFFFFFFF",
         "masked_color": "F0F0F080"
 	},
+    {
+        "name": "indoor_map_marker",
+        "size_px": 40,
+        "color": "FFFFFFFF",
+        "masked_color": "F0F0F080"
+    },
     {
         "name": "marker_default",
         "size_px": 28,
@@ -834,6 +840,8 @@
         "label_vertical_alignment": "bottom",
         "constraint_radius_scale": 1.0,
         "stencil_mode": "always",
+        "screen_margin": 24.0,
+        "screen_margin_hiding": "if_icon_outside_margin",
         "priority": 5
     },
     {
@@ -846,6 +854,8 @@
         "label_vertical_alignment": "bottom",
         "constraint_radius_scale": 1.0,
         "stencil_mode": "always",
+        "screen_margin": 24.0,
+        "screen_margin_hiding": "if_icon_outside_margin",
         "priority": 3
     },
     {
@@ -858,31 +868,39 @@
         "label_vertical_alignment": "bottom",
         "constraint_radius_scale": 1.0,
         "stencil_mode": "always",
+        "screen_margin": 24.0,
+        "screen_margin_hiding": "if_icon_outside_margin",
         "priority": 2
+    },
+    {
+        "name": "indoor_map_marker",
+        "label_text_style_name": "indoor_map_marker",
+        "label_icon_style_name": "indoor_map_marker",
+        "label_orientation": "screen",
+        "label_display": "screen_space",
+        "label_horizontal_alignment": "left",
+        "label_vertical_alignment": "middle",
+        "constraint_radius_scale": 1.0,
+        "pickable": true,
+        "screen_margin": 36.0,
+        "screen_margin_hiding": "if_icon_outside_margin",
+        "stencil_mode": "always",
+        "priority": 1
     },
     {
         "name": "marker_default",
         "label_text_style_name": "marker_default",
         "label_icon_style_name": "marker_default",
         "label_orientation": "screen",
+        "label_display": "screen_space",
         "label_horizontal_alignment": "left",
         "label_vertical_alignment": "middle",
-        "constraint_radius_scale": 0.0,
-        "stencil_mode": "always",
+        "constraint_radius_scale": 1.0,
         "pickable": true,
         "fade_duration": 0.25,
-        "priority": 0
-    },
-    {
-        "name": "marker_alternate",
-        "label_text_style_name": "marker_alternate",
-        "label_icon_style_name": "",
-        "label_orientation": "screen",
-        "label_horizontal_alignment": "center",
-        "label_vertical_alignment": "middle",
-        "constraint_radius_scale": 0.0,
+        "screen_margin": 36.0,
+        "screen_margin_hiding": "if_icon_outside_margin",
         "stencil_mode": "always",
-        "pickable": true,
         "priority": 0
     }
     ],
@@ -1273,6 +1291,10 @@
     {
         "label_anchor_category": "interior_facility_toilets",
         "label_style_name": "interior_facility_high_priority"
+    },
+    {
+        "label_anchor_category": "indoor_map",
+        "label_style_name": "indoor_map_marker"
     }
     ]
 }

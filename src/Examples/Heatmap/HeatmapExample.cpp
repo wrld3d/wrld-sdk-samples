@@ -50,7 +50,8 @@ namespace Examples
                                                                          )
                                                                     .Alpha(0.5)
                                                                     .MaxValue(24)
-                                                                    .Layer(Eegeo::Rendering::StencilMapLayerMask::Buildings)
+                                                                    //.Layer(Eegeo::Rendering::StencilMapLayerMask::Buildings)
+            .Layer(Eegeo::Rendering::StencilMapLayerMask::AllMapLayers)
                                                                     .Build();
         
         m_heatmapController.Add(*m_pSfCrimeHeatmap);

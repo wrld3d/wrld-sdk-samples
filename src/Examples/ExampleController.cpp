@@ -20,6 +20,7 @@ ExampleController::ExampleController(Eegeo::EegeoWorld& world,
 	, m_previousExampleHandler(this, &ExampleController::ActivatePrevious)
 	, m_selectedExampleChangedHandler(this, &ExampleController::UpdateSelectedExample)
 	, m_uiVisible(false)
+	, m_interiorMarkerPickingService(world.GetMapModule().GetInteriorsPresentationModule().GetInteriorMarkerPickingService())
 {
 	m_view.AddSelectNextExampleHandler(m_nextExampleHandler);
 	m_view.AddSelectPreviousExampleHandler(m_previousExampleHandler);
@@ -266,6 +267,11 @@ void ExampleController::Event_TouchPan_End(const AppInterface::PanData& data)
 
 void ExampleController::Event_TouchTap(const AppInterface::TapData& data)
 {
+
+	if (m_interiorMarkerPickingService.TryEnterInterior(data.point))
+	{
+		return;
+	}
 	if (m_pCurrentExample != NULL)
 	{
 		m_pCurrentExample->Event_TouchTap(data);
