@@ -24,7 +24,6 @@
 #include "EnvironmentFlatteningExampleFactory.h"
 #include "EnvironmentNotifierExampleFactory.h"
 #include "FileIOExampleFactory.h"
-#include "HeatmapExampleFactory.h"
 #include "LoadModelExampleFactory.h"
 #include "ModifiedRenderingExampleFactory.h"
 #include "NavigationGraphExampleFactory.h"
@@ -192,7 +191,6 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
 	m_pExampleController->RegisterCameraExample<Examples::FileIOExampleFactory>();
     m_pExampleController->RegisterCameraExample<Examples::FireworksExampleFactory>();
     m_pExampleController->RegisterCameraExample<Examples::GeofenceExampleFactory>();
-    m_pExampleController->RegisterCameraExample<Examples::HeatmapExampleFactory>();
     m_pExampleController->RegisterCameraExample<Examples::LoadModelExampleFactory>();
     m_pExampleController->RegisterCameraControllerScreenPropertiesProviderExample<Examples::MarkersExampleFactory>(m_screenPropertiesProvider);
     m_pExampleController->RegisterCameraExample<Examples::MeshExampleFactory>();
