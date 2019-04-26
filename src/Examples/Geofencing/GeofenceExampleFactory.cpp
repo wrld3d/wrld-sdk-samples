@@ -3,6 +3,7 @@
 #include "GeofenceExampleFactory.h"
 #include "GeofenceExample.h"
 #include "DataModule.h"
+#include "GeofenceModule.h"
 
 namespace Examples
 {
