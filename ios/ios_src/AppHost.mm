@@ -53,7 +53,12 @@ namespace
         const Eegeo::Modules::Core::RenderingModule& renderingModule = world.GetRenderingModule();
         const Eegeo::Modules::Map::MapModule& mapModule = world.GetMapModule();
         
-        Eegeo::Modules::CollisionVisualizationModule* pCollisionVisualizationModule = Eegeo::Modules::CollisionVisualizationModule::Create(renderingModule, mapModule, materialSelectionControllerConfig);
+        Eegeo::Modules::CollisionVisualizationModule* pCollisionVisualizationModule =
+            Eegeo::Modules::CollisionVisualizationModule::Create(renderingModule,
+                                                                 mapModule.GetEnvironmentFlatteningService(),
+                                                                 mapModule.GetAggregateCollisionBvhProvider(),
+                                                                 mapModule.GetBuildingModelModule(),
+                                                                 materialSelectionControllerConfig);
         return pCollisionVisualizationModule;
     }
 }
